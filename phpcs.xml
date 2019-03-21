@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<ruleset name="Skeleton coding standard">
+    <description>Skeleton coding standard</description>
+
+    <arg value="p"/>
+    <arg name="colors"/>
+    <arg name="cache" value="cs-check.json"/>
+    <arg name="parallel" value="8" />
+
+    <rule ref="PSR12">
+        <exclude name="Generic.Files.LineLength"/>
+    </rule>
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace">
+        <properties>
+            <property name="ignoreBlankLines" value="false"/>
+        </properties>
+    </rule>
+
+    <file>src</file>
+    <file>tests</file>
+</ruleset>

@@ -1,0 +1,67 @@
+{
+    "name": "icanhazstring/composer-unused",
+    "type": "composer-plugin",
+    "description": "Show unused packages by scanning your code",
+    "keywords": [
+        "composer",
+        "plugin",
+        "unused",
+        "php-parser"
+    ],
+    "homepage": "https://github.com/icanhazstring/composer-unused",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Andreas Frömer",
+            "email": "blubb0r05+github@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "composer-plugin-api": "^1.1.0",
+        "nikic/php-parser": "^4.2",
+        "symfony/finder": "^4.2"
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-master",
+        "composer/composer": "^1.8",
+        "jangregor/phpstan-prophecy": "^0.3.0",
+        "phpstan/phpstan": "^0.11.4",
+        "phpunit/phpunit": "^8.0",
+        "squizlabs/php_codesniffer": "^3.4"
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "extra": {
+        "class": "Icanhazstring\\Composer\\Unused\\UnusedPlugin"
+    },
+    "autoload": {
+        "psr-4": {
+            "Icanhazstring\\Composer\\Unused\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Icanhazstring\\Composer\\Test\\Unused\\": [
+                "tests"
+            ]
+        }
+    },
+    "support": {
+        "issues": "https://github.com/icanhazstring/composer-unused/issues",
+        "source": "https://github.com/icanhazstring/composer-unused"
+    },
+    "scripts": {
+        "check": [
+            "@cs-check",
+            "@analyse",
+            "@test"
+        ],
+        "cs-check": "phpcs",
+        "cs-fix": "phpcbf",
+        "analyse": "phpstan analyse --no-progress",
+        "test": "phpunit"
+    }
+}
