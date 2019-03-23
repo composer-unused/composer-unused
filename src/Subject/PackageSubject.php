@@ -18,7 +18,12 @@ class PackageSubject implements SubjectInterface
 
     public function providesNamespace(string $namespace): bool
     {
-        foreach ($this->composerPackage->getAutoload()['psr-4'] ?? [] as $providedNamespace => $dir) {
+        $autoload = array_merge_recursive(
+            $this->composerPackage->getAutoload()['psr-0'] ?? [],
+            $this->composerPackage->getAutoload()['psr-4'] ?? []
+        );
+
+        foreach ($autoload as $providedNamespace => $dir) {
             if (strpos($namespace, $providedNamespace) === 0) {
                 return true;
             }
