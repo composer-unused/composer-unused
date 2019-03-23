@@ -1,6 +1,9 @@
 # composer-unused
 Show unused packages by scanning your code
 
+![build](https://img.shields.io/travis/com/icanhazstring/composer-unused.svg?style=flat-square)
+![version](https://img.shields.io/github/tag-date/icanhazstring/composer-unused.svg?label=version&style=flat-square)
+
 ## Motivation
 
 Working in a big repository with multiple people, sometimes you might lose track 
