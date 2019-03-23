@@ -23,11 +23,11 @@
         "symfony/finder": "^4.2"
     },
     "require-dev": {
-        "roave/security-advisories": "dev-master",
         "composer/composer": "^1.8",
         "jangregor/phpstan-prophecy": "^0.3.0",
         "phpstan/phpstan": "^0.11.4",
         "phpunit/phpunit": "^8.0",
+        "roave/security-advisories": "dev-master",
         "squizlabs/php_codesniffer": "^3.4"
     },
     "config": {
@@ -44,16 +44,11 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Icanhazstring\\Composer\\Test\\Unused\\": [
-                "tests"
-            ]
+            "Icanhazstring\\Composer\\Test\\Unused\\": "tests"
         }
     },
-    "support": {
-        "issues": "https://github.com/icanhazstring/composer-unused/issues",
-        "source": "https://github.com/icanhazstring/composer-unused"
-    },
     "scripts": {
+        "analyse": "phpstan analyse --no-progress",
         "check": [
             "@cs-check",
             "@analyse",
@@ -61,7 +56,10 @@
         ],
         "cs-check": "phpcs",
         "cs-fix": "phpcbf",
-        "analyse": "phpstan analyse --no-progress",
         "test": "phpunit"
+    },
+    "support": {
+        "issues": "https://github.com/icanhazstring/composer-unused/issues",
+        "source": "https://github.com/icanhazstring/composer-unused"
     }
 }
