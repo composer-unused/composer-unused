@@ -14,7 +14,7 @@ What if you need to find out if the provided *namespaces* of the package are use
 
 `composer unused` to the rescue!
 
-![usage](https://media.giphy.com/media/LYrx0fhQ4qD8asscts/giphy.gif)
+![usage](https://i.imgur.com/sHjjprU.gif)
 
 ## Installation
 
@@ -43,7 +43,7 @@ Loading packages
  Loading 15 requirements
  15/15 [-----------------------------] 100%
 
- <span style="color: yellow">! [NOTE] Skipped 2 requirements. No package found or invalid constraint.</span>                                               
+ ! [NOTE] Skipped 2 requirements. No package found or invalid constraint.                                               
 
  * php
  * ext-ctype
@@ -77,3 +77,19 @@ Results
 
  Unused packages
 ```
+
+## Changelog
+
+Please have a look at [`CHANGELOG.md`](CHANGELOG.md).
+
+## Contributing
+
+Please have a look at [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
+## Code of Conduct
+
+Please have a look at [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md).
+
+## License
+
+This package is licensed using the [MIT License](LICENSE).
