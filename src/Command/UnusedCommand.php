@@ -166,33 +166,33 @@ class UnusedCommand extends BaseCommand
             $composer->getPackage()->getDevAutoload()
         );
 
-        $paths = [];
+        $autoloadDirs = [];
         $autoloadFiles = [];
 
         foreach ($autoload as $autoloadType => $namespaces) {
-            foreach ($namespaces as $namespace => $dirs) {
-                if (!is_array($dirs)) {
-                    $dirs = [$dirs];
+            foreach ($namespaces as $namespace => $paths) {
+                if (!is_array($paths)) {
+                    $paths = [$paths];
                 }
 
-                foreach ($dirs as $dir) {
-                    $resolvePath = stream_resolve_include_path($dir);
+                foreach ($paths as $path) {
+                    $resolvePath = stream_resolve_include_path($path);
 
                     if (!$resolvePath) {
                         continue;
                     }
 
-                    if (in_array($autoloadType, ['classmap', 'files']) && is_file($dir)) {
-                        $autoloadFiles[] = new SplFileInfo($dir, pathinfo($dir, PATHINFO_DIRNAME), $dir);
+                    if (in_array($autoloadType, ['classmap', 'files']) && is_file($path)) {
+                        $autoloadFiles[] = new SplFileInfo($path, pathinfo($path, PATHINFO_DIRNAME), $path);
                         continue;
                     }
 
-                    $paths[] = $resolvePath;
+                    $autoloadDirs[] = $resolvePath;
                 }
             }
         }
 
-        if (empty($paths)) {
+        if (empty($autoloadDirs) && empty($autoloadFiles)) {
             $io->error('Could not load paths from root package to scan.');
 
             return [];
@@ -200,7 +200,7 @@ class UnusedCommand extends BaseCommand
 
         $finder = new Finder();
         /** @var SplFileInfo[] $files */
-        $files = $finder->files()->name('*.php')->in($paths)->append($autoloadFiles);
+        $files = $finder->files()->name('*.php')->in($autoloadDirs)->append($autoloadFiles);
 
         $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
         $visitor = new NodeVisitor([
