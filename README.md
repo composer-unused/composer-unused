@@ -81,6 +81,16 @@ Results
  Unused packages
 ```
 
+## Troubleshooting
+If you encounter some errors, try running
+
+```bash
+$ composer unused -vvv
+```
+
+This will enable debug mode and create an error report beside your `composer.json`.
+> `composer-unused-dump-YmdHis`
+
 ## Changelog
 
 Please have a look at [`CHANGELOG.md`](CHANGELOG.md).

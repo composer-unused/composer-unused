@@ -16,18 +16,27 @@ use Icanhazstring\Composer\Unused\Output\SymfonyStyleFactory;
 final class UnusedPlugin implements Plugin\PluginInterface, Plugin\Capable, Plugin\Capability\CommandProvider
 {
     private $isDebug;
+    /** @var Composer */
+    private $composer;
+    private $version;
 
     public function __construct(...$args)
     {
         if (!empty($args)) {
-            /** @var IOInterface $io */
-            $io = $args[0]['io'];
-            $this->isDebug = $io->isDebug();
+            /** @var self $plugin */
+            $plugin = $args[0]['plugin'];
+
+            $this->composer = $plugin->composer;
+            $this->isDebug = $plugin->isDebug;
+            $this->version = $plugin->version;
         }
     }
 
     public function activate(Composer $composer, IOInterface $io): void
     {
+        $this->version = $composer->getPackage()->getPrettyVersion();
+        $this->composer = $composer;
+        $this->isDebug = $io->isDebug();
     }
 
     public function getCapabilities()
@@ -37,12 +46,22 @@ final class UnusedPlugin implements Plugin\PluginInterface, Plugin\Capable, Plug
         ];
     }
 
-    public function getCommands()
+    /**
+     * @return array|\Composer\Command\BaseCommand[]
+     * @throws \Exception
+     */
+    public function getCommands(): array
     {
+        $dumpFileName = 'composer-unused-dump-' . (new \DateTime())->format('YmdHis');
+
+        $dumper = $this->isDebug
+            ? new FileDumper($dumpFileName, $this->version, $this->composer)
+            : new NullDumper();
+
         return [
             new Command\UnusedCommand(
                 $this->isDebug ? new CollectingErrorHandler() : new ThrowingErrorHandler(),
-                $this->isDebug ? new FileDumper() : new NullDumper(),
+                $dumper,
                 new SymfonyStyleFactory()
             )
         ];

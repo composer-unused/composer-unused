@@ -30,4 +30,9 @@ class ThrowingErrorHandler implements ErrorHandlerInterface
     {
         return false;
     }
+
+    public function getErrors(): array
+    {
+        return [];
+    }
 }

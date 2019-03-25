@@ -28,6 +28,9 @@ class CollectingErrorHandler implements ErrorHandlerInterface
         $this->errors[] = $error;
     }
 
+    /**
+     * @return Throwable[]
+     */
     public function getErrors(): array
     {
         return $this->errors;

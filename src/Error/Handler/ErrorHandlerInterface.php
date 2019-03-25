@@ -17,4 +17,9 @@ interface ErrorHandlerInterface extends ErrorHandler
     public function handle(Throwable $error): void;
 
     public function hasErrors(): bool;
+
+    /**
+     * @return Throwable[]
+     */
+    public function getErrors(): array;
 }
