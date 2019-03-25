@@ -8,8 +8,8 @@ use Composer\Command\BaseCommand;
 use Composer\Composer;
 use Composer\Package\PackageInterface;
 use Icanhazstring\Composer\Unused\Error\ErrorDumperInterface;
-use Icanhazstring\Composer\Unused\Error\Handler\CollectingErrorHandler;
 use Icanhazstring\Composer\Unused\Error\Handler\ErrorHandlerInterface;
+use Icanhazstring\Composer\Unused\Output\SymfonyStyleFactory;
 use Icanhazstring\Composer\Unused\Parser\NodeVisitor;
 use Icanhazstring\Composer\Unused\Parser\Strategy\NewParseStrategy;
 use Icanhazstring\Composer\Unused\Parser\Strategy\StaticParseStrategy;
@@ -24,7 +24,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-use Throwable;
 
 class UnusedCommand extends BaseCommand
 {
@@ -32,12 +31,18 @@ class UnusedCommand extends BaseCommand
     private $errorHandler;
     /** @var ErrorDumperInterface */
     private $errorDumper;
+    /** @var SymfonyStyleFactory */
+    private $symfonyStyleFactory;
 
-    public function __construct(ErrorHandlerInterface $errorHandler, ErrorDumperInterface $errorDumper)
-    {
+    public function __construct(
+        ErrorHandlerInterface $errorHandler,
+        ErrorDumperInterface $errorDumper,
+        SymfonyStyleFactory $outputFactory
+    ) {
         parent::__construct('unused');
         $this->errorHandler = $errorHandler;
         $this->errorDumper = $errorDumper;
+        $this->symfonyStyleFactory = $outputFactory;
     }
 
     protected function configure(): void
@@ -49,7 +54,8 @@ class UnusedCommand extends BaseCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
+        /** @var SymfonyStyle $io */
+        $io = ($this->symfonyStyleFactory)($input, $output);
 
         $composer = $this->getComposer();
         $packages = $this->loadPackages($composer, $io);
@@ -60,7 +66,7 @@ class UnusedCommand extends BaseCommand
             return 1;
         }
 
-        $io->note(sprintf('Found %d packages to be checked.', count($packages)));
+        $io->note(sprintf('Found %d package(s) to be checked.', count($packages)));
 
         $usages = $this->loadUsages($composer, $io);
 

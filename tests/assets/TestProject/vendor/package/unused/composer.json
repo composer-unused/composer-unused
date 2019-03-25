@@ -1,0 +1,12 @@
+{
+    "name": "package/unused",
+    "description": "package unused",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Package\\Unused\\": "src"
+        }
+    },
+    "require": {}
+}

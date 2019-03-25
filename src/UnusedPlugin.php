@@ -11,6 +11,7 @@ use Icanhazstring\Composer\Unused\Error\FileDumper;
 use Icanhazstring\Composer\Unused\Error\Handler\CollectingErrorHandler;
 use Icanhazstring\Composer\Unused\Error\Handler\ThrowingErrorHandler;
 use Icanhazstring\Composer\Unused\Error\NullDumper;
+use Icanhazstring\Composer\Unused\Output\SymfonyStyleFactory;
 
 final class UnusedPlugin implements Plugin\PluginInterface, Plugin\Capable, Plugin\Capability\CommandProvider
 {
@@ -41,7 +42,8 @@ final class UnusedPlugin implements Plugin\PluginInterface, Plugin\Capable, Plug
         return [
             new Command\UnusedCommand(
                 $this->isDebug ? new CollectingErrorHandler() : new ThrowingErrorHandler(),
-                $this->isDebug ? new FileDumper() : new NullDumper()
+                $this->isDebug ? new FileDumper() : new NullDumper(),
+                new SymfonyStyleFactory()
             )
         ];
     }

@@ -1,0 +1,12 @@
+{
+    "name": "package/used-psr4",
+    "description": "package used-psr4",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Package\\UsedPsr4\\": "src"
+        }
+    },
+    "require": {}
+}
