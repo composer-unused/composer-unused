@@ -7,25 +7,81 @@ namespace Icanhazstring\Composer\Test\Unused\Integration\Command;
 use Composer\Factory;
 use Composer\IO\NullIO;
 use Icanhazstring\Composer\Unused\Command\UnusedCommand;
+use Icanhazstring\Composer\Unused\Error\Handler\CollectingErrorHandler;
+use Icanhazstring\Composer\Unused\Error\NullDumper;
+use Icanhazstring\Composer\Unused\Output\SymfonyStyleFactory;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class UnusedCommandTest extends TestCase
 {
+    public function itShouldWriteCorrectConsoleOutputDataProvider(): array
+    {
+        return [
+            [
+                'usedPackages' => [
+                    'package/used-psr0',
+                    'package/used-psr4',
+                    'package/used-autoload-file',
+                    'package/used-classmap-file',
+                    'package/used-classmap-folder',
+                ],
+
+                'unusedPackages' => [
+                    'package/unused'
+                ]
+            ]
+        ];
+    }
+
     /**
      * @test
+     * @param array $usedPackages
+     * @param array $unusedPackages
      * @throws \Exception
+     * @dataProvider itShouldWriteCorrectConsoleOutputDataProvider
      */
-    public function itShouldDoSomething(): void
+    public function itShouldWriteCorrectConsoleOutput(array $usedPackages, array $unusedPackages): void
     {
-        $this->markTestIncomplete('Needs some stubbed composer.json with possible errors');
-
-        chdir(__DIR__ . '/../../../');
+        chdir(__DIR__ . '/../../assets/TestProject');
         $composer = Factory::create(new NullIO(), 'composer.json');
-        chdir(__DIR__);
 
-        $command = new UnusedCommand();
+        $errorHandler = new CollectingErrorHandler();
+        $errorDumper = new NullDumper();
+
+        $symfonyStyle = $this->prophesize(SymfonyStyle::class);
+        $symfonyStyle->section(Argument::any())->willReturn();
+        $symfonyStyle->text(Argument::any())->willReturn();
+        $symfonyStyle->writeln(Argument::any())->willReturn();
+        $symfonyStyle->newLine(Argument::any())->willReturn();
+        $symfonyStyle->progressStart(Argument::any())->willReturn();
+        $symfonyStyle->progressAdvance()->willReturn();
+        $symfonyStyle->progressFinish()->willReturn();
+
+        $countPackages = count($usedPackages) + count($unusedPackages);
+        $symfonyStyle->note(Argument::containingString('Found ' . $countPackages . ' package(s)'))
+            ->shouldBeCalled()
+            ->willReturn();
+
+        foreach ($usedPackages as $usedPackage) {
+            $symfonyStyle->writeln(Argument::containingString($usedPackage . ' <fg=green>'))
+                ->shouldBeCalled()
+                ->willReturn();
+        }
+
+        foreach ($unusedPackages as $unusedPackage) {
+            $symfonyStyle->writeln(Argument::containingString($unusedPackage . ' <fg=red>'))
+                ->shouldBeCalled()
+                ->willReturn();
+        }
+
+        $symfonyStyleFactory = $this->prophesize(SymfonyStyleFactory::class);
+        $symfonyStyleFactory->__invoke(Argument::any(), Argument::any())->willReturn($symfonyStyle->reveal());
+
+        $command = new UnusedCommand($errorHandler, $errorDumper, $symfonyStyleFactory->reveal());
         $command->setComposer($composer);
 
         $input = new ArrayInput([]);

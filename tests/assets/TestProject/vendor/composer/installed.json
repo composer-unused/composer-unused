@@ -1,0 +1,72 @@
+[
+    {
+        "name": "package/used-psr0",
+        "autoload": {
+            "psr-4": {
+                "Package\\UsedPsr0\\": "src"
+            }
+        },
+        "version": "0.1.0",
+        "version_normalized": "0.1.0.0"
+    },
+    {
+        "name": "package/used-psr4",
+        "autoload": {
+            "psr-4": {
+                "Package\\UsedPsr4\\": "src"
+            }
+        },
+        "version": "0.1.0",
+        "version_normalized": "0.1.0.0"
+    },
+    {
+        "name": "package/used-autoload-file",
+        "autoload": {
+            "psr-4": {
+                "Package\\UsedAutoloadFile\\": "src"
+            }
+        },
+        "version": "0.1.0",
+        "version_normalized": "0.1.0.0"
+    },
+    {
+        "name": "package/used-classmap-file",
+        "autoload": {
+            "psr-4": {
+                "Package\\UsedClassmapFile\\": "src"
+            }
+        },
+        "version": "0.1.0",
+        "version_normalized": "0.1.0.0"
+    },
+    {
+        "name": "package/used-classmap-folder",
+        "autoload": {
+            "psr-4": {
+                "Package\\UsedClassmapFolder\\": "src"
+            }
+        },
+        "version": "0.1.0",
+        "version_normalized": "0.1.0.0"
+    },
+    {
+        "name": "package/used-non-namespace",
+        "autoload": {
+            "psr-4": {
+                "Package\\UsedNonNamespace\\": "src"
+            }
+        },
+        "version": "0.1.0",
+        "version_normalized": "0.1.0.0"
+    },
+    {
+        "name": "package/unused",
+        "autoload": {
+            "psr-4": {
+                "Package\\Unused\\": "src"
+            }
+        },
+        "version": "0.1.0",
+        "version_normalized": "0.1.0.0"
+    }
+]

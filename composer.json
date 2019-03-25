@@ -44,7 +44,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Icanhazstring\\Composer\\Test\\Unused\\": "tests"
+            "Icanhazstring\\Composer\\Test\\Unused\\Integration\\": "tests/Integration",
+            "Icanhazstring\\Composer\\Test\\Unused\\Unit\\": "tests/Unit"
         }
     },
     "scripts": {

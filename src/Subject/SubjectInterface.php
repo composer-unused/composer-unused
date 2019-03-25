@@ -6,7 +6,7 @@ namespace Icanhazstring\Composer\Unused\Subject;
 
 interface SubjectInterface
 {
-    public function providesNamespace(string $namespace): bool;
+    public function providesNamespace(string $usedNamespace): bool;
 
     public function getName(): string;
 }

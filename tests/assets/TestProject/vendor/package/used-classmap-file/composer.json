@@ -1,0 +1,12 @@
+{
+    "name": "package/used-classmap-file",
+    "description": "package used-classmap-file",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Package\\UsedClassmapFile\\": "src"
+        }
+    },
+    "require": {}
+}

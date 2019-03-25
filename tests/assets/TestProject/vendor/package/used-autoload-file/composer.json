@@ -1,0 +1,12 @@
+{
+    "name": "package/used-autoload-file",
+    "description": "package used-autoload-file",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Package\\UsedAutoloadFile\\": "src"
+        }
+    },
+    "require": {}
+}
