@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Icanhazstring\Composer\Unused;
 
 use Composer\Composer;
-use Composer\Factory;
 use Composer\IO\IOInterface;
 use Composer\Plugin;
 
