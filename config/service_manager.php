@@ -14,6 +14,7 @@ use Icanhazstring\Composer\Unused\Loader\Factory\PackageLoaderFactory;
 use Icanhazstring\Composer\Unused\Loader\Factory\UsageLoaderFactory;
 use Icanhazstring\Composer\Unused\Loader\PackageLoader;
 use Icanhazstring\Composer\Unused\Loader\UsageLoader;
+use Icanhazstring\Composer\Unused\Log\DebugLogger;
 use Icanhazstring\Composer\Unused\Parser\Factory\NodeVisitorFactory;
 use Icanhazstring\Composer\Unused\Parser\NodeVisitor;
 use Icanhazstring\Composer\Unused\Subject\Factory\PackageSubjectFactory;
@@ -28,6 +29,7 @@ return [
         FileDumper::class            => FileDumperFactory::class,
         ErrorDumperInterface::class  => ErrorDumperFactory::class,
         ErrorHandlerInterface::class => ErrorHandlerFactory::class,
-        UnusedCommand::class         => UnusedCommandFactory::class
+        UnusedCommand::class         => UnusedCommandFactory::class,
+        DebugLogger::class           => InvokableFactory::class
     ]
 ];

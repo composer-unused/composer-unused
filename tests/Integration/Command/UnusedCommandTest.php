@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Icanhazstring\Composer\Test\Unused\Integration\Command;
 
 use Composer\Factory;
+use Composer\IO\IOInterface;
 use Composer\IO\NullIO;
 use Icanhazstring\Composer\Unused\Command\UnusedCommand;
 use Icanhazstring\Composer\Unused\Error\Handler\CollectingErrorHandler;
 use Icanhazstring\Composer\Unused\Error\NullDumper;
 use Icanhazstring\Composer\Unused\Loader\PackageLoader;
 use Icanhazstring\Composer\Unused\Loader\UsageLoader;
+use Icanhazstring\Composer\Unused\Log\DebugLogger;
 use Icanhazstring\Composer\Unused\Output\SymfonyStyleFactory;
 use Icanhazstring\Composer\Unused\Parser\NodeVisitor;
 use Icanhazstring\Composer\Unused\Parser\Strategy\NewParseStrategy;
@@ -57,6 +59,9 @@ class UnusedCommandTest extends TestCase
         chdir(__DIR__ . '/../../assets/TestProject');
         $composer = Factory::create(new NullIO(), 'composer.json');
 
+        $composerIO = $this->prophesize(IOInterface::class);
+        $composerIO->isDebug()->willReturn(false);
+
         $errorHandler = new CollectingErrorHandler();
         $errorDumper = new NullDumper();
 
@@ -102,9 +107,12 @@ class UnusedCommandTest extends TestCase
             new UsageLoader(
                 (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
                 $visitor,
-                $errorHandler
+                $errorHandler,
+                new DebugLogger()
             ),
-            new PackageLoader(new PackageSubjectFactory())
+            new PackageLoader(new PackageSubjectFactory()),
+            new DebugLogger(),
+            $composerIO->reveal()
         );
         $command->setComposer($composer);
 

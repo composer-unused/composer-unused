@@ -7,6 +7,7 @@ namespace Icanhazstring\Composer\Unused\Error;
 use Composer\Composer;
 use Composer\Json\JsonFile;
 use Icanhazstring\Composer\Unused\Error\Handler\ErrorHandlerInterface;
+use Icanhazstring\Composer\Unused\Log\DebugLogger;
 
 class FileDumper implements ErrorDumperInterface
 {
@@ -23,9 +24,10 @@ class FileDumper implements ErrorDumperInterface
 
     /**
      * @param ErrorHandlerInterface $errorHandler
+     * @param DebugLogger           $debugLogger
      * @return string|null
      */
-    public function dump(ErrorHandlerInterface $errorHandler): ?string
+    public function dump(ErrorHandlerInterface $errorHandler, DebugLogger $debugLogger): ?string
     {
         $jsonFile = new JsonFile($this->path);
 
@@ -36,7 +38,8 @@ class FileDumper implements ErrorDumperInterface
                 'dev-requires' => [],
                 'autoload'     => $this->composer->getPackage()->getAutoload(),
                 'dev-autoload' => $this->composer->getPackage()->getDevAutoload(),
-                'errors'       => []
+                'debug'        => [],
+                'errors'       => [],
             ];
 
             foreach ($this->composer->getPackage()->getRequires() as $name => $require) {
@@ -54,6 +57,8 @@ class FileDumper implements ErrorDumperInterface
                     'line'    => $error->getLine()
                 ];
             }
+
+            $file = array_merge_recursive($file, $debugLogger->getLogs());
 
             $jsonFile->write($file);
         } catch (\Exception $e) {

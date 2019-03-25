@@ -9,7 +9,6 @@ use Composer\IO\IOInterface;
 use Composer\Plugin;
 use Icanhazstring\Composer\Unused\Command\UnusedCommand;
 use Psr\Container\ContainerInterface;
-use Zend\ServiceManager\ServiceManager;
 
 final class UnusedPlugin implements Plugin\PluginInterface, Plugin\Capable, Plugin\Capability\CommandProvider
 {
@@ -28,12 +27,10 @@ final class UnusedPlugin implements Plugin\PluginInterface, Plugin\Capable, Plug
 
     public function activate(Composer $composer, IOInterface $io): void
     {
-        $config = require __DIR__ . '/../config/service_manager.php';
+        $this->container = require __DIR__ . '/../config/container.php';
 
-        $config['services'][IOInterface::class] = $io;
-        $config['services'][Composer::class] = $composer;
-
-        $this->container = new ServiceManager($config);
+        $this->container->setService(IOInterface::class, $io);
+        $this->container->setService(Composer::class, $composer);
     }
 
     public function getCapabilities()

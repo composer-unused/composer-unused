@@ -10,7 +10,7 @@ use Icanhazstring\Composer\Unused\Parser\NodeVisitor;
 use Icanhazstring\Composer\Unused\Subject\UsageInterface;
 use PhpParser\NodeTraverser;
 use PhpParser\Parser;
-use Symfony\Component\Console\Output\OutputInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -23,15 +23,19 @@ class UsageLoader implements LoaderInterface
     private $visitor;
     /** @var ErrorHandlerInterface */
     private $errorHandler;
+    /** @var LoggerInterface */
+    private $debugLogger;
 
     public function __construct(
         Parser $parser,
         NodeVisitor $visitor,
-        ErrorHandlerInterface $errorHandler
+        ErrorHandlerInterface $errorHandler,
+        LoggerInterface $debugLogger
     ) {
         $this->parser = $parser;
         $this->visitor = $visitor;
         $this->errorHandler = $errorHandler;
+        $this->debugLogger = $debugLogger;
     }
 
     /**
@@ -42,72 +46,31 @@ class UsageLoader implements LoaderInterface
      */
     public function load(Composer $composer, SymfonyStyle $io): array
     {
-        $autoload = array_merge_recursive(
-            $composer->getPackage()->getAutoload(),
-            $composer->getPackage()->getDevAutoload()
-        );
-
-        $autoloadDirs = [];
-        $autoloadFiles = [];
-
-        foreach ($autoload as $autoloadType => $namespaces) {
-            foreach ($namespaces as $namespace => $paths) {
-                if (!is_array($paths)) {
-                    $paths = [$paths];
-                }
-
-                foreach ($paths as $path) {
-                    $io->writeln(sprintf('Trying to resolve path %s', $path), OutputInterface::VERBOSITY_DEBUG);
-
-                    $resolvePath = stream_resolve_include_path($path);
-
-                    if (!$resolvePath) {
-                        $io->writeln(
-                            sprintf('Skipped: Could not resolve %s', $path),
-                            OutputInterface::VERBOSITY_DEBUG
-                        );
-
-                        continue;
-                    }
-
-                    if (in_array($autoloadType, ['classmap', 'files']) && is_file($path)) {
-                        $autoloadFiles[] = new SplFileInfo($path, pathinfo($path, PATHINFO_DIRNAME), $path);
-                        continue;
-                    }
-
-                    $autoloadDirs[] = $resolvePath;
-                }
-            }
-        }
-
-        if (empty($autoloadDirs) && empty($autoloadFiles)) {
-            $io->error('Could not load paths from root package to scan.');
-
-            return [];
-        }
-
         $finder = new Finder();
+        $baseDir = dirname($composer->getConfig()->getConfigSource()->getName());
+
         /** @var SplFileInfo[] $files */
-        $files = $finder->files()->name('*.php')->in($autoloadDirs)->append($autoloadFiles);
+        $files = $finder
+            ->files()
+            ->name('*.php')
+            ->in($baseDir)
+            ->exclude(['vendor']);
 
         $traverser = new NodeTraverser();
         $traverser->addVisitor($this->visitor);
 
-        $io->section('Scanning files...');
+        $io->section(sprintf('Scanning files from basedir %s', $baseDir));
 
         $io->progressStart(count($files));
 
         foreach ($files as $file) {
             $this->visitor->setCurrentFile($file);
-            $io->writeln(sprintf('Parsing file %s', $file->getPathname()), OutputInterface::VERBOSITY_DEBUG);
+            $this->debugLogger->debug(sprintf('Parsing file %s', $file->getPathname()));
+
             $nodes = $this->parser->parse($file->getContents(), $this->errorHandler) ?? [];
 
             if (!$nodes) {
-                $io->writeln(
-                    sprintf('Could not parse nodes from file %s', $file->getFilename()),
-                    OutputInterface::VERBOSITY_DEBUG
-                );
-
+                $this->debugLogger->debug(sprintf('Could not parse nodes from file %s', $file->getFilename()));
                 $io->progressAdvance();
 
                 continue;
