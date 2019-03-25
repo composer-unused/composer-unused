@@ -1,0 +1,7 @@
+.tavis.yml export-ignore
+.gitattribute export-ignore
+.gitignore export-ignore
+.phpcs.xml export-ignore
+.phpstan.neon export-ignore
+.phpunit.xml export-ignore
+tests/ export-ignore
