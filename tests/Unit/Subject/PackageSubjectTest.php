@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class PackageSubjectTest extends TestCase
 {
-    public function itShouldReturnProperResultForpackageAutoloadDataProvider(): array
+    public function itShouldReturnProperResultForPackageAutoloadDataProvider(): array
     {
         return [
             'no psr-4 namespaces'                 => [
@@ -60,14 +60,15 @@ class PackageSubjectTest extends TestCase
     }
 
     /**
+     * @test
+     * @dataProvider itShouldReturnProperResultForPackageAutoloadDataProvider
+     *
      * @param bool   $exptected
      * @param string $usedNamespace
      * @param array  $packageAutoload
      * @return void
-     * @dataProvider itShouldReturnProperResultForpackageAutoloadDataProvider
-     * @test
      */
-    public function itShouldReturnProperResultForpackageAutoload(
+    public function itShouldReturnProperResultForPackageAutoload(
         bool $exptected,
         string $usedNamespace,
         array $packageAutoload
