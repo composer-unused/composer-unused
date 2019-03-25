@@ -2,6 +2,8 @@ includes:
 	- vendor/jangregor/phpstan-prophecy/src/extension.neon
 
 parameters:
+    excludes_analyse:
+        - %currentWorkingDirectory%/tests/assets
     level: max
     paths:
         - src/

@@ -16,7 +16,7 @@ class NodeVisitor extends NodeVisitorAbstract
     /** @var ParseStrategyInterface[] */
     private $strategies;
     /** @var UsageInterface[] */
-    private $usages;
+    private $usages = [];
     /** @var SplFileInfo */
     private $currentFile;
 
@@ -35,8 +35,11 @@ class NodeVisitor extends NodeVisitorAbstract
                 continue;
             }
 
-            $name = $strategy->extractNamespace($node);
-            $this->usages[$name] = new NamespaceUsage($this->currentFile, $name, $node);
+            $namespaces = $strategy->extractNamespaces($node);
+
+            foreach ($namespaces as $namespace) {
+                $this->usages[$namespace] = new NamespaceUsage($this->currentFile, $namespace, $node);
+            }
         }
     }
 

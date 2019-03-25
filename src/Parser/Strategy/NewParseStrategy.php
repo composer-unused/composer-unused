@@ -25,13 +25,13 @@ class NewParseStrategy implements ParseStrategyInterface
 
     /**
      * @param Node&New_ $node
-     * @return string
+     * @return array
      */
-    public function extractNamespace(Node $node): string
+    public function extractNamespaces(Node $node): array
     {
         /** @var FullyQualified $class */
         $class = $node->class;
 
-        return $class->toString();
+        return [$class->toString()];
     }
 }

@@ -10,5 +10,9 @@ interface ParseStrategyInterface
 {
     public function meetsCriteria(Node $node): bool;
 
-    public function extractNamespace(Node $node): string;
+    /**
+     * @param Node $node
+     * @return string[]
+     */
+    public function extractNamespaces(Node $node): array;
 }
