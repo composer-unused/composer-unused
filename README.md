@@ -58,7 +58,7 @@ Scanning files...
 
  1174/1174 [-----------------------------] 100%
 
-Found 13 usued and 0 unused packages
+Found 13 used and 0 unused packages
 
 Results
 -------
