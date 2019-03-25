@@ -6,6 +6,7 @@ namespace Icanhazstring\Composer\Unused\Loader\Factory;
 
 use Icanhazstring\Composer\Unused\Error\Handler\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Loader\UsageLoader;
+use Icanhazstring\Composer\Unused\Log\DebugLogger;
 use Icanhazstring\Composer\Unused\Parser\NodeVisitor;
 use PhpParser\ParserFactory;
 use Psr\Container\ContainerInterface;
@@ -17,7 +18,8 @@ class UsageLoaderFactory
         return new UsageLoader(
             (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
             $container->get(NodeVisitor::class),
-            $container->get(ErrorHandlerInterface::class)
+            $container->get(ErrorHandlerInterface::class),
+            $container->get(DebugLogger::class)
         );
     }
 }

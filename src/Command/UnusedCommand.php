@@ -6,10 +6,12 @@ namespace Icanhazstring\Composer\Unused\Command;
 
 use Composer\Command\BaseCommand;
 use Composer\Composer;
+use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Icanhazstring\Composer\Unused\Error\ErrorDumperInterface;
 use Icanhazstring\Composer\Unused\Error\Handler\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Loader\LoaderInterface;
+use Icanhazstring\Composer\Unused\Log\DebugLogger;
 use Icanhazstring\Composer\Unused\Output\SymfonyStyleFactory;
 use Icanhazstring\Composer\Unused\Subject\SubjectInterface;
 use Icanhazstring\Composer\Unused\Subject\UsageInterface;
@@ -31,13 +33,19 @@ class UnusedCommand extends BaseCommand
     private $usageLoader;
     /** @var LoaderInterface */
     private $packageLoader;
+    /** @var DebugLogger */
+    private $debugLogger;
+    /** @var IOInterface */
+    private $composerIO;
 
     public function __construct(
         ErrorHandlerInterface $errorHandler,
         ErrorDumperInterface $errorDumper,
         SymfonyStyleFactory $outputFactory,
         LoaderInterface $usageLoader,
-        LoaderInterface $packageLoader
+        LoaderInterface $packageLoader,
+        DebugLogger $debugLogger,
+        IOInterface $composerIO
     ) {
         parent::__construct('unused');
         $this->errorHandler = $errorHandler;
@@ -45,6 +53,8 @@ class UnusedCommand extends BaseCommand
         $this->symfonyStyleFactory = $outputFactory;
         $this->usageLoader = $usageLoader;
         $this->packageLoader = $packageLoader;
+        $this->debugLogger = $debugLogger;
+        $this->composerIO = $composerIO;
     }
 
     protected function configure(): void
@@ -63,6 +73,7 @@ class UnusedCommand extends BaseCommand
 
         if (empty($packages)) {
             $this->io->error('No required packages found');
+            $this->dumpLogs();
 
             return 1;
         }
@@ -73,6 +84,7 @@ class UnusedCommand extends BaseCommand
 
         if (empty($usages)) {
             $this->io->error('No usages could be found. Aborting.');
+            $this->dumpLogs();
 
             return 1;
         }
@@ -101,15 +113,6 @@ class UnusedCommand extends BaseCommand
             )
         );
 
-        if ($this->errorHandler->hasErrors()) {
-            $this->io->warning('Errors occured during scanning process');
-
-            $dumpLocation = $this->errorDumper->dump($this->errorHandler);
-            if ($dumpLocation) {
-                $this->io->note(sprintf('ErrorLog dumped to: %s', $dumpLocation));
-            }
-        }
-
         $this->io->section('Results');
 
         $this->io->text('<fg=green>Used packages</>');
@@ -121,6 +124,10 @@ class UnusedCommand extends BaseCommand
         $this->io->text('<fg=red>Unused packages</>');
         foreach ($unusedPackages as $package) {
             $this->io->writeln(sprintf(' * %s <fg=red>%s</>', $package->getName(), "\u{2717}"));
+        }
+
+        if ($this->composerIO->isDebug()) {
+            $this->dumpLogs();
         }
 
         return 0;
@@ -144,5 +151,17 @@ class UnusedCommand extends BaseCommand
     private function loadUsages(Composer $composer, SymfonyStyle $io): array
     {
         return $this->usageLoader->load($composer, $io);
+    }
+
+    private function dumpLogs(): void
+    {
+        if (!$this->composerIO->isDebug()) {
+            return;
+        }
+
+        $dumpLocation = $this->errorDumper->dump($this->errorHandler, $this->debugLogger);
+        if ($dumpLocation) {
+            $this->io->note(sprintf('Log dumped to: %s', $dumpLocation));
+        }
     }
 }
