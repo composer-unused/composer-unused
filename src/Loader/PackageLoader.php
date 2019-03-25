@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Icanhazstring\Composer\Unused\Loader;
 
 use Composer\Composer;
+use Composer\Package\PackageInterface;
 use Icanhazstring\Composer\Unused\Subject\Factory\PackageSubjectFactory;
-use Icanhazstring\Composer\Unused\Subject\UsageInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class PackageLoader implements LoaderInterface
@@ -23,7 +23,7 @@ class PackageLoader implements LoaderInterface
      * @param Composer     $composer
      * @param SymfonyStyle $io
      *
-     * @return UsageInterface[]
+     * @return PackageInterface[]
      */
     public function load(Composer $composer, SymfonyStyle $io): array
     {

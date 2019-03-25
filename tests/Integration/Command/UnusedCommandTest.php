@@ -9,7 +9,15 @@ use Composer\IO\NullIO;
 use Icanhazstring\Composer\Unused\Command\UnusedCommand;
 use Icanhazstring\Composer\Unused\Error\Handler\CollectingErrorHandler;
 use Icanhazstring\Composer\Unused\Error\NullDumper;
+use Icanhazstring\Composer\Unused\Loader\PackageLoader;
+use Icanhazstring\Composer\Unused\Loader\UsageLoader;
 use Icanhazstring\Composer\Unused\Output\SymfonyStyleFactory;
+use Icanhazstring\Composer\Unused\Parser\NodeVisitor;
+use Icanhazstring\Composer\Unused\Parser\Strategy\NewParseStrategy;
+use Icanhazstring\Composer\Unused\Parser\Strategy\StaticParseStrategy;
+use Icanhazstring\Composer\Unused\Parser\Strategy\UseParseStrategy;
+use Icanhazstring\Composer\Unused\Subject\Factory\PackageSubjectFactory;
+use PhpParser\ParserFactory;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -55,7 +63,7 @@ class UnusedCommandTest extends TestCase
         $symfonyStyle = $this->prophesize(SymfonyStyle::class);
         $symfonyStyle->section(Argument::any())->willReturn();
         $symfonyStyle->text(Argument::any())->willReturn();
-        $symfonyStyle->writeln(Argument::any())->willReturn();
+        $symfonyStyle->writeln(Argument::cetera())->willReturn();
         $symfonyStyle->newLine(Argument::any())->willReturn();
         $symfonyStyle->progressStart(Argument::any())->willReturn();
         $symfonyStyle->progressAdvance()->willReturn();
@@ -81,7 +89,23 @@ class UnusedCommandTest extends TestCase
         $symfonyStyleFactory = $this->prophesize(SymfonyStyleFactory::class);
         $symfonyStyleFactory->__invoke(Argument::any(), Argument::any())->willReturn($symfonyStyle->reveal());
 
-        $command = new UnusedCommand($errorHandler, $errorDumper, $symfonyStyleFactory->reveal());
+        $visitor = new NodeVisitor([
+            new NewParseStrategy(),
+            new StaticParseStrategy(),
+            new UseParseStrategy()
+        ]);
+
+        $command = new UnusedCommand(
+            $errorHandler,
+            $errorDumper,
+            $symfonyStyleFactory->reveal(),
+            new UsageLoader(
+                (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+                $visitor,
+                $errorHandler
+            ),
+            new PackageLoader(new PackageSubjectFactory())
+        );
         $command->setComposer($composer);
 
         $input = new ArrayInput([]);

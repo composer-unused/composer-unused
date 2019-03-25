@@ -7,7 +7,7 @@ namespace Icanhazstring\Composer\Unused\Loader;
 use Composer\Composer;
 use Icanhazstring\Composer\Unused\Error\Handler\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Parser\NodeVisitor;
-use Icanhazstring\Composer\Unused\Subject\PackageSubject;
+use Icanhazstring\Composer\Unused\Subject\UsageInterface;
 use PhpParser\NodeTraverser;
 use PhpParser\Parser;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -38,7 +38,7 @@ class UsageLoader implements LoaderInterface
      * @param Composer     $composer
      * @param SymfonyStyle $io
      *
-     * @return PackageSubject[]
+     * @return UsageInterface[]
      */
     public function load(Composer $composer, SymfonyStyle $io): array
     {
@@ -121,5 +121,4 @@ class UsageLoader implements LoaderInterface
 
         return $this->visitor->getUsages();
     }
-
 }

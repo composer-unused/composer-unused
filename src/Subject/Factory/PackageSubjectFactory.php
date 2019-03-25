@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused\Subject\Factory;
 
-use Composer\Package\Package;
+use Composer\Package\PackageInterface;
 use Icanhazstring\Composer\Unused\Subject\PackageSubject;
 
 class PackageSubjectFactory
 {
-    public function __invoke(Package $composerPackage)
+    public function __invoke(PackageInterface $composerPackage)
     {
         return new PackageSubject($composerPackage);
     }
