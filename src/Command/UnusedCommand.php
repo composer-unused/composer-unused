@@ -9,21 +9,13 @@ use Composer\Composer;
 use Composer\Package\PackageInterface;
 use Icanhazstring\Composer\Unused\Error\ErrorDumperInterface;
 use Icanhazstring\Composer\Unused\Error\Handler\ErrorHandlerInterface;
+use Icanhazstring\Composer\Unused\Loader\LoaderInterface;
 use Icanhazstring\Composer\Unused\Output\SymfonyStyleFactory;
-use Icanhazstring\Composer\Unused\Parser\NodeVisitor;
-use Icanhazstring\Composer\Unused\Parser\Strategy\NewParseStrategy;
-use Icanhazstring\Composer\Unused\Parser\Strategy\StaticParseStrategy;
-use Icanhazstring\Composer\Unused\Parser\Strategy\UseParseStrategy;
-use Icanhazstring\Composer\Unused\Subject\PackageSubject;
 use Icanhazstring\Composer\Unused\Subject\SubjectInterface;
 use Icanhazstring\Composer\Unused\Subject\UsageInterface;
-use PhpParser\NodeTraverser;
-use PhpParser\ParserFactory;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
 
 class UnusedCommand extends BaseCommand
 {
@@ -33,16 +25,26 @@ class UnusedCommand extends BaseCommand
     private $errorDumper;
     /** @var SymfonyStyleFactory */
     private $symfonyStyleFactory;
+    /** @var SymfonyStyle */
+    private $io;
+    /** @var LoaderInterface */
+    private $usageLoader;
+    /** @var LoaderInterface */
+    private $packageLoader;
 
     public function __construct(
         ErrorHandlerInterface $errorHandler,
         ErrorDumperInterface $errorDumper,
-        SymfonyStyleFactory $outputFactory
+        SymfonyStyleFactory $outputFactory,
+        LoaderInterface $usageLoader,
+        LoaderInterface $packageLoader
     ) {
         parent::__construct('unused');
         $this->errorHandler = $errorHandler;
         $this->errorDumper = $errorDumper;
         $this->symfonyStyleFactory = $outputFactory;
+        $this->usageLoader = $usageLoader;
+        $this->packageLoader = $packageLoader;
     }
 
     protected function configure(): void
@@ -54,24 +56,23 @@ class UnusedCommand extends BaseCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        /** @var SymfonyStyle $io */
-        $io = ($this->symfonyStyleFactory)($input, $output);
+        $this->io = ($this->symfonyStyleFactory)($input, $output);
 
         $composer = $this->getComposer();
-        $packages = $this->loadPackages($composer, $io);
+        $packages = $this->loadPackages($composer, $this->io);
 
         if (empty($packages)) {
-            $io->error('No required packages found');
+            $this->io->error('No required packages found');
 
             return 1;
         }
 
-        $io->note(sprintf('Found %d package(s) to be checked.', count($packages)));
+        $this->io->note(sprintf('Found %d package(s) to be checked.', count($packages)));
 
-        $usages = $this->loadUsages($composer, $io);
+        $usages = $this->loadUsages($composer, $this->io);
 
         if (empty($usages)) {
-            $io->error('No usages could be found. Aborting.');
+            $this->io->error('No usages could be found. Aborting.');
 
             return 1;
         }
@@ -92,7 +93,7 @@ class UnusedCommand extends BaseCommand
             $unusedPackages[] = $package;
         }
 
-        $io->writeln(
+        $this->io->writeln(
             sprintf(
                 'Found <fg=green>%d used</> and <fg=red>%d unused</> packages',
                 count($usedPackages),
@@ -101,25 +102,25 @@ class UnusedCommand extends BaseCommand
         );
 
         if ($this->errorHandler->hasErrors()) {
-            $io->warning('Errors occured during scanning process');
+            $this->io->warning('Errors occured during scanning process');
 
             $dumpLocation = $this->errorDumper->dump($this->errorHandler);
             if ($dumpLocation) {
-                $io->note(sprintf('ErrorLog dumped to: %s', $dumpLocation));
+                $this->io->note(sprintf('ErrorLog dumped to: %s', $dumpLocation));
             }
         }
 
-        $io->section('Results');
+        $this->io->section('Results');
 
-        $io->text('<fg=green>Used packages</>');
+        $this->io->text('<fg=green>Used packages</>');
         foreach ($usedPackages as $package) {
-            $io->writeln(sprintf(' * %s <fg=green>%s</>', $package->getName(), "\u{2713}"));
+            $this->io->writeln(sprintf(' * %s <fg=green>%s</>', $package->getName(), "\u{2713}"));
         }
 
-        $io->newLine();
-        $io->text('<fg=red>Unused packages</>');
+        $this->io->newLine();
+        $this->io->text('<fg=red>Unused packages</>');
         foreach ($unusedPackages as $package) {
-            $io->writeln(sprintf(' * %s <fg=red>%s</>', $package->getName(), "\u{2717}"));
+            $this->io->writeln(sprintf(' * %s <fg=red>%s</>', $package->getName(), "\u{2717}"));
         }
 
         return 0;
@@ -132,51 +133,7 @@ class UnusedCommand extends BaseCommand
      */
     private function loadPackages(Composer $composer, SymfonyStyle $io): array
     {
-        $io->section('Loading packages');
-
-        $requiredPackages = $composer->getPackage()->getRequires();
-        $localRepo = $composer->getRepositoryManager()->getLocalRepository();
-
-        $packages = [];
-        /** @var string[] $skipped */
-        $skipped = [];
-
-        if (empty($requiredPackages)) {
-            return [];
-        }
-
-        $io->text(sprintf('Loading %d requirements', count($requiredPackages)));
-        $io->progressStart(\count($requiredPackages));
-
-        foreach ($requiredPackages as $index => $require) {
-            $constraint = $require->getConstraint();
-
-            if ($constraint === null) {
-                $io->progressAdvance();
-                $skipped[] = $require->getTarget();
-                continue;
-            }
-
-            $composerPackage = $localRepo->findPackage($require->getTarget(), $constraint);
-
-            if ($composerPackage === null) {
-                $io->progressAdvance();
-                $skipped[] = $require->getTarget();
-                continue;
-            }
-
-            $packages[] = new PackageSubject($composerPackage);
-            $io->progressAdvance();
-        }
-
-        $io->progressFinish();
-
-        if (count($skipped)) {
-            $io->note(sprintf('Skipped %d requirements. No package found or invalid constraint.', count($skipped)));
-            $io->listing($skipped);
-        }
-
-        return $packages;
+        return $this->packageLoader->load($composer, $io);
     }
 
     /**
@@ -186,75 +143,6 @@ class UnusedCommand extends BaseCommand
      */
     private function loadUsages(Composer $composer, SymfonyStyle $io): array
     {
-        $autoload = array_merge_recursive(
-            $composer->getPackage()->getAutoload(),
-            $composer->getPackage()->getDevAutoload()
-        );
-
-        $autoloadDirs = [];
-        $autoloadFiles = [];
-
-        foreach ($autoload as $autoloadType => $namespaces) {
-            foreach ($namespaces as $namespace => $paths) {
-                if (!is_array($paths)) {
-                    $paths = [$paths];
-                }
-
-                foreach ($paths as $path) {
-                    $resolvePath = stream_resolve_include_path($path);
-
-                    if (!$resolvePath) {
-                        continue;
-                    }
-
-                    if (in_array($autoloadType, ['classmap', 'files']) && is_file($path)) {
-                        $autoloadFiles[] = new SplFileInfo($path, pathinfo($path, PATHINFO_DIRNAME), $path);
-                        continue;
-                    }
-
-                    $autoloadDirs[] = $resolvePath;
-                }
-            }
-        }
-
-        if (empty($autoloadDirs) && empty($autoloadFiles)) {
-            $io->error('Could not load paths from root package to scan.');
-
-            return [];
-        }
-
-        $finder = new Finder();
-        /** @var SplFileInfo[] $files */
-        $files = $finder->files()->name('*.php')->in($autoloadDirs)->append($autoloadFiles);
-
-        $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
-        $visitor = new NodeVisitor([
-            new NewParseStrategy(),
-            new StaticParseStrategy(),
-            new UseParseStrategy()
-        ], $this->errorHandler);
-
-        $traverser = new NodeTraverser();
-        $traverser->addVisitor($visitor);
-
-        $io->section('Scanning files...');
-        $io->progressStart(count($files));
-
-        foreach ($files as $file) {
-            $visitor->setCurrentFile($file);
-            $nodes = $parser->parse($file->getContents(), $this->errorHandler) ?? [];
-
-            if (!$nodes) {
-                $io->progressAdvance();
-                continue;
-            }
-
-            $traverser->traverse($nodes);
-            $io->progressAdvance();
-        }
-
-        $io->progressFinish();
-
-        return $visitor->getUsages();
+        return $this->usageLoader->load($composer, $io);
     }
 }

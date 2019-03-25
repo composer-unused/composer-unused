@@ -7,18 +7,14 @@ namespace Icanhazstring\Composer\Unused;
 use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Plugin;
-use Icanhazstring\Composer\Unused\Error\FileDumper;
-use Icanhazstring\Composer\Unused\Error\Handler\CollectingErrorHandler;
-use Icanhazstring\Composer\Unused\Error\Handler\ThrowingErrorHandler;
-use Icanhazstring\Composer\Unused\Error\NullDumper;
-use Icanhazstring\Composer\Unused\Output\SymfonyStyleFactory;
+use Icanhazstring\Composer\Unused\Command\UnusedCommand;
+use Psr\Container\ContainerInterface;
+use Zend\ServiceManager\ServiceManager;
 
 final class UnusedPlugin implements Plugin\PluginInterface, Plugin\Capable, Plugin\Capability\CommandProvider
 {
-    private $isDebug;
-    /** @var Composer */
-    private $composer;
-    private $version;
+    /** @var ContainerInterface */
+    private $container;
 
     public function __construct(...$args)
     {
@@ -26,17 +22,18 @@ final class UnusedPlugin implements Plugin\PluginInterface, Plugin\Capable, Plug
             /** @var self $plugin */
             $plugin = $args[0]['plugin'];
 
-            $this->composer = $plugin->composer;
-            $this->isDebug = $plugin->isDebug;
-            $this->version = $plugin->version;
+            $this->container = $plugin->container;
         }
     }
 
     public function activate(Composer $composer, IOInterface $io): void
     {
-        $this->version = $composer->getPackage()->getPrettyVersion();
-        $this->composer = $composer;
-        $this->isDebug = $io->isDebug();
+        $config = require __DIR__ . '/../config/service_manager.php';
+
+        $config['services'][IOInterface::class] = $io;
+        $config['services'][Composer::class] = $composer;
+
+        $this->container = new ServiceManager($config);
     }
 
     public function getCapabilities()
@@ -52,18 +49,8 @@ final class UnusedPlugin implements Plugin\PluginInterface, Plugin\Capable, Plug
      */
     public function getCommands(): array
     {
-        $dumpFileName = 'composer-unused-dump-' . (new \DateTime())->format('YmdHis');
-
-        $dumper = $this->isDebug
-            ? new FileDumper($dumpFileName, $this->version, $this->composer)
-            : new NullDumper();
-
         return [
-            new Command\UnusedCommand(
-                $this->isDebug ? new CollectingErrorHandler() : new ThrowingErrorHandler(),
-                $dumper,
-                new SymfonyStyleFactory()
-            )
+            $this->container->get(UnusedCommand::class)
         ];
     }
 }

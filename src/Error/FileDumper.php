@@ -12,15 +12,12 @@ class FileDumper implements ErrorDumperInterface
 {
     /** @var string */
     private $path;
-    /** @var string */
-    private $version;
     /** @var Composer */
     private $composer;
 
-    public function __construct(string $path, string $version, Composer $composer)
+    public function __construct(string $path, Composer $composer)
     {
         $this->path = $path;
-        $this->version = $version;
         $this->composer = $composer;
     }
 
@@ -34,7 +31,7 @@ class FileDumper implements ErrorDumperInterface
 
         try {
             $file = [
-                'version'      => $this->version,
+                'version'      => $this->composer->getPackage()->getPrettyVersion(),
                 'requires'     => [],
                 'dev-requires' => [],
                 'autoload'     => $this->composer->getPackage()->getAutoload(),
