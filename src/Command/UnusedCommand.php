@@ -167,6 +167,7 @@ class UnusedCommand extends BaseCommand
         );
 
         $paths = [];
+        $autoloadFiles = [];
 
         foreach ($autoload as $autoloadType => $namespaces) {
             foreach ($namespaces as $namespace => $dirs) {
@@ -181,6 +182,11 @@ class UnusedCommand extends BaseCommand
                         continue;
                     }
 
+                    if ($autoloadType === 'files' && is_file($dir)) {
+                        $autoloadFiles[] = new SplFileInfo($dir, pathinfo($dir, PATHINFO_DIRNAME), $dir);
+                        continue;
+                    }
+
                     $paths[] = $resolvePath;
                 }
             }
@@ -190,15 +196,6 @@ class UnusedCommand extends BaseCommand
             $io->error('Could not load paths from root package to scan.');
 
             return [];
-        }
-
-        $autoloadFiles = [];
-
-        foreach ($paths as $index => $file) {
-            if (is_file($file)) {
-                array_splice($paths, $index, 1);
-                $autoloadFiles[] = new SplFileInfo($file, pathinfo($file, PATHINFO_DIRNAME), $file);
-            }
         }
 
         $finder = new Finder();
