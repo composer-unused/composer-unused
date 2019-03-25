@@ -6,6 +6,7 @@
     <arg name="colors"/>
     <arg name="cache" value="cs-check.json"/>
     <arg name="parallel" value="8" />
+    <arg name="ignore" value="tests/assets"/>
 
     <rule ref="PSR12">
         <exclude name="Generic.Files.LineLength"/>
