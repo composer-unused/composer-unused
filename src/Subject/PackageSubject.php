@@ -16,7 +16,7 @@ class PackageSubject implements SubjectInterface
         $this->composerPackage = $composerPackage;
     }
 
-    public function providesNamespace(string $namespace): bool
+    public function providesNamespace(string $usedNamespace): bool
     {
         $autoload = array_merge_recursive(
             $this->composerPackage->getAutoload()['psr-0'] ?? [],
@@ -24,7 +24,7 @@ class PackageSubject implements SubjectInterface
         );
 
         foreach ($autoload as $providedNamespace => $dir) {
-            if (strpos($namespace, $providedNamespace) === 0) {
+            if (strpos($usedNamespace, rtrim($providedNamespace, '\\')) === 0) {
                 return true;
             }
         }
