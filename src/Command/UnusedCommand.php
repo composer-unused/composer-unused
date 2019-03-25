@@ -167,6 +167,7 @@ class UnusedCommand extends BaseCommand
         );
 
         $paths = [];
+        $autoloadFiles = [];
 
         foreach ($autoload as $autoloadType => $namespaces) {
             foreach ($namespaces as $namespace => $dirs) {
@@ -178,6 +179,11 @@ class UnusedCommand extends BaseCommand
                     $resolvePath = stream_resolve_include_path($dir);
 
                     if (!$resolvePath) {
+                        continue;
+                    }
+
+                    if (in_array($autoloadType, ['classmap', 'files']) && is_file($dir)) {
+                        $autoloadFiles[] = new SplFileInfo($dir, pathinfo($dir, PATHINFO_DIRNAME), $dir);
                         continue;
                     }
 
@@ -194,7 +200,7 @@ class UnusedCommand extends BaseCommand
 
         $finder = new Finder();
         /** @var SplFileInfo[] $files */
-        $files = $finder->files()->name('*.php')->in($paths);
+        $files = $finder->files()->name('*.php')->in($paths)->append($autoloadFiles);
 
         $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
         $visitor = new NodeVisitor([
