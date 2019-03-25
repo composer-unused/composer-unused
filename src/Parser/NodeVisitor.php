@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused\Parser;
 
+use Icanhazstring\Composer\Unused\Error\Handler\ErrorHandlerInterface;
+use Icanhazstring\Composer\Unused\Error\Handler\ThrowingErrorHandler;
 use Icanhazstring\Composer\Unused\Parser\Strategy\ParseStrategyInterface;
 use Icanhazstring\Composer\Unused\Subject\NamespaceUsage;
 use Icanhazstring\Composer\Unused\Subject\UsageInterface;
-use PhpParser\ErrorHandler;
 use PhpParser\Node;
 use PhpParser\NodeVisitorAbstract;
 use SplFileInfo;
@@ -21,23 +22,27 @@ class NodeVisitor extends NodeVisitorAbstract
     private $usages = [];
     /** @var SplFileInfo */
     private $currentFile;
-    /** @var ErrorHandler */
+    /** @var ErrorHandlerInterface */
     private $errorHandler;
 
     /**
-     * @param ParseStrategyInterface[] $strategies
-     * @param ErrorHandler|null        $errorHandler
+     * @param ParseStrategyInterface[]   $strategies
+     * @param ErrorHandlerInterface|null $errorHandler
      */
-    public function __construct(array $strategies, ErrorHandler $errorHandler = null)
+    public function __construct(array $strategies, ErrorHandlerInterface $errorHandler = null)
     {
         $this->strategies = $strategies;
-        $this->errorHandler = $errorHandler ?? new ErrorHandler\Throwing();
+        $this->errorHandler = $errorHandler ?? new ThrowingErrorHandler();
     }
 
+    /**
+     * @param Node $node
+     * @return int|Node|void|null
+     * @throws Throwable
+     */
     public function enterNode(Node $node)
     {
         foreach ($this->strategies as $strategy) {
-
             try {
                 if (!$strategy->meetsCriteria($node)) {
                     continue;
@@ -49,9 +54,8 @@ class NodeVisitor extends NodeVisitorAbstract
                     $this->usages[$namespace] = new NamespaceUsage($this->currentFile, $namespace, $node);
                 }
             } catch (Throwable $error) {
-                $this->errorHandler->handleError($error);
+                $this->errorHandler->handle($error);
             }
-
         }
     }
 

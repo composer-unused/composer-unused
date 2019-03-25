@@ -7,7 +7,9 @@ namespace Icanhazstring\Composer\Unused\Command;
 use Composer\Command\BaseCommand;
 use Composer\Composer;
 use Composer\Package\PackageInterface;
-use Icanhazstring\Composer\Unused\ErrorHandler\ErrorHandlerInterface;
+use Icanhazstring\Composer\Unused\Error\ErrorDumperInterface;
+use Icanhazstring\Composer\Unused\Error\Handler\CollectingErrorHandler;
+use Icanhazstring\Composer\Unused\Error\Handler\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Parser\NodeVisitor;
 use Icanhazstring\Composer\Unused\Parser\Strategy\NewParseStrategy;
 use Icanhazstring\Composer\Unused\Parser\Strategy\StaticParseStrategy;
@@ -22,16 +24,20 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
+use Throwable;
 
 class UnusedCommand extends BaseCommand
 {
     /** @var ErrorHandlerInterface */
     private $errorHandler;
+    /** @var ErrorDumperInterface */
+    private $errorDumper;
 
-    public function __construct(ErrorHandlerInterface $errorHandler)
+    public function __construct(ErrorHandlerInterface $errorHandler, ErrorDumperInterface $errorDumper)
     {
         parent::__construct('unused');
         $this->errorHandler = $errorHandler;
+        $this->errorDumper = $errorDumper;
     }
 
     protected function configure(): void
@@ -87,6 +93,15 @@ class UnusedCommand extends BaseCommand
                 count($unusedPackages)
             )
         );
+
+        if ($this->errorHandler->hasErrors()) {
+            $io->warning('Errors occured during scanning process');
+
+            $dumpLocation = $this->errorDumper->dump($this->errorHandler);
+            if ($dumpLocation) {
+                $io->note(sprintf('ErrorLog dumped to: %s', $dumpLocation));
+            }
+        }
 
         $io->section('Results');
 
@@ -211,7 +226,7 @@ class UnusedCommand extends BaseCommand
             new NewParseStrategy(),
             new StaticParseStrategy(),
             new UseParseStrategy()
-        ]);
+        ], $this->errorHandler);
 
         $traverser = new NodeTraverser();
         $traverser->addVisitor($visitor);
