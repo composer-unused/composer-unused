@@ -94,7 +94,7 @@ class UnusedCommand extends BaseCommand
 
         $io->writeln(
             sprintf(
-                'Found <fg=green>%d usued</> and <fg=red>%d unused</> packages',
+                'Found <fg=green>%d used</> and <fg=red>%d unused</> packages',
                 count($usedPackages),
                 count($unusedPackages)
             )
