@@ -7,6 +7,7 @@ namespace Icanhazstring\Composer\Unused;
 use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Plugin;
+use Icanhazstring\Composer\Unused\ErrorHandler\CollectingErrorHandler;
 
 final class UnusedPlugin implements Plugin\PluginInterface, Plugin\Capable, Plugin\Capability\CommandProvider
 {
@@ -24,7 +25,9 @@ final class UnusedPlugin implements Plugin\PluginInterface, Plugin\Capable, Plug
     public function getCommands()
     {
         return [
-            new Command\UnusedCommand()
+            new Command\UnusedCommand(
+                new CollectingErrorHandler()
+            )
         ];
     }
 }

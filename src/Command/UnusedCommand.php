@@ -7,6 +7,7 @@ namespace Icanhazstring\Composer\Unused\Command;
 use Composer\Command\BaseCommand;
 use Composer\Composer;
 use Composer\Package\PackageInterface;
+use Icanhazstring\Composer\Unused\ErrorHandler\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Parser\NodeVisitor;
 use Icanhazstring\Composer\Unused\Parser\Strategy\NewParseStrategy;
 use Icanhazstring\Composer\Unused\Parser\Strategy\StaticParseStrategy;
@@ -16,7 +17,6 @@ use Icanhazstring\Composer\Unused\Subject\SubjectInterface;
 use Icanhazstring\Composer\Unused\Subject\UsageInterface;
 use PhpParser\NodeTraverser;
 use PhpParser\ParserFactory;
-use RuntimeException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -25,9 +25,13 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class UnusedCommand extends BaseCommand
 {
-    public function __construct()
+    /** @var ErrorHandlerInterface */
+    private $errorHandler;
+
+    public function __construct(ErrorHandlerInterface $errorHandler)
     {
         parent::__construct('unused');
+        $this->errorHandler = $errorHandler;
     }
 
     protected function configure(): void
@@ -217,13 +221,7 @@ class UnusedCommand extends BaseCommand
 
         foreach ($files as $file) {
             $visitor->setCurrentFile($file);
-
-            try {
-                $nodes = $parser->parse($file->getContents()) ?? [];
-            } catch (RuntimeException $e) {
-                $io->writeln(sprintf('<fg=cyan>File parse error (in: %s)', $file->getFilename()));
-                continue;
-            }
+            $nodes = $parser->parse($file->getContents(), $this->errorHandler) ?? [];
 
             if (!$nodes) {
                 $io->progressAdvance();
