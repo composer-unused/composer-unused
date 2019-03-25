@@ -182,7 +182,7 @@ class UnusedCommand extends BaseCommand
                         continue;
                     }
 
-                    if ($autoloadType === 'files' && is_file($dir)) {
+                    if (in_array($autoloadType, ['classmap', 'files']) && is_file($dir)) {
                         $autoloadFiles[] = new SplFileInfo($dir, pathinfo($dir, PATHINFO_DIRNAME), $dir);
                         continue;
                     }
