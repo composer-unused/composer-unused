@@ -192,9 +192,18 @@ class UnusedCommand extends BaseCommand
             return [];
         }
 
+        $autoloadFiles = [];
+
+        foreach ($paths as $index => $file) {
+            if (is_file($file)) {
+                array_splice($paths, $index, 1);
+                $autoloadFiles[] = new SplFileInfo($file, pathinfo($file, PATHINFO_DIRNAME), $file);
+            }
+        }
+
         $finder = new Finder();
         /** @var SplFileInfo[] $files */
-        $files = $finder->files()->name('*.php')->in($paths);
+        $files = $finder->files()->name('*.php')->in($paths)->append($autoloadFiles);
 
         $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
         $visitor = new NodeVisitor([
