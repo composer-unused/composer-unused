@@ -1,7 +1,8 @@
 {
     "name": "icanhazstring/composer-unused",
-    "type": "composer-plugin",
     "description": "Show unused packages by scanning your code",
+    "type": "composer-plugin",
+    "license": "MIT",
     "keywords": [
         "composer",
         "plugin",
@@ -9,7 +10,10 @@
         "php-parser"
     ],
     "homepage": "https://github.com/icanhazstring/composer-unused",
-    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/icanhazstring/composer-unused/issues",
+        "source": "https://github.com/icanhazstring/composer-unused"
+    },
     "authors": [
         {
             "name": "Andreas Frömer",
@@ -61,8 +65,11 @@
         "cs-fix": "phpcbf",
         "test": "phpunit"
     },
-    "support": {
-        "issues": "https://github.com/icanhazstring/composer-unused/issues",
-        "source": "https://github.com/icanhazstring/composer-unused"
+    "scripts-descriptions": {
+        "analyse": "Use \"phpstan\" to the analyse static code. See phpstan.neon",
+        "cs-check": "Use \"phpcs\" to check the coding convention. See phpcs.xml",
+        "cs-fix": "Use \"phpcbf\" to fix the coding convention. See phpcs.xml",
+        "test": "Use \"phpunit\" to run the tests. See phpunit.xml",
+        "check": "Check the coding covention and run the tests"
     }
 }
