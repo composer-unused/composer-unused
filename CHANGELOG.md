@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.3.0
+Fixed:
+- Fixed an issue where only `autoload-dev` provided a needed namespace
+
+Changed:
+- Change the way how the plugin searched for usages
+  Previously it used only `autoload` and `autoload-dev` directives of the projects own `composer.json`.
+  
+  This was changed so that now every file matching `*.php` beside the `composer.json` will be scanned.
+  With the exception that `vendor` is always excluded
+  
+Added:
+- Added new cli parameter `--exclude` to add additional folders to exclude from scan
+- Added Di Container for easier development and testing
+
 ## 0.2.0
 Fixed:
 - Fixed issue where static calls raised an exception
