@@ -119,8 +119,7 @@ class UnusedCommand extends BaseCommand
 
         foreach ($packages as $package) {
             foreach ($usages as $usage) {
-                try
-                {
+                try {
                     if ($package->providesNamespace($usage->getNamespace())) {
                         $usedPackages[] = $package;
                         continue 2;
