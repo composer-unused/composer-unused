@@ -41,10 +41,11 @@ class UsageLoader implements LoaderInterface
     /**
      * @param Composer     $composer
      * @param SymfonyStyle $io
+     * @param array        $excludes
      *
      * @return UsageInterface[]
      */
-    public function load(Composer $composer, SymfonyStyle $io): array
+    public function load(Composer $composer, SymfonyStyle $io, array $excludes = []): array
     {
         $finder = new Finder();
         $baseDir = dirname($composer->getConfig()->getConfigSource()->getName());
@@ -54,7 +55,9 @@ class UsageLoader implements LoaderInterface
             ->files()
             ->name('*.php')
             ->in($baseDir)
-            ->exclude(['vendor']);
+            ->exclude(
+                array_merge(['vendor'], $excludes)
+            );
 
         $traverser = new NodeTraverser();
         $traverser->addVisitor($this->visitor);

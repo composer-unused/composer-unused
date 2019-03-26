@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Icanhazstring\Composer\Unused\Loader;
 
 use Composer\Composer;
+use Composer\Package\Link;
 use Composer\Package\PackageInterface;
 use Icanhazstring\Composer\Unused\Subject\Factory\PackageSubjectFactory;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -22,14 +23,22 @@ class PackageLoader implements LoaderInterface
     /**
      * @param Composer     $composer
      * @param SymfonyStyle $io
+     * @param array        $excludes
      *
      * @return PackageInterface[]
      */
-    public function load(Composer $composer, SymfonyStyle $io): array
+    public function load(Composer $composer, SymfonyStyle $io, array $excludes = []): array
     {
         $io->section('Loading packages');
 
-        $requiredPackages = $composer->getPackage()->getRequires();
+        /** @var Link[] $requiredPackages */
+        $requiredPackages = array_filter(
+            $composer->getPackage()->getRequires(),
+            function (Link $package) use ($excludes) {
+                return !in_array($package->getTarget(), $excludes, true);
+            }
+        );
+
         $localRepo = $composer->getRepositoryManager()->getLocalRepository();
 
         $packages = [];

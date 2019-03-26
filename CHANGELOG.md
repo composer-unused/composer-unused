@@ -12,7 +12,9 @@ Changed:
   With the exception that `vendor` is always excluded
   
 Added:
-- Added new cli parameter `--exclude` to add additional folders to exclude from scan
+- Added new cli parameters
+  - `--excludeDir|-xd` to add additional folders to exclude from scan
+  - `--excludePackage|-xp` to add a package to ignore during scan
 - Added Di Container for easier development and testing
 
 ## 0.2.0

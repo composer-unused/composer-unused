@@ -16,6 +16,7 @@ use Icanhazstring\Composer\Unused\Output\SymfonyStyleFactory;
 use Icanhazstring\Composer\Unused\Subject\SubjectInterface;
 use Icanhazstring\Composer\Unused\Subject\UsageInterface;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -62,6 +63,22 @@ class UnusedCommand extends BaseCommand
         $this->setDescription(
             'Show unused packages by scanning and comparing package namespaces against your source.'
         );
+
+        $this->addOption(
+            'excludeDir',
+            'xd',
+            InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
+            'Provide one or more folders to exclude from usage scan',
+            []
+        );
+
+        $this->addOption(
+            'excludePackage',
+            'xp',
+            InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
+            'Provide one or more packages that should be ignored during scan',
+            []
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -69,7 +86,7 @@ class UnusedCommand extends BaseCommand
         $this->io = ($this->symfonyStyleFactory)($input, $output);
 
         $composer = $this->getComposer();
-        $packages = $this->loadPackages($composer, $this->io);
+        $packages = $this->loadPackages($composer, $this->io, $input->getOption('excludePackage'));
 
         if (empty($packages)) {
             $this->io->error('No required packages found');
@@ -80,7 +97,7 @@ class UnusedCommand extends BaseCommand
 
         $this->io->note(sprintf('Found %d package(s) to be checked.', count($packages)));
 
-        $usages = $this->loadUsages($composer, $this->io);
+        $usages = $this->loadUsages($composer, $this->io, $input->getOption('excludeDir'));
 
         if (empty($usages)) {
             $this->io->error('No usages could be found. Aborting.');
@@ -136,21 +153,24 @@ class UnusedCommand extends BaseCommand
     /**
      * @param Composer     $composer
      * @param SymfonyStyle $io
+     * @param string[]     $excludes List of packages to ignore scanning
+     *
      * @return SubjectInterface[]
      */
-    private function loadPackages(Composer $composer, SymfonyStyle $io): array
+    private function loadPackages(Composer $composer, SymfonyStyle $io, array $excludes): array
     {
-        return $this->packageLoader->load($composer, $io);
+        return $this->packageLoader->load($composer, $io, $excludes);
     }
 
     /**
      * @param Composer     $composer
      * @param SymfonyStyle $io
+     * @param string[]     $excludes List of folders to exclude
      * @return UsageInterface[]
      */
-    private function loadUsages(Composer $composer, SymfonyStyle $io): array
+    private function loadUsages(Composer $composer, SymfonyStyle $io, array $excludes): array
     {
-        return $this->usageLoader->load($composer, $io);
+        return $this->usageLoader->load($composer, $io, $excludes);
     }
 
     private function dumpLogs(): void
