@@ -19,6 +19,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Throwable;
 
 class UnusedCommand extends BaseCommand
 {
@@ -118,9 +119,13 @@ class UnusedCommand extends BaseCommand
 
         foreach ($packages as $package) {
             foreach ($usages as $usage) {
-                if ($package->providesNamespace($usage->getNamespace())) {
-                    $usedPackages[] = $package;
-                    continue 2;
+                try {
+                    if ($package->providesNamespace($usage->getNamespace())) {
+                        $usedPackages[] = $package;
+                        continue 2;
+                    }
+                } catch (Throwable $throwable) {
+                    $this->errorHandler->handle($throwable);
                 }
             }
 

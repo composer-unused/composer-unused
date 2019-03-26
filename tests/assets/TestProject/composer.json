@@ -24,6 +24,7 @@
         "package/used-autoload-file": "^0.1",
         "package/used-classmap-file": "^0.1",
         "package/used-classmap-folder": "^0.1",
+        "package/unused-empty-namespace": "^0.1",
         "package/unused": "^0.1"
     }
 }
