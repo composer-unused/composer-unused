@@ -61,6 +61,13 @@
         "cs-fix": "phpcbf",
         "test": "phpunit"
     },
+    "scripts-descriptions": {
+        "analyse": "Use \"phpstan\" to the analyse static code. See phpstan.neon",
+        "cs-check": "Use \"phpcs\" to check the coding convention. See phpcs.xml",
+        "cs-fix": "Use \"phpcbf\" to fix the coding convention. See phpcs.xml",
+        "test": "Use \"phpunit\" to run the tests. See phpunit.xml",
+        "check": "Check the coding covention and run the tests"
+    },
     "support": {
         "issues": "https://github.com/icanhazstring/composer-unused/issues",
         "source": "https://github.com/icanhazstring/composer-unused"
