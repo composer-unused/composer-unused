@@ -60,6 +60,16 @@
         "version_normalized": "0.1.0.0"
     },
     {
+        "name": "package/unused-empty-namespace",
+        "autoload": {
+            "psr-4": {
+                "": "src"
+            }
+        },
+        "version": "0.1.0",
+        "version_normalized": "0.1.0.0"
+    },
+    {
         "name": "package/unused",
         "autoload": {
             "psr-4": {

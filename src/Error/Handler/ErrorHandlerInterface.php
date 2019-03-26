@@ -12,7 +12,6 @@ interface ErrorHandlerInterface extends ErrorHandler
     /**
      * @param Throwable $error
      * @return void
-     * @throws Throwable
      */
     public function handle(Throwable $error): void;
 

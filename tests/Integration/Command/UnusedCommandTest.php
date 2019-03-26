@@ -41,6 +41,7 @@ class UnusedCommandTest extends TestCase
                 ],
 
                 'unusedPackages' => [
+                    'package/unused-empty-namespace',
                     'package/unused'
                 ]
             ]
@@ -60,7 +61,7 @@ class UnusedCommandTest extends TestCase
         $composer = Factory::create(new NullIO(), 'composer.json');
 
         $composerIO = $this->prophesize(IOInterface::class);
-        $composerIO->isDebug()->willReturn(false);
+        $composerIO->isDebug()->willReturn(true);
 
         $errorHandler = new CollectingErrorHandler();
         $errorDumper = new NullDumper();
