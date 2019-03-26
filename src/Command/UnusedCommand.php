@@ -60,7 +60,7 @@ class UnusedCommand extends BaseCommand
     protected function configure(): void
     {
         $this->setDescription(
-            'Show unused packages by scanning by comparing package namespaces against your source.'
+            'Show unused packages by scanning and comparing package namespaces against your source.'
         );
     }
 
