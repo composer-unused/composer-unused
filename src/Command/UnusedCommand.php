@@ -83,10 +83,15 @@ class UnusedCommand extends BaseCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        /** @var string[] $excludePackages */
+        $excludePackages = $input->getOption('excludePackage');
+        /** @var string[] $excludeDirs */
+        $excludeDirs = $input->getOption('excludeDir');
+
         $this->io = ($this->symfonyStyleFactory)($input, $output);
 
         $composer = $this->getComposer();
-        $packages = $this->loadPackages($composer, $this->io, $input->getOption('excludePackage'));
+        $packages = $this->loadPackages($composer, $this->io, $excludePackages);
 
         if (empty($packages)) {
             $this->io->error('No required packages found');
@@ -97,7 +102,7 @@ class UnusedCommand extends BaseCommand
 
         $this->io->note(sprintf('Found %d package(s) to be checked.', count($packages)));
 
-        $usages = $this->loadUsages($composer, $this->io, $input->getOption('excludeDir'));
+        $usages = $this->loadUsages($composer, $this->io, $excludeDirs);
 
         if (empty($usages)) {
             $this->io->error('No usages could be found. Aborting.');

@@ -35,6 +35,28 @@ Run
 $ composer unused
 ```
 
+## Exclude folders and packages
+Sometimes you don't want to scan a certain dir or ignore a composer package while scanning.
+For this you can provide the `--excludeDir|-xd` or the `--excludePackage|-xp` parameter.
+
+```bash
+$ composer unused --excludeDir=config --excludePackage=symfony/console
+```
+
+> Make sure the package is named exactly as in your `composer.json`
+
+> You can provide multiple folders and package by repeating the argument. 
+
+## Troubleshooting
+If you encounter some errors, try running
+
+```bash
+$ composer unused -vvv
+```
+
+This will enable debug mode and create an error report beside your `composer.json`.
+> `composer-unused-dump-YmdHis`
+
 ## Example (doctrine/orm)
 
 ```html
@@ -80,16 +102,6 @@ Results
 
  Unused packages
 ```
-
-## Troubleshooting
-If you encounter some errors, try running
-
-```bash
-$ composer unused -vvv
-```
-
-This will enable debug mode and create an error report beside your `composer.json`.
-> `composer-unused-dump-YmdHis`
 
 ## Changelog
 
