@@ -7,7 +7,6 @@ namespace Icanhazstring\Composer\Unused\Loader;
 use Composer\Composer;
 use Icanhazstring\Composer\Unused\Error\Handler\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Parser\NodeVisitor;
-use Icanhazstring\Composer\Unused\Subject\UsageInterface;
 use PhpParser\NodeTraverser;
 use PhpParser\Parser;
 use Psr\Log\LoggerInterface;
@@ -25,27 +24,33 @@ class UsageLoader implements LoaderInterface
     private $errorHandler;
     /** @var LoggerInterface */
     private $debugLogger;
+    /** @var ResultInterface */
+    private $loaderResult;
+    /** @var array */
+    private $excludes;
 
     public function __construct(
         Parser $parser,
         NodeVisitor $visitor,
         ErrorHandlerInterface $errorHandler,
-        LoggerInterface $debugLogger
+        LoggerInterface $debugLogger,
+        ResultInterface $loaderResult,
+        array $excludes = []
     ) {
         $this->parser = $parser;
         $this->visitor = $visitor;
         $this->errorHandler = $errorHandler;
         $this->debugLogger = $debugLogger;
+        $this->loaderResult = $loaderResult;
+        $this->excludes = $excludes;
     }
 
     /**
      * @param Composer     $composer
      * @param SymfonyStyle $io
-     * @param array        $excludes
-     *
-     * @return UsageInterface[]
+     * @return ResultInterface
      */
-    public function load(Composer $composer, SymfonyStyle $io, array $excludes = []): array
+    public function load(Composer $composer, SymfonyStyle $io): ResultInterface
     {
         $finder = new Finder();
         $baseDir = dirname($composer->getConfig()->getConfigSource()->getName());
@@ -56,7 +61,7 @@ class UsageLoader implements LoaderInterface
             ->name('*.php')
             ->in($baseDir)
             ->exclude(
-                array_merge(['vendor'], $excludes)
+                array_merge(['vendor'], $this->excludes)
             );
 
         $traverser = new NodeTraverser();
@@ -73,6 +78,7 @@ class UsageLoader implements LoaderInterface
             $nodes = $this->parser->parse($file->getContents(), $this->errorHandler) ?? [];
 
             if (!$nodes) {
+                $this->loaderResult->skipItem($file->getFilename(), 'Could not parse nodes');
                 $this->debugLogger->debug(sprintf('Could not parse nodes from file %s', $file->getFilename()));
                 $io->progressAdvance();
 
@@ -85,6 +91,10 @@ class UsageLoader implements LoaderInterface
 
         $io->progressFinish();
 
-        return $this->visitor->getUsages();
+        foreach ($this->visitor->getUsages() as $usage) {
+            $this->loaderResult->addItem($usage);
+        }
+
+        return $this->loaderResult;
     }
 }

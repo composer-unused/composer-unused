@@ -10,7 +10,9 @@ use Composer\IO\NullIO;
 use Icanhazstring\Composer\Unused\Command\UnusedCommand;
 use Icanhazstring\Composer\Unused\Error\Handler\CollectingErrorHandler;
 use Icanhazstring\Composer\Unused\Error\NullDumper;
+use Icanhazstring\Composer\Unused\Loader\LoaderBuilder;
 use Icanhazstring\Composer\Unused\Loader\PackageLoader;
+use Icanhazstring\Composer\Unused\Loader\Result;
 use Icanhazstring\Composer\Unused\Loader\UsageLoader;
 use Icanhazstring\Composer\Unused\Log\DebugLogger;
 use Icanhazstring\Composer\Unused\Output\SymfonyStyleFactory;
@@ -25,6 +27,7 @@ use Prophecy\Argument;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Zend\ServiceManager\ServiceManager;
 
 class UnusedCommandTest extends TestCase
 {
@@ -75,19 +78,14 @@ class UnusedCommandTest extends TestCase
         $symfonyStyle->progressAdvance()->willReturn();
         $symfonyStyle->progressFinish()->willReturn();
 
-        $countPackages = count($usedPackages) + count($unusedPackages);
-        $symfonyStyle->note(Argument::containingString('Found ' . $countPackages . ' package(s)'))
-            ->shouldBeCalled()
-            ->willReturn();
-
         foreach ($usedPackages as $usedPackage) {
-            $symfonyStyle->writeln(Argument::containingString($usedPackage . ' <fg=green>'))
+            $symfonyStyle->writeln(Argument::containingString($usedPackage))
                 ->shouldBeCalled()
                 ->willReturn();
         }
 
         foreach ($unusedPackages as $unusedPackage) {
-            $symfonyStyle->writeln(Argument::containingString($unusedPackage . ' <fg=red>'))
+            $symfonyStyle->writeln(Argument::containingString($unusedPackage))
                 ->shouldBeCalled()
                 ->willReturn();
         }
@@ -101,17 +99,29 @@ class UnusedCommandTest extends TestCase
             new UseParseStrategy()
         ]);
 
-        $command = new UnusedCommand(
-            $errorHandler,
-            $errorDumper,
-            $symfonyStyleFactory->reveal(),
+        $serviceManager = $this->prophesize(ServiceManager::class);
+        $serviceManager->build(PackageLoader::class, ['excludes' => []])->willReturn(
+            new PackageLoader(
+                $composer->getRepositoryManager()->getLocalRepository(),
+                new PackageSubjectFactory(),
+                new Result()
+            )
+        );
+        $serviceManager->build(UsageLoader::class, ['excludes' => []])->willReturn(
             new UsageLoader(
                 (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
                 $visitor,
                 $errorHandler,
-                new DebugLogger()
-            ),
-            new PackageLoader(new PackageSubjectFactory()),
+                new DebugLogger(),
+                new Result()
+            )
+        );
+
+        $command = new UnusedCommand(
+            $errorHandler,
+            $errorDumper,
+            $symfonyStyleFactory->reveal(),
+            new LoaderBuilder($serviceManager->reveal()),
             new DebugLogger(),
             $composerIO->reveal()
         );

@@ -6,7 +6,7 @@ namespace Icanhazstring\Composer\Unused\Loader;
 
 use Composer\Composer;
 use Composer\Package\Link;
-use Composer\Package\PackageInterface;
+use Composer\Repository\RepositoryInterface;
 use Icanhazstring\Composer\Unused\Subject\Factory\PackageSubjectFactory;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -14,72 +14,81 @@ class PackageLoader implements LoaderInterface
 {
     /** @var PackageSubjectFactory */
     private $subjectFactory;
+    /** @var ResultInterface */
+    private $loaderResult;
+    /** @var RepositoryInterface */
+    private $packageRepository;
+    /** @var array */
+    private $excludes;
 
-    public function __construct(PackageSubjectFactory $subjectFactory)
-    {
+    public function __construct(
+        RepositoryInterface $packageRepository,
+        PackageSubjectFactory $subjectFactory,
+        ResultInterface $loaderResult,
+        array $excludes = []
+    ) {
         $this->subjectFactory = $subjectFactory;
+        $this->loaderResult = $loaderResult;
+        $this->packageRepository = $packageRepository;
+        $this->excludes = $excludes;
     }
 
     /**
      * @param Composer     $composer
      * @param SymfonyStyle $io
-     * @param array        $excludes
-     *
-     * @return PackageInterface[]
+     * @return ResultInterface
      */
-    public function load(Composer $composer, SymfonyStyle $io, array $excludes = []): array
+    public function load(Composer $composer, SymfonyStyle $io): ResultInterface
     {
         $io->section('Loading packages');
 
         /** @var Link[] $requiredPackages */
-        $requiredPackages = array_filter(
-            $composer->getPackage()->getRequires(),
-            function (Link $package) use ($excludes) {
-                return !in_array($package->getTarget(), $excludes, true);
-            }
-        );
-
-        $localRepo = $composer->getRepositoryManager()->getLocalRepository();
-
-        $packages = [];
-        /** @var string[] $skipped */
-        $skipped = [];
+        $requiredPackages = array_filter($composer->getPackage()->getRequires(), [$this, 'filterExcludes']);
 
         if (empty($requiredPackages)) {
-            return [];
+            return $this->loaderResult;
         }
 
-        $io->text(sprintf('Loading %d requirements', count($requiredPackages)));
         $io->progressStart(\count($requiredPackages));
 
-        foreach ($requiredPackages as $index => $require) {
+        foreach ($requiredPackages as $require) {
             $constraint = $require->getConstraint();
 
             if ($constraint === null) {
                 $io->progressAdvance();
-                $skipped[] = $require->getTarget();
+                $this->loaderResult->skipItem($require->getTarget(), 'Invalid constraint');
                 continue;
             }
 
-            $composerPackage = $localRepo->findPackage($require->getTarget(), $constraint);
+            $composerPackage = $this->packageRepository->findPackage($require->getTarget(), $constraint);
 
             if ($composerPackage === null) {
                 $io->progressAdvance();
-                $skipped[] = $require->getTarget();
+                $this->loaderResult->skipItem($require->getTarget(), 'Unable to locate package');
                 continue;
             }
 
-            $packages[] = ($this->subjectFactory)($composerPackage);
+            $this->loaderResult->addItem(($this->subjectFactory)($composerPackage));
             $io->progressAdvance();
         }
 
         $io->progressFinish();
 
-        if (count($skipped)) {
-            $io->note(sprintf('Skipped %d requirements. No package found or invalid constraint.', count($skipped)));
-            $io->listing($skipped);
+        if (count($this->loaderResult->getItems()) !== count($requiredPackages)) {
+            $io->note(sprintf('Found %d package(s) to be checked.', count($this->loaderResult->getItems())));
         }
 
-        return $packages;
+        return $this->loaderResult;
+    }
+
+    public function filterExcludes(Link $package): bool
+    {
+        $exclude = in_array($package->getTarget(), $this->excludes, true);
+
+        if ($exclude) {
+            $this->loaderResult->skipItem($package->getTarget(), 'Package excluded by cli/config');
+        }
+
+        return !$exclude;
     }
 }

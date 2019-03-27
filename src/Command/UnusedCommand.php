@@ -5,16 +5,15 @@ declare(strict_types=1);
 namespace Icanhazstring\Composer\Unused\Command;
 
 use Composer\Command\BaseCommand;
-use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Icanhazstring\Composer\Unused\Error\ErrorDumperInterface;
 use Icanhazstring\Composer\Unused\Error\Handler\ErrorHandlerInterface;
-use Icanhazstring\Composer\Unused\Loader\LoaderInterface;
+use Icanhazstring\Composer\Unused\Loader\LoaderBuilder;
+use Icanhazstring\Composer\Unused\Loader\PackageLoader;
+use Icanhazstring\Composer\Unused\Loader\UsageLoader;
 use Icanhazstring\Composer\Unused\Log\DebugLogger;
 use Icanhazstring\Composer\Unused\Output\SymfonyStyleFactory;
-use Icanhazstring\Composer\Unused\Subject\SubjectInterface;
-use Icanhazstring\Composer\Unused\Subject\UsageInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -31,21 +30,18 @@ class UnusedCommand extends BaseCommand
     private $symfonyStyleFactory;
     /** @var SymfonyStyle */
     private $io;
-    /** @var LoaderInterface */
-    private $usageLoader;
-    /** @var LoaderInterface */
-    private $packageLoader;
     /** @var DebugLogger */
     private $debugLogger;
     /** @var IOInterface */
     private $composerIO;
+    /** @var LoaderBuilder */
+    private $loaderBuilder;
 
     public function __construct(
         ErrorHandlerInterface $errorHandler,
         ErrorDumperInterface $errorDumper,
         SymfonyStyleFactory $outputFactory,
-        LoaderInterface $usageLoader,
-        LoaderInterface $packageLoader,
+        LoaderBuilder $loaderBuilder,
         DebugLogger $debugLogger,
         IOInterface $composerIO
     ) {
@@ -53,8 +49,7 @@ class UnusedCommand extends BaseCommand
         $this->errorHandler = $errorHandler;
         $this->errorDumper = $errorDumper;
         $this->symfonyStyleFactory = $outputFactory;
-        $this->usageLoader = $usageLoader;
-        $this->packageLoader = $packageLoader;
+        $this->loaderBuilder = $loaderBuilder;
         $this->debugLogger = $debugLogger;
         $this->composerIO = $composerIO;
     }
@@ -89,29 +84,108 @@ class UnusedCommand extends BaseCommand
         /** @var string[] $excludeDirs */
         $excludeDirs = $input->getOption('excludeDir');
 
+        $packageLoader = $this->loaderBuilder->build(PackageLoader::class, $excludePackages);
+        $usageLoader = $this->loaderBuilder->build(UsageLoader::class, $excludeDirs);
+
         $this->io = ($this->symfonyStyleFactory)($input, $output);
 
         $composer = $this->getComposer();
-        $packages = $this->loadPackages($composer, $this->io, $excludePackages);
 
-        if (empty($packages)) {
+        $packageLoaderResult = $packageLoader->load($composer, $this->io);
+
+        if (!$packageLoaderResult->hasItems()) {
             $this->io->error('No required packages found');
             $this->dumpLogs();
 
             return 1;
         }
 
-        $this->io->note(sprintf('Found %d package(s) to be checked.', count($packages)));
+        $usageLoaderResult = $usageLoader->load($composer, $this->io);
 
-        $usages = $this->loadUsages($composer, $this->io, $excludeDirs);
-
-        if (empty($usages)) {
+        if (!$usageLoaderResult->hasItems()) {
             $this->io->error('No usages could be found. Aborting.');
             $this->dumpLogs();
 
             return 1;
         }
 
+        $analyseUsageResult = $this->analyseUsages($packageLoaderResult->getItems(), $usageLoaderResult->getItems());
+
+        /** @var PackageInterface[] $usedPackages */
+        $usedPackages = $analyseUsageResult['used'];
+        /** @var PackageInterface[] $unusedPackages */
+        $unusedPackages = $analyseUsageResult['unused'];
+
+        $this->io->section('Results');
+
+        $this->io->writeln(
+            sprintf(
+                'Found <fg=green>%d used</>, <fg=red>%d unused</> and <fg=yellow>%d ignored</> packages',
+                count($usedPackages),
+                count($unusedPackages),
+                count($packageLoaderResult->getSkippedItems())
+            )
+        );
+
+        $this->io->newLine();
+        $this->io->text('<fg=green>Used packages</>');
+        foreach ($usedPackages as $package) {
+            $this->io->writeln(
+                sprintf(
+                    ' <fg=green>%s</> %s',
+                    "\u{2713}",
+                    $package->getName()
+                )
+            );
+        }
+
+        $this->io->newLine();
+        $this->io->text('<fg=red>Unused packages</>');
+        foreach ($unusedPackages as $package) {
+            $this->io->writeln(
+                sprintf(
+                    ' <fg=red>%s</> %s',
+                    "\u{2717}",
+                    $package->getName()
+                )
+            );
+        }
+
+        $this->io->newLine();
+        $this->io->text('<fg=yellow>Ignored packages</>');
+
+        foreach ($packageLoaderResult->getSkippedItems() as $skippedItem) {
+            $this->io->writeln(
+                sprintf(
+                    ' <fg=yellow>%s</> %s (<fg=cyan>%s</>)',
+                    "\u{25CB}",
+                    $skippedItem['item'],
+                    $skippedItem['reason']
+                )
+            );
+        }
+
+        if ($this->composerIO->isDebug()) {
+            $this->dumpLogs();
+        }
+
+        return 0;
+    }
+
+    private function dumpLogs(): void
+    {
+        if (!$this->composerIO->isDebug()) {
+            return;
+        }
+
+        $dumpLocation = $this->errorDumper->dump($this->errorHandler, $this->debugLogger);
+        if ($dumpLocation) {
+            $this->io->note(sprintf('Log dumped to: %s', $dumpLocation));
+        }
+    }
+
+    private function analyseUsages(array $packages, array $usages): array
+    {
         /** @var PackageInterface[] $unusedPackages */
         $unusedPackages = [];
         /** @var PackageInterface[] $usedPackages */
@@ -132,66 +206,9 @@ class UnusedCommand extends BaseCommand
             $unusedPackages[] = $package;
         }
 
-        $this->io->writeln(
-            sprintf(
-                'Found <fg=green>%d used</> and <fg=red>%d unused</> packages',
-                count($usedPackages),
-                count($unusedPackages)
-            )
-        );
-
-        $this->io->section('Results');
-
-        $this->io->text('<fg=green>Used packages</>');
-        foreach ($usedPackages as $package) {
-            $this->io->writeln(sprintf(' * %s <fg=green>%s</>', $package->getName(), "\u{2713}"));
-        }
-
-        $this->io->newLine();
-        $this->io->text('<fg=red>Unused packages</>');
-        foreach ($unusedPackages as $package) {
-            $this->io->writeln(sprintf(' * %s <fg=red>%s</>', $package->getName(), "\u{2717}"));
-        }
-
-        if ($this->composerIO->isDebug()) {
-            $this->dumpLogs();
-        }
-
-        return 0;
-    }
-
-    /**
-     * @param Composer     $composer
-     * @param SymfonyStyle $io
-     * @param string[]     $excludes List of packages to ignore scanning
-     *
-     * @return SubjectInterface[]
-     */
-    private function loadPackages(Composer $composer, SymfonyStyle $io, array $excludes): array
-    {
-        return $this->packageLoader->load($composer, $io, $excludes);
-    }
-
-    /**
-     * @param Composer     $composer
-     * @param SymfonyStyle $io
-     * @param string[]     $excludes List of folders to exclude
-     * @return UsageInterface[]
-     */
-    private function loadUsages(Composer $composer, SymfonyStyle $io, array $excludes): array
-    {
-        return $this->usageLoader->load($composer, $io, $excludes);
-    }
-
-    private function dumpLogs(): void
-    {
-        if (!$this->composerIO->isDebug()) {
-            return;
-        }
-
-        $dumpLocation = $this->errorDumper->dump($this->errorHandler, $this->debugLogger);
-        if ($dumpLocation) {
-            $this->io->note(sprintf('Log dumped to: %s', $dumpLocation));
-        }
+        return [
+            'used'   => $usedPackages,
+            'unused' => $unusedPackages
+        ];
     }
 }

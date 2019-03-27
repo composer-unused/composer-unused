@@ -9,5 +9,5 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 interface LoaderInterface
 {
-    public function load(Composer $composer, SymfonyStyle $io, array $excludes = []): array;
+    public function load(Composer $composer, SymfonyStyle $io): ResultInterface;
 }

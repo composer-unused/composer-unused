@@ -10,8 +10,10 @@ use Icanhazstring\Composer\Unused\Error\Factory\FileDumperFactory;
 use Icanhazstring\Composer\Unused\Error\FileDumper;
 use Icanhazstring\Composer\Unused\Error\Handler\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Error\Handler\Factory\ErrorHandlerFactory;
+use Icanhazstring\Composer\Unused\Loader\Factory\LoaderBuilderFactory;
 use Icanhazstring\Composer\Unused\Loader\Factory\PackageLoaderFactory;
 use Icanhazstring\Composer\Unused\Loader\Factory\UsageLoaderFactory;
+use Icanhazstring\Composer\Unused\Loader\LoaderBuilder;
 use Icanhazstring\Composer\Unused\Loader\PackageLoader;
 use Icanhazstring\Composer\Unused\Loader\UsageLoader;
 use Icanhazstring\Composer\Unused\Log\DebugLogger;
@@ -30,6 +32,7 @@ return [
         ErrorDumperInterface::class  => ErrorDumperFactory::class,
         ErrorHandlerInterface::class => ErrorHandlerFactory::class,
         UnusedCommand::class         => UnusedCommandFactory::class,
-        DebugLogger::class           => InvokableFactory::class
+        DebugLogger::class           => InvokableFactory::class,
+        LoaderBuilder::class         => LoaderBuilderFactory::class
     ]
 ];
