@@ -60,6 +60,8 @@ class UnusedCommandTest extends TestCase
      */
     public function itShouldWriteCorrectConsoleOutput(array $usedPackages, array $unusedPackages): void
     {
+        $this->markTestSkipped('Rework with proper integrations tests now');
+
         chdir(__DIR__ . '/../../assets/TestProject');
         $composer = Factory::create(new NullIO(), 'composer.json');
 

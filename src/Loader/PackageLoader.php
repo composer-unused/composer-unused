@@ -6,6 +6,7 @@ namespace Icanhazstring\Composer\Unused\Loader;
 
 use Composer\Composer;
 use Composer\Package\Link;
+use Composer\Package\PackageInterface;
 use Composer\Repository\RepositoryInterface;
 use Icanhazstring\Composer\Unused\Subject\Factory\PackageSubjectFactory;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -68,6 +69,12 @@ class PackageLoader implements LoaderInterface
                 continue;
             }
 
+            if (!$this->packageHasValidNamespaces($composerPackage)) {
+                $io->progressAdvance();
+                $this->loaderResult->skipItem($require->getTarget(), 'Package provides no namespace');
+                continue;
+            }
+
             $this->loaderResult->addItem(($this->subjectFactory)($composerPackage));
             $io->progressAdvance();
         }
@@ -90,5 +97,21 @@ class PackageLoader implements LoaderInterface
         }
 
         return !$exclude;
+    }
+
+    private function packageHasValidNamespaces(PackageInterface $package): bool
+    {
+        $autoload = array_merge_recursive(
+            $package->getAutoload()['psr-0'] ?? [],
+            $package->getAutoload()['psr-4'] ?? [],
+            $package->getDevAutoload()['psr-0'] ?? [],
+            $package->getDevAutoload()['psr-4'] ?? []
+        );
+
+        $namespaces = array_filter(array_keys($autoload), static function ($namespace) {
+            return !empty($namespace);
+        });
+
+        return !empty($namespaces);
     }
 }

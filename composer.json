@@ -20,6 +20,7 @@
         "php": "^7.1",
         "composer-plugin-api": "^1.1.0",
         "nikic/php-parser": "^4.2",
+        "paragonie/random_compat": "^9.99",
         "psr/log": "^1.1",
         "symfony/finder": "^4.2",
         "zendframework/zend-servicemanager": "^3.4"
