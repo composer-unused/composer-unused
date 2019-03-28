@@ -6,12 +6,14 @@ namespace Icanhazstring\Composer\Unused\Subject;
 
 use Composer\Package\PackageInterface;
 
-class PackageSubject implements SubjectInterface
+class PackageSubject implements SubjectInterface, SuggestedSubjectInterface, RequiredSubjectInterface
 {
     /** @var PackageInterface */
     private $composerPackage;
     /** @var string[] */
     private $suggestedBy = [];
+    /** @var string[] */
+    private $requiredBy = [];
 
     public function __construct(PackageInterface $composerPackage)
     {
@@ -36,6 +38,11 @@ class PackageSubject implements SubjectInterface
         return false;
     }
 
+    public function getName(): string
+    {
+        return $this->composerPackage->getName();
+    }
+
     public function suggestsPackage(string $packageName): bool
     {
         return array_key_exists($packageName, $this->composerPackage->getSuggests());
@@ -51,8 +58,18 @@ class PackageSubject implements SubjectInterface
         return $this->suggestedBy;
     }
 
-    public function getName(): string
+    public function addRequiredBy(string $packageName): void
     {
-        return $this->composerPackage->getName();
+        $this->requiredBy[] = $packageName;
+    }
+
+    public function requiresPackage(string $packageName): bool
+    {
+        return array_key_exists($packageName, $this->composerPackage->getRequires());
+    }
+
+    public function getRequiredBy(): array
+    {
+        return $this->requiredBy;
     }
 }

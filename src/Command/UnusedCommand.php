@@ -14,7 +14,7 @@ use Icanhazstring\Composer\Unused\Loader\PackageLoader;
 use Icanhazstring\Composer\Unused\Loader\UsageLoader;
 use Icanhazstring\Composer\Unused\Log\DebugLogger;
 use Icanhazstring\Composer\Unused\Output\SymfonyStyleFactory;
-use Icanhazstring\Composer\Unused\Subject\SubjectInterface;
+use Icanhazstring\Composer\Unused\Subject\PackageSubject;
 use Icanhazstring\Composer\Unused\Subject\UsageInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -118,9 +118,9 @@ class UnusedCommand extends BaseCommand
 
         $analyseUsageResult = $this->analyseUsages($packageLoaderResult->getItems(), $usageLoaderResult->getItems());
 
-        /** @var SubjectInterface[] $usedPackages */
+        /** @var PackageSubject[] $usedPackages */
         $usedPackages = $analyseUsageResult['used'];
-        /** @var SubjectInterface[] $unusedPackages */
+        /** @var PackageSubject[] $unusedPackages */
         $unusedPackages = $analyseUsageResult['unused'];
 
         $this->io->section('Results');
@@ -137,20 +137,29 @@ class UnusedCommand extends BaseCommand
         $this->io->newLine();
         $this->io->text('<fg=green>Used packages</>');
         foreach ($usedPackages as $package) {
+            $requiredBy = '';
             $suggestedBy = '';
+
+            if (!empty($package->getRequiredBy())) {
+                $requiredBy = sprintf(
+                    ' (<fg=cyan>required by: %s</>)',
+                    implode(', ', $package->getRequiredBy())
+                );
+            }
 
             if (!empty($package->getSuggestedBy())) {
                 $suggestedBy = sprintf(
-                    '(<fg=cyan>suggested/used by: %s</>)',
+                    ' (<fg=cyan>suggested by: %s</>)',
                     implode(', ', $package->getSuggestedBy())
                 );
             }
 
             $this->io->writeln(
                 sprintf(
-                    ' <fg=green>%s</> %s %s',
+                    ' <fg=green>%s</> %s%s%s',
                     "\u{2713}",
                     $package->getName(),
+                    $requiredBy,
                     $suggestedBy
                 )
             );
@@ -202,8 +211,8 @@ class UnusedCommand extends BaseCommand
     }
 
     /**
-     * @param SubjectInterface[] $packages
-     * @param UsageInterface[]   $usages
+     * @param PackageSubject[] $packages
+     * @param UsageInterface[] $usages
      * @return array
      */
     private function analyseUsages(array $packages, array $usages): array
@@ -214,7 +223,6 @@ class UnusedCommand extends BaseCommand
         $usedPackages = [];
 
         foreach ($packages as $package) {
-
             foreach ($usages as $usage) {
                 try {
                     if ($package->providesNamespace($usage->getNamespace())) {
@@ -226,10 +234,21 @@ class UnusedCommand extends BaseCommand
                 }
             }
 
-            foreach ($packages as $packageSuggest) {
-                if ($packageSuggest->suggestsPackage($package->getName())) {
+            foreach ($packages as $referencePackage) {
+                $used = false;
+
+                if ($referencePackage->suggestsPackage($package->getName())) {
+                    $package->addSuggestedBy($referencePackage->getName());
+                    $used = true;
+                }
+
+                if ($referencePackage->requiresPackage($package->getName())) {
+                    $package->addRequiredBy($referencePackage->getName());
+                    $used = true;
+                }
+
+                if ($used) {
                     $usedPackages[] = $package;
-                    $package->addSuggestedBy($packageSuggest->getName());
                     continue 2;
                 }
             }
