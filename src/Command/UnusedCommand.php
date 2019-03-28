@@ -79,17 +79,23 @@ class UnusedCommand extends BaseCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        /** @var string[] $excludePackages */
-        $excludePackages = $input->getOption('excludePackage');
+        $composer = $this->getComposer();
+        /** @var string[] $excludePackagesOption */
+        $excludePackagesOption = $input->getOption('excludePackage');
+        $excludePackagesConfig = $composer->getPackage()->getExtra()['unused'] ?? [];
+
+
         /** @var string[] $excludeDirs */
         $excludeDirs = $input->getOption('excludeDir');
 
-        $packageLoader = $this->loaderBuilder->build(PackageLoader::class, $excludePackages);
+        $packageLoader = $this->loaderBuilder->build(
+            PackageLoader::class,
+            array_merge($excludePackagesConfig, $excludePackagesOption)
+        );
+
         $usageLoader = $this->loaderBuilder->build(UsageLoader::class, $excludeDirs);
 
         $this->io = ($this->symfonyStyleFactory)($input, $output);
-
-        $composer = $this->getComposer();
 
         $packageLoaderResult = $packageLoader->load($composer, $this->io);
 
