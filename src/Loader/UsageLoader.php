@@ -72,6 +72,7 @@ class UsageLoader implements LoaderInterface
         $io->progressStart(count($files));
 
         foreach ($files as $file) {
+            $io->progressAdvance();
             $this->visitor->setCurrentFile($file);
             $this->debugLogger->debug(sprintf('Parsing file %s', $file->getPathname()));
 
@@ -80,13 +81,11 @@ class UsageLoader implements LoaderInterface
             if (!$nodes) {
                 $this->loaderResult->skipItem($file->getFilename(), 'Could not parse nodes');
                 $this->debugLogger->debug(sprintf('Could not parse nodes from file %s', $file->getFilename()));
-                $io->progressAdvance();
 
                 continue;
             }
 
             $traverser->traverse($nodes);
-            $io->progressAdvance();
         }
 
         $io->progressFinish();

@@ -2,13 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Test\Unused\Unit\Loader;
+namespace Icanhazstring\Composer\Test\Unused\Integration\Loader;
 
 use Composer\Composer;
 use Composer\Package\Link;
 use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
 use Composer\Repository\RepositoryInterface;
+use Icanhazstring\Composer\Unused\Loader\Filter\ExcludePackageFilter;
+use Icanhazstring\Composer\Unused\Loader\Filter\InvalidNamespaceFilter;
+use Icanhazstring\Composer\Unused\Loader\Filter\NullConstraintFilter;
+use Icanhazstring\Composer\Unused\Loader\Filter\NullPackageFilter;
 use Icanhazstring\Composer\Unused\Loader\PackageLoader;
 use Icanhazstring\Composer\Unused\Loader\Result;
 use Icanhazstring\Composer\Unused\Subject\Factory\PackageSubjectFactory;
@@ -48,7 +52,10 @@ class PackageLoaderTest extends TestCase
         $loader = new PackageLoader(
             $packageRepository->reveal(),
             new PackageSubjectFactory(),
-            $result->reveal()
+            $result->reveal(),
+            [
+                new InvalidNamespaceFilter($packageRepository->reveal())
+            ]
         );
 
         $loader->load(
@@ -82,7 +89,10 @@ class PackageLoaderTest extends TestCase
         $loader = new PackageLoader(
             $packageRepository->reveal(),
             new PackageSubjectFactory(),
-            $result->reveal()
+            $result->reveal(),
+            [
+                new NullPackageFilter($packageRepository->reveal())
+            ]
         );
 
         $loader->load(
@@ -115,7 +125,10 @@ class PackageLoaderTest extends TestCase
         $loader = new PackageLoader(
             $packageRepository->reveal(),
             new PackageSubjectFactory(),
-            $result->reveal()
+            $result->reveal(),
+            [
+                new NullConstraintFilter()
+            ]
         );
 
         $loader->load(
@@ -138,20 +151,20 @@ class PackageLoaderTest extends TestCase
         $packageRepository = $this->prophesize(RepositoryInterface::class);
         $result = new Result();
 
-
         $loader = new PackageLoader(
             $packageRepository->reveal(),
             new PackageSubjectFactory(),
-            $result
+            $result,
+            []
         );
 
-        $this->assertSame(
-            $result,
-            $loader->load(
-                $composer->reveal(),
-                new SymfonyStyle(new ArrayInput([]), new NullOutput())
-            )
+        $loaderResult = $loader->load(
+            $composer->reveal(),
+            new SymfonyStyle(new ArrayInput([]), new NullOutput())
         );
+
+        $this->assertSame($result, $loaderResult);
+        $this->assertEmpty($loaderResult->getItems());
     }
 
     /**
@@ -161,7 +174,6 @@ class PackageLoaderTest extends TestCase
     {
         $link = $this->prophesize(Link::class);
         $link->getTarget()->willReturn('package/A');
-        $link->getConstraint()->willReturn(null);
 
         $rootPackage = $this->prophesize(RootPackageInterface::class);
         $rootPackage->getRequires()->willReturn([$link->reveal()]);
@@ -169,23 +181,29 @@ class PackageLoaderTest extends TestCase
         $composer = $this->prophesize(Composer::class);
         $composer->getPackage()->willReturn($rootPackage->reveal());
 
-        $packageRepository = $this->prophesize(RepositoryInterface::class);
-        $result = new Result();
+        $package = $this->prophesize(PackageInterface::class);
+        $package->getAutoload()->willReturn(['psr-4' => ['ABC\\' => 'src']]);
+        $package->getDevAutoload()->willReturn([]);
 
+        $packageRepository = $this->prophesize(RepositoryInterface::class);
+        $packageRepository->findPackage('package/A', '^0.1')->willReturn($package->reveal());
+
+        $result = new Result();
 
         $loader = new PackageLoader(
             $packageRepository->reveal(),
             new PackageSubjectFactory(),
             $result,
-            ['package/A']
+            [
+                new ExcludePackageFilter(['package/A'])
+            ]
         );
 
-        $this->assertSame(
-            $result,
-            $loader->load(
-                $composer->reveal(),
-                new SymfonyStyle(new ArrayInput([]), new NullOutput())
-            )
+        $loaderResult = $loader->load(
+            $composer->reveal(),
+            new SymfonyStyle(new ArrayInput([]), new NullOutput())
         );
+
+        $this->assertEmpty($loaderResult->getItems(), 'All packages should be filtered');
     }
 }

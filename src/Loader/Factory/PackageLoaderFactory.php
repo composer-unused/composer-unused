@@ -5,6 +5,11 @@ declare(strict_types=1);
 namespace Icanhazstring\Composer\Unused\Loader\Factory;
 
 use Composer\Composer;
+use Icanhazstring\Composer\Unused\Loader\Filter\ExcludePackageFilter;
+use Icanhazstring\Composer\Unused\Loader\Filter\InvalidNamespaceFilter;
+use Icanhazstring\Composer\Unused\Loader\Filter\InvalidPackageTypeFilter;
+use Icanhazstring\Composer\Unused\Loader\Filter\NullConstraintFilter;
+use Icanhazstring\Composer\Unused\Loader\Filter\NullPackageFilter;
 use Icanhazstring\Composer\Unused\Loader\PackageLoader;
 use Icanhazstring\Composer\Unused\Loader\Result;
 use Icanhazstring\Composer\Unused\Subject\Factory\PackageSubjectFactory;
@@ -17,12 +22,19 @@ class PackageLoaderFactory implements FactoryInterface
     {
         /** @var Composer $composer */
         $composer = $container->get(Composer::class);
+        $repository = $composer->getRepositoryManager()->getLocalRepository();
 
         return new PackageLoader(
-            $composer->getRepositoryManager()->getLocalRepository(),
+            $repository,
             $container->get(PackageSubjectFactory::class),
             new Result(),
-            $options['excludes'] ?? []
+            [
+                new ExcludePackageFilter($options['excludes'] ?? []),
+                new NullConstraintFilter(),
+                new NullPackageFilter($repository),
+                new InvalidNamespaceFilter($repository),
+                new InvalidPackageTypeFilter($repository, ['library'])
+            ]
         );
     }
 }

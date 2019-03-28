@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Test\Unused\Integration\Parser;
 
+use Exception;
+use Icanhazstring\Composer\Unused\Error\Handler\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Parser\NodeVisitor;
 use Icanhazstring\Composer\Unused\Parser\Strategy\NewParseStrategy;
 use Icanhazstring\Composer\Unused\Parser\Strategy\StaticParseStrategy;
@@ -12,6 +14,7 @@ use PhpParser\Node;
 use PhpParser\NodeTraverser;
 use PhpParser\ParserFactory;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 
 class NodeVisitorTest extends TestCase
 {
@@ -97,5 +100,39 @@ class NodeVisitorTest extends TestCase
 
         $traverser->traverse($nodes);
         $this->assertEquals($expectedUsedNamespaces, array_keys($nodeVisitor->getUsages()));
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldRaiseExceptinHandledByErrorHandler(): void
+    {
+        $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
+        /** @var string $contents */
+        $inputFile = __DIR__ . '/../../assets/TestFiles/UseSingleLineNoGroup.php';
+        $contents = file_get_contents($inputFile);
+        /** @var Node[] $nodes */
+        $nodes = $parser->parse($contents);
+
+        $exception = new Exception('');
+
+        $errorHandler = $this->prophesize(ErrorHandlerInterface::class);
+        $errorHandler->handle($exception)->shouldBeCalled();
+
+        $exceptionParseStrategy = $this->prophesize(UseParseStrategy::class);
+
+        /** @var Node $node */
+        $node = Argument::any();
+        $exceptionParseStrategy->meetsCriteria($node)->willReturn(true);
+        $exceptionParseStrategy->extractNamespaces($node)->willThrow($exception);
+
+        $nodeVisitor = new NodeVisitor([$exceptionParseStrategy->reveal()], $errorHandler->reveal());
+        $fileInfo = new \SplFileInfo($inputFile);
+        $nodeVisitor->setCurrentFile($fileInfo);
+
+        $traverser = new NodeTraverser();
+        $traverser->addVisitor($nodeVisitor);
+
+        $traverser->traverse($nodes);
     }
 }
