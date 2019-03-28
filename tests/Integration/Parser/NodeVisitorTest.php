@@ -7,6 +7,7 @@ namespace Icanhazstring\Composer\Test\Unused\Integration\Parser;
 use Exception;
 use Icanhazstring\Composer\Unused\Error\Handler\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Parser\NodeVisitor;
+use Icanhazstring\Composer\Unused\Parser\Strategy\ClassConstStrategy;
 use Icanhazstring\Composer\Unused\Parser\Strategy\NewParseStrategy;
 use Icanhazstring\Composer\Unused\Parser\Strategy\StaticParseStrategy;
 use Icanhazstring\Composer\Unused\Parser\Strategy\UseParseStrategy;
@@ -21,7 +22,7 @@ class NodeVisitorTest extends TestCase
     public function itShouldParseUsagesDataProvider(): array
     {
         return [
-            'StaticParseStrategyShouldReturnEmptyUsageOnVariableCall'      => [
+            'StaticParseStrategyShouldReturnEmptyUsageOnVariableCall'  => [
                 'expectedUsedNamespaces' => [],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/StaticVariableCall.php',
                 'strategy'               => StaticParseStrategy::class
@@ -55,7 +56,7 @@ class NodeVisitorTest extends TestCase
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/NewInstantiateFullyQualifiedCall.php',
                 'strategy'               => NewParseStrategy::class
             ],
-            'UseParseStrategyShouldReturnSingleLineImportedNamespaces'     => [
+            'UseParseStrategyShouldReturnSingleLineImportedNamespaces' => [
                 'expectedUsedNamespaces' => [
                     'Icanhazstring\Composer',
                     'Icanhazstring\Composer\Unused\Parser',
@@ -64,7 +65,7 @@ class NodeVisitorTest extends TestCase
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/UseSingleLineNoGroup.php',
                 'strategy'               => UseParseStrategy::class
             ],
-            'UseParseStrategyShouldReturnMultiLineImportedNamespaces'      => [
+            'UseParseStrategyShouldReturnMultiLineImportedNamespaces'  => [
                 'expectedUsedNamespaces' => [
                     UseParseStrategy::class,
                     StaticParseStrategy::class,
@@ -72,6 +73,14 @@ class NodeVisitorTest extends TestCase
                 ],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/UseMultiLineGroup.php',
                 'strategy'               => UseParseStrategy::class
+            ],
+            'ClassConstStrategyShouldReturnCorrectNamespace'           => [
+                'expectedUsedNamespaces' => [
+                    UseParseStrategy::class,
+                    StaticParseStrategy::class
+                ],
+                'inputFile'              => __DIR__ . '/../../assets/TestFiles/ClassConst.php',
+                'strategy'               => ClassConstStrategy::class
             ]
         ];
     }
@@ -110,6 +119,7 @@ class NodeVisitorTest extends TestCase
         $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
         /** @var string $contents */
         $inputFile = __DIR__ . '/../../assets/TestFiles/UseSingleLineNoGroup.php';
+        /** @var string $contents */
         $contents = file_get_contents($inputFile);
         /** @var Node[] $nodes */
         $nodes = $parser->parse($contents);

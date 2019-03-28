@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Icanhazstring\Composer\Unused\Parser\Factory;
 
 use Icanhazstring\Composer\Unused\Parser\NodeVisitor;
+use Icanhazstring\Composer\Unused\Parser\Strategy\ClassConstStrategy;
 use Icanhazstring\Composer\Unused\Parser\Strategy\NewParseStrategy;
 use Icanhazstring\Composer\Unused\Parser\Strategy\StaticParseStrategy;
 use Icanhazstring\Composer\Unused\Parser\Strategy\UseParseStrategy;
@@ -17,7 +18,8 @@ class NodeVisitorFactory
         return new NodeVisitor([
             new NewParseStrategy(),
             new StaticParseStrategy(),
-            new UseParseStrategy()
+            new UseParseStrategy(),
+            new ClassConstStrategy()
         ]);
     }
 }
