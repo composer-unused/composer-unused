@@ -17,7 +17,7 @@ What if you need to find out if the provided *namespaces* of the package are use
 
 `composer unused` to the rescue!
 
-![example](https://i.imgur.com/0m2Urxq.gif)
+![example](https://i.imgur.com/aTLwpgL.gif)
 
 ## Installation
 
