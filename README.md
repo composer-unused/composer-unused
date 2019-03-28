@@ -17,7 +17,7 @@ What if you need to find out if the provided *namespaces* of the package are use
 
 `composer unused` to the rescue!
 
-![usage](https://i.imgur.com/sHjjprU.gif)
+![example](https://i.imgur.com/0m2Urxq.gif)
 
 ## Installation
 
@@ -71,52 +71,6 @@ $ composer unused -vvv
 
 This will enable debug mode and create an error report beside your `composer.json`.
 > `composer-unused-dump-YmdHis`
-
-## Example (doctrine/orm)
-
-```html
-vagrant@ubuntu-bionic:/vagrant/doctrine/orm$ composer unused
-
-Loading packages
-----------------
-
- Loading 15 requirements
- 15/15 [-----------------------------] 100%
-
- ! [NOTE] Skipped 2 requirements. No package found or invalid constraint.                                               
-
- * php
- * ext-ctype
-
- ! [NOTE] Found 13 packages to be checked.                                                                              
-
-Scanning files...
------------------
-
- 1174/1174 [-----------------------------] 100%
-
-Found 13 used and 0 unused packages
-
-Results
--------
-
- Used packages
- * doctrine/annotations ✓
- * doctrine/cache ✓
- * doctrine/collections ✓
- * doctrine/dbal ✓
- * doctrine/event-manager ✓
- * doctrine/inflector ✓
- * doctrine/instantiator ✓
- * doctrine/persistence ✓
- * doctrine/reflection ✓
- * ocramius/package-versions ✓
- * ocramius/proxy-manager ✓
- * symfony/console ✓
- * symfony/var-dumper ✓
-
- Unused packages
-```
 
 ## Changelog
 
