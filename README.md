@@ -45,7 +45,22 @@ $ composer unused --excludeDir=config --excludePackage=symfony/console
 
 > Make sure the package is named exactly as in your `composer.json`
 
-> You can provide multiple folders and package by repeating the argument. 
+> You can provide multiple folders and package by repeating the argument.
+
+### Ignore by config
+You also have the possibility to exclude packages by configuration. For this you need to provide the `extra`
+directive in your `composer.json`.
+
+```json
+{
+    "extra": {
+        "unused": [
+            "package/a",
+            "package/b"
+        ]
+    }
+}
+``` 
 
 ## Troubleshooting
 If you encounter some errors, try running

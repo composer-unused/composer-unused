@@ -37,11 +37,7 @@
         "sort-packages": true
     },
     "extra": {
-        "class": "Icanhazstring\\Composer\\Unused\\UnusedPlugin",
-        "unused": [
-            "php",
-            "composer-plugin-api"
-        ]
+        "class": "Icanhazstring\\Composer\\Unused\\UnusedPlugin"
     },
     "autoload": {
         "psr-4": {
