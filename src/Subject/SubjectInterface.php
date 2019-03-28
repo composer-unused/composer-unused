@@ -9,4 +9,13 @@ interface SubjectInterface
     public function providesNamespace(string $usedNamespace): bool;
 
     public function getName(): string;
+
+    public function addSuggestedBy(string $packageName): void;
+
+    public function suggestsPackage(string $packageName): bool;
+
+    /**
+     * @return string[]
+     */
+    public function getSuggestedBy(): array;
 }

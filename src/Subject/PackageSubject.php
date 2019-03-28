@@ -10,6 +10,8 @@ class PackageSubject implements SubjectInterface
 {
     /** @var PackageInterface */
     private $composerPackage;
+    /** @var string[] */
+    private $suggestedBy = [];
 
     public function __construct(PackageInterface $composerPackage)
     {
@@ -32,6 +34,21 @@ class PackageSubject implements SubjectInterface
         }
 
         return false;
+    }
+
+    public function suggestsPackage(string $packageName): bool
+    {
+        return array_key_exists($packageName, $this->composerPackage->getSuggests());
+    }
+
+    public function addSuggestedBy(string $packageName): void
+    {
+        $this->suggestedBy[] = $packageName;
+    }
+
+    public function getSuggestedBy(): array
+    {
+        return $this->suggestedBy;
     }
 
     public function getName(): string
