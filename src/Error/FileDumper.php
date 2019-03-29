@@ -58,11 +58,13 @@ class FileDumper implements ErrorDumperInterface
                     'line'    => $error->getLine(),
                 ];
 
-                if ($error->getPrevious()) {
+                $previous = $error->getPrevious();
+
+                if ($previous) {
                     $log['previous'] = [
-                        'message' => $error->getPrevious()->getMessage(),
-                        'file'    => $error->getPrevious()->getFile(),
-                        'line'    => $error->getPrevious()->getLine(),
+                        'message' => $previous->getMessage(),
+                        'file'    => $previous->getFile(),
+                        'line'    => $previous->getLine(),
                     ];
                 }
 
