@@ -33,6 +33,12 @@ class PackageSubject implements SubjectInterface, SuggestedSubjectInterface, Req
 
         try {
             foreach ($autoload as $providedNamespace => $dir) {
+                $prettyProvidedNamespace = rtrim($providedNamespace, '\\');
+
+                if (empty($prettyProvidedNamespace)) {
+                    continue;
+                }
+
                 if (strpos($usedNamespace, rtrim($providedNamespace, '\\')) === 0) {
                     return true;
                 }

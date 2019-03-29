@@ -66,6 +66,17 @@ class PackageSubjectTest extends TestCase
                         'Another\\Test\\Namespace\\Package\\' => 'fu/bar/path/2'
                     ]
                 ]
+            ],
+            'empty and valid namespace'           => [
+                'expected'           => true,
+                'usedNamespace'      => 'Test\\Namespace\\Package\\Model',
+                'packageAutoload'    => [
+                    'psr-4' => [
+                        ''                         => 'fu/bar/path',
+                        'Test\\Namespace\\Package' => 'fu/bar/path'
+                    ]
+                ],
+                'packageDevAutoload' => []
             ]
         ];
     }
@@ -87,6 +98,8 @@ class PackageSubjectTest extends TestCase
         array $packageDevAutoload = []
     ): void {
         $composerPackage = $this->prophesize(PackageInterface::class);
+        $composerPackage->getName()->willReturn('test/package');
+        $composerPackage->getVersion()->willReturn('0.1.1');
         $composerPackage->getAutoload()->willReturn($packageAutoload);
         $composerPackage->getDevAutoload()->willReturn($packageDevAutoload);
 

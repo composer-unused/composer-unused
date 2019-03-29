@@ -24,9 +24,8 @@ class InvalidNamespaceFilterTest extends TestCase
             ->findPackage(Argument::any(), Argument::any())
             ->willReturn($validNamespacePackage->reveal());
 
-
         $emptyNamespacePackage = $this->prophesize(PackageInterface::class);
-        $emptyNamespacePackage->getAutoload()->willReturn([]);
+        $emptyNamespacePackage->getAutoload()->willReturn(['psr-4' => ['' => ['src']]]);
         $emptyNamespacePackage->getDevAutoload()->willReturn([]);
 
         $emptyNamespaceRepository = $this->prophesize(RepositoryInterface::class);
@@ -34,14 +33,27 @@ class InvalidNamespaceFilterTest extends TestCase
             ->findPackage(Argument::any(), Argument::any())
             ->willReturn($emptyNamespacePackage->reveal());
 
+        $mixedNamespacePackage = $this->prophesize(PackageInterface::class);
+        $mixedNamespacePackage->getAutoload()->willReturn(['psr-4' => ['' => 'src', 'A\\' => 'src']]);
+        $mixedNamespacePackage->getDevAutoload()->willReturn([]);
+
+        $mixedNamespaceRepository = $this->prophesize(RepositoryInterface::class);
+        $mixedNamespaceRepository
+            ->findPackage(Argument::any(), Argument::any())
+            ->willReturn($mixedNamespacePackage->reveal());
+
         return [
-            'package with valid namespace should not match' => [
+            'package with valid namespace should not match'           => [
                 'expected'   => false,
                 'repository' => $validNamespaceRepository->reveal(),
             ],
-            'package with empty namespace should match'     => [
+            'package with empty namespace should match'               => [
                 'expected'   => true,
                 'repository' => $emptyNamespaceRepository->reveal()
+            ],
+            'package with empty and valid namespace should not match' => [
+                'expected'   => false,
+                'repository' => $mixedNamespaceRepository->reveal()
             ]
         ];
     }
