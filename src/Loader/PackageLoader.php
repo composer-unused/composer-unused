@@ -51,6 +51,11 @@ class PackageLoader implements LoaderInterface
         foreach ($requiredPackages as $require) {
             $io->progressAdvance();
 
+            // Temporary solution to avoid ext- packages
+            if (strpos($require->getTarget(), 'ext-') === 0) {
+                continue 1;
+            }
+
             foreach ($this->packageFilters as $packageFilter) {
                 if ($packageFilter->match($require)) {
                     $this->loaderResult->skipItem($require->getTarget(), $packageFilter->getReason());
