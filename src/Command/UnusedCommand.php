@@ -115,14 +115,6 @@ class UnusedCommand extends BaseCommand
         }
 
         $usageLoaderResult = $usageLoader->load($composer, $this->io);
-
-        if (!$usageLoaderResult->hasItems()) {
-            $this->io->error('No usages could be found. Aborting.');
-            $this->dumpLogs();
-
-            return 1;
-        }
-
         $analyseUsageResult = $this->analyseUsages($packageLoaderResult->getItems(), $usageLoaderResult->getItems());
 
         /** @var PackageSubject[] $usedPackages */
