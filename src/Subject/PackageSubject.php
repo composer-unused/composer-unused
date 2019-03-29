@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Icanhazstring\Composer\Unused\Subject;
 
 use Composer\Package\PackageInterface;
+use Icanhazstring\Composer\Unused\Exception\SubjectException;
+use Throwable;
 
 class PackageSubject implements SubjectInterface, SuggestedSubjectInterface, RequiredSubjectInterface
 {
@@ -29,10 +31,14 @@ class PackageSubject implements SubjectInterface, SuggestedSubjectInterface, Req
             $this->composerPackage->getDevAutoload()['psr-4'] ?? []
         );
 
-        foreach ($autoload as $providedNamespace => $dir) {
-            if (strpos($usedNamespace, rtrim($providedNamespace, '\\')) === 0) {
-                return true;
+        try {
+            foreach ($autoload as $providedNamespace => $dir) {
+                if (strpos($usedNamespace, rtrim($providedNamespace, '\\')) === 0) {
+                    return true;
+                }
             }
+        } catch (Throwable $throwable) {
+            throw SubjectException::provideNamespaces($this->composerPackage);
         }
 
         return false;

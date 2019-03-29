@@ -8,6 +8,7 @@ use Composer\Composer;
 use Composer\Json\JsonFile;
 use Icanhazstring\Composer\Unused\Error\Handler\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Log\DebugLogger;
+use Icanhazstring\Composer\Unused\UnusedPlugin;
 
 class FileDumper implements ErrorDumperInterface
 {
@@ -33,7 +34,7 @@ class FileDumper implements ErrorDumperInterface
 
         try {
             $file = [
-                'version'      => $this->composer->getPackage()->getPrettyVersion(),
+                'version'      => UnusedPlugin::VERSION,
                 'requires'     => [],
                 'dev-requires' => [],
                 'autoload'     => $this->composer->getPackage()->getAutoload(),
@@ -51,11 +52,21 @@ class FileDumper implements ErrorDumperInterface
             }
 
             foreach ($errorHandler->getErrors() as $error) {
-                $file['errors'][] = [
+                $errorLog = [
                     'message' => $error->getMessage(),
                     'file'    => $error->getFile(),
-                    'line'    => $error->getLine()
+                    'line'    => $error->getLine(),
                 ];
+
+                if ($error->getPrevious()) {
+                    $log['previous'] = [
+                        'message' => $error->getPrevious()->getMessage(),
+                        'file'    => $error->getPrevious()->getFile(),
+                        'line'    => $error->getPrevious()->getLine(),
+                    ];
+                }
+
+                $file['errors'][] = $errorLog;
             }
 
             $file = array_merge_recursive($file, $debugLogger->getLogs());

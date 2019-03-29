@@ -12,6 +12,8 @@ use Psr\Container\ContainerInterface;
 
 final class UnusedPlugin implements Plugin\PluginInterface, Plugin\Capable, Plugin\Capability\CommandProvider
 {
+    public const VERSION = '0.5.0';
+
     /** @var ContainerInterface */
     private $container;
 
