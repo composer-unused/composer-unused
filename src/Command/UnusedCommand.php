@@ -77,6 +77,13 @@ class UnusedCommand extends BaseCommand
             'Provide one or more packages that should be ignored during scan',
             []
         );
+
+        $this->addOption(
+            'ignore-exit-code',
+            null,
+            InputOption::VALUE_NONE,
+            'Ignore exit codes so there are no "failure" exit codes'
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -193,6 +200,10 @@ class UnusedCommand extends BaseCommand
 
         if ($this->composerIO->isDebug()) {
             $this->dumpLogs();
+        }
+
+        if ($packageLoaderResult->hasSkippedItems() && !$input->getOption('ignore-exit-code')) {
+            return 1;
         }
 
         return 0;
