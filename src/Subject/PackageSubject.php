@@ -38,7 +38,7 @@ class PackageSubject implements SubjectInterface, SuggestedSubjectInterface, Req
                 }
             }
         } catch (Throwable $throwable) {
-            throw SubjectException::provideNamespaces($this->composerPackage);
+            throw SubjectException::provideNamespaces($this->composerPackage, $throwable);
         }
 
         return false;
