@@ -53,14 +53,11 @@ class PackageLoader implements LoaderInterface
 
             // Temporary solution to avoid ext- packages
             if (strpos($require->getTarget(), 'ext-') === 0) {
-                continue 1;
+                continue;
             }
 
-            foreach ($this->packageFilters as $packageFilter) {
-                if ($packageFilter->match($require)) {
-                    $this->loaderResult->skipItem($require->getTarget(), $packageFilter->getReason());
-                    continue 2;
-                }
+            if ($this->matchesPackageFilter($require)) {
+                continue;
             }
 
             $composerPackage = $this->packageRepository->findPackage(
@@ -82,5 +79,18 @@ class PackageLoader implements LoaderInterface
         }
 
         return $this->loaderResult;
+    }
+
+    private function matchesPackageFilter(Link $require): bool
+    {
+        foreach ($this->packageFilters as $packageFilter) {
+            if ($packageFilter->match($require)) {
+                $this->loaderResult->skipItem($require->getTarget(), $packageFilter->getReason());
+
+                return true;
+            }
+        }
+
+        return false;
     }
 }
