@@ -1,5 +1,5 @@
 # composer-unused
-Show unused packages by scanning your code
+Show unused composer dependencies by scanning your code
 
 [![](https://img.shields.io/travis/com/icanhazstring/composer-unused.svg?style=flat-square)](https://travis-ci.org/icanhazstring/composer-unused)
 [![](https://img.shields.io/github/tag-date/icanhazstring/composer-unused.svg?label=version&style=flat-square)](https://github.com/icanhazstring/composer-unused/releases/latest)
