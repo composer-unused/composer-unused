@@ -21,15 +21,24 @@ What if you need to find out if the provided *namespaces* of the package are use
 
 ## Installation
 
-Run
+### Global
+If you manage a lot of repositories and don't want to install this package into all those repos, simply install it
+as a global dependency (e.g. on your CI):
 
 ```bash
 $ composer global require icanhazstring/composer-unused
 ```
 
+### Local (dev requirement)
+You can also install `composer-unused` as a local dev requirement:
+
+```bash
+$ composer require --dev icanhazstring/composer-unused
+```
+
 ## Usage
 
-Run
+Whether you installed it as local or global requirement, run:
 
 ```bash
 $ composer unused
