@@ -23,6 +23,10 @@ matrix:
     - php: nightly
     - php: 7.4snapshot
 
+branches:
+  only:
+    - master
+
 before_script:
   - composer install --no-interaction
 
