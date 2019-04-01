@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.5.1
+Fixed:
+- Fixed an issue where a package could provide an empty as well as a valid namespace
+
+  ```json
+  {
+  "autoload": {
+    "psr-4": {
+        "": "src/",
+        "A\\": "src/"
+      }
+    }
+  }
+  ```
+
+## 0.5.0
+Changed:
+- The plugin will exit with a code > 0 if there are unused packages
+- Temporary solution to "silent" ignore ext- packages (might be changed in the future [#33](https://github.com/icanhazstring/composer-unused/issues/33))
+
+Added:
+ - Cli parameter to exit clean (even with unused packages) --ignore-exit-code
+
 ## 0.4.0
 Fixed:
 - Fixed an issue where class constant `Namespace\Foobar::class` was not recognized as usage [#29](https://github.com/icanhazstring/composer-unused/issues/29)
