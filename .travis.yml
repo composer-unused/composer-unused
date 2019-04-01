@@ -3,15 +3,14 @@ php:
   - 7.1
   - 7.2
   - 7.3
-
-sudo: false
-
-cache:
-  directories:
-    - $HOME/.composer/cache
+  - 7.4snapshot
+  - nightly
 
 matrix:
   fast_finish: true
+  allow_failures:
+    - php: nightly
+    - php: 7.4snapshot
 
 before_script:
   - composer install --no-interaction
