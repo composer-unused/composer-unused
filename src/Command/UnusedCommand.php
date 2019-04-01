@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Icanhazstring\Composer\Unused\Command;
 
 use Composer\Command\BaseCommand;
-use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Loader\LoaderBuilder;
@@ -32,8 +31,6 @@ class UnusedCommand extends BaseCommand
     private $io;
     /** @var LoggerInterface */
     private $logger;
-    /** @var IOInterface */
-    private $composerIO;
     /** @var LoaderBuilder */
     private $loaderBuilder;
 
@@ -41,15 +38,13 @@ class UnusedCommand extends BaseCommand
         ErrorHandlerInterface $errorHandler,
         SymfonyStyleFactory $outputFactory,
         LoaderBuilder $loaderBuilder,
-        LoggerInterface $logger,
-        IOInterface $composerIO
+        LoggerInterface $logger
     ) {
         parent::__construct('unused');
         $this->errorHandler = $errorHandler;
         $this->symfonyStyleFactory = $outputFactory;
         $this->loaderBuilder = $loaderBuilder;
         $this->logger = $logger;
-        $this->composerIO = $composerIO;
     }
 
     protected function configure(): void
@@ -102,7 +97,6 @@ class UnusedCommand extends BaseCommand
 
         if (!$packageLoaderResult->hasItems()) {
             $this->io->error('No required packages found');
-            $this->dumpLogs();
 
             return 1;
         }
@@ -185,27 +179,11 @@ class UnusedCommand extends BaseCommand
             );
         }
 
-        if ($this->composerIO->isDebug()) {
-            $this->dumpLogs();
-        }
-
         if ($packageLoaderResult->hasSkippedItems() && !$input->getOption('ignore-exit-code')) {
             return 1;
         }
 
         return 0;
-    }
-
-    private function dumpLogs(): void
-    {
-        if (!$this->composerIO->isDebug()) {
-            return;
-        }
-
-//        $dumpLocation = $this->errorDumper->dump($this->errorHandler, $this->logger);
-//        if ($dumpLocation) {
-//            $this->io->note(sprintf('Log dumped to: %s', $dumpLocation));
-//        }
     }
 
     /**

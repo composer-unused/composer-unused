@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused\Command\Factory;
 
-use Composer\IO\IOInterface;
 use Icanhazstring\Composer\Unused\Command\UnusedCommand;
 use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Loader\LoaderBuilder;
@@ -20,8 +19,7 @@ class UnusedCommandFactory
             $container->get(ErrorHandlerInterface::class),
             new SymfonyStyleFactory(),
             $container->get(LoaderBuilder::class),
-            $container->get(LoggerInterface::class),
-            $container->get(IOInterface::class)
+            $container->get(LoggerInterface::class)
         );
     }
 }
