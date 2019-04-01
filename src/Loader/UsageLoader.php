@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Icanhazstring\Composer\Unused\Loader;
 
 use Composer\Composer;
-use Icanhazstring\Composer\Unused\Error\Handler\ErrorHandlerInterface;
+use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Parser\NodeVisitor;
 use PhpParser\NodeTraverser;
 use PhpParser\Parser;
@@ -23,7 +23,7 @@ class UsageLoader implements LoaderInterface
     /** @var ErrorHandlerInterface */
     private $errorHandler;
     /** @var LoggerInterface */
-    private $debugLogger;
+    private $logger;
     /** @var ResultInterface */
     private $loaderResult;
     /** @var array */
@@ -33,14 +33,14 @@ class UsageLoader implements LoaderInterface
         Parser $parser,
         NodeVisitor $visitor,
         ErrorHandlerInterface $errorHandler,
-        LoggerInterface $debugLogger,
+        LoggerInterface $logger,
         ResultInterface $loaderResult,
         array $excludes = []
     ) {
         $this->parser = $parser;
         $this->visitor = $visitor;
         $this->errorHandler = $errorHandler;
-        $this->debugLogger = $debugLogger;
+        $this->logger = $logger;
         $this->loaderResult = $loaderResult;
         $this->excludes = $excludes;
     }
@@ -74,13 +74,13 @@ class UsageLoader implements LoaderInterface
         foreach ($files as $file) {
             $io->progressAdvance();
             $this->visitor->setCurrentFile($file);
-            $this->debugLogger->debug(sprintf('Parsing file %s', $file->getPathname()));
+            $this->logger->debug(sprintf('Parsing file %s', $file->getPathname()));
 
             $nodes = $this->parser->parse($file->getContents(), $this->errorHandler) ?? [];
 
             if (!$nodes) {
                 $this->loaderResult->skipItem($file->getFilename(), 'Could not parse nodes');
-                $this->debugLogger->debug(sprintf('Could not parse nodes from file %s', $file->getFilename()));
+                $this->logger->debug(sprintf('Could not parse nodes from file %s', $file->getFilename()));
 
                 continue;
             }

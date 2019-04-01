@@ -7,15 +7,15 @@ namespace Icanhazstring\Composer\Unused\Command;
 use Composer\Command\BaseCommand;
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
-use Icanhazstring\Composer\Unused\Error\ErrorDumperInterface;
-use Icanhazstring\Composer\Unused\Error\Handler\ErrorHandlerInterface;
+use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Loader\LoaderBuilder;
 use Icanhazstring\Composer\Unused\Loader\PackageLoader;
 use Icanhazstring\Composer\Unused\Loader\UsageLoader;
-use Icanhazstring\Composer\Unused\Log\DebugLogger;
 use Icanhazstring\Composer\Unused\Output\SymfonyStyleFactory;
 use Icanhazstring\Composer\Unused\Subject\PackageSubject;
 use Icanhazstring\Composer\Unused\Subject\UsageInterface;
+use Icanhazstring\Composer\Unused\UnusedPlugin;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -26,14 +26,12 @@ class UnusedCommand extends BaseCommand
 {
     /** @var ErrorHandlerInterface */
     private $errorHandler;
-    /** @var ErrorDumperInterface */
-    private $errorDumper;
     /** @var SymfonyStyleFactory */
     private $symfonyStyleFactory;
     /** @var SymfonyStyle */
     private $io;
-    /** @var DebugLogger */
-    private $debugLogger;
+    /** @var LoggerInterface */
+    private $logger;
     /** @var IOInterface */
     private $composerIO;
     /** @var LoaderBuilder */
@@ -41,18 +39,16 @@ class UnusedCommand extends BaseCommand
 
     public function __construct(
         ErrorHandlerInterface $errorHandler,
-        ErrorDumperInterface $errorDumper,
         SymfonyStyleFactory $outputFactory,
         LoaderBuilder $loaderBuilder,
-        DebugLogger $debugLogger,
+        LoggerInterface $logger,
         IOInterface $composerIO
     ) {
         parent::__construct('unused');
         $this->errorHandler = $errorHandler;
-        $this->errorDumper = $errorDumper;
         $this->symfonyStyleFactory = $outputFactory;
         $this->loaderBuilder = $loaderBuilder;
-        $this->debugLogger = $debugLogger;
+        $this->logger = $logger;
         $this->composerIO = $composerIO;
     }
 
@@ -89,6 +85,8 @@ class UnusedCommand extends BaseCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $composer = $this->getComposer();
+        $this->logCommandInfo($composer);
+
         /** @var string[] $excludePackagesOption */
         $excludePackagesOption = $input->getOption('excludePackage');
         $excludePackagesConfig = $composer->getPackage()->getExtra()['unused'] ?? [];
@@ -96,16 +94,11 @@ class UnusedCommand extends BaseCommand
         /** @var string[] $excludeDirs */
         $excludeDirs = $input->getOption('excludeDir');
 
-        $packageLoader = $this->loaderBuilder->build(
-            PackageLoader::class,
-            array_merge($excludePackagesConfig, $excludePackagesOption)
-        );
-
-        $usageLoader = $this->loaderBuilder->build(UsageLoader::class, $excludeDirs);
-
         $this->io = ($this->symfonyStyleFactory)($input, $output);
 
-        $packageLoaderResult = $packageLoader->load($composer, $this->io);
+        $packageLoaderResult = $this->loaderBuilder
+            ->build(PackageLoader::class, array_merge($excludePackagesConfig, $excludePackagesOption))
+            ->load($composer, $this->io);
 
         if (!$packageLoaderResult->hasItems()) {
             $this->io->error('No required packages found');
@@ -114,7 +107,9 @@ class UnusedCommand extends BaseCommand
             return 1;
         }
 
-        $usageLoaderResult = $usageLoader->load($composer, $this->io);
+        $usageLoaderResult = $this->loaderBuilder
+            ->build(UsageLoader::class, $excludeDirs)
+            ->load($composer, $this->io);
         $analyseUsageResult = $this->analyseUsages($packageLoaderResult->getItems(), $usageLoaderResult->getItems());
 
         /** @var PackageSubject[] $usedPackages */
@@ -207,10 +202,10 @@ class UnusedCommand extends BaseCommand
             return;
         }
 
-        $dumpLocation = $this->errorDumper->dump($this->errorHandler, $this->debugLogger);
-        if ($dumpLocation) {
-            $this->io->note(sprintf('Log dumped to: %s', $dumpLocation));
-        }
+//        $dumpLocation = $this->errorDumper->dump($this->errorHandler, $this->logger);
+//        if ($dumpLocation) {
+//            $this->io->note(sprintf('Log dumped to: %s', $dumpLocation));
+//        }
     }
 
     /**
@@ -263,5 +258,25 @@ class UnusedCommand extends BaseCommand
             'used'   => $usedPackages,
             'unused' => $unusedPackages
         ];
+    }
+
+    private function logCommandInfo(\Composer\Composer $composer): void
+    {
+        $requires = [];
+        $devRequires = [];
+
+        foreach ($composer->getPackage()->getRequires() as $name => $require) {
+            $requires[$name] = $require->getPrettyConstraint();
+        }
+
+        foreach ($composer->getPackage()->getDevRequires() as $name => $require) {
+            $devRequires[$name] = $require->getPrettyConstraint();
+        }
+
+        $this->logger->info('version', ['value' => UnusedPlugin::VERSION]);
+        $this->logger->info('requires', $requires);
+        $this->logger->info('dev-requires', $devRequires);
+        $this->logger->info('autoload', $composer->getPackage()->getAutoload());
+        $this->logger->info('dev-autoload', $composer->getPackage()->getDevAutoload());
     }
 }

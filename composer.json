@@ -22,7 +22,8 @@
         "nikic/php-parser": "^4.2",
         "psr/log": "^1.1",
         "symfony/finder": "^4.2",
-        "zendframework/zend-servicemanager": "^3.4"
+        "zendframework/zend-servicemanager": "^3.4",
+        "ext-json": "*"
     },
     "require-dev": {
         "composer/composer": "^1.8",
