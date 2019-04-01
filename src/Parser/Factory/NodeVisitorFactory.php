@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused\Parser\Factory;
 
+use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Parser\NodeVisitor;
 use Icanhazstring\Composer\Unused\Parser\Strategy\ClassConstStrategy;
 use Icanhazstring\Composer\Unused\Parser\Strategy\NewParseStrategy;
@@ -20,6 +21,6 @@ class NodeVisitorFactory
             new StaticParseStrategy(),
             new UseParseStrategy(),
             new ClassConstStrategy()
-        ]);
+        ], $container->get(ErrorHandlerInterface::class));
     }
 }

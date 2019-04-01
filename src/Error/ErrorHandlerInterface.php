@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Unused\Error\Handler;
+namespace Icanhazstring\Composer\Unused\Error;
 
 use PhpParser\ErrorHandler;
 use Throwable;
@@ -14,11 +14,4 @@ interface ErrorHandlerInterface extends ErrorHandler
      * @return void
      */
     public function handle(Throwable $error): void;
-
-    public function hasErrors(): bool;
-
-    /**
-     * @return Throwable[]
-     */
-    public function getErrors(): array;
 }

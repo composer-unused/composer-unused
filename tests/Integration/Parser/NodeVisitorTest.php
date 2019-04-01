@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Icanhazstring\Composer\Test\Unused\Integration\Parser;
 
 use Exception;
-use Icanhazstring\Composer\Unused\Error\Handler\ErrorHandlerInterface;
+use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Parser\NodeVisitor;
 use Icanhazstring\Composer\Unused\Parser\Strategy\ClassConstStrategy;
 use Icanhazstring\Composer\Unused\Parser\Strategy\NewParseStrategy;
@@ -100,7 +100,7 @@ class NodeVisitorTest extends TestCase
         /** @var Node[] $nodes */
         $nodes = $parser->parse($contents);
 
-        $nodeVisitor = new NodeVisitor([new $strategy()]);
+        $nodeVisitor = new NodeVisitor([new $strategy()], $this->prophesize(ErrorHandlerInterface::class)->reveal());
         $fileInfo = new \SplFileInfo($inputFile);
         $nodeVisitor->setCurrentFile($fileInfo);
 

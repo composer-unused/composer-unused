@@ -2,13 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Unused\Error\Handler;
+namespace Icanhazstring\Composer\Unused\Error;
 
 use PhpParser\Error;
+use Psr\Log\LoggerInterface;
 use Throwable;
 
-class ThrowingErrorHandler implements ErrorHandlerInterface
+class ErrorHandler implements ErrorHandlerInterface
 {
+    /** @var LoggerInterface */
+    private $logger;
+
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+
     /**
      * Adapter for php-parser error handler.
      *
@@ -23,16 +32,6 @@ class ThrowingErrorHandler implements ErrorHandlerInterface
 
     public function handle(Throwable $error): void
     {
-        throw $error;
-    }
-
-    public function hasErrors(): bool
-    {
-        return false;
-    }
-
-    public function getErrors(): array
-    {
-        return [];
+        $this->logger->error($error->getMessage(), ['error' => $error]);
     }
 }

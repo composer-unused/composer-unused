@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused\Parser;
 
-use Icanhazstring\Composer\Unused\Error\Handler\ErrorHandlerInterface;
-use Icanhazstring\Composer\Unused\Error\Handler\ThrowingErrorHandler;
+use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Parser\Strategy\ParseStrategyInterface;
 use Icanhazstring\Composer\Unused\Subject\NamespaceUsage;
 use Icanhazstring\Composer\Unused\Subject\UsageInterface;
@@ -26,13 +25,13 @@ class NodeVisitor extends NodeVisitorAbstract
     private $errorHandler;
 
     /**
-     * @param ParseStrategyInterface[]   $strategies
-     * @param ErrorHandlerInterface|null $errorHandler
+     * @param ParseStrategyInterface[] $strategies
+     * @param ErrorHandlerInterface    $errorHandler
      */
-    public function __construct(array $strategies, ErrorHandlerInterface $errorHandler = null)
+    public function __construct(array $strategies, ErrorHandlerInterface $errorHandler)
     {
         $this->strategies = $strategies;
-        $this->errorHandler = $errorHandler ?? new ThrowingErrorHandler();
+        $this->errorHandler = $errorHandler;
     }
 
     /**
