@@ -1,5 +1,5 @@
 ---
-name: Bug report :bug:
+name: Bug report
 about: Something is not working? Here you go!
 title: ''
 labels: ''
