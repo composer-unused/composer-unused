@@ -1,9 +1,6 @@
 ---
-name: Bug report
-about: Something is not working? Here you go!
-title: ''
-labels: ''
-assignees: ''
+name: Bug report 🐛
+about: If something isn't working as expected 🤔
 
 ---
 
