@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.4
+Fixed:
+- Fixed issue where composer-unused-dump was created even when not in debug mode [#41](https://github.com/icanhazstring/composer-unused/issues/41)
+- Fixed issue where exit code was greater 0 on skipped packages, while it should be on unused packages [#42](https://github.com/icanhazstring/composer-unused/pull/42) Thanks to [@binarious](https://github.com/binarious)
+
 ## 0.5.3
 Fixed:
 - Fixed issue where qualified namespaces where not recognized when called from global namespace
