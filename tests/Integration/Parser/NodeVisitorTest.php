@@ -27,7 +27,7 @@ class NodeVisitorTest extends TestCase
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/StaticVariableCall.php',
                 'strategy'               => StaticParseStrategy::class
             ],
-            'StaticParseStrategyShouldReturnEmptyUsageOnNonFQCall'         => [
+            'StaticParseStrategyShouldReturnEmptyUsageOnNonFQCall'     => [
                 'expectedUsedNamespaces' => [],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/StaticNonFullyQualifiedCall.php',
                 'strategy'               => StaticParseStrategy::class
@@ -44,12 +44,12 @@ class NodeVisitorTest extends TestCase
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/NewInstantiateDynamicClass.php',
                 'strategy'               => NewParseStrategy::class
             ],
-            'NewParseStrategyShouldReturnEmptyUsageOnNonFQCall'            => [
+            'NewParseStrategyShouldReturnEmptyUsageOnNonFQCall'        => [
                 'expectedUsedNamespaces' => [],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/NewInstantiateNonFullyQualifiedCall.php',
                 'strategy'               => NewParseStrategy::class
             ],
-            'NewParseStrategyShouldReturnCorrectNamespaceOnFQCall'         => [
+            'NewParseStrategyShouldReturnCorrectNamespaceOnFQCall'     => [
                 'expectedUsedNamespaces' => [
                     'NewInstantiateFullyQualifiedCall'
                 ],
@@ -81,6 +81,20 @@ class NodeVisitorTest extends TestCase
                 ],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/ClassConst.php',
                 'strategy'               => ClassConstStrategy::class
+            ],
+            'NewParseStrategyShouldReturnQualifiedNamespace'           => [
+                'expectedUsedNamespaces' => [
+                    'TestFile\NewInstantiateQualifiedClass'
+                ],
+                'inputFile'              => __DIR__ . '/../../assets/TestFiles/NewInstantiateQualifiedClass.php',
+                'strategy'               => NewParseStrategy::class
+            ],
+            'StaticParseStrategyShouldReturnQualifiedNamespace'        => [
+                'expectedUsedNamespaces' => [
+                    'TestFile\StaticQualifiedCall'
+                ],
+                'inputFile'              => __DIR__ . '/../../assets/TestFiles/StaticQualifiedCall.php',
+                'strategy'               => StaticParseStrategy::class
             ]
         ];
     }

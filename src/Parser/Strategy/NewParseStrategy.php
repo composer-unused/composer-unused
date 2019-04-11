@@ -20,7 +20,7 @@ class NewParseStrategy implements ParseStrategyInterface
             return false;
         }
 
-        return $node->class->isFullyQualified();
+        return $node->class->isFullyQualified() || $node->class->isQualified();
     }
 
     /**

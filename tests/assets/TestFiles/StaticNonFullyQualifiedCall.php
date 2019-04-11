@@ -10,4 +10,4 @@ class StaticNonFullyQualifiedCall
     }
 }
 
-$var = StaticFullyQualifiedCall::bar();
+$var = StaticNonFullyQualifiedCall::bar();
