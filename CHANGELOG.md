@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.3
+Fixed:
+- Fixed issue where qualified namespaces where not recognized when called from global namespace
+  - This caused some false-positives (e.g. for symfony-bundles)
+
+## 0.5.2
+Fixed:
+- Fixed unused scan for `symfony-bundle` types
+
 ## 0.5.1
 Fixed:
 - Fixed an issue where a package could provide an empty as well as a valid namespace
