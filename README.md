@@ -10,11 +10,11 @@ When working in a big repository, you sometimes lose track of your required comp
 packages. There may be so many packages you can't be sure if they are used or not.
 
 Unfortunately, the `composer why` command only gives you the information about why
-a package is installed in dependency to an another package.
+a package is installed in dependency to another package.
 
 How do we check whether the provided *namespaces* of a package are used in our code?
 
-`composer unused` is created to the rescue!
+`composer unused` to the rescue!
 
 ![example](https://i.imgur.com/aTLwpgL.gif)
 
