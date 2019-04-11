@@ -179,7 +179,7 @@ class UnusedCommand extends BaseCommand
             );
         }
 
-        if ($packageLoaderResult->hasSkippedItems() && !$input->getOption('ignore-exit-code')) {
+        if (count($unusedPackages) > 0 && !$input->getOption('ignore-exit-code')) {
             return 1;
         }
 
