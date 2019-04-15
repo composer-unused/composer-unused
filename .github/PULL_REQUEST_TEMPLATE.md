@@ -1,6 +1,6 @@
 ### All Submissions:
 
-* [ ] Does you PR have the correct target branch? (0.x for bugfix/feature of current release)
+* [ ] Does your PR have the correct target branch? (0.x for bugfix/feature of current release)
 * [ ] Have you followed the guidelines in our [Contributing document](../CONTRIBUTING.md)?
 * [ ] Have you checked to ensure there aren't other open [Pull Requests](https://github.com/icanhazstring/composer-unused/pulls) for the same update/change?
 
