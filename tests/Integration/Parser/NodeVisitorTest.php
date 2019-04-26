@@ -16,6 +16,7 @@ use PhpParser\NodeTraverser;
 use PhpParser\ParserFactory;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use SplFileInfo;
 
 class NodeVisitorTest extends TestCase
 {
@@ -115,7 +116,7 @@ class NodeVisitorTest extends TestCase
         $nodes = $parser->parse($contents);
 
         $nodeVisitor = new NodeVisitor([new $strategy()], $this->prophesize(ErrorHandlerInterface::class)->reveal());
-        $fileInfo = new \SplFileInfo($inputFile);
+        $fileInfo = new SplFileInfo($inputFile);
         $nodeVisitor->setCurrentFile($fileInfo);
 
         $traverser = new NodeTraverser();
@@ -128,7 +129,7 @@ class NodeVisitorTest extends TestCase
     /**
      * @test
      */
-    public function itShouldRaiseExceptinHandledByErrorHandler(): void
+    public function itShouldRaiseExceptionHandledByErrorHandler(): void
     {
         $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
         /** @var string $contents */
@@ -151,7 +152,7 @@ class NodeVisitorTest extends TestCase
         $exceptionParseStrategy->extractNamespaces($node)->willThrow($exception);
 
         $nodeVisitor = new NodeVisitor([$exceptionParseStrategy->reveal()], $errorHandler->reveal());
-        $fileInfo = new \SplFileInfo($inputFile);
+        $fileInfo = new SplFileInfo($inputFile);
         $nodeVisitor->setCurrentFile($fileInfo);
 
         $traverser = new NodeTraverser();

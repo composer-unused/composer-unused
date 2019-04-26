@@ -9,7 +9,7 @@ use Icanhazstring\Composer\Unused\Subject\PackageSubject;
 
 class PackageSubjectFactory
 {
-    public function __invoke(PackageInterface $composerPackage)
+    public function __invoke(PackageInterface $composerPackage): PackageSubject
     {
         return new PackageSubject($composerPackage);
     }

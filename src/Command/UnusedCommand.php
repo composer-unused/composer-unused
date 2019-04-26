@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Icanhazstring\Composer\Unused\Command;
 
 use Composer\Command\BaseCommand;
+use Composer\Composer;
 use Composer\Package\PackageInterface;
 use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Loader\LoaderBuilder;
@@ -238,7 +239,7 @@ class UnusedCommand extends BaseCommand
         ];
     }
 
-    private function logCommandInfo(\Composer\Composer $composer): void
+    private function logCommandInfo(Composer $composer): void
     {
         $requires = [];
         $devRequires = [];

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused\Loader;
 
-use Composer\Package\PackageInterface;
+use Icanhazstring\Composer\Unused\Subject\SubjectInterface;
 use Icanhazstring\Composer\Unused\Subject\UsageInterface;
 
 interface ResultInterface
 {
     /**
-     * @var UsageInterface|PackageInterface $item
+     * @var UsageInterface|SubjectInterface $item
      * @return static
      */
     public function addItem($item);

@@ -29,7 +29,7 @@ class UseParseStrategy implements ParseStrategyInterface
         if ($node instanceof GroupUse) {
             $prefix = $node->prefix->toString();
 
-            return array_map(function (UseUse $use) use ($prefix) {
+            return array_map(static function (UseUse $use) use ($prefix) {
                 return $prefix . '\\' . $use->name->toString();
             }, $node->uses);
         }

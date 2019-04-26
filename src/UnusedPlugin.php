@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused;
 
+use Composer\Command\BaseCommand;
 use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Plugin;
+use Exception;
 use Icanhazstring\Composer\Unused\Command\UnusedCommand;
 use Psr\Container\ContainerInterface;
 
@@ -43,8 +45,8 @@ final class UnusedPlugin implements Plugin\PluginInterface, Plugin\Capable, Plug
     }
 
     /**
-     * @return array|\Composer\Command\BaseCommand[]
-     * @throws \Exception
+     * @return array|BaseCommand[]
+     * @throws Exception
      */
     public function getCommands(): array
     {

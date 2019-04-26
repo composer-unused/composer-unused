@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Icanhazstring\Composer\Unused\Log;
 
 use DateTimeImmutable;
+use Exception;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
 use Throwable;
@@ -25,13 +26,13 @@ class DebugLogger implements LoggerInterface
     {
         try {
             $this->handler->handle($this->buildRecord($level, $message, $context));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Bad luck :D
         }
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     private function buildRecord($level, $message, array $context = []): array
     {

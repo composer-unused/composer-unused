@@ -7,6 +7,7 @@ namespace Icanhazstring\Composer\Unused\Loader;
 use Composer\Composer;
 use Composer\Package\Link;
 use Composer\Repository\RepositoryInterface;
+use function count;
 use Icanhazstring\Composer\Unused\Loader\Filter\FilterInterface;
 use Icanhazstring\Composer\Unused\Subject\Factory\PackageSubjectFactory;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -46,7 +47,7 @@ class PackageLoader implements LoaderInterface
         /** @var Link[] $requiredPackages */
         $requiredPackages = $composer->getPackage()->getRequires();
 
-        $io->progressStart(\count($requiredPackages));
+        $io->progressStart(count($requiredPackages));
 
         foreach ($requiredPackages as $require) {
             $io->progressAdvance();
@@ -68,6 +69,7 @@ class PackageLoader implements LoaderInterface
             if ($composerPackage === null) {
                 continue;
             }
+
 
             $this->loaderResult->addItem(($this->subjectFactory)($composerPackage));
         }

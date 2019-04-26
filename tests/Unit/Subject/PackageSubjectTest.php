@@ -85,14 +85,15 @@ class PackageSubjectTest extends TestCase
      * @test
      * @dataProvider itShouldReturnProperResultForPackageAutoloadDataProvider
      *
-     * @param bool   $exptected
+     * @param bool   $expected
      * @param string $usedNamespace
      * @param array  $packageAutoload
      * @param array  $packageDevAutoload
+     *
      * @return void
      */
     public function itShouldReturnProperResultForPackageAutoload(
-        bool $exptected,
+        bool $expected,
         string $usedNamespace,
         array $packageAutoload,
         array $packageDevAutoload = []
@@ -104,6 +105,6 @@ class PackageSubjectTest extends TestCase
         $composerPackage->getDevAutoload()->willReturn($packageDevAutoload);
 
         $subject = new PackageSubject($composerPackage->reveal());
-        $this->assertEquals($exptected, $subject->providesNamespace($usedNamespace));
+        $this->assertEquals($expected, $subject->providesNamespace($usedNamespace));
     }
 }
