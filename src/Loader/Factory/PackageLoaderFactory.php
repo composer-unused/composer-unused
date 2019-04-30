@@ -32,7 +32,7 @@ class PackageLoaderFactory implements FactoryInterface
                 new ExcludePackageFilter($options['excludes'] ?? []),
                 new NullConstraintFilter(),
                 new NullPackageFilter($repository),
-                new InvalidPackageTypeFilter($repository, ['library', 'symfony-bundle', 'yii2-extension']),
+                new InvalidPackageTypeFilter($repository, ['library', 'symfony-bundle', 'yii2-extension', 'typo3-cms-extension']),
                 new InvalidNamespaceFilter($repository)
             ]
         );
