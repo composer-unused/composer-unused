@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.6
+Fixed:
+- Fixed support for typo3 packages thanks to [@tomasnorre](https://github.com/tomasnorre) 
+
+## 0.5.5
+Fixed:
+- Fixed support for yii2 packages thanks to [@moltam](https://github.com/moltam)
+ 
 ## 0.5.4
 Fixed:
 - Fixed issue where composer-unused-dump was created even when not in debug mode [#41](https://github.com/icanhazstring/composer-unused/issues/41)
