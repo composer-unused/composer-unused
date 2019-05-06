@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+  php7.1:
+    build: .docker/php7.1
+    container_name: composer-unused-7.1
+    volumes:
+      - .:/docker:rw
+    tty: true
+    environment:
+      - PHP_IDE_CONFIG=serverName=php-dev
+      - XDEBUG_CONFIG="idekey=PHPSTORM remote_host=192.168.1.102 remote_port=9001"
+
+  php7.2:
+    build: .docker/php7.2
+    container_name: composer-unused-7.2
+    volumes:
+      - .:/docker:rw
+    tty: true
+    environment:
+      - PHP_IDE_CONFIG=serverName=php-dev
+      - XDEBUG_CONFIG="idekey=PHPSTORM remote_host=192.168.1.102 remote_port=9001"
+
+  php7.3:
+    build: .docker/php7.3
+    container_name: composer-unused-7.3
+    volumes:
+      - .:/docker:rw
+    tty: true
+    environment:
+      - PHP_IDE_CONFIG=serverName=php-dev
+      - XDEBUG_CONFIG="idekey=PHPSTORM remote_host=192.168.1.102 remote_port=9001"
