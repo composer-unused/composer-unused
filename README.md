@@ -1,5 +1,9 @@
+<p align="center">
+    <img src="https://raw.githubusercontent.com/icanhazstring/composer-unused/master/art/logo" width="300" height="360" alt="composer-unused logo">
+</p>
+
 # composer-unused
-Show unused composer dependencies by scanning your code
+Show unused composer dependencies by scanning your code. Created by [Andreas Frömer](https://twitter.com/icanhazstring), logo by [Caneco](https://twitter.com/caneco).
 
 [![](https://img.shields.io/travis/com/icanhazstring/composer-unused.svg?style=flat-square)](https://travis-ci.org/icanhazstring/composer-unused)
 [![](https://img.shields.io/github/tag-date/icanhazstring/composer-unused.svg?label=version&style=flat-square)](https://github.com/icanhazstring/composer-unused/releases/latest)
