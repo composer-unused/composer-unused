@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://raw.githubusercontent.com/icanhazstring/composer-unused/master/art/logo" width="300" height="360" alt="composer-unused logo">
+    <img src="https://raw.githubusercontent.com/icanhazstring/composer-unused/master/art/logo" width="535" height="105" alt="composer-unused logo">
 </p>
 
 # composer-unused
