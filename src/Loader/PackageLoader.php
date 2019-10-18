@@ -7,10 +7,11 @@ namespace Icanhazstring\Composer\Unused\Loader;
 use Composer\Composer;
 use Composer\Package\Link;
 use Composer\Repository\RepositoryInterface;
-use function count;
 use Icanhazstring\Composer\Unused\Loader\Filter\FilterInterface;
 use Icanhazstring\Composer\Unused\Subject\Factory\PackageSubjectFactory;
 use Symfony\Component\Console\Style\SymfonyStyle;
+
+use function count;
 
 class PackageLoader implements LoaderInterface
 {
