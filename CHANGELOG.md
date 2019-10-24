@@ -1,6 +1,10 @@
 # Changelog
 
 ## [0.6.0] - 2019-10-24
+### Fixed
+- Fixed replaced usage on `Zend\ServiceManager` in configuration files 
+
+## [0.6.0] - 2019-10-24
 ### Changed
 - Added custom `psr/container-interface` implementation as a replacement for `zendframework/zend-servicemanager`
 - Inverted the validation of valid Composer package types (no longer a whitelist, but rather a blacklist of invalid types)
