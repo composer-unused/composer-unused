@@ -19,14 +19,15 @@ use Icanhazstring\Composer\Unused\Parser\Factory\NodeVisitorFactory;
 use Icanhazstring\Composer\Unused\Parser\NodeVisitor;
 use Icanhazstring\Composer\Unused\Subject\Factory\PackageSubjectFactory;
 use Psr\Log\LoggerInterface;
-use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
     'factories' => [
         NodeVisitor::class           => NodeVisitorFactory::class,
         UsageLoader::class           => UsageLoaderFactory::class,
         PackageLoader::class         => PackageLoaderFactory::class,
-        PackageSubjectFactory::class => InvokableFactory::class,
+        PackageSubjectFactory::class => static function() {
+            return new PackageSubjectFactory();
+        },
         ErrorHandlerInterface::class => ErrorHandlerFactory::class,
         UnusedCommand::class         => UnusedCommandFactory::class,
         LoggerInterface::class       => DebugLoggerFactory::class,

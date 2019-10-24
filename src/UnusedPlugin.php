@@ -10,13 +10,13 @@ use Composer\IO\IOInterface;
 use Composer\Plugin;
 use Exception;
 use Icanhazstring\Composer\Unused\Command\UnusedCommand;
-use Psr\Container\ContainerInterface;
+use Icanhazstring\Composer\Unused\Di\ServiceContainer;
 
 final class UnusedPlugin implements Plugin\PluginInterface, Plugin\Capable, Plugin\Capability\CommandProvider
 {
     public const VERSION = '0.5.1';
 
-    /** @var ContainerInterface */
+    /** @var ServiceContainer */
     private $container;
 
     public function __construct(...$args)
@@ -33,8 +33,8 @@ final class UnusedPlugin implements Plugin\PluginInterface, Plugin\Capable, Plug
     {
         $this->container = require __DIR__ . '/../config/container.php';
 
-        $this->container->setService(IOInterface::class, $io);
-        $this->container->setService(Composer::class, $composer);
+        $this->container->register(IOInterface::class, $io);
+        $this->container->register(Composer::class, $composer);
     }
 
     public function getCapabilities()

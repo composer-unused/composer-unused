@@ -45,6 +45,15 @@ class ServiceContainer implements ContainerInterface
         return $this->doCreate($name, $options);
     }
 
+    /**
+     * @param string $name
+     * @param mixed  $object
+     */
+    public function register(string $name, $object): void
+    {
+        $this->services[$name] = $object;
+    }
+
     private function configure(array $config): void
     {
         $this->factories = $config['factories'] ?? [];
@@ -62,7 +71,7 @@ class ServiceContainer implements ContainerInterface
         }
 
         try {
-            $factory = $this->factories[$name];
+            $factory = $this->getFactory($name);
             $object = $factory($this, $options);
         } catch (ContainerExceptionInterface $exception) {
             throw $exception;
@@ -75,5 +84,32 @@ class ServiceContainer implements ContainerInterface
         }
 
         return $object;
+    }
+
+    /**
+     * @return mixed|null
+     */
+    private function getFactory(string $name)
+    {
+        $factory = $this->factories[$name] ?? null;
+        $lazyLoaded = false;
+
+        if (is_string($factory) && class_exists($factory)) {
+            $factory = new $factory();
+            $lazyLoaded = true;
+        }
+
+        if (is_callable($factory)) {
+            if ($lazyLoaded) {
+                $this->factories[$name] = $factory;
+            }
+
+            return $factory;
+        }
+
+        throw new ServiceNotFoundException(sprintf(
+            'Unable to resolve service "%s" to a factory; are you certain you provided it during configuration?',
+            $name
+        ));
     }
 }

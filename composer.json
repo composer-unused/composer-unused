@@ -18,11 +18,12 @@
     ],
     "require": {
         "php": "^7.1",
+        "ext-json": "*",
         "composer-plugin-api": "^1.1.0",
         "nikic/php-parser": "^4.2",
+        "psr/container": "^1.0",
         "psr/log": "^1.1",
-        "symfony/finder": "^4.2",
-        "ext-json": "*"
+        "symfony/finder": "^4.2"
     },
     "require-dev": {
         "composer/composer": "^1.8",
