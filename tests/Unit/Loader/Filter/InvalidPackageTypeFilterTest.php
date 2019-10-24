@@ -57,7 +57,7 @@ class InvalidPackageTypeFilterTest extends TestCase
         $link->getTarget()->willReturn();
         $link->getConstraint()->willReturn();
 
-        $filter = new InvalidPackageTypeFilter($repository, ['library']);
+        $filter = new InvalidPackageTypeFilter($repository);
         $this->assertSame($expected, $filter->match($link->reveal()));
     }
 }
