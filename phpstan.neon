@@ -5,6 +5,7 @@ parameters:
     excludes_analyse:
         - %currentWorkingDirectory%/tests/assets
     level: max
+    inferPrivatePropertyTypeFromConstructor: true
     paths:
         - src/
         - tests/
