@@ -19,11 +19,17 @@ class NullPackageFilter implements FilterInterface
 
     public function match(Link $item): bool
     {
-        return $this->repository->findPackage($item->getTarget(), $item->getConstraint() ?? '') === null;
+        return !$this->isPhpExtension($item) &&
+            $this->repository->findPackage($item->getTarget(), $item->getConstraint() ?? '') === null;
     }
 
     public function getReason(): string
     {
         return 'Unable to locate package';
+    }
+
+    private function isPhpExtension(Link $require): bool
+    {
+        return strpos($require->getTarget() ?? '', 'ext-') === 0 || $require->getTarget() === 'php';
     }
 }
