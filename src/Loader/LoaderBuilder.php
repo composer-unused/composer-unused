@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused\Loader;
 
-use Zend\ServiceManager\ServiceManager;
+use Icanhazstring\Composer\Unused\Di\ServiceContainer;
 
 class LoaderBuilder
 {
-    /** @var ServiceManager */
+    /** @var ServiceContainer */
     private $container;
 
-    public function __construct(ServiceManager $container)
+    public function __construct(ServiceContainer $container)
     {
         $this->container = $container;
     }
