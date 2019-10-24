@@ -39,6 +39,7 @@ class PackageLoader implements LoaderInterface
     /**
      * @param Composer     $composer
      * @param SymfonyStyle $io
+     *
      * @return ResultInterface
      */
     public function load(Composer $composer, SymfonyStyle $io): ResultInterface
