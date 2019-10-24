@@ -8,6 +8,7 @@ use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Parser\NodeVisitor;
 use Icanhazstring\Composer\Unused\Parser\Strategy\ClassConstStrategy;
 use Icanhazstring\Composer\Unused\Parser\Strategy\NewParseStrategy;
+use Icanhazstring\Composer\Unused\Parser\Strategy\PhpExtensionStrategy;
 use Icanhazstring\Composer\Unused\Parser\Strategy\StaticParseStrategy;
 use Icanhazstring\Composer\Unused\Parser\Strategy\UseParseStrategy;
 use Psr\Container\ContainerInterface;
@@ -20,7 +21,10 @@ class NodeVisitorFactory
             new NewParseStrategy(),
             new StaticParseStrategy(),
             new UseParseStrategy(),
-            new ClassConstStrategy()
+            new ClassConstStrategy(),
+            new PhpExtensionStrategy(
+                get_loaded_extensions()
+            ),
         ], $container->get(ErrorHandlerInterface::class));
     }
 }
