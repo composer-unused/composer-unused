@@ -3,15 +3,15 @@
 </p>
 
 # composer-unused
-Show unused composer dependencies by scanning your code. Created by [Andreas Frömer](https://twitter.com/icanhazstring), logo by [Caneco](https://twitter.com/caneco).
+A Composer Plugin to show unused Composer dependencies by scanning your code. Created by [Andreas Frömer](https://twitter.com/icanhazstring), logo by [Caneco](https://twitter.com/caneco).
 
 [![](https://img.shields.io/travis/com/icanhazstring/composer-unused.svg?style=flat-square)](https://travis-ci.org/icanhazstring/composer-unused)
 [![](https://img.shields.io/github/tag-date/icanhazstring/composer-unused.svg?label=version&style=flat-square)](https://github.com/icanhazstring/composer-unused/releases/latest)
 
 ## Motivation
 
-When working in a big repository, you sometimes lose track of your required composer
-packages. There may be so many packages you can't be sure if they are used or not.
+When working in a big repository, you sometimes lose track of your required Composer
+packages. There may be so many packages you can't be sure if they are actually used or not.
 
 Unfortunately, the `composer why` command only gives you the information about why
 a package is installed in dependency to another package.
@@ -31,22 +31,22 @@ as a global dependency (e.g. on your CI):
     $ composer global require icanhazstring/composer-unused
 
 
-### Local (dev requirement)
-You can also install `composer-unused` as a local dev dependency:
+### Local
+You can also install `composer-unused` as a local __development__ dependency:
 
     $ composer require --dev icanhazstring/composer-unused
 
 ## Usage
 
-Whether installing it as local or global dependency, run the command below inside your project directory:
+Whether you installed it as a local or global dependency, run the command below inside your project directory to start a scan:
 
     $ composer unused
 
 
 ### Exclude folders and packages
-Sometimes you don't want to scan a certain directory or ignore a composer package while scanning.
-For this, you can provide the `--excludeDir|-d` or the `--excludePackage|-p` option.
-These options accept multiple values as this example:
+Sometimes you don't want to scan a certain directory or ignore a Composer package while scanning.
+In these cases, you can provide the `--excludeDir|-d` or the `--excludePackage|-p` option.
+These options accept multiple values as shown next:
 
     $ composer unused --excludeDir=config --excludePackage=symfony/console
     $ composer unused \
@@ -73,12 +73,12 @@ directive in your `composer.json` file.
 ```
 
 ## Troubleshooting
-If you encounter some errors, try running
+If you encounter some errors, try running:
 
     $ composer unused -vvv
 
 
-This command will enable debug mode and create an error report beside your `composer.json`.
+This command will enable the debug mode and create an error report beside your `composer.json`.
 > `composer-unused-dump-YmdHis`
 
 ## Changelog
