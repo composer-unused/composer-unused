@@ -9,18 +9,15 @@ use Composer\Repository\RepositoryInterface;
 
 class InvalidPackageTypeFilter implements FilterInterface
 {
-    /** @var string[] */
-    private $validTypes;
+    private const INVALID_TYPES = ['project', 'metapackage', 'composer-plugin'];
     /** @var RepositoryInterface */
     private $repository;
 
     /**
      * @param RepositoryInterface $repository
-     * @param string[]            $validTypes
      */
-    public function __construct(RepositoryInterface $repository, array $validTypes)
+    public function __construct(RepositoryInterface $repository)
     {
-        $this->validTypes = $validTypes;
         $this->repository = $repository;
     }
 
@@ -35,7 +32,7 @@ class InvalidPackageTypeFilter implements FilterInterface
             return false;
         }
 
-        return !in_array($package->getType(), $this->validTypes, true);
+        return in_array($package->getType(), self::INVALID_TYPES, true);
     }
 
     public function getReason(): string
