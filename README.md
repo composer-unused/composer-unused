@@ -5,6 +5,8 @@
 # composer-unused
 Show unused composer dependencies by scanning your code. Created by [Andreas Frömer](https://twitter.com/icanhazstring), logo by [Caneco](https://twitter.com/caneco).
 
+:fire::fire: Now available as Github Action on the [Marketplace](https://github.com/marketplace/actions/composer-unused) :fire::fire:
+
 [![](https://img.shields.io/travis/com/icanhazstring/composer-unused.svg?style=flat-square)](https://travis-ci.org/icanhazstring/composer-unused)
 [![](https://img.shields.io/github/tag-date/icanhazstring/composer-unused.svg?label=version&style=flat-square)](https://github.com/icanhazstring/composer-unused/releases/latest)
 
