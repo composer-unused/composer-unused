@@ -56,7 +56,7 @@ class UnusedCommand extends BaseCommand
 
         $this->addOption(
             'excludeDir',
-            'd',
+            null,
             InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
             'Provide one or more folders to exclude from usage scan',
             []
@@ -64,7 +64,7 @@ class UnusedCommand extends BaseCommand
 
         $this->addOption(
             'excludePackage',
-            'p',
+            null,
             InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
             'Provide one or more packages that should be ignored during scan',
             []
