@@ -9,6 +9,8 @@ use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Parser\NodeVisitor;
 use Icanhazstring\Composer\Unused\Parser\Strategy\ClassConstStrategy;
 use Icanhazstring\Composer\Unused\Parser\Strategy\NewParseStrategy;
+use Icanhazstring\Composer\Unused\Parser\Strategy\ParseStrategyInterface;
+use Icanhazstring\Composer\Unused\Parser\Strategy\PhpExtensionStrategy;
 use Icanhazstring\Composer\Unused\Parser\Strategy\StaticParseStrategy;
 use Icanhazstring\Composer\Unused\Parser\Strategy\UseParseStrategy;
 use PhpParser\Node;
@@ -26,36 +28,36 @@ class NodeVisitorTest extends TestCase
             'StaticParseStrategyShouldReturnEmptyUsageOnVariableCall'  => [
                 'expectedUsedNamespaces' => [],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/StaticVariableCall.php',
-                'strategy'               => StaticParseStrategy::class
+                'strategy'               => new StaticParseStrategy()
             ],
             'StaticParseStrategyShouldReturnEmptyUsageOnNonFQCall'     => [
                 'expectedUsedNamespaces' => [],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/StaticNonFullyQualifiedCall.php',
-                'strategy'               => StaticParseStrategy::class
+                'strategy'               => new StaticParseStrategy()
             ],
             'StaticParseStrategyShouldReturnCorrectNamespaceOnFQCall'      => [
                 'expectedUsedNamespaces' => [
                     'StaticFullyQualifiedCall'
                 ],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/StaticFullyQualifiedCall.php',
-                'strategy'               => StaticParseStrategy::class
+                'strategy'               => new StaticParseStrategy()
             ],
             'NewParseStrategyShouldReturnEmptyUsageOnDynamicClassnameCall' => [
                 'expectedUsedNamespaces' => [],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/NewInstantiateDynamicClass.php',
-                'strategy'               => NewParseStrategy::class
+                'strategy'               => new NewParseStrategy()
             ],
             'NewParseStrategyShouldReturnEmptyUsageOnNonFQCall'        => [
                 'expectedUsedNamespaces' => [],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/NewInstantiateNonFullyQualifiedCall.php',
-                'strategy'               => NewParseStrategy::class
+                'strategy'               => new NewParseStrategy()
             ],
             'NewParseStrategyShouldReturnCorrectNamespaceOnFQCall'     => [
                 'expectedUsedNamespaces' => [
                     'NewInstantiateFullyQualifiedCall'
                 ],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/NewInstantiateFullyQualifiedCall.php',
-                'strategy'               => NewParseStrategy::class
+                'strategy'               => new NewParseStrategy()
             ],
             'UseParseStrategyShouldReturnSingleLineImportedNamespaces' => [
                 'expectedUsedNamespaces' => [
@@ -64,7 +66,7 @@ class NodeVisitorTest extends TestCase
                     'Icanhazstring\Composer\Unused\Command'
                 ],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/UseSingleLineNoGroup.php',
-                'strategy'               => UseParseStrategy::class
+                'strategy'               => new UseParseStrategy()
             ],
             'UseParseStrategyShouldReturnMultiLineImportedNamespaces'  => [
                 'expectedUsedNamespaces' => [
@@ -73,7 +75,7 @@ class NodeVisitorTest extends TestCase
                     NewParseStrategy::class
                 ],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/UseMultiLineGroup.php',
-                'strategy'               => UseParseStrategy::class
+                'strategy'               => new UseParseStrategy()
             ],
             'ClassConstStrategyShouldReturnCorrectNamespace'           => [
                 'expectedUsedNamespaces' => [
@@ -81,22 +83,62 @@ class NodeVisitorTest extends TestCase
                     StaticParseStrategy::class
                 ],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/ClassConst.php',
-                'strategy'               => ClassConstStrategy::class
+                'strategy'               => new ClassConstStrategy()
             ],
             'NewParseStrategyShouldReturnQualifiedNamespace'           => [
                 'expectedUsedNamespaces' => [
                     'TestFile\NewInstantiateQualifiedClass'
                 ],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/NewInstantiateQualifiedClass.php',
-                'strategy'               => NewParseStrategy::class
+                'strategy'               => new NewParseStrategy()
             ],
             'StaticParseStrategyShouldReturnQualifiedNamespace'        => [
                 'expectedUsedNamespaces' => [
                     'TestFile\StaticQualifiedCall'
                 ],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/StaticQualifiedCall.php',
-                'strategy'               => StaticParseStrategy::class
-            ]
+                'strategy'               => new StaticParseStrategy()
+            ],
+            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---1'        => [
+                'expectedUsedNamespaces' => [],
+                'inputFile'              => __DIR__ . '/../../assets/TestFiles/PhpExtensionStrategy/ClassWithCustomInterfaceName.php',
+                'strategy'               => new PhpExtensionStrategy(['json'])
+            ],
+            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---2'        => [
+                'expectedUsedNamespaces' => [],
+                'inputFile'              => __DIR__ . '/../../assets/TestFiles/PhpExtensionStrategy/ClassWithCustomInterface.php',
+                'strategy'               => new PhpExtensionStrategy(['json'])
+            ],
+            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---3'        => [
+                'expectedUsedNamespaces' => ['json'],
+                'inputFile'              => __DIR__ . '/../../assets/TestFiles/PhpExtensionStrategy/ClassWithExtensionInterface.php',
+                'strategy'               => new PhpExtensionStrategy(['json'])
+            ],
+            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---4'        => [
+                'expectedUsedNamespaces' => ['json'],
+                'inputFile'              => __DIR__ . '/../../assets/TestFiles/PhpExtensionStrategy/ClassWithExtensionInterfaceInUse.php',
+                'strategy'               => new PhpExtensionStrategy(['json'])
+            ],
+            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---5'        => [
+                'expectedUsedNamespaces' => [],
+                'inputFile'              => __DIR__ . '/../../assets/TestFiles/PhpExtensionStrategy/ClassWithCustomConstant.php',
+                'strategy'               => new PhpExtensionStrategy(['json'])
+            ],
+            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---6'        => [
+                'expectedUsedNamespaces' => ['json'],
+                'inputFile'              => __DIR__ . '/../../assets/TestFiles/PhpExtensionStrategy/ClassWithJsonConstant.php',
+                'strategy'               => new PhpExtensionStrategy(['json'])
+            ],
+            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---7'        => [
+                'expectedUsedNamespaces' => ['json'],
+                'inputFile'              => __DIR__ . '/../../assets/TestFiles/PhpExtensionStrategy/ClassWithExtensionFunction.php',
+                'strategy'               => new PhpExtensionStrategy(['json'])
+            ],
+            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---8'        => [
+                'expectedUsedNamespaces' => [],
+                'inputFile'              => __DIR__ . '/../../assets/TestFiles/PhpExtensionStrategy/ClassWithCustomFunction.php',
+                'strategy'               => new PhpExtensionStrategy(['json'])
+            ],
         ];
     }
 
@@ -104,10 +146,10 @@ class NodeVisitorTest extends TestCase
      * @test
      * @param array  $expectedUsedNamespaces
      * @param string $inputFile
-     * @param string $strategy
+     * @param ParseStrategyInterface $strategy
      * @dataProvider itShouldParseUsagesDataProvider
      */
-    public function itShouldParseUsages(array $expectedUsedNamespaces, string $inputFile, string $strategy): void
+    public function itShouldParseUsages(array $expectedUsedNamespaces, string $inputFile, ParseStrategyInterface $strategy): void
     {
         $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
         /** @var string $contents */
@@ -115,7 +157,7 @@ class NodeVisitorTest extends TestCase
         /** @var Node[] $nodes */
         $nodes = $parser->parse($contents);
 
-        $nodeVisitor = new NodeVisitor([new $strategy()], $this->prophesize(ErrorHandlerInterface::class)->reveal());
+        $nodeVisitor = new NodeVisitor([$strategy], $this->prophesize(ErrorHandlerInterface::class)->reveal());
         $fileInfo = new SplFileInfo($inputFile);
         $nodeVisitor->setCurrentFile($fileInfo);
 
