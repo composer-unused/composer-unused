@@ -2,7 +2,9 @@
 
 ## [0.6.0] - 2019-10-24
 ### Fixed
-- Fixed replaced usage on `Zend\ServiceManager` in configuration files 
+- Fixed replaced usage on `Zend\ServiceManager` in configuration files
+### Removed
+- Removed shorthand options `-d` and `-p` as they could be already in use 
 
 ## [0.6.0] - 2019-10-24
 ### Changed
