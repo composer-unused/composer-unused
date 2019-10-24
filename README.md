@@ -45,7 +45,7 @@ Whether installing it as local or global dependency, run the command below insid
 
 ### Exclude folders and packages
 Sometimes you don't want to scan a certain directory or ignore a composer package while scanning.
-For this, you can provide the `--excludeDir|-xd` or the `--excludePackage|-xp` option.
+For this, you can provide the `--excludeDir|-d` or the `--excludePackage|-p` option.
 These options accept multiple values as this example:
 
     $ composer unused --excludeDir=config --excludePackage=symfony/console
