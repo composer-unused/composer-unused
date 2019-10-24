@@ -110,12 +110,12 @@ class NodeVisitorTest extends TestCase
                 'strategy'               => new PhpExtensionStrategy(['json'])
             ],
             'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---3'        => [
-                'expectedUsedNamespaces' => ['json'],
+                'expectedUsedNamespaces' => ['ext-json'],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/PhpExtensionStrategy/ClassWithExtensionInterface.php',
                 'strategy'               => new PhpExtensionStrategy(['json'])
             ],
             'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---4'        => [
-                'expectedUsedNamespaces' => ['json'],
+                'expectedUsedNamespaces' => ['ext-json'],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/PhpExtensionStrategy/ClassWithExtensionInterfaceInUse.php',
                 'strategy'               => new PhpExtensionStrategy(['json'])
             ],
@@ -125,12 +125,12 @@ class NodeVisitorTest extends TestCase
                 'strategy'               => new PhpExtensionStrategy(['json'])
             ],
             'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---6'        => [
-                'expectedUsedNamespaces' => ['json'],
+                'expectedUsedNamespaces' => ['ext-json'],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/PhpExtensionStrategy/ClassWithJsonConstant.php',
                 'strategy'               => new PhpExtensionStrategy(['json'])
             ],
             'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---7'        => [
-                'expectedUsedNamespaces' => ['json'],
+                'expectedUsedNamespaces' => ['ext-json'],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/PhpExtensionStrategy/ClassWithExtensionFunction.php',
                 'strategy'               => new PhpExtensionStrategy(['json'])
             ],

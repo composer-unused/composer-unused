@@ -75,7 +75,7 @@ class PhpExtensionStrategy implements ParseStrategyInterface
         ) {
             foreach ($type as $phpextension => $extensionConstant) {
                 if (array_key_exists($searchingName, $extensionConstant)) {
-                    $matches[] = $phpextension;
+                    $matches[] = 'ext-' . strtolower($phpextension);
                 }
             }
         }

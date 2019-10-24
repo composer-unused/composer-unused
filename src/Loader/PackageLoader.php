@@ -6,9 +6,11 @@ namespace Icanhazstring\Composer\Unused\Loader;
 
 use Composer\Composer;
 use Composer\Package\Link;
+use Composer\Package\Package;
 use Composer\Repository\RepositoryInterface;
 use Icanhazstring\Composer\Unused\Loader\Filter\FilterInterface;
 use Icanhazstring\Composer\Unused\Subject\Factory\PackageSubjectFactory;
+use Icanhazstring\Composer\Unused\Subject\PackageSubject;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 use function count;
@@ -58,10 +60,14 @@ class PackageLoader implements LoaderInterface
                 continue;
             }
 
-            $composerPackage = $this->packageRepository->findPackage(
-                $require->getTarget(),
-                $require->getConstraint() ?? ''
-            );
+            if ($this->isPhpExtension($require)) {
+                $composerPackage = new Package(strtolower($require->getTarget()), '*', '*');
+            } else {
+                $composerPackage = $this->packageRepository->findPackage(
+                    $require->getTarget(),
+                    $require->getConstraint() ?? ''
+                );
+            }
 
             if ($composerPackage === null) {
                 continue;
@@ -91,5 +97,10 @@ class PackageLoader implements LoaderInterface
         }
 
         return false;
+    }
+
+    private function isPhpExtension(Link $require): bool
+    {
+        return strpos($require->getTarget(), 'ext-') === 0 || $require->getTarget() === 'php';
     }
 }
