@@ -3,6 +3,7 @@
 namespace Icanhazstring\Composer\Unused\Parser\Strategy;
 
 use PhpParser\Node;
+use ReflectionExtension;
 
 class PhpExtensionStrategy implements ParseStrategyInterface
 {
@@ -18,7 +19,7 @@ class PhpExtensionStrategy implements ParseStrategyInterface
     public function __construct(array $extensions)
     {
         foreach ($extensions as $extension) {
-            $reflection = new \ReflectionExtension($extension);
+            $reflection = new ReflectionExtension($extension);
             $this->extensionConstants[$extension] = $reflection->getConstants();
             $this->extensionFunctions[$extension] = $reflection->getFunctions();
             $this->extensionClasses[$extension] = array_flip($reflection->getClassNames());
@@ -66,16 +67,15 @@ class PhpExtensionStrategy implements ParseStrategyInterface
         $searchingName = $this->getNameFromNode($node);
 
         $matches = [];
-        foreach (
-            [
+        $extensions = [
             $this->extensionClasses,
             $this->extensionFunctions,
             $this->extensionConstants
-            ] as $type
-        ) {
-            foreach ($type as $phpextension => $extensionConstant) {
-                if (array_key_exists($searchingName, $extensionConstant)) {
-                    $matches[] = 'ext-' . strtolower($phpextension);
+        ];
+        foreach ($extensions as $type) {
+            foreach ($type as $phpextension => $extensionClassFuncOrConst) {
+                if (array_key_exists($searchingName, $extensionClassFuncOrConst)) {
+                    $matches[] = 'ext-' . str_replace(' ', '-', strtolower($phpextension));
                 }
             }
         }

@@ -9,6 +9,7 @@ RUN apt-get update \
      openssl \
      libzip-dev \
     && docker-php-ext-install zip \
+    && docker-php-ext-install opcache \
     && rm -r /var/lib/apt/lists/*
 
 RUN pecl install xdebug-2.6.0 \
