@@ -23,6 +23,8 @@ class PackageLoader implements LoaderInterface
     private $loaderResult;
     /** @var RepositoryInterface */
     private $packageRepository;
+    /** @var PackageHelper */
+    private $packageHelper;
     /** @var FilterInterface[] */
     private $packageFilters;
 
@@ -30,11 +32,13 @@ class PackageLoader implements LoaderInterface
         RepositoryInterface $packageRepository,
         PackageSubjectFactory $subjectFactory,
         ResultInterface $loaderResult,
+        PackageHelper $packageHelper,
         array $packageFilters
     ) {
         $this->subjectFactory = $subjectFactory;
         $this->loaderResult = $loaderResult;
         $this->packageRepository = $packageRepository;
+        $this->packageHelper = $packageHelper;
         $this->packageFilters = $packageFilters;
     }
 
@@ -60,7 +64,7 @@ class PackageLoader implements LoaderInterface
                 continue;
             }
 
-            if ($this->isPhpExtension($require)) {
+            if ($this->packageHelper->isPhpExtension($require)) {
                 $composerPackage = new Package(strtolower($require->getTarget()), '*', '*');
             } else {
                 $composerPackage = $this->packageRepository->findPackage(
@@ -97,10 +101,5 @@ class PackageLoader implements LoaderInterface
         }
 
         return false;
-    }
-
-    private function isPhpExtension(Link $require): bool
-    {
-        return strpos($require->getTarget(), 'ext-') === 0 || $require->getTarget() === 'php';
     }
 }

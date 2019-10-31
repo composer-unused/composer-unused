@@ -8,6 +8,7 @@ use Composer\Package\Link;
 use Composer\Package\PackageInterface;
 use Composer\Repository\RepositoryInterface;
 use Icanhazstring\Composer\Unused\Loader\Filter\NullPackageFilter;
+use Icanhazstring\Composer\Unused\Loader\PackageHelper;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
@@ -49,7 +50,7 @@ class NullPackageFilterTest extends TestCase
         $link->getTarget()->willReturn();
         $link->getConstraint()->willReturn();
 
-        $filter = new NullPackageFilter($repository);
+        $filter = new NullPackageFilter($repository, new PackageHelper());
         $this->assertSame($expected, $filter->match($link->reveal()));
     }
 }
