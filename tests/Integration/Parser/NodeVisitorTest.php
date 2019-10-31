@@ -139,6 +139,11 @@ class NodeVisitorTest extends TestCase
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/PhpExtensionStrategy/ClassWithCustomFunction.php',
                 'strategy'               => new PhpExtensionStrategy(['json'])
             ],
+            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---9'        => [
+                'expectedUsedNamespaces' => ['ext-zend-opcache'],
+                'inputFile'              => __DIR__ . '/../../assets/TestFiles/PhpExtensionStrategy/ClassWithZendOpcache.php',
+                'strategy'               => new PhpExtensionStrategy(['Zend Opcache'])
+            ],
         ];
     }
 
