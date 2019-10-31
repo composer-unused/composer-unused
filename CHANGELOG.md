@@ -1,6 +1,10 @@
 # Changelog
 
-## [0.6.0] - 2019-10-24
+## [0.6.2] - 2019-10-31
+### Added
+- Added support to scan for unused php extensions [#33](https://github.com/icanhazstring/composer-unused/issues/33) thanks to [@marcelthole](https://github.com/marcelthole)
+
+## [0.6.1] - 2019-10-24
 ### Fixed
 - Fixed replaced usage on `Zend\ServiceManager` in configuration files
 ### Removed
