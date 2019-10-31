@@ -13,6 +13,7 @@ use Icanhazstring\Composer\Unused\Loader\Filter\ExcludePackageFilter;
 use Icanhazstring\Composer\Unused\Loader\Filter\InvalidNamespaceFilter;
 use Icanhazstring\Composer\Unused\Loader\Filter\NullConstraintFilter;
 use Icanhazstring\Composer\Unused\Loader\Filter\NullPackageFilter;
+use Icanhazstring\Composer\Unused\Loader\PackageHelper;
 use Icanhazstring\Composer\Unused\Loader\PackageLoader;
 use Icanhazstring\Composer\Unused\Loader\Result;
 use Icanhazstring\Composer\Unused\Subject\Factory\PackageSubjectFactory;
@@ -53,6 +54,7 @@ class PackageLoaderTest extends TestCase
             $packageRepository->reveal(),
             new PackageSubjectFactory(),
             $result->reveal(),
+            new PackageHelper(),
             [
                 new InvalidNamespaceFilter($packageRepository->reveal())
             ]
@@ -90,8 +92,9 @@ class PackageLoaderTest extends TestCase
             $packageRepository->reveal(),
             new PackageSubjectFactory(),
             $result->reveal(),
+            new PackageHelper(),
             [
-                new NullPackageFilter($packageRepository->reveal())
+                new NullPackageFilter($packageRepository->reveal(), new PackageHelper())
             ]
         );
 
@@ -126,6 +129,7 @@ class PackageLoaderTest extends TestCase
             $packageRepository->reveal(),
             new PackageSubjectFactory(),
             $result->reveal(),
+            new PackageHelper(),
             [
                 new NullConstraintFilter()
             ]
@@ -155,6 +159,7 @@ class PackageLoaderTest extends TestCase
             $packageRepository->reveal(),
             new PackageSubjectFactory(),
             $result,
+            new PackageHelper(),
             []
         );
 
@@ -194,6 +199,7 @@ class PackageLoaderTest extends TestCase
             $packageRepository->reveal(),
             new PackageSubjectFactory(),
             $result,
+            new PackageHelper(),
             [
                 new ExcludePackageFilter(['package/A'])
             ]

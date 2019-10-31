@@ -11,6 +11,7 @@ use Icanhazstring\Composer\Unused\Loader\Filter\InvalidNamespaceFilter;
 use Icanhazstring\Composer\Unused\Loader\Filter\InvalidPackageTypeFilter;
 use Icanhazstring\Composer\Unused\Loader\Filter\NullConstraintFilter;
 use Icanhazstring\Composer\Unused\Loader\Filter\NullPackageFilter;
+use Icanhazstring\Composer\Unused\Loader\PackageHelper;
 use Icanhazstring\Composer\Unused\Loader\PackageLoader;
 use Icanhazstring\Composer\Unused\Loader\Result;
 use Icanhazstring\Composer\Unused\Subject\Factory\PackageSubjectFactory;
@@ -23,15 +24,17 @@ class PackageLoaderFactory implements FactoryInterface
         /** @var Composer $composer */
         $composer = $container->get(Composer::class);
         $repository = $composer->getRepositoryManager()->getLocalRepository();
+        $packageHelper = new PackageHelper();
 
         return new PackageLoader(
             $repository,
             $container->get(PackageSubjectFactory::class),
             new Result(),
+            $packageHelper,
             [
                 new ExcludePackageFilter($options['excludes'] ?? []),
                 new NullConstraintFilter(),
-                new NullPackageFilter($repository),
+                new NullPackageFilter($repository, $packageHelper),
                 new InvalidPackageTypeFilter($repository),
                 new InvalidNamespaceFilter($repository)
             ]
