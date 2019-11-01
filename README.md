@@ -3,7 +3,9 @@
 </p>
 
 # composer-unused
-A Composer Plugin to show unused Composer dependencies by scanning your code. Created by [Andreas Frömer](https://twitter.com/icanhazstring) and [contributors](https://github.com/icanhazstring/composer-unused/graphs/contributors), logo by [Caneco](https://twitter.com/caneco).
+A Composer Plugin to show unused Composer dependencies by scanning your code. 
+
+Created by [Andreas Frömer](https://twitter.com/icanhazstring) and [contributors](https://github.com/icanhazstring/composer-unused/graphs/contributors), logo by [Caneco](https://twitter.com/caneco).
 
 :fire::fire: Now available as Github Action on the [Marketplace](https://github.com/marketplace/actions/composer-unused) :fire::fire:
 
