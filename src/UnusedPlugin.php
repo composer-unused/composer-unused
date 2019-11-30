@@ -14,7 +14,7 @@ use Icanhazstring\Composer\Unused\Di\ServiceContainer;
 
 final class UnusedPlugin implements Plugin\PluginInterface, Plugin\Capable, Plugin\Capability\CommandProvider
 {
-    public const VERSION = '0.5.1';
+    public const VERSION = '0.7.0';
 
     /** @var ServiceContainer */
     private $container;
