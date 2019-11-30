@@ -3,3 +3,5 @@ composer.phar
 composer.lock
 cs-check.json
 .phpunit.result.cache
+/build/
+*.phar
