@@ -1,0 +1,5 @@
+{
+  "base-path": null,
+  "output": "build/composer-unused.phar",
+  "php-scoper": "scoper.inc.php"
+}
