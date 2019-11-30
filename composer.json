@@ -70,6 +70,9 @@
         "test": "Use \"phpunit\" to run the tests. See phpunit.xml",
         "check": "Check the coding covention and run the tests"
     },
+    "bin": [
+        "bin/composer-unused"
+    ],
     "support": {
         "issues": "https://github.com/icanhazstring/composer-unused/issues",
         "source": "https://github.com/icanhazstring/composer-unused"
