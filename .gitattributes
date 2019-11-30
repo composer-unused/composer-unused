@@ -7,6 +7,8 @@ phpunit.xml export-ignore
 .github/ export-ignore
 art/ export-ignore
 tests/ export-ignore
+scoper.inc.php export-ignore
+box.json export-ignore
 
 CHANGELOG.md export-ignore
 CODE_OF_CONDUCT.md export-ignore
