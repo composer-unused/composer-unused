@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.0] - TBA
+### Added
+- Added scoped `phar` support
+- Added `bin/composer-unused` as another entry point
+
+### Changed
+- Moved `composer/composer` into root requirements as its needed to run `bin/composer-unused`
+
 ## [0.6.2] - 2019-10-31
 ### Added
 - Added support to scan for unused php extensions [#33](https://github.com/icanhazstring/composer-unused/issues/33) thanks to [@marcelthole](https://github.com/marcelthole)
