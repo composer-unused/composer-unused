@@ -51,8 +51,8 @@ You can also install `composer-unused` as a local __development__ dependency:
 Depending on the art of your installation the command might differ.
 
 ### PHAR
-The `phar` archive is an executable and can be run directly in you project:
-    $ composer-unused.phar
+The `phar` archive can be run directly in you project:
+    $ php composer-unused.phar
 
 ### Local/Global
 Having `composer-unused` as a local or global dependency you can run it as an composer-plugin:
@@ -65,8 +65,8 @@ Sometimes you don't want to scan a certain directory or ignore a Composer packag
 In these cases, you can provide the `--excludeDir` or the `--excludePackage` option.
 These options accept multiple values as shown next:
 
-    $ composer-unused.phar --excludeDir=config --excludePackage=symfony/console
-    $ composer-unused.phar \
+    $ php composer-unused.phar --excludeDir=config --excludePackage=symfony/console
+    $ php composer-unused.phar \
         --excludeDir=bin \
         --excludeDir=config \
         --excludePackage=symfony/assets \
@@ -92,7 +92,7 @@ directive in your `composer.json` file.
 ## Troubleshooting
 If you encounter some errors, try running:
 
-    $ composer unused -vvv
+    $ php composer-unused.phar -vvv
 
 
 This command will enable the debug mode and create an error report beside your `composer.json`.
