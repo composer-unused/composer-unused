@@ -3,7 +3,7 @@
 </p>
 
 # composer-unused
-A Composer Plugin to show unused Composer dependencies by scanning your code. 
+A Composer tool to show unused Composer dependencies by scanning your code. 
 
 Created by [Andreas Frömer](https://twitter.com/icanhazstring) and [contributors](https://github.com/icanhazstring/composer-unused/graphs/contributors), logo by [Caneco](https://twitter.com/caneco).
 
@@ -28,21 +28,34 @@ How do we check whether the provided *namespaces* of a package are used in our c
 
 ## Installation
 
+### PHP Archie (PHAR) (recommended)
+Grab the latest `composer-unused.phar` from the latest release:
+
+    $ curl -JOL https://github.com/icanhazstring/composer-unused/releases/latest/download/composer-unused.phar
+
 ### Global
 If you have a lot of projects and don't want to install this package per project, simply install it
 as a global dependency (e.g. on your CI):
 
     $ composer global require icanhazstring/composer-unused
 
-
 ### Local
 You can also install `composer-unused` as a local __development__ dependency:
 
     $ composer require --dev icanhazstring/composer-unused
 
-## Usage
+> :exclamation: Beware: Local (or global) requirement might lead to issues related to outdated or `replaced` dependencies and
+> `composer-unused` might not work as intended!
 
-Whether you installed it as a local or global dependency, run the command below inside your project directory to start a scan:
+## Usage
+Depending on the art of your installation the command might differ.
+
+### PHAR
+The `phar` archive is an executable and can be run directly in you project:
+    $ composer-unused.phar
+
+### Local/Global
+Having `composer-unused` as a local or global dependency you can run it as an composer-plugin:
 
     $ composer unused
 
@@ -52,8 +65,8 @@ Sometimes you don't want to scan a certain directory or ignore a Composer packag
 In these cases, you can provide the `--excludeDir` or the `--excludePackage` option.
 These options accept multiple values as shown next:
 
-    $ composer unused --excludeDir=config --excludePackage=symfony/console
-    $ composer unused \
+    $ composer-unused.phar --excludeDir=config --excludePackage=symfony/console
+    $ composer-unused.phar \
         --excludeDir=bin \
         --excludeDir=config \
         --excludePackage=symfony/assets \
