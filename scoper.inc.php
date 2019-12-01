@@ -14,7 +14,6 @@ return [
     // For more see: https://github.com/humbug/php-scoper#finders-and-paths
     'finders' => [
         Finder::create()->files()->in('src'),
-        Finder::create()->files()->in('config'),
         Finder::create()
             ->files()
             ->ignoreVCS(true)
@@ -30,6 +29,8 @@ return [
             ->in('vendor'),
         Finder::create()->append([
             'composer.json',
+            'config/container.php',
+            'config/service_manager.php'
         ]),
     ],
 
