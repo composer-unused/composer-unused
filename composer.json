@@ -8,7 +8,7 @@
         "unused",
         "php-parser"
     ],
-    "homepage": "https://github.com/icanhazstring/composer-unused",
+    "homepage": "https://github.com/composer-unused/composer-unused",
     "license": "MIT",
     "authors": [
         {
@@ -74,7 +74,7 @@
         "bin/composer-unused"
     ],
     "support": {
-        "issues": "https://github.com/icanhazstring/composer-unused/issues",
-        "source": "https://github.com/icanhazstring/composer-unused"
+        "issues": "https://github.com/composer-unused/composer-unused/issues",
+        "source": "https://github.com/composer-unused/composer-unused"
     }
 }
