@@ -28,7 +28,7 @@ How do we check whether the provided *namespaces* of a package are used in our c
 
 ## Installation
 
-### PHP Archie (PHAR) (recommended)
+### PHAR (PHP Archive) (recommended)
 Grab the latest `composer-unused.phar` from the latest release:
 
     $ curl -JOL https://github.com/icanhazstring/composer-unused/releases/latest/download/composer-unused.phar
@@ -52,6 +52,7 @@ Depending on the art of your installation the command might differ.
 
 ### PHAR
 The `phar` archive can be run directly in you project:
+
     $ php composer-unused.phar
 
 ### Local/Global
