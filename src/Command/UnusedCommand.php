@@ -98,10 +98,12 @@ class UnusedCommand extends BaseCommand
         $excludeDirs = $input->getOption('excludeDir');
 
         $this->io = ($this->symfonyStyleFactory)($input, $output);
+        /** @var bool $noProgress */
+        $noProgress = $input->getOption('no-progress');
 
         $packageLoaderResult = $this->loaderBuilder
             ->build(PackageLoader::class, array_merge($excludePackagesConfig, $excludePackagesOption))
-            ->toggleProgress($input->getOption('no-progress'))
+            ->toggleProgress($noProgress)
             ->load($composer, $this->io);
 
         if (!$packageLoaderResult->hasItems()) {
@@ -112,7 +114,7 @@ class UnusedCommand extends BaseCommand
 
         $usageLoaderResult = $this->loaderBuilder
             ->build(UsageLoader::class, $excludeDirs)
-            ->toggleProgress($input->getOption('no-progress'))
+            ->toggleProgress($noProgress)
             ->load($composer, $this->io);
         $analyseUsageResult = $this->analyseUsages($packageLoaderResult->getItems(), $usageLoaderResult->getItems());
 
