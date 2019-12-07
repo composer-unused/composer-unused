@@ -76,6 +76,13 @@ class UnusedCommand extends BaseCommand
             InputOption::VALUE_NONE,
             'Ignore exit codes so there are no "failure" exit codes'
         );
+
+        $this->addOption(
+            'no-progress',
+            null,
+            InputOption::VALUE_NONE,
+            'Show no progress bar'
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -94,6 +101,7 @@ class UnusedCommand extends BaseCommand
 
         $packageLoaderResult = $this->loaderBuilder
             ->build(PackageLoader::class, array_merge($excludePackagesConfig, $excludePackagesOption))
+            ->toggleProgress($input->getOption('no-progress'))
             ->load($composer, $this->io);
 
         if (!$packageLoaderResult->hasItems()) {
@@ -104,6 +112,7 @@ class UnusedCommand extends BaseCommand
 
         $usageLoaderResult = $this->loaderBuilder
             ->build(UsageLoader::class, $excludeDirs)
+            ->toggleProgress($input->getOption('no-progress'))
             ->load($composer, $this->io);
         $analyseUsageResult = $this->analyseUsages($packageLoaderResult->getItems(), $usageLoaderResult->getItems());
 

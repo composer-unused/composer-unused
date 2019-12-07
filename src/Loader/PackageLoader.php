@@ -10,13 +10,13 @@ use Composer\Package\Package;
 use Composer\Repository\RepositoryInterface;
 use Icanhazstring\Composer\Unused\Loader\Filter\FilterInterface;
 use Icanhazstring\Composer\Unused\Subject\Factory\PackageSubjectFactory;
-use Icanhazstring\Composer\Unused\Subject\PackageSubject;
 use Symfony\Component\Console\Style\SymfonyStyle;
-
 use function count;
 
 class PackageLoader implements LoaderInterface
 {
+    use PrograssBarTrait;
+
     /** @var PackageSubjectFactory */
     private $subjectFactory;
     /** @var ResultInterface */
@@ -50,15 +50,16 @@ class PackageLoader implements LoaderInterface
      */
     public function load(Composer $composer, SymfonyStyle $io): ResultInterface
     {
+        $this->io = $io;
         $io->section('Loading packages');
 
         /** @var Link[] $requiredPackages */
         $requiredPackages = $composer->getPackage()->getRequires();
 
-        $io->progressStart(count($requiredPackages));
+        $this->progressStart(count($requiredPackages));
 
         foreach ($requiredPackages as $require) {
-            $io->progressAdvance();
+            $this->progressAdvance();
 
             if ($this->matchesPackageFilter($require)) {
                 continue;
@@ -81,7 +82,7 @@ class PackageLoader implements LoaderInterface
             $this->loaderResult->addItem(($this->subjectFactory)($composerPackage));
         }
 
-        $io->progressFinish();
+        $this->progressFinish();
 
         if (count($this->loaderResult->getItems()) !== count($requiredPackages)) {
             $io->note(sprintf('Found %d package(s) to be checked.', count($this->loaderResult->getItems())));
