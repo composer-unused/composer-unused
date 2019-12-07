@@ -92,6 +92,12 @@ directive in your `composer.json` file.
 }
 ```
 
+### Suppress progress bar
+If you run `composer-unused` in CI the console progressbar often messes up your logs files.
+To suppress them use:
+
+    `$ php composer-unused.phar --no-progress`
+
 ## Troubleshooting
 If you encounter some errors, try running:
 
