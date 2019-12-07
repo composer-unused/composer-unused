@@ -1,6 +1,10 @@
 # Changelog
 
-## [0.7.0] - TBA
+## [0.7.1] - TBA
+###
+- Added `--no-progress` to suppress progress bar for CI
+
+## [0.7.0] - 2019-12-01
 ### Added
 - Added scoped `phar` support
 - Added `bin/composer-unused` as another entry point
