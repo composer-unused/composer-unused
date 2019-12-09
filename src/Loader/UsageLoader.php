@@ -16,6 +16,8 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class UsageLoader implements LoaderInterface
 {
+    use PrograssBarTrait;
+
     /** @var Parser */
     private $parser;
     /** @var NodeVisitor */
@@ -52,6 +54,7 @@ class UsageLoader implements LoaderInterface
      */
     public function load(Composer $composer, SymfonyStyle $io): ResultInterface
     {
+        $this->io = $io;
         $finder = new Finder();
         $baseDir = dirname($composer->getConfig()->getConfigSource()->getName());
 
@@ -69,10 +72,10 @@ class UsageLoader implements LoaderInterface
 
         $io->section(sprintf('Scanning files from basedir %s', $baseDir));
 
-        $io->progressStart(count($files));
+        $this->progressStart(count($files));
 
         foreach ($files as $file) {
-            $io->progressAdvance();
+            $this->progressAdvance();
             $this->visitor->setCurrentFile($file);
             $this->logger->debug(sprintf('Parsing file %s', $file->getPathname()));
 
@@ -88,7 +91,7 @@ class UsageLoader implements LoaderInterface
             $traverser->traverse($nodes);
         }
 
-        $io->progressFinish();
+        $this->progressFinish();
 
         foreach ($this->visitor->getUsages() as $usage) {
             $this->loaderResult->addItem($usage);
