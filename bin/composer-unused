@@ -8,8 +8,33 @@ use Composer\IO\IOInterface;
 use Icanhazstring\Composer\Unused\Command\UnusedCommand;
 use Symfony\Component\Console\Input\ArgvInput;
 
-(static function($argv) {
-    require __DIR__ . '/../vendor/autoload.php';
+(static function ($argv) {
+    foreach (
+        [
+            __DIR__ . '/../../../autoload.php',
+            __DIR__ . '/../../vendor/autoload.php',
+            __DIR__ . '/../vendor/autoload.php',
+            __DIR__ . '/vendor/autoload.php'
+        ] as $file) {
+        if (file_exists($file)) {
+            define('UNUSED_COMPOSER_INSTALL', $file);
+
+            break;
+        }
+    }
+
+    if (!defined('UNUSED_COMPOSER_INSTALL')) {
+        fwrite(
+            STDERR,
+            'You need to set up the project dependencies using Composer:' . PHP_EOL . PHP_EOL .
+            '    composer install' . PHP_EOL . PHP_EOL .
+            'You can learn all about Composer on https://getcomposer.org/.' . PHP_EOL
+        );
+
+        die(1);
+    }
+
+    require UNUSED_COMPOSER_INSTALL;
 
     $container = require __DIR__ . '/../config/container.php';
 
