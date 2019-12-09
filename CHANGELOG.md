@@ -1,8 +1,10 @@
 # Changelog
 
-## [0.7.1] - TBA
-###
+## [0.7.1] - 2019-12-09
+### Added
 - Added `--no-progress` to suppress progress bar for CI
+### Fixed
+- Fixed `bin/composer-unused` was unable to detect `vendor/autoload.php` when run as direct depdendency
 
 ## [0.7.0] - 2019-12-01
 ### Added
