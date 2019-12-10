@@ -20,7 +20,7 @@ packages. There may be so many packages you can't be sure if they are actually u
 Unfortunately, the `composer why` command only gives you the information about why
 a package is installed in dependency to another package.
 
-How do we check whether the provided *namespaces* of a package are used in our code?
+How do we check whether the provided *symbols* of a package are used in our code?
 
 `composer unused` to the rescue!
 
