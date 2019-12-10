@@ -5,10 +5,12 @@ phpcs.xml export-ignore
 phpstan.neon export-ignore
 phpunit.xml export-ignore
 .github/ export-ignore
+.docker/ export-ignore
 art/ export-ignore
 tests/ export-ignore
 scoper.inc.php export-ignore
 box.json export-ignore
+docker-compose export-ignore
 
 CHANGELOG.md export-ignore
 CODE_OF_CONDUCT.md export-ignore
