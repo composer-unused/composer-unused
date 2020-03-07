@@ -47,7 +47,7 @@ class PackageLoaderTest extends TestCase
         $packageRepository->findPackage('package/A', '^0.1')->willReturn($package->reveal());
 
         $result = $this->prophesize(Result::class);
-        $result->skipItem('package/A', 'Package provides no namespace')->shouldBeCalled()->willReturn();
+        $result->skipItem('package/A', 'Package provides no namespace')->shouldBeCalled()->willReturn($result->reveal());
         $result->getItems()->willReturn([]);
 
         $loader = new PackageLoader(
@@ -85,7 +85,7 @@ class PackageLoaderTest extends TestCase
         $packageRepository->findPackage('package/A', '^0.1')->willReturn(null);
 
         $result = $this->prophesize(Result::class);
-        $result->skipItem('package/A', 'Unable to locate package')->shouldBeCalled()->willReturn();
+        $result->skipItem('package/A', 'Unable to locate package')->shouldBeCalled()->willReturn($result->reveal());
         $result->getItems()->willReturn([]);
 
         $loader = new PackageLoader(
@@ -122,7 +122,7 @@ class PackageLoaderTest extends TestCase
         $packageRepository = $this->prophesize(RepositoryInterface::class);
 
         $result = $this->prophesize(Result::class);
-        $result->skipItem('package/A', 'Invalid constraint')->shouldBeCalled()->willReturn();
+        $result->skipItem('package/A', 'Invalid constraint')->shouldBeCalled()->willReturn($result->reveal());
         $result->getItems()->willReturn([]);
 
         $loader = new PackageLoader(
