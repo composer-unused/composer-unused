@@ -24,7 +24,7 @@ class StaticParseStrategy implements ParseStrategyInterface
 
     /**
      * @param Node&StaticCall $node
-     * @return array
+     * @return array<string>
      */
     public function extractNamespaces(Node $node): array
     {

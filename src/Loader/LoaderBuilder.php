@@ -16,6 +16,10 @@ class LoaderBuilder
         $this->container = $container;
     }
 
+    /**
+     * @param array<string> $excludes
+     * @param array<string> $suggests
+     */
     public function build(string $loaderClass, array $excludes = [], array $suggests = []): LoaderInterface
     {
         return $this->container->build($loaderClass, ['excludes' => $excludes, 'suggests' => $suggests]);

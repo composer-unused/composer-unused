@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused\Log;
 
+use Icanhazstring\Composer\Unused\Exception\IOException;
+
 class FileHandler implements LogHandlerInterface
 {
+    /** @var resource */
     private static $fileHandle;
     /** @var string */
     private $path;
@@ -18,7 +21,13 @@ class FileHandler implements LogHandlerInterface
     public function handle(array $record): bool
     {
         if (self::$fileHandle === null) {
-            self::$fileHandle = fopen($this->path, 'ab');
+            $handle = fopen($this->path, 'ab');
+
+            if ($handle === false) {
+                throw IOException::unableToOpenHandle($this->path);
+            }
+
+            self::$fileHandle = $handle;
         }
 
         return fwrite(self::$fileHandle, json_encode($record) . PHP_EOL) !== false;

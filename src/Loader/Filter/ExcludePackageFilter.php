@@ -8,7 +8,7 @@ use Composer\Package\Link;
 
 class ExcludePackageFilter implements FilterInterface
 {
-    /** @var array */
+    /** @var array<string> */
     private $excludes;
 
     /**

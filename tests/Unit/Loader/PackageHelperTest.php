@@ -26,6 +26,9 @@ class PackageHelperTest extends TestCase
         self::assertFalse($packageHelper->isPhpExtension($link));
     }
 
+    /**
+     * @return array<array<Link>>
+     */
     public function validPhpExtensionDataProvider(): array
     {
         return [
@@ -35,6 +38,9 @@ class PackageHelperTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<array<Link>>
+     */
     public function invalidPhpExtensionDataProvider(): array
     {
         return [

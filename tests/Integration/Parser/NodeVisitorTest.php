@@ -22,6 +22,9 @@ use SplFileInfo;
 
 class NodeVisitorTest extends TestCase
 {
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     public function itShouldParseUsagesDataProvider(): array
     {
         return [
@@ -149,7 +152,7 @@ class NodeVisitorTest extends TestCase
 
     /**
      * @test
-     * @param array  $expectedUsedNamespaces
+     * @param array<string>  $expectedUsedNamespaces
      * @param string $inputFile
      * @param ParseStrategyInterface $strategy
      * @dataProvider itShouldParseUsagesDataProvider
@@ -179,7 +182,7 @@ class NodeVisitorTest extends TestCase
     public function itShouldRaiseExceptionHandledByErrorHandler(): void
     {
         $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
-        /** @var string $contents */
+        /** @var string $inputFile */
         $inputFile = __DIR__ . '/../../assets/TestFiles/UseSingleLineNoGroup.php';
         /** @var string $contents */
         $contents = file_get_contents($inputFile);

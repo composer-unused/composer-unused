@@ -19,6 +19,9 @@ final class UnusedPlugin implements Plugin\PluginInterface, Plugin\Capable, Plug
     /** @var ServiceContainer */
     private $container;
 
+    /**
+     * @param mixed ...$args
+     */
     public function __construct(...$args)
     {
         if (!empty($args)) {

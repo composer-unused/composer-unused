@@ -10,22 +10,22 @@ use Icanhazstring\Composer\Unused\Subject\UsageInterface;
 interface ResultInterface
 {
     /**
-     * @var UsageInterface|SubjectInterface $item
-     * @return static
+     * @var object|UsageInterface|SubjectInterface $item
      */
-    public function addItem($item);
+    public function addItem(object $item): self;
+
+    public function skipItem(string $item, string $reason): self;
 
     /**
-     * @param string $item
-     * @param string $reason
-     * @return static
+     * @return array<mixed>
      */
-    public function skipItem(string $item, string $reason);
-
     public function getItems(): array;
 
     public function hasItems(): bool;
 
+    /**
+     * @return array<array<string, string>>
+     */
     public function getSkippedItems(): array;
 
     public function hasSkippedItems(): bool;

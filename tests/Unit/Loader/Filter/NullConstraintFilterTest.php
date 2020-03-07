@@ -10,6 +10,9 @@ use PHPUnit\Framework\TestCase;
 
 class NullConstraintFilterTest extends TestCase
 {
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     public function itShouldValidateFilterDataProvider(): array
     {
         $noConstraintLink = $this->prophesize(Link::class);

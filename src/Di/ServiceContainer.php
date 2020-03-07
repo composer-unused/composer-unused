@@ -12,17 +12,19 @@ use Psr\Container\ContainerInterface;
 
 class ServiceContainer implements ContainerInterface
 {
+    /** @var array<string, mixed> */
     private $factories = [];
+    /** @var array<string, mixed> */
     private $services = [];
 
+    /**
+     * @param array<mixed> $config
+     */
     public function __construct(array $config = [])
     {
         $this->configure($config);
     }
 
-    /**
-     * @return mixed
-     */
     public function get($name)
     {
         if (isset($this->services[$name])) {
@@ -38,6 +40,7 @@ class ServiceContainer implements ContainerInterface
     }
 
     /**
+     * @param array<string, mixed> $options
      * @return mixed
      */
     public function build(string $name, array $options = [])
@@ -45,24 +48,23 @@ class ServiceContainer implements ContainerInterface
         return $this->doCreate($name, $options);
     }
 
-    /**
-     * @param string $name
-     * @param mixed  $object
-     */
-    public function register(string $name, $object): void
+    public function register(string $name, object $object): void
     {
         $this->services[$name] = $object;
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     private function configure(array $config): void
     {
         $this->factories = $config['factories'] ?? [];
     }
 
     /**
-     * @return mixed
+     * @param array<string, mixed> $options
      */
-    private function doCreate(string $name, array $options = [])
+    private function doCreate(string $name, array $options = []): object
     {
         if (!isset($this->factories[$name])) {
             throw new ServiceNotFoundException(
@@ -86,10 +88,7 @@ class ServiceContainer implements ContainerInterface
         return $object;
     }
 
-    /**
-     * @return mixed|null
-     */
-    private function getFactory(string $name)
+    private function getFactory(string $name): callable
     {
         $factory = $this->factories[$name] ?? null;
         $lazyLoaded = false;

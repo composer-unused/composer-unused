@@ -18,7 +18,7 @@ class UseParseStrategy implements ParseStrategyInterface
 
     /**
      * @param Node $node
-     * @return array
+     * @return array<string>
      */
     public function extractNamespaces(Node $node): array
     {

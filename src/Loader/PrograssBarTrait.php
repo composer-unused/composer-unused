@@ -10,6 +10,7 @@ trait PrograssBarTrait
 {
     /** @var SymfonyStyle */
     protected $io;
+    /** @var bool */
     protected $noProgress = false;
 
     protected function progressStart(int $count): void
@@ -39,7 +40,7 @@ trait PrograssBarTrait
         $this->io->progressFinish();
     }
 
-    public function toggleProgress(bool $toggle)
+    public function toggleProgress(bool $toggle): self
     {
         $this->noProgress = $toggle;
         return $this;

@@ -15,6 +15,9 @@ use Psr\Log\LoggerInterface;
 
 class UsageLoaderFactory implements FactoryInterface
 {
+    /**
+     * @param array<string, mixed>|null $options
+     */
     public function __invoke(ContainerInterface $container, array $options = null): UsageLoader
     {
         return new UsageLoader(

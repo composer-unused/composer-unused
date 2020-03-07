@@ -10,6 +10,9 @@ use PHPUnit\Framework\TestCase;
 
 class ExcludeFilterTest extends TestCase
 {
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     public function itShouldValidateFilterDataProvider(): array
     {
         return [
@@ -26,7 +29,7 @@ class ExcludeFilterTest extends TestCase
 
     /**
      * @param bool  $expected
-     * @param array $excludes
+     * @param array<string> $excludes
      * @return void
      * @test
      * @dataProvider itShouldValidateFilterDataProvider

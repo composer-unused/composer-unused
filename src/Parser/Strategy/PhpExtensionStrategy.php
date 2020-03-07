@@ -3,19 +3,25 @@
 namespace Icanhazstring\Composer\Unused\Parser\Strategy;
 
 use PhpParser\Node;
+use ReflectionException;
 use ReflectionExtension;
+use ReflectionFunction;
 
 class PhpExtensionStrategy implements ParseStrategyInterface
 {
-    /** @var array<string, mixed> */
+    /** @var array<string, array<string, int>> */
     private $extensionConstants = [];
 
-    /** @var array<string, mixed> */
+    /** @var array<string, array<ReflectionFunction>> */
     private $extensionFunctions = [];
 
-    /** @var array<string, mixed> */
+    /** @var array<string, array<string, int>> */
     private $extensionClasses = [];
 
+    /**
+     * @param array<string> $extensions
+     * @throws ReflectionException
+     */
     public function __construct(array $extensions)
     {
         foreach ($extensions as $extension) {
@@ -62,6 +68,9 @@ class PhpExtensionStrategy implements ParseStrategyInterface
         return false;
     }
 
+    /**
+     * @return array<string>
+     */
     public function extractNamespaces(Node $node): array
     {
         $searchingName = $this->getNameFromNode($node);

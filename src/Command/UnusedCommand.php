@@ -201,7 +201,7 @@ class UnusedCommand extends BaseCommand
     /**
      * @param PackageSubject[] $packages
      * @param UsageInterface[] $usages
-     * @return array
+     * @return array<string, array<PackageInterface|PackageSubject>>
      */
     private function analyseUsages(array $packages, array $usages): array
     {

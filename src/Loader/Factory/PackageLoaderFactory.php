@@ -19,7 +19,10 @@ use Psr\Container\ContainerInterface;
 
 class PackageLoaderFactory implements FactoryInterface
 {
-    public function __invoke(ContainerInterface $container, array $options = null)
+    /**
+     * @param array<string, mixed>|null $options
+     */
+    public function __invoke(ContainerInterface $container, array $options = null): PackageLoader
     {
         /** @var Composer $composer */
         $composer = $container->get(Composer::class);

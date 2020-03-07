@@ -29,6 +29,9 @@ class PackageLoader implements LoaderInterface
     /** @var FilterInterface[] */
     private $packageFilters;
 
+    /**
+     * @param array<FilterInterface> $packageFilters
+     */
     public function __construct(
         RepositoryInterface $packageRepository,
         PackageSubjectFactory $subjectFactory,

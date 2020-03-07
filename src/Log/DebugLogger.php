@@ -22,6 +22,11 @@ class DebugLogger implements LoggerInterface
         $this->handler = $handler;
     }
 
+    /**
+     * @param int $level
+     * @param string $message
+     * @param array<string, mixed> $context
+     */
     public function log($level, $message, array $context = []): void
     {
         try {
@@ -32,9 +37,11 @@ class DebugLogger implements LoggerInterface
     }
 
     /**
+     * @param array<string, mixed> $context
+     * @return array<string, mixed>
      * @throws Exception
      */
-    private function buildRecord($level, $message, array $context = []): array
+    private function buildRecord(int $level, string $message, array $context = []): array
     {
         if (array_key_exists('error', $context)) {
             /** @var Throwable $error */

@@ -14,6 +14,9 @@ use Prophecy\Argument;
 
 class NullPackageFilterTest extends TestCase
 {
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     public function itShouldValidateFilterDataProvider(): array
     {
         $package = $this->prophesize(PackageInterface::class);

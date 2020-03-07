@@ -28,9 +28,12 @@ class UsageLoader implements LoaderInterface
     private $logger;
     /** @var ResultInterface */
     private $loaderResult;
-    /** @var array */
+    /** @var array<string> */
     private $excludes;
 
+    /**
+     * @param array<string> $excludes
+     */
     public function __construct(
         Parser $parser,
         NodeVisitor $visitor,

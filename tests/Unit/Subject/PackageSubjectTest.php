@@ -10,6 +10,9 @@ use PHPUnit\Framework\TestCase;
 
 class PackageSubjectTest extends TestCase
 {
+    /**
+     * @return array<string, array<mixed>>
+     */
     public function itShouldReturnProperResultForPackageAutoloadDataProvider(): array
     {
         return [
@@ -87,8 +90,8 @@ class PackageSubjectTest extends TestCase
      *
      * @param bool   $expected
      * @param string $usedNamespace
-     * @param array  $packageAutoload
-     * @param array  $packageDevAutoload
+     * @param array<string, string>  $packageAutoload
+     * @param array<string, string>  $packageDevAutoload
      *
      * @return void
      */

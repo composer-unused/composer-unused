@@ -13,6 +13,9 @@ use Prophecy\Argument;
 
 class InvalidNamespaceFilterTest extends TestCase
 {
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     public function itShouldValidateFilterDataProvider(): array
     {
         $validNamespacePackage = $this->prophesize(PackageInterface::class);

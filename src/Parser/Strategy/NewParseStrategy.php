@@ -24,8 +24,8 @@ class NewParseStrategy implements ParseStrategyInterface
     }
 
     /**
-     * @param Node&New_ $node
-     * @return array
+     * @param Node&New_$node
+     * @return array<string>
      */
     public function extractNamespaces(Node $node): array
     {
