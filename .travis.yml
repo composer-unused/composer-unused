@@ -1,15 +1,14 @@
 language: php
 php:
-  - 7.2
   - 7.3
-  - 7.4snapshot
+  - 7.4
   - nightly
 
 matrix:
   fast_finish: true
   include:
     - language: php
-      php: 7.1
+      php: 7.3
       before_script:
         - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
         - chmod +x ./cc-test-reporter
@@ -21,7 +20,6 @@ matrix:
         - COVERAGE_FLAGS="--coverage-text --coverage-clover=clover.xml"
   allow_failures:
     - php: nightly
-    - php: 7.4snapshot
 
 branches:
   only:
