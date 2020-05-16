@@ -26,8 +26,8 @@
         "symfony/finder": "^4.2 || ^5.0"
     },
     "require-dev": {
-        "composer/composer": "^1.0 || ^2.0@dev",
         "ext-zend-opcache": "*",
+        "composer/composer": "^1.0 || ^2.0@dev",
         "jangregor/phpstan-prophecy": "^0.6.2",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpstan/phpstan": "^0.12.14",

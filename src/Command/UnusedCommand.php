@@ -87,7 +87,14 @@ class UnusedCommand extends BaseCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->io = ($this->symfonyStyleFactory)($input, $output);
         $composer = $this->getComposer();
+
+        if ($composer === null) {
+            $this->io->error('Could not get composer dependency');
+            return 1;
+        }
+
         $this->logCommandInfo($composer);
 
         /** @var string[] $excludePackagesOption */
@@ -97,7 +104,6 @@ class UnusedCommand extends BaseCommand
         /** @var string[] $excludeDirs */
         $excludeDirs = $input->getOption('excludeDir');
 
-        $this->io = ($this->symfonyStyleFactory)($input, $output);
         /** @var bool $noProgress */
         $noProgress = $input->getOption('no-progress');
 
