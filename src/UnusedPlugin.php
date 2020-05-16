@@ -40,7 +40,15 @@ final class UnusedPlugin implements Plugin\PluginInterface, Plugin\Capable, Plug
         $this->container->register(Composer::class, $composer);
     }
 
-    public function getCapabilities()
+    public function deactivate(Composer $composer, IOInterface $io): void
+    {
+    }
+
+    public function uninstall(Composer $composer, IOInterface $io): void
+    {
+    }
+
+    public function getCapabilities(): array
     {
         return [
             Plugin\Capability\CommandProvider::class => self::class
