@@ -19,14 +19,14 @@
     "require": {
         "php": ">=7.3",
         "ext-json": "*",
-        "composer-plugin-api": "^1.1.0",
-        "composer/composer": "^1.9",
+        "composer-plugin-api": "^1.1 || ^2.0",
         "nikic/php-parser": "^4.2",
         "psr/container": "^1.0",
         "psr/log": "^1.1",
         "symfony/finder": "^4.2 || ^5.0"
     },
     "require-dev": {
+        "composer/composer": "^1.0 || ^2.0@dev",
         "ext-zend-opcache": "*",
         "jangregor/phpstan-prophecy": "^0.6.2",
         "phpspec/prophecy-phpunit": "^2.0",
