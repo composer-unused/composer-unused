@@ -107,7 +107,7 @@ class UnusedCommand extends BaseCommand
             ->load($composer, $this->io);
 
         if (!$packageLoaderResult->hasItems()) {
-            $this->io->error('Nothing to scan as there are no required package.');
+            $this->io->success('Done. No required packages to scan.');
             return 0;
         }
 
