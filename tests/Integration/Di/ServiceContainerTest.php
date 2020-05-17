@@ -18,10 +18,13 @@ use Icanhazstring\Composer\Unused\Log\LogHandlerInterface;
 use Icanhazstring\Composer\Unused\Parser\NodeVisitor;
 use Icanhazstring\Composer\Unused\Subject\Factory\PackageSubjectFactory;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 
 class ServiceContainerTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @test
      */

@@ -7,10 +7,13 @@ namespace Icanhazstring\Composer\Test\Unused\Unit\Di;
 use Icanhazstring\Composer\Unused\Di\Exception\ServiceNotFoundException;
 use Icanhazstring\Composer\Unused\Di\ServiceContainer;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use stdClass;
 
 class ServiceContainerTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @test
      */

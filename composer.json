@@ -29,6 +29,7 @@
     "require-dev": {
         "ext-zend-opcache": "*",
         "jangregor/phpstan-prophecy": "^0.6.2",
+        "phpspec/prophecy-phpunit": "^2.0",
         "phpstan/phpstan": "^0.12.14",
         "phpunit/phpunit": "^9.0.1",
         "roave/security-advisories": "dev-master",

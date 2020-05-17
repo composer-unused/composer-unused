@@ -10,9 +10,12 @@ use Composer\Repository\RepositoryInterface;
 use Icanhazstring\Composer\Unused\Loader\Filter\InvalidNamespaceFilter;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class InvalidNamespaceFilterTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @return array<string, array<string, mixed>>
      */

@@ -18,12 +18,15 @@ use Icanhazstring\Composer\Unused\Loader\PackageLoader;
 use Icanhazstring\Composer\Unused\Loader\Result;
 use Icanhazstring\Composer\Unused\Subject\Factory\PackageSubjectFactory;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class PackageLoaderTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @test
      */

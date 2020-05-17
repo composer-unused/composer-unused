@@ -1,5 +1,9 @@
 # Changelog
 
+## [Unreleased]
+###
+- Added `phpspec/prophecy-phpunit` to remove deprecations warnings of `prophecy()` with phpunit:^9.0`
+
 ## [0.7.1] - 2019-12-09
 ### Added
 - Added `--no-progress` to suppress progress bar for CI

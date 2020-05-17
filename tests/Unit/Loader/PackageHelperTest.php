@@ -5,9 +5,12 @@ namespace Icanhazstring\Composer\Test\Unused\Unit\Loader;
 use Composer\Package\Link;
 use Icanhazstring\Composer\Unused\Loader\PackageHelper;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class PackageHelperTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @dataProvider validPhpExtensionDataProvider
      */

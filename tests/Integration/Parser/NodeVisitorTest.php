@@ -18,10 +18,13 @@ use PhpParser\NodeTraverser;
 use PhpParser\ParserFactory;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use SplFileInfo;
 
 class NodeVisitorTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @return array<string, array<string, mixed>>
      */

@@ -11,9 +11,12 @@ use Icanhazstring\Composer\Unused\Loader\Filter\NullPackageFilter;
 use Icanhazstring\Composer\Unused\Loader\PackageHelper;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class NullPackageFilterTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @return array<string, array<string, mixed>>
      */

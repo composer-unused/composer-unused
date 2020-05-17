@@ -7,9 +7,12 @@ namespace Icanhazstring\Composer\Test\Unused\Unit\Loader\Filter;
 use Composer\Package\Link;
 use Icanhazstring\Composer\Unused\Loader\Filter\NullConstraintFilter;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class NullConstraintFilterTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @return array<string, array<string, mixed>>
      */

@@ -7,9 +7,12 @@ namespace Icanhazstring\Composer\Test\Unused\Unit\Subject;
 use Composer\Package\PackageInterface;
 use Icanhazstring\Composer\Unused\Subject\PackageSubject;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class PackageSubjectTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @return array<string, array<mixed>>
      */
