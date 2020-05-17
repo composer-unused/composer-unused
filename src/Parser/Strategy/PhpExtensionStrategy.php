@@ -3,6 +3,7 @@
 namespace Icanhazstring\Composer\Unused\Parser\Strategy;
 
 use PhpParser\Node;
+use Psr\Log\LoggerInterface;
 use ReflectionException;
 use ReflectionExtension;
 use ReflectionFunction;
@@ -22,13 +23,17 @@ class PhpExtensionStrategy implements ParseStrategyInterface
      * @param array<string> $extensions
      * @throws ReflectionException
      */
-    public function __construct(array $extensions)
+    public function __construct(array $extensions, LoggerInterface $logger)
     {
         foreach ($extensions as $extension) {
-            $reflection = new ReflectionExtension($extension);
-            $this->extensionConstants[$extension] = $reflection->getConstants();
-            $this->extensionFunctions[$extension] = $reflection->getFunctions();
-            $this->extensionClasses[$extension] = array_flip($reflection->getClassNames());
+            try {
+                $reflection = new ReflectionExtension($extension);
+                $this->extensionConstants[$extension] = $reflection->getConstants();
+                $this->extensionFunctions[$extension] = $reflection->getFunctions();
+                $this->extensionClasses[$extension] = array_flip($reflection->getClassNames());
+            } catch (ReflectionException $e) {
+                $logger->error('Could not parse extension ' . $extension);
+            }
         }
     }
 
@@ -84,10 +89,15 @@ class PhpExtensionStrategy implements ParseStrategyInterface
         foreach ($extensions as $type) {
             foreach ($type as $phpextension => $extensionClassFuncOrConst) {
                 if (array_key_exists($searchingName, $extensionClassFuncOrConst)) {
-                    $matches[] = 'ext-' . str_replace(' ', '-', strtolower($phpextension));
+                    if ($phpextension === 'Core') {
+                        $matches[] = 'php';
+                    } else {
+                        $matches[] = 'ext-' . str_replace(' ', '-', strtolower($phpextension));
+                    }
                 }
             }
         }
+
         return $matches;
     }
 

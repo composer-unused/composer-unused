@@ -12,6 +12,7 @@ use Icanhazstring\Composer\Unused\Parser\Strategy\PhpExtensionStrategy;
 use Icanhazstring\Composer\Unused\Parser\Strategy\StaticParseStrategy;
 use Icanhazstring\Composer\Unused\Parser\Strategy\UseParseStrategy;
 use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
 
 class NodeVisitorFactory
 {
@@ -23,7 +24,8 @@ class NodeVisitorFactory
             new UseParseStrategy(),
             new ClassConstStrategy(),
             new PhpExtensionStrategy(
-                get_loaded_extensions()
+                get_loaded_extensions(),
+                $container->get(LoggerInterface::class)
             ),
         ], $container->get(ErrorHandlerInterface::class));
     }

@@ -8,5 +8,6 @@ class TestClass
 {
     public function testMethod(): void
     {
+        $a = strlen('test');
     }
 }

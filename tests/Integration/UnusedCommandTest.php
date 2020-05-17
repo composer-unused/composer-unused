@@ -16,27 +16,53 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class UnusedCommandTest extends TestCase
 {
+    /** @var ServiceContainer */
+    private $container;
+
+    protected function setUp(): void
+    {
+        /** @var ServiceContainer $container */
+        $this->container = require __DIR__ . '/../../config/container.php';
+    }
+
+    private function getApplication(): Application
+    {
+        $application = new Application();
+        $application->setAutoExit(false);
+
+        $this->container->register(IOInterface::class, $application->getIO());
+        $this->container->register(Composer::class, $application->getComposer());
+        $application->add($this->container->get(UnusedCommand::class));
+
+        return $application;
+    }
+
     /**
      * @test
      */
     public function itShouldHaveZeroExitCodeOnEmptyRequirements(): void
     {
-        /** @var ServiceContainer $container */
-        $container = require __DIR__ . '/../../config/container.php';
-
         chdir(__DIR__ . '/../assets/TestProjects/EmptyRequire');
-
-        $application = new Application();
-        $application->setAutoExit(false);
-
-        $container->register(IOInterface::class, $application->getIO());
-        $container->register(Composer::class, $application->getComposer());
-
-        $application->add($container->get(UnusedCommand::class));
 
         self::assertEquals(
             0,
-            $application->run(
+            $this->getApplication()->run(
+                new ArrayInput(['unused']),
+                new NullOutput()
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldNotReportPHPAsUnused(): void
+    {
+        chdir(__DIR__ . '/../assets/TestProjects/OnlyLanguageRequirement');
+
+        self::assertEquals(
+            0,
+            $this->getApplication()->run(
                 new ArrayInput(['unused']),
                 new NullOutput()
             )

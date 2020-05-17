@@ -4,12 +4,11 @@
   "type": "library",
   "minimum-stability": "stable",
   "require": {
+    "php": ">=7.4 <7.5"
   },
   "autoload": {
     "psr-4": {
-      "EmptyRequire\\": "src/"
+      "OnlyLanguageRequirement\\": "src/"
     }
-  },
-  "require-dev": {
   }
 }
