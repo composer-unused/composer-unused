@@ -1,0 +1,22 @@
+{
+  "name": "foo/bar",
+  "description": "foobar",
+  "type": "library",
+  "minimum-stability": "stable",
+  "extra": {
+    "unused": [
+      "php"
+    ]
+  },
+  "require": {
+    "php": ">=7.4 <7.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "EmptyRequire\\": "src/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": ">=9.1 <10"
+  }
+}
