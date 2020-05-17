@@ -1,8 +1,10 @@
 # Changelog
 
 ## [Unreleased]
-###
-- Added `phpspec/prophecy-phpunit` to remove deprecations warnings of `prophecy()` with phpunit:^9.0`
+### Added
+- Added `phpspec/prophecy-phpunit` to remove deprecations warnings of `prophecy()` with `phpunit/phpunit:^9.0`
+### Changed
+- Changed the exit code `0` if there are not packages to scan
 
 ## [0.7.1] - 2019-12-09
 ### Added
@@ -26,7 +28,7 @@
 ### Fixed
 - Fixed replaced usage on `Zend\ServiceManager` in configuration files
 ### Removed
-- Removed shorthand options `-d` and `-p` as they could be already in use 
+- Removed shorthand options `-d` and `-p` as they could be already in use
 
 ## [0.6.0] - 2019-10-24
 ### Changed
@@ -38,12 +40,12 @@
 
 ## [0.5.6] - 2019-04-30
 ### Fixed
-- Fixed support for typo3 packages thanks to [@tomasnorre](https://github.com/tomasnorre) 
+- Fixed support for typo3 packages thanks to [@tomasnorre](https://github.com/tomasnorre)
 
 ## [0.5.5] - 2019-04-12
 ### Fixed
 - Fixed support for yii2 packages thanks to [@moltam](https://github.com/moltam)
- 
+
 ## [0.5.4] - 2019-04-11
 ### Fixed
 - Fixed issue where composer-unused-dump was created even when not in debug mode [#41](https://github.com/icanhazstring/composer-unused/issues/41)
@@ -90,7 +92,7 @@
 - Ignore packages that are not of type `library` [#25](https://github.com/icanhazstring/composer-unused/issues/25) [composer-schema#type](https://getcomposer.org/doc/04-schema.md#type)
 - Ignore packages that define not namespace [#27](https://github.com/icanhazstring/composer-unused/issues/27)
 - Add ability to ignore packages by config [#26](https://github.com/icanhazstring/composer-unused/issues/26) [README.md](https://github.com/icanhazstring/composer-unused#ignore-by-config)
-- Packages are no longer shown as `unused` if: 
+- Packages are no longer shown as `unused` if:
   - They are suggested by other packages (will show information about `suggested by: package/a`) [#23](https://github.com/icanhazstring/composer-unused/issues/23)
   - They are required by other packages (will show information about `required by: package/a`) [#22](https://github.com/icanhazstring/composer-unused/issues/22)
 
@@ -105,10 +107,10 @@
 ### Changed
 - Change the way how the plugin searched for usages
   Previously it used only `autoload` and `autoload-dev` directives of the projects own `composer.json`.
-  
+
   This was changed so that now every file matching `*.php` beside the `composer.json` will be scanned.
   With the exception that `vendor` is always excluded
-  
+
 ### Added
 - Added new cli parameters
   - `--excludeDir|-xd` to add additional folders to exclude from scan
