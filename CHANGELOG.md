@@ -4,7 +4,9 @@
 ### Added
 - Added `phpspec/prophecy-phpunit` to remove deprecations warnings of `prophecy()` with `phpunit/phpunit:^9.0`
 ### Changed
-- Changed the exit code `0` if there are not packages to scan
+- Changed the exit code `0` if there are not packages to scan [#78](https://github.com/icanhazstring/composer-unused/issues/78)
+### Fixed
+- Fixed an issue where `Core` extension was checked as `ext-core` instead of `php` [#79](https://github.com/icanhazstring/composer-unused/issues/79)
 
 ## [0.7.1] - 2019-12-09
 ### Added
