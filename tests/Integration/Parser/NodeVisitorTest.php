@@ -19,6 +19,7 @@ use PhpParser\ParserFactory;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Log\NullLogger;
 use SplFileInfo;
 
 class NodeVisitorTest extends TestCase
@@ -108,47 +109,52 @@ class NodeVisitorTest extends TestCase
             'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---1'        => [
                 'expectedUsedNamespaces' => [],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/PhpExtensionStrategy/ClassWithCustomInterfaceName.php',
-                'strategy'               => new PhpExtensionStrategy(['json'])
+                'strategy'               => new PhpExtensionStrategy(['json'], new NullLogger())
             ],
             'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---2'        => [
                 'expectedUsedNamespaces' => [],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/PhpExtensionStrategy/ClassWithCustomInterface.php',
-                'strategy'               => new PhpExtensionStrategy(['json'])
+                'strategy'               => new PhpExtensionStrategy(['json'], new NullLogger())
             ],
             'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---3'        => [
                 'expectedUsedNamespaces' => ['ext-json'],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/PhpExtensionStrategy/ClassWithExtensionInterface.php',
-                'strategy'               => new PhpExtensionStrategy(['json'])
+                'strategy'               => new PhpExtensionStrategy(['json'], new NullLogger())
             ],
             'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---4'        => [
                 'expectedUsedNamespaces' => ['ext-json'],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/PhpExtensionStrategy/ClassWithExtensionInterfaceInUse.php',
-                'strategy'               => new PhpExtensionStrategy(['json'])
+                'strategy'               => new PhpExtensionStrategy(['json'], new NullLogger())
             ],
             'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---5'        => [
                 'expectedUsedNamespaces' => [],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/PhpExtensionStrategy/ClassWithCustomConstant.php',
-                'strategy'               => new PhpExtensionStrategy(['json'])
+                'strategy'               => new PhpExtensionStrategy(['json'], new NullLogger())
             ],
             'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---6'        => [
                 'expectedUsedNamespaces' => ['ext-json'],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/PhpExtensionStrategy/ClassWithJsonConstant.php',
-                'strategy'               => new PhpExtensionStrategy(['json'])
+                'strategy'               => new PhpExtensionStrategy(['json'], new NullLogger())
             ],
             'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---7'        => [
                 'expectedUsedNamespaces' => ['ext-json'],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/PhpExtensionStrategy/ClassWithExtensionFunction.php',
-                'strategy'               => new PhpExtensionStrategy(['json'])
+                'strategy'               => new PhpExtensionStrategy(['json'], new NullLogger())
             ],
             'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---8'        => [
                 'expectedUsedNamespaces' => [],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/PhpExtensionStrategy/ClassWithCustomFunction.php',
-                'strategy'               => new PhpExtensionStrategy(['json'])
+                'strategy'               => new PhpExtensionStrategy(['json'], new NullLogger())
             ],
             'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---9'        => [
                 'expectedUsedNamespaces' => ['ext-zend-opcache'],
                 'inputFile'              => __DIR__ . '/../../assets/TestFiles/PhpExtensionStrategy/ClassWithZendOpcache.php',
-                'strategy'               => new PhpExtensionStrategy(['Zend Opcache'])
+                'strategy'               => new PhpExtensionStrategy(['Zend Opcache'], new NullLogger())
+            ],
+            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---10'        => [
+                'expectedUsedNamespaces' => ['php'],
+                'inputFile'              => __DIR__ . '/../../assets/TestFiles/PhpExtensionStrategy/ClassWithCore.php',
+                'strategy'               => new PhpExtensionStrategy(['Core'], new NullLogger())
             ],
         ];
     }
