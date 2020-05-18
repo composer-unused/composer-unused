@@ -10,12 +10,12 @@ on:
 
 jobs:
   run:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
         php: ['7.3', '7.4']
-        composer: [1, 2]
-    name: PHP ${{ matrix.php }} Test
+    name: PHP ${{ matrix.php }} Test on ${{ matrix.os }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
