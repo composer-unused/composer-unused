@@ -1,23 +1,36 @@
 name: PHP Composer
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
-  build:
-
+  run:
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        php: ['7.3', '7.4']
+        composer: [1, 2]
+    name: PHP ${{ matrix.php }} Test
     steps:
-    - uses: actions/checkout@v1
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    - name: Validate composer.json and composer.lock
-      run: composer validate
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer
 
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest
+      - name: Validate composer.json and composer.lock
+        run: composer validate
 
-    - name: composer-unused
-      uses: icanhazstring/composer-unused-ga@1.0.1
-    
-    - name: check
-      run: composer check
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: check
+        run: composer check
