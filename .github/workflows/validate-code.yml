@@ -1,4 +1,4 @@
-name: PHP Composer
+name: validate-code
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  validate-code:
+  run:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
