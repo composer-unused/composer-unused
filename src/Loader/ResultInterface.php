@@ -29,4 +29,6 @@ interface ResultInterface
     public function getSkippedItems(): array;
 
     public function hasSkippedItems(): bool;
+
+    public function merge(ResultInterface $other): ResultInterface;
 }

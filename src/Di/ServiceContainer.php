@@ -40,10 +40,10 @@ class ServiceContainer implements ContainerInterface
     }
 
     /**
-     * @param array<string, mixed> $options
+     * @param array<string, mixed>|null $options
      * @return mixed
      */
-    public function build(string $name, array $options = [])
+    public function build(string $name, array $options = null)
     {
         return $this->doCreate($name, $options);
     }
@@ -62,9 +62,9 @@ class ServiceContainer implements ContainerInterface
     }
 
     /**
-     * @param array<string, mixed> $options
+     * @param array<string, mixed>|null $options
      */
-    private function doCreate(string $name, array $options = []): object
+    private function doCreate(string $name, array $options = null): object
     {
         if (!isset($this->factories[$name])) {
             throw new ServiceNotFoundException(

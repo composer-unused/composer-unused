@@ -57,7 +57,6 @@ class PackageLoader implements LoaderInterface
         $this->io = $io;
         $io->section('Loading packages');
 
-        /** @var Link[] $requiredPackages */
         $requiredPackages = $composer->getPackage()->getRequires();
 
         $this->progressStart(count($requiredPackages));

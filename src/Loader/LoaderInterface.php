@@ -7,12 +7,7 @@ namespace Icanhazstring\Composer\Unused\Loader;
 use Composer\Composer;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-interface LoaderInterface
+interface LoaderInterface extends ProgressAwareInterface
 {
     public function load(Composer $composer, SymfonyStyle $io): ResultInterface;
-
-    /**
-     * @return static
-     */
-    public function toggleProgress(bool $flag);
 }
