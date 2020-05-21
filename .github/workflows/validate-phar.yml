@@ -1,4 +1,4 @@
-name: PHP Composer
+name: validate-phar
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  validate-phar:
+  run:
     runs-on: ubuntu-latest
     name: Validate phar package
     steps:
