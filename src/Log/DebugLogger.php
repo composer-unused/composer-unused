@@ -23,7 +23,7 @@ class DebugLogger implements LoggerInterface
     }
 
     /**
-     * @param int $level
+     * @param mixed $level
      * @param string $message
      * @param array<string, mixed> $context
      */
@@ -37,11 +37,12 @@ class DebugLogger implements LoggerInterface
     }
 
     /**
+     * @param mixed $level
      * @param array<string, mixed> $context
      * @return array<string, mixed>
      * @throws Exception
      */
-    private function buildRecord(int $level, string $message, array $context = []): array
+    private function buildRecord($level, string $message, array $context = []): array
     {
         if (array_key_exists('error', $context)) {
             /** @var Throwable $error */
