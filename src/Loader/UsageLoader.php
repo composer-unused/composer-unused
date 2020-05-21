@@ -6,7 +6,7 @@ namespace Icanhazstring\Composer\Unused\Loader;
 
 use Composer\Composer;
 use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
-use Icanhazstring\Composer\Unused\Parser\NodeVisitor;
+use Icanhazstring\Composer\Unused\Parser\PHP\NodeVisitor;
 use PhpParser\NodeTraverser;
 use PhpParser\Parser;
 use Psr\Log\LoggerInterface;

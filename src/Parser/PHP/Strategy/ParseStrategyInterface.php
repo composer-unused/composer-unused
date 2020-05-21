@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Unused\Parser\Strategy;
+namespace Icanhazstring\Composer\Unused\Parser\PHP\Strategy;
 
 use PhpParser\Node;
 

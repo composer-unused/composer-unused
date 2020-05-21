@@ -2,5 +2,5 @@
 
 declare(strict_types=1);
 
-$fullyQualified = Icanhazstring\Composer\Unused\Parser\Strategy\UseParseStrategy::class;
-$qualified = \Icanhazstring\Composer\Unused\Parser\Strategy\StaticParseStrategy::class;
+$fullyQualified = Icanhazstring\Composer\Unused\Parser\PHP\Strategy\UseParseStrategy::class;
+$qualified = \Icanhazstring\Composer\Unused\Parser\PHP\Strategy\StaticParseStrategy::class;

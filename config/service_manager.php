@@ -15,8 +15,8 @@ use Icanhazstring\Composer\Unused\Loader\UsageLoader;
 use Icanhazstring\Composer\Unused\Log\Factory\DebugLoggerFactory;
 use Icanhazstring\Composer\Unused\Log\Factory\FileHandlerFactory;
 use Icanhazstring\Composer\Unused\Log\LogHandlerInterface;
-use Icanhazstring\Composer\Unused\Parser\Factory\NodeVisitorFactory;
-use Icanhazstring\Composer\Unused\Parser\NodeVisitor;
+use Icanhazstring\Composer\Unused\Parser\PHP\Factory\NodeVisitorFactory;
+use Icanhazstring\Composer\Unused\Parser\PHP\NodeVisitor;
 use Icanhazstring\Composer\Unused\Subject\Factory\PackageSubjectFactory;
 use Psr\Log\LoggerInterface;
 

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Unused\Parser\Factory;
+namespace Icanhazstring\Composer\Unused\Parser\PHP\Factory;
 
 use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
-use Icanhazstring\Composer\Unused\Parser\NodeVisitor;
-use Icanhazstring\Composer\Unused\Parser\Strategy\ClassConstStrategy;
-use Icanhazstring\Composer\Unused\Parser\Strategy\NewParseStrategy;
-use Icanhazstring\Composer\Unused\Parser\Strategy\PhpExtensionStrategy;
-use Icanhazstring\Composer\Unused\Parser\Strategy\StaticParseStrategy;
-use Icanhazstring\Composer\Unused\Parser\Strategy\UseParseStrategy;
+use Icanhazstring\Composer\Unused\Parser\PHP\NodeVisitor;
+use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\ClassConstStrategy;
+use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\NewParseStrategy;
+use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\PhpExtensionStrategy;
+use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\StaticParseStrategy;
+use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\UseParseStrategy;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
