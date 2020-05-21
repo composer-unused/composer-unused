@@ -1,11 +1,13 @@
 # Changelog
 
-## [Unreleased]
+## [0.7.3] - 2020-05-19
 ### Added
 - Added workflow to verify integrity of build `phar` file
 - Added self unused dependency check using `bin/composer-unused`
 ### Changed
 - Readded `composer/composer` into root requirements as its required to run `bin/composer-unused`
+### Fixed
+- Fixed an issue where log level received wrong type [#83](https://github.com/composer-unused/composer-unused/pull/83) (thanks to [@JoshuaBehrens](https://github.com/JoshuaBehrens))
 
 ## [0.7.2] - 2020-05-19
 ### Added
