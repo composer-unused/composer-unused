@@ -20,4 +20,5 @@
 
     <file>src</file>
     <file>tests</file>
+    <file>config</file>
 </ruleset>

@@ -50,4 +50,15 @@ class Result implements ResultInterface
     {
         return !empty($this->skipped);
     }
+
+    public function merge(ResultInterface $other): ResultInterface
+    {
+        $clone = clone $this;
+
+        foreach ($other->getItems() as $item) {
+            $clone->addItem($item);
+        }
+
+        return $clone;
+    }
 }
