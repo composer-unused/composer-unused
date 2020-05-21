@@ -8,7 +8,7 @@ use Icanhazstring\Composer\Unused\Di\FactoryInterface;
 use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Loader\Result;
 use Icanhazstring\Composer\Unused\Loader\UsageLoader;
-use Icanhazstring\Composer\Unused\Parser\NodeVisitor;
+use Icanhazstring\Composer\Unused\Parser\PHP\NodeVisitor;
 use PhpParser\ParserFactory;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;

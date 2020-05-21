@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Unused\Parser;
+namespace Icanhazstring\Composer\Unused\Parser\PHP;
 
 use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
-use Icanhazstring\Composer\Unused\Parser\Strategy\ParseStrategyInterface;
+use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\ParseStrategyInterface;
 use Icanhazstring\Composer\Unused\Subject\NamespaceUsage;
 use Icanhazstring\Composer\Unused\Subject\UsageInterface;
 use PhpParser\Node;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Icanhazstring\Composer\Unused\Parser\Strategy;
+namespace Icanhazstring\Composer\Unused\Parser\PHP\Strategy;
 
 use PhpParser\Node;
 use Psr\Log\LoggerInterface;
