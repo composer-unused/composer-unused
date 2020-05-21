@@ -1,0 +1,36 @@
+name: PHP Composer
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  validate-phar:
+    runs-on: ubuntu-latest
+    name: Validate phar package
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          tools: composer
+          ini-values: phar.readonly=false
+
+      - name: Composer install
+        run: composer install --no-dev --prefer-dist
+
+      - name: Download humbug/box
+        run: curl -OL https://github.com/humbug/box/releases/download/3.8.3/box.phar > box.phar
+
+      - name: Compile phar
+        run: php box.phar compile
+
+      - name: Run phar against code
+        run: php build/composer-unused.phar

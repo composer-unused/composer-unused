@@ -88,6 +88,7 @@ class UnusedCommand extends BaseCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->io = ($this->symfonyStyleFactory)($input, $output);
+        /** @var Composer|null $composer */
         $composer = $this->getComposer();
 
         if ($composer === null) {
