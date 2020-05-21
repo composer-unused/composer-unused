@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased]
+### Added
+- Added workflow to verify integrity of build `phar` file
+- Added self unused dependency check using `bin/composer-unused`
+### Changed
+- Readded `composer/composer` into root requirements as its required to run `bin/composer-unused`
+
 ## [0.7.2] - 2020-05-19
 ### Added
 - Added `phpspec/prophecy-phpunit` to remove deprecations warnings of `prophecy()` with `phpunit/phpunit:^9.0`

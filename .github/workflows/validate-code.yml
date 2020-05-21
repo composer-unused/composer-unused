@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  run:
+  validate-code:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -32,5 +32,9 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
 
-      - name: check
+      - name: Code check
         run: composer check
+
+      - name: Check unused dependencies
+        run: bin/composer-unused
+
