@@ -9,8 +9,9 @@ Created by [Andreas Frömer](https://twitter.com/icanhazstring) and [contributor
 
 :fire::fire: Now available as Github Action on the [Marketplace](https://github.com/marketplace/actions/composer-unused) :fire::fire:
 
-[![](https://img.shields.io/travis/icanhazstring/composer-unused.svg?style=flat-square)](https://travis-ci.org/icanhazstring/composer-unused)
-[![](https://img.shields.io/github/tag-date/icanhazstring/composer-unused.svg?label=version&style=flat-square)](https://github.com/icanhazstring/composer-unused/releases/latest)
+[![](https://img.shields.io/github/workflow/status/composer-unused/composer-unused/validate-code?label=build&style=flat-square)](https://github.com/composer-unused/composer-unused)
+[![](https://img.shields.io/github/workflow/status/composer-unused/composer-unused/validate-phar?label=build-phar&style=flat-squar)](https://github.com/composer-unused/composer-unused)
+[![](https://img.shields.io/github/tag-date/composer-unused/composer-unused.svg?label=version&style=flat-square)](https://github.com/icanhazstring/composer-unused/releases/latest)
 
 ## Motivation
 
