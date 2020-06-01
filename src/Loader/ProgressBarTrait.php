@@ -6,7 +6,7 @@ namespace Icanhazstring\Composer\Unused\Loader;
 
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-trait PrograssBarTrait
+trait ProgressBarTrait
 {
     /** @var SymfonyStyle */
     protected $io;

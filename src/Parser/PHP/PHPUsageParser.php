@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Icanhazstring\Composer\Unused\Parser\PHP;
 
 use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
-use Icanhazstring\Composer\Unused\Loader\PrograssBarTrait;
+use Icanhazstring\Composer\Unused\Loader\ProgressBarTrait;
 use Icanhazstring\Composer\Unused\Loader\ResultInterface;
 use Icanhazstring\Composer\Unused\Parser\ParserInterface;
 use PhpParser\NodeTraverser;
@@ -17,7 +17,7 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class PHPUsageParser implements ParserInterface
 {
-    use PrograssBarTrait;
+    use ProgressBarTrait;
 
     /** @var Parser */
     private $parser;

@@ -16,7 +16,7 @@ use function count;
 
 class PackageLoader implements LoaderInterface
 {
-    use PrograssBarTrait;
+    use ProgressBarTrait;
 
     /** @var PackageSubjectFactory */
     private $subjectFactory;

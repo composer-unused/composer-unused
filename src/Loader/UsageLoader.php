@@ -10,7 +10,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class UsageLoader implements LoaderInterface
 {
-    use PrograssBarTrait;
+    use ProgressBarTrait;
 
     /** @var ParserInterface[] */
     private $parsers;
