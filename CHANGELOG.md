@@ -1,5 +1,9 @@
 # Changelog
 
+## [Unreleased]
+### Fixed
+- Fixed an issue where `ext-ds` classes where not recognized as used
+
 ## [0.7.3] - 2020-05-19
 ### Added
 - Added workflow to verify integrity of build `phar` file
