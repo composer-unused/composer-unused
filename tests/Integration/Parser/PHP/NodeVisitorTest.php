@@ -156,6 +156,11 @@ class NodeVisitorTest extends TestCase
                 'inputFile'              => ASSET_DIR . '/TestFiles/PhpExtensionStrategy/ClassWithCore.php',
                 'strategy'               => new PhpExtensionStrategy(['Core'], new NullLogger())
             ],
+            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---11'        => [
+                'expectedUsedNamespaces' => ['ext-ds'],
+                'inputFile'              => ASSET_DIR . '/TestFiles/PhpExtensionStrategy/ClassWithDs.php',
+                'strategy'               => new PhpExtensionStrategy(['ds'], new NullLogger())
+            ],
         ];
     }
 

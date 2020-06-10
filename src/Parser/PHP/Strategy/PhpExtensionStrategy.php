@@ -104,8 +104,9 @@ class PhpExtensionStrategy implements ParseStrategyInterface
     private function getNameFromNode(Node $node): string
     {
         if ($node instanceof Node\Name\FullyQualified) {
-            return $node->parts[0];
+            return implode('\\', $node->parts);
         }
+
         if ($node instanceof Node\Stmt\UseUse) {
             return $node->name->parts[0];
         }
