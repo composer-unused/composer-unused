@@ -1,35 +1,31 @@
+CONTAINER=composer-unused-7.4
+
 up:
 	if [ "$(shell docker-machine status default)" != 'Running' ]; then \
 		docker-machine start default; \
 	fi;
-	eval ${docker-machine env}
+	eval ${shell docker-machine env}
 	docker-compose up -d
 
 down:
 	docker-compose down
 
-7.4:
-	eval $(export COMPOSER_UNUSED_PHP_VERSION=composer-unused-7.4)
-
-7.3:
-	eval $(export COMPOSER_UNUSED_PHP_VERSION=composer-unused-7.3)
-
 install:
-	docker exec -it $(COMPOSER_UNUSED_PHP_VERSION) composer install
+	docker exec -it $(CONTAINER) composer install
 
 update:
-	docker exec -it $(COMPOSER_UNUSED_PHP_VERSION) composer update
+	docker exec -it $(CONTAINER) composer update
 
 check: csfix cs phpunit analyse
 
 phpunit:
-	docker exec -it $(COMPOSER_UNUSED_PHP_VERSION) vendor/bin/phpunit
+	docker exec -it $(CONTAINER) vendor/bin/phpunit
 
 analyse:
-	docker exec -it $(COMPOSER_UNUSED_PHP_VERSION) vendor/bin/phpstan analyse
+	docker exec -it $(CONTAINER) vendor/bin/phpstan analyse
 
 cs:
-	docker exec -it $(COMPOSER_UNUSED_PHP_VERSION) vendor/bin/phpcs
+	docker exec -it $(CONTAINER) vendor/bin/phpcs
 
 csfix:
-	docker exec -it $(COMPOSER_UNUSED_PHP_VERSION) vendor/bin/phpcbf
+	docker exec -it $(CONTAINER) vendor/bin/phpcbf
