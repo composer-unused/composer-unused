@@ -1,9 +1,9 @@
 <p align="center">
-    <img src="https://raw.githubusercontent.com/icanhazstring/composer-unused/master/art/logo.png" width="450" alt="composer-unused logo">
+    <img src="https://raw.githubusercontent.com/icanhazstring/composer-unused/main/art/logo.png" width="450" alt="composer-unused logo">
 </p>
 
 # composer-unused
-A Composer tool to show unused Composer dependencies by scanning your code. 
+A Composer tool to show unused Composer dependencies by scanning your code.
 
 Created by [Andreas Frömer](https://twitter.com/icanhazstring) and [contributors](https://github.com/icanhazstring/composer-unused/graphs/contributors), logo by [Caneco](https://twitter.com/caneco).
 
@@ -33,7 +33,7 @@ How do we check whether the provided *symbols* of a package are used in our code
 Install via `phive` or grab the latest `composer-unused.phar` from the latest release:
 
     $ phive install composer-unused
-    
+
     $ curl -JOL https://github.com/icanhazstring/composer-unused/releases/latest/download/composer-unused.phar
 
 ### Global

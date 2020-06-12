@@ -1,6 +1,6 @@
 ### All Submissions:
 
-* [ ] Have you followed the guidelines in our [Contributing document](https://github.com/composer-unused/composer-unused/blob/master/CONTRIBUTING.md)?
+* [ ] Have you followed the guidelines in our [Contributing document](https://github.com/composer-unused/composer-unused/blob/main/CONTRIBUTING.md)?
 * [ ] Have you checked to ensure there aren't other open [Pull Requests](https://github.com/icanhazstring/composer-unused/pulls) for the same update/change?
 
 <!-- You can erase any parts of this template not applicable to your Pull Request. -->
