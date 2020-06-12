@@ -7,14 +7,13 @@ namespace Icanhazstring\Composer\Test\Unused\Unit\Symbol;
 use Composer\Package\Package;
 use Generator;
 use Icanhazstring\Composer\Unused\Symbol\DependencySymbolLoader;
-use Icanhazstring\Composer\Unused\Symbol\NamespaceSymbol;
 use Icanhazstring\Composer\Unused\Symbol\Provider\FunctionConstantSymbolProvider;
+use Icanhazstring\Composer\Unused\Symbol\Symbol;
 use Icanhazstring\Composer\Unused\Symbol\SymbolInterface;
-use Icanhazstring\Composer\Unused\Symbol\SymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\SymbolLoaderInterface;
 use PHPUnit\Framework\TestCase;
 
-class SymbolLoaderTest extends TestCase
+class DependencySymbolLoaderTest extends TestCase
 {
     protected function arrayAsGenerator(array $values): Generator
     {
@@ -37,17 +36,14 @@ class SymbolLoaderTest extends TestCase
     /**
      * @test
      */
-    public function itShouldMatchPsr0(): void
+    public function itShouldReturnEmptySymbolsOnEmptyPackage(): void
     {
         $package = new Package('test', '*', '*');
         $package->setTargetDir('/');
-        $package->setAutoload([
-            'psr-0' => [
-                'Test\\Namespace\\' => 'src'
-            ]
-        ]);
+        $package->setAutoload([]);
 
-        $symbolLoader = new SymbolLoader();
+        $symbolLoader = $this->getMockForAbstractClass(SymbolLoaderInterface::class);
+        $symbolLoader->method('load')->willReturn($this->arrayAsGenerator([]));
 
         $fileSymbolLoader = $this->getMockBuilder(FunctionConstantSymbolProvider::class)
             ->disableOriginalConstructor()
@@ -60,39 +56,42 @@ class SymbolLoaderTest extends TestCase
         $symbolLoader = new DependencySymbolLoader($fileSymbolLoader, $symbolLoader);
         $symbols = $symbolLoader->load($package);
 
-        $symbolsArray = iterator_to_array($symbols);
-        self::assertCount(1, $symbolsArray);
-        $this->assertContainsSymbol(new NamespaceSymbol('Test\\Namespace\\'), $symbolsArray);
+        self::assertEmpty(iterator_to_array($symbols));
     }
 
     /**
      * @test
      */
-    public function itShouldMatchPsr4(): void
+    public function itShouldMatchFiles(): void
     {
         $package = new Package('test', '*', '*');
-        $package->setTargetDir('/');
+        $package->setTargetDir('/foobar');
         $package->setAutoload([
-            'psr-4' => [
-                'Test\\Namespace\\' => 'src'
+            'files' => [
+                'include/functions.php'
             ]
         ]);
 
-        $symbolLoader = new SymbolLoader();
+        $symbolLoader = $this->getMockForAbstractClass(SymbolLoaderInterface::class);
+        $symbolLoader->method('load')->willReturn($this->arrayAsGenerator([]));
 
-        $fileSymbolLoader = $this->getMockBuilder(FunctionConstantSymbolProvider::class)
+        $fileSymbolProvider = $this->getMockBuilder(FunctionConstantSymbolProvider::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $fileSymbolLoader
+        $fileSymbolProvider
+            ->expects($this->once())
             ->method('provide')
-            ->willReturn($this->arrayAsGenerator([]));
+            ->with('foobar', ['include/functions.php'])
+            ->willReturn($this->arrayAsGenerator([
+                new Symbol('testfunction')
+            ]));
 
-        $symbolLoader = new DependencySymbolLoader($fileSymbolLoader, $symbolLoader);
+        $symbolLoader = new DependencySymbolLoader($fileSymbolProvider, $symbolLoader);
         $symbols = $symbolLoader->load($package);
 
         $symbolsArray = iterator_to_array($symbols);
         self::assertCount(1, $symbolsArray);
-        $this->assertContainsSymbol(new NamespaceSymbol('Test\\Namespace\\'), $symbolsArray);
+        $this->assertContainsSymbol(new Symbol('testfunction'), $symbolsArray);
     }
 }

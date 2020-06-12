@@ -28,7 +28,7 @@ class NamespaceSymbolTest extends TestCase
     public function itShouldMatchNameSpaceFromClass(): void
     {
         $namespaceSymbol = new NamespaceSymbol(__NAMESPACE__);
-        $namespaceSymbolFromClass = new NamespaceSymbol(self::class);
+        $namespaceSymbolFromClass = NamespaceSymbol::fromClass(self::class);
 
         self::assertTrue($namespaceSymbol->matches($namespaceSymbolFromClass));
     }
