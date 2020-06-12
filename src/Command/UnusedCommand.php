@@ -6,15 +6,27 @@ namespace Icanhazstring\Composer\Unused\Command;
 
 use Composer\Command\BaseCommand;
 use Composer\Composer;
+use Composer\Package\Link;
+use Composer\Package\Package;
 use Composer\Package\PackageInterface;
+use Icanhazstring\Composer\Unused\Dependency\RequiredDependency;
 use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
+use Icanhazstring\Composer\Unused\File\FileContentProvider;
 use Icanhazstring\Composer\Unused\Loader\LoaderBuilder;
 use Icanhazstring\Composer\Unused\Loader\PackageLoader;
 use Icanhazstring\Composer\Unused\Loader\UsageLoader;
 use Icanhazstring\Composer\Unused\Output\SymfonyStyleFactory;
+use Icanhazstring\Composer\Unused\Parser\PHP\SymbolNameParser;
+use Icanhazstring\Composer\Unused\Parser\PHP\SymbolNodeVisitor;
 use Icanhazstring\Composer\Unused\Subject\PackageSubject;
 use Icanhazstring\Composer\Unused\Subject\UsageInterface;
+use Icanhazstring\Composer\Unused\Symbol\DependencySymbolLoader;
+use Icanhazstring\Composer\Unused\Symbol\Provider\FunctionConstantSymbolProvider;
+use Icanhazstring\Composer\Unused\Symbol\Symbol;
+use Icanhazstring\Composer\Unused\Symbol\SymbolList;
+use Icanhazstring\Composer\Unused\Symbol\SymbolLoader;
 use Icanhazstring\Composer\Unused\UnusedPlugin;
+use PhpParser\ParserFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -94,6 +106,54 @@ class UnusedCommand extends BaseCommand
         if ($composer === null) {
             $this->io->error('Could not get composer dependency');
             return 1;
+        }
+
+        $repo = $composer->getRepositoryManager()->getLocalRepository();
+
+        $resolvePackage = function (Link $require) use ($repo): ?PackageInterface {
+            if (strpos($require->getTarget(), 'ext-') === 0 || $require->getTarget() === 'php') {
+                return new Package(strtolower($require->getTarget()), '*', '*');
+            }
+
+            return $repo->findPackage($require->getTarget(), $require->getConstraint() ?? '');
+        };
+
+        $rootPackage = $composer->getPackage(); // self
+        //$rootSymbolLoader = new RootSymbolLoader();
+        $dependencySymbolLoader = new DependencySymbolLoader(
+            new FunctionConstantSymbolProvider(
+                new SymbolNameParser(
+                    (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+                    new SymbolNodeVisitor()
+                ),
+                new FileContentProvider()
+            ),
+            new SymbolLoader()
+        );
+
+        $requiredDependencies = [];
+
+        foreach ($rootPackage->getRequires() as $require) {
+            $composerPackage = $resolvePackage($require);
+
+            if ($composerPackage === null) {
+                continue;
+            }
+
+            $requiredDependencies[] = new RequiredDependency(
+                $composerPackage,
+                (new SymbolList())->addAll(
+                    $dependencySymbolLoader->load($composerPackage)
+                )
+            );
+        }
+
+        $usedSymbol = new Symbol(PackageInterface::class);
+
+        foreach ($requiredDependencies as $requiredDependency) {
+            if ($requiredDependency->provides($usedSymbol)) {
+                $requiredDependency->markUsed();
+            }
         }
 
         $this->logCommandInfo($composer);
@@ -254,7 +314,7 @@ class UnusedCommand extends BaseCommand
         }
 
         return [
-            'used'   => $usedPackages,
+            'used' => $usedPackages,
             'unused' => $unusedPackages
         ];
     }

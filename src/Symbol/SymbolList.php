@@ -4,23 +4,18 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused\Symbol;
 
-use ArrayIterator;
+use Generator;
 use IteratorAggregate;
 
 final class SymbolList implements IteratorAggregate, SymbolListInterface
 {
-    /** @var array<Symbol> */
-    private $items;
+    /** @var iterable<SymbolInterface> */
+    private $items = [];
 
-    public function addAll(array $symbols): SymbolListInterface
+    public function addAll(iterable $symbols): SymbolListInterface
     {
-        $clone = $this;
-
-        foreach ($symbols as $symbol) {
-            $clone = $clone->add($symbol);
-        }
-
-        return $clone;
+        $this->items = $symbols;
+        return $this;
     }
 
     public function add(Symbol $symbol): SymbolListInterface
@@ -42,8 +37,8 @@ final class SymbolList implements IteratorAggregate, SymbolListInterface
         return false;
     }
 
-    public function getIterator(): ArrayIterator
+    public function getIterator(): Generator
     {
-        return new ArrayIterator($this->items);
+        yield from $this->items;
     }
 }

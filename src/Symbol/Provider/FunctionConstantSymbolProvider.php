@@ -26,7 +26,7 @@ class FunctionConstantSymbolProvider
     /**
      * @return Generator<SymbolInterface>
      */
-    public function provide(string $dir, array $files): Generator
+    public function provide(?string $dir, array $files): Generator
     {
         foreach ($files as $file) {
             $content = $this->fileContentProvider->getContent($dir, $file);
