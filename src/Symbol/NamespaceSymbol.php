@@ -26,6 +26,6 @@ final class NamespaceSymbol implements SymbolInterface
 
     public function matches(SymbolInterface $symbol): bool
     {
-        return strpos($symbol->getIdentifier(), $this->namespace) === 0;
+        return strpos($this->namespace, $symbol->getIdentifier()) === 0;
     }
 }
