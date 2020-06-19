@@ -42,7 +42,7 @@
     "extra": {
         "class": "Icanhazstring\\Composer\\Unused\\UnusedPlugin",
         "branch-alias": {
-            "dev-main": "dev-master"
+            "dev-main": "0.8.x-dev"
         }
     },
     "autoload": {
