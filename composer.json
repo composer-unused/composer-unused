@@ -40,7 +40,10 @@
         "sort-packages": true
     },
     "extra": {
-        "class": "Icanhazstring\\Composer\\Unused\\UnusedPlugin"
+        "class": "Icanhazstring\\Composer\\Unused\\UnusedPlugin",
+        "branch-alias": {
+            "dev-main": "dev-master"
+        }
     },
     "autoload": {
         "psr-4": {
