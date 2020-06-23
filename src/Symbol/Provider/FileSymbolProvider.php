@@ -10,7 +10,7 @@ use Icanhazstring\Composer\Unused\Parser\PHP\SymbolNameParser;
 use Icanhazstring\Composer\Unused\Symbol\Symbol;
 use Icanhazstring\Composer\Unused\Symbol\SymbolInterface;
 
-class FunctionConstantSymbolProvider
+class FileSymbolProvider
 {
     /** @var SymbolNameParser */
     private $parser;
