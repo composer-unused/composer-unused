@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Icanhazstring\Composer\Unused\Symbol;
 
 use Generator;
-use IteratorAggregate;
+use Traversable;
 
-final class SymbolList implements IteratorAggregate, SymbolListInterface
+final class SymbolList implements SymbolListInterface
 {
-    /** @var iterable<SymbolInterface> */
-    private $items = [];
+    /** @var Traversable<SymbolInterface> */
+    private $items;
 
-    public function addAll(iterable $symbols): SymbolListInterface
+    public function addAll(Traversable $symbols): SymbolListInterface
     {
-        $this->items = $symbols;
+        $this->items = iterator_to_array($symbols);
         return $this;
     }
 

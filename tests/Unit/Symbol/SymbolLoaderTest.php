@@ -6,12 +6,11 @@ namespace Icanhazstring\Composer\Test\Unused\Unit\Symbol;
 
 use Composer\Package\Package;
 use Generator;
-use Icanhazstring\Composer\Unused\Symbol\DependencySymbolLoader;
+use Icanhazstring\Composer\Unused\Symbol\Loader\CompositeSymbolLoader;
+use Icanhazstring\Composer\Unused\Symbol\Loader\PsrSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\NamespaceSymbol;
-use Icanhazstring\Composer\Unused\Symbol\Provider\FunctionConstantSymbolProvider;
+use Icanhazstring\Composer\Unused\Symbol\Provider\FileSymbolProvider;
 use Icanhazstring\Composer\Unused\Symbol\SymbolInterface;
-use Icanhazstring\Composer\Unused\Symbol\SymbolLoader;
-use Icanhazstring\Composer\Unused\Symbol\SymbolLoaderInterface;
 use PHPUnit\Framework\TestCase;
 
 class SymbolLoaderTest extends TestCase
@@ -47,9 +46,9 @@ class SymbolLoaderTest extends TestCase
             ]
         ]);
 
-        $symbolLoader = new SymbolLoader();
+        $symbolLoader = new PsrSymbolLoader();
 
-        $fileSymbolLoader = $this->getMockBuilder(FunctionConstantSymbolProvider::class)
+        $fileSymbolLoader = $this->getMockBuilder(FileSymbolProvider::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -57,7 +56,7 @@ class SymbolLoaderTest extends TestCase
             ->method('provide')
             ->willReturn($this->arrayAsGenerator([]));
 
-        $symbolLoader = new DependencySymbolLoader($fileSymbolLoader, $symbolLoader);
+        $symbolLoader = new CompositeSymbolLoader($fileSymbolLoader, $symbolLoader);
         $symbols = $symbolLoader->load($package);
 
         $symbolsArray = iterator_to_array($symbols);
@@ -78,9 +77,9 @@ class SymbolLoaderTest extends TestCase
             ]
         ]);
 
-        $symbolLoader = new SymbolLoader();
+        $symbolLoader = new PsrSymbolLoader();
 
-        $fileSymbolLoader = $this->getMockBuilder(FunctionConstantSymbolProvider::class)
+        $fileSymbolLoader = $this->getMockBuilder(FileSymbolProvider::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -88,7 +87,7 @@ class SymbolLoaderTest extends TestCase
             ->method('provide')
             ->willReturn($this->arrayAsGenerator([]));
 
-        $symbolLoader = new DependencySymbolLoader($fileSymbolLoader, $symbolLoader);
+        $symbolLoader = new CompositeSymbolLoader($fileSymbolLoader, $symbolLoader);
         $symbols = $symbolLoader->load($package);
 
         $symbolsArray = iterator_to_array($symbols);

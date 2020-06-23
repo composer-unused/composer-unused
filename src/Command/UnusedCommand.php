@@ -20,13 +20,17 @@ use Icanhazstring\Composer\Unused\Parser\PHP\SymbolNameParser;
 use Icanhazstring\Composer\Unused\Parser\PHP\SymbolNodeVisitor;
 use Icanhazstring\Composer\Unused\Subject\PackageSubject;
 use Icanhazstring\Composer\Unused\Subject\UsageInterface;
-use Icanhazstring\Composer\Unused\Symbol\DependencySymbolLoader;
-use Icanhazstring\Composer\Unused\Symbol\Provider\FunctionConstantSymbolProvider;
+use Icanhazstring\Composer\Unused\Symbol\Loader\CompositeSymbolLoader;
+use Icanhazstring\Composer\Unused\Symbol\Loader\ExtensionSymbolLoader;
+use Icanhazstring\Composer\Unused\Symbol\Loader\FileSymbolLoader;
+use Icanhazstring\Composer\Unused\Symbol\Loader\PsrSymbolLoader;
+use Icanhazstring\Composer\Unused\Symbol\Loader\RootSymbolLoader;
+use Icanhazstring\Composer\Unused\Symbol\Provider\FileSymbolProvider;
 use Icanhazstring\Composer\Unused\Symbol\Symbol;
 use Icanhazstring\Composer\Unused\Symbol\SymbolList;
-use Icanhazstring\Composer\Unused\Symbol\SymbolLoader;
 use Icanhazstring\Composer\Unused\UnusedPlugin;
 use PhpParser\ParserFactory;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -119,19 +123,40 @@ class UnusedCommand extends BaseCommand
         };
 
         $rootPackage = $composer->getPackage(); // self
-        //$rootSymbolLoader = new RootSymbolLoader();
-        $dependencySymbolLoader = new DependencySymbolLoader(
-            new FunctionConstantSymbolProvider(
-                new SymbolNameParser(
+        $rootSymbolLoader = new CompositeSymbolLoader(
+            [
+                new RootSymbolLoader(
                     (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
-                    new SymbolNodeVisitor()
-                ),
-                new FileContentProvider()
-            ),
-            new SymbolLoader()
+                    dirname($composer->getConfig()->getConfigSource()->getName()),
+                    []
+                )
+            ]
+        );
+
+        $dependencySymbolLoader = new CompositeSymbolLoader(
+            [
+                new ExtensionSymbolLoader(),
+                new PsrSymbolLoader(),
+                new FileSymbolLoader(
+                    new FileSymbolProvider(
+                        new SymbolNameParser(
+                            (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+                            new SymbolNodeVisitor()
+                        ),
+                        new FileContentProvider()
+                    )
+                )
+            ]
         );
 
         $requiredDependencies = [];
+        $usedSymbols = [
+            LoggerInterface::class => new Symbol(LoggerInterface::class),
+            'PHP_BINARY' => new Symbol('PHP_BINARY'),
+            'json_encode' => new Symbol('json_encode'),
+            PackageInterface::class => new Symbol(PackageInterface::class),
+            ContainerInterface::class => new Symbol(ContainerInterface::class),
+        ]; //$rootSymbolLoader->load($rootPackage);
 
         foreach ($rootPackage->getRequires() as $require) {
             $composerPackage = $resolvePackage($require);
@@ -140,20 +165,22 @@ class UnusedCommand extends BaseCommand
                 continue;
             }
 
-            $requiredDependencies[] = new RequiredDependency(
+            $requiredDependency = new RequiredDependency(
                 $composerPackage,
                 (new SymbolList())->addAll(
                     $dependencySymbolLoader->load($composerPackage)
                 )
             );
-        }
 
-        $usedSymbol = new Symbol(PackageInterface::class);
-
-        foreach ($requiredDependencies as $requiredDependency) {
-            if ($requiredDependency->provides($usedSymbol)) {
-                $requiredDependency->markUsed();
+            foreach ($usedSymbols as $symbolIdentifier => $usedSymbol) {
+                if ($requiredDependency->provides($usedSymbol)) {
+                    $requiredDependency->markUsed();
+                    unset($usedSymbols[$symbolIdentifier]);
+                    break;
+                }
             }
+
+            $requiredDependencies[] = $requiredDependency;
         }
 
         $this->logCommandInfo($composer);
