@@ -1,4 +1,4 @@
-FROM php:7.4-cli-buster
+FROM php:7.4-cli
 
 RUN apt-get update \
     && apt install -y \
