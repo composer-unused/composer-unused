@@ -40,12 +40,6 @@ final class RequiredDependency implements RequiredDependencyInterface
 
     public function provides(Symbol $symbol): bool
     {
-        foreach ($this->symbols as $providedSymbol) {
-            if ($providedSymbol->matches($symbol)) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->symbols->contains($symbol);
     }
 }
