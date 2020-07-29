@@ -74,7 +74,7 @@ class ServiceContainer implements ContainerInterface
 
         try {
             $factory = $this->getFactory($name);
-            $object = $factory($this, $options);
+            $object = $factory($this, $name, $options);
         } catch (ContainerExceptionInterface $exception) {
             throw $exception;
         } catch (Exception $exception) {
