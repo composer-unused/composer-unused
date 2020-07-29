@@ -9,8 +9,10 @@ use Psr\Container\ContainerInterface;
 interface FactoryInterface
 {
     /**
-     * @param array<string, mixed> $options
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param null|array<string, mixed> $options
      * @return object
      */
-    public function __invoke(ContainerInterface $container, array $options = null);
+    public function __invoke(ContainerInterface $container, string $requestedName, array $options = null);
 }
