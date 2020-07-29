@@ -16,9 +16,12 @@ use Psr\Log\LoggerInterface;
 class PHPUsageParserFactory implements FactoryInterface
 {
     /**
+     * @param ContainerInterface $container
+     * @param string $requestedName
      * @param array<string, mixed>|null $options
+     * @return PHPUsageParser
      */
-    public function __invoke(ContainerInterface $container, array $options = null): PHPUsageParser
+    public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): PHPUsageParser
     {
         return new PHPUsageParser(
             (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
