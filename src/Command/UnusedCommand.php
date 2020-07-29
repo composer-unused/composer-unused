@@ -25,6 +25,7 @@ use Icanhazstring\Composer\Unused\Symbol\Loader\ExtensionSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\Loader\FileSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\Loader\PsrSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\Loader\RootSymbolLoader;
+use Icanhazstring\Composer\Unused\Symbol\Loader\SymbolLoaderInterface;
 use Icanhazstring\Composer\Unused\Symbol\Provider\FileSymbolProvider;
 use Icanhazstring\Composer\Unused\Symbol\Symbol;
 use Icanhazstring\Composer\Unused\Symbol\SymbolList;
@@ -50,18 +51,22 @@ class UnusedCommand extends BaseCommand
     private $logger;
     /** @var LoaderBuilder */
     private $loaderBuilder;
+    /** @var SymbolLoaderInterface */
+    private $dependencySymbolLoader;
 
     public function __construct(
         ErrorHandlerInterface $errorHandler,
         SymfonyStyleFactory $outputFactory,
         LoaderBuilder $loaderBuilder,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        SymbolLoaderInterface $dependencySymbolLoader
     ) {
         parent::__construct('unused');
         $this->errorHandler = $errorHandler;
         $this->symfonyStyleFactory = $outputFactory;
         $this->loaderBuilder = $loaderBuilder;
         $this->logger = $logger;
+        $this->dependencySymbolLoader = $dependencySymbolLoader;
     }
 
     protected function configure(): void
@@ -133,21 +138,7 @@ class UnusedCommand extends BaseCommand
             ]
         );
 
-        $dependencySymbolLoader = new CompositeSymbolLoader(
-            [
-                new ExtensionSymbolLoader(),
-                new PsrSymbolLoader(),
-                new FileSymbolLoader(
-                    new FileSymbolProvider(
-                        new SymbolNameParser(
-                            (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
-                            new SymbolNodeVisitor()
-                        ),
-                        new FileContentProvider()
-                    )
-                )
-            ]
-        );
+        $dependencySymbolLoader = $this->dependencySymbolLoader;
 
         $requiredDependencies = [];
         $usedSymbols = [
