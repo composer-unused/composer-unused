@@ -19,9 +19,11 @@ class UsageLoaderFactory implements FactoryInterface
 {
     /**
      * @param ContainerInterface&ServiceContainer $container
+     * @param string $requestedName
      * @param array<string, mixed>|null $options
+     * @return UsageLoader
      */
-    public function __invoke(ContainerInterface $container, array $options = null): UsageLoader
+    public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): UsageLoader
     {
         return new UsageLoader(
             [
