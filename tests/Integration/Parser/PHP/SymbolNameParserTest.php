@@ -5,34 +5,39 @@ declare(strict_types=1);
 namespace Icanhazstring\Composer\Test\Unused\Integration\Parser\PHP;
 
 use Icanhazstring\Composer\Unused\Parser\PHP\SymbolNameParser;
-use Icanhazstring\Composer\Unused\Parser\PHP\SymbolNodeVisitor;
+use Icanhazstring\Composer\Unused\Parser\PHP\ForeignSymbolCollector;
 use PhpParser\ParserFactory;
 use PHPUnit\Framework\TestCase;
+
+use function iterator_to_array;
 
 class SymbolNameParserTest extends TestCase
 {
     /**
      * @test
      */
-    public function itShouldYieldEmptyList(): void
+    public function itShouldParseClasses(): void
     {
         $symbolNameParser = new SymbolNameParser(
             (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
-            new SymbolNodeVisitor()
+            new ForeignSymbolCollector()
         );
 
         $code = <<<CODE
         <?php
         declare(strict_types=1);
 
-        class TestClasse {
+        namespace Test\Sub;
+
+        class TestClass {
             public function test() {}
         }
         CODE;
 
 
-        $symbolNames = $symbolNameParser->parseSymbolNames($code);
-        self::assertEmpty(iterator_to_array($symbolNames));
+        $symbolNames = iterator_to_array($symbolNameParser->parseSymbolNames($code));
+        self::assertCount(1, $symbolNames);
+        self::assertContains('Test\\Sub\\TestClass', $symbolNames);
     }
 
     /**
@@ -42,7 +47,7 @@ class SymbolNameParserTest extends TestCase
     {
         $symbolNameParser = new SymbolNameParser(
             (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
-            new SymbolNodeVisitor()
+            new ForeignSymbolCollector()
         );
 
         $code = <<<CODE
@@ -67,7 +72,7 @@ class SymbolNameParserTest extends TestCase
     {
         $symbolNameParser = new SymbolNameParser(
             (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
-            new SymbolNodeVisitor()
+            new ForeignSymbolCollector()
         );
 
         $code = <<<CODE

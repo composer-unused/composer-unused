@@ -21,7 +21,7 @@ class PHPUsageParser implements ParserInterface
 
     /** @var Parser */
     private $parser;
-    /** @var NodeVisitor */
+    /** @var NamespaceNodeVisitor */
     private $visitor;
     /** @var ErrorHandlerInterface */
     private $errorHandler;
@@ -37,7 +37,7 @@ class PHPUsageParser implements ParserInterface
      */
     public function __construct(
         Parser $parser,
-        NodeVisitor $visitor,
+        NamespaceNodeVisitor $visitor,
         ErrorHandlerInterface $errorHandler,
         LoggerInterface $logger,
         ResultInterface $loaderResult,
