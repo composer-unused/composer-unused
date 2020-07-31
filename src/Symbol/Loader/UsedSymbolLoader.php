@@ -26,7 +26,7 @@ class UsedSymbolLoader implements SymbolLoaderInterface
 
     /**
      * @param PackageDecoratorInterface $package
-     * @return Generator<SymbolInterface>
+     * @return Generator<string, SymbolInterface>
      * @throws IOException
      */
     public function load(PackageDecoratorInterface $package): Generator
