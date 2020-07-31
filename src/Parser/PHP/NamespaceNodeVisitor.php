@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Icanhazstring\Composer\Unused\Parser\PHP;
 
 use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
-use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\ParseStrategyInterface;
+use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\StrategyInterface;
 use Icanhazstring\Composer\Unused\Subject\NamespaceUsage;
 use Icanhazstring\Composer\Unused\Subject\UsageInterface;
 use PhpParser\Node;
@@ -13,9 +13,9 @@ use PhpParser\NodeVisitorAbstract;
 use SplFileInfo;
 use Throwable;
 
-class NodeVisitor extends NodeVisitorAbstract
+class NamespaceNodeVisitor extends NodeVisitorAbstract
 {
-    /** @var ParseStrategyInterface[] */
+    /** @var StrategyInterface[] */
     private $strategies;
     /** @var UsageInterface[] */
     private $usages = [];
@@ -25,7 +25,7 @@ class NodeVisitor extends NodeVisitorAbstract
     private $errorHandler;
 
     /**
-     * @param ParseStrategyInterface[] $strategies
+     * @param StrategyInterface[] $strategies
      * @param ErrorHandlerInterface    $errorHandler
      */
     public function __construct(array $strategies, ErrorHandlerInterface $errorHandler)
@@ -43,11 +43,11 @@ class NodeVisitor extends NodeVisitorAbstract
     {
         foreach ($this->strategies as $strategy) {
             try {
-                if (!$strategy->meetsCriteria($node)) {
+                if (!$strategy->canHandle($node)) {
                     continue;
                 }
 
-                $namespaces = $strategy->extractNamespaces($node);
+                $namespaces = $strategy->extractSymbols($node);
 
                 foreach ($namespaces as $namespace) {
                     $this->usages[$namespace] = new NamespaceUsage($this->currentFile, $namespace, $node);
