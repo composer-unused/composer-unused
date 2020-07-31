@@ -6,6 +6,7 @@ namespace Icanhazstring\Composer\Unused\Symbol\Loader;
 
 use Composer\Package\PackageInterface;
 use Generator;
+use Icanhazstring\Composer\Unused\Composer\PackageDecoratorInterface;
 use Icanhazstring\Composer\Unused\Symbol\Symbol;
 use ReflectionExtension;
 
@@ -17,7 +18,7 @@ class ExtensionSymbolLoader implements SymbolLoaderInterface
         'php-64bit' => 'Core'
     ];
 
-    public function load(PackageInterface $package): Generator
+    public function load(PackageDecoratorInterface $package): Generator
     {
         if (!$this->isExtension($package)) {
             return [];
