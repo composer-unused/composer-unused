@@ -64,8 +64,8 @@
             "@analyse",
             "@test"
         ],
-        "cs-check": "phpcs",
-        "cs-fix": "phpcbf",
+        "cs-check": "phpcs --parallel=50",
+        "cs-fix": "phpcbf --parallel=50",
         "test": "phpunit"
     },
     "scripts-descriptions": {
