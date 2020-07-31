@@ -22,6 +22,7 @@ use Icanhazstring\Composer\Unused\Output\SymfonyStyleFactory;
 use Icanhazstring\Composer\Unused\Subject\PackageSubject;
 use Icanhazstring\Composer\Unused\Subject\UsageInterface;
 use Icanhazstring\Composer\Unused\Symbol\Loader\SymbolLoaderInterface;
+use Icanhazstring\Composer\Unused\Symbol\SymbolInterface;
 use Icanhazstring\Composer\Unused\Symbol\SymbolList;
 use Icanhazstring\Composer\Unused\UnusedPlugin;
 use Psr\Log\LoggerInterface;
@@ -30,8 +31,13 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Throwable;
+
+use function array_filter;
+use function array_keys;
+use function array_merge;
 use function dirname;
 use function iterator_to_array;
+use function microtime;
 use function strpos;
 
 class UnusedCommand extends BaseCommand
@@ -393,6 +399,24 @@ class UnusedCommand extends BaseCommand
         ));
 
         $requiredDependencies = $this->resolveRequiredPackages($composer, $rootPackage);
+
+        $rootNamespaces = array_merge(
+            array_keys($rootPackage->getAutoload()['psr-0'] ?? []),
+            array_keys($rootPackage->getAutoload()['psr-4'] ?? [])
+        );
+
+        $usedSymbols = array_filter(
+            $usedSymbols,
+            static function (SymbolInterface $symbol) use ($rootNamespaces): bool {
+                foreach ($rootNamespaces as $rootNamespace) {
+                    if (strpos($symbol->getIdentifier(), $rootNamespace) === 0) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+        );
 
         foreach ($usedSymbols as $usedSymbol) {
             foreach ($requiredDependencies as $requiredDependency) {

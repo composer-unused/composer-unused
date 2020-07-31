@@ -11,6 +11,7 @@ use Composer\Package\PackageInterface;
 use Icanhazstring\Composer\Unused\Composer\PackageDecorator;
 use Icanhazstring\Composer\Unused\Composer\PackageDecoratorInterface;
 use PHPUnit\Framework\TestCase;
+
 use function realpath;
 
 class AbstractIntegrationTestCase extends TestCase

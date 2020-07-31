@@ -31,7 +31,7 @@ class FileSymbolLoaderTest extends AbstractIntegrationTestCase
         $symbols = iterator_to_array($fileLoader->load($package));
 
         self::assertCount(1, $symbols);
-        self::assertEquals('testfunction', $symbols[0]->getIdentifier());
+        self::assertEquals('testfunction', $symbols['testfunction']->getIdentifier());
     }
 
     private function createFileSymbolLoader(): FileSymbolLoader
