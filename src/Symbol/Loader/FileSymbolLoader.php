@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused\Symbol\Loader;
 
-use Composer\Package\PackageInterface;
 use Generator;
+use Icanhazstring\Composer\Unused\Composer\PackageDecoratorInterface;
 use Icanhazstring\Composer\Unused\Exception\IOException;
 use Icanhazstring\Composer\Unused\Symbol\Provider\FileSymbolProvider;
+use Icanhazstring\Composer\Unused\Symbol\SymbolInterface;
+use SplFileInfo;
+
+use function sprintf;
 
 class FileSymbolLoader implements SymbolLoaderInterface
 {
@@ -22,9 +26,21 @@ class FileSymbolLoader implements SymbolLoaderInterface
     /**
      * @throws IOException
      */
-    public function load(PackageInterface $package): Generator
+    public function load(PackageDecoratorInterface $package): Generator
     {
-        $files = $package->getAutoload()['files'] ?? [];
+        $files = [];
+
+        foreach ($package->getAutoload()['files'] ?? [] as $path) {
+            $files[] = new SplFileInfo(
+                sprintf(
+                    '%s/vendor/%s/%s',
+                    $package->getBaseDir(),
+                    $package->getName(),
+                    $path
+                )
+            );
+        }
+
         yield from $this->fileSymbolProvider->provide($package->getTargetDir(), $files);
     }
 }

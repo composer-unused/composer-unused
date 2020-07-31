@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused\Symbol\Loader;
 
-use Composer\Package\PackageInterface;
 use Generator;
+use Icanhazstring\Composer\Unused\Composer\PackageDecoratorInterface;
 use Icanhazstring\Composer\Unused\Symbol\SymbolInterface;
 
 final class CompositeSymbolLoader implements SymbolLoaderInterface
@@ -22,9 +22,10 @@ final class CompositeSymbolLoader implements SymbolLoaderInterface
     }
 
     /**
+     * @param PackageDecoratorInterface $package
      * @return Generator<SymbolInterface>
      */
-    public function load(PackageInterface $package): Generator
+    public function load(PackageDecoratorInterface $package): Generator
     {
         foreach ($this->symbolLoader as $loader) {
             yield from $loader->load($package);
