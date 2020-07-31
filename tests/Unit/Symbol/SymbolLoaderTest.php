@@ -6,6 +6,7 @@ namespace Icanhazstring\Composer\Test\Unused\Unit\Symbol;
 
 use Composer\Package\Package;
 use Generator;
+use Icanhazstring\Composer\Unused\Composer\PackageDecorator;
 use Icanhazstring\Composer\Unused\Symbol\Loader\CompositeSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\Loader\FileSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\Loader\PsrSymbolLoader;
@@ -53,7 +54,7 @@ class SymbolLoaderTest extends TestCase
         ]);
 
         $symbolLoader = new CompositeSymbolLoader([new PsrSymbolLoader()]);
-        $symbols = $symbolLoader->load($package);
+        $symbols = $symbolLoader->load(PackageDecorator::withBaseDir('', $package));
 
         $symbolsArray = iterator_to_array($symbols);
         self::assertCount(1, $symbolsArray);
@@ -74,7 +75,7 @@ class SymbolLoaderTest extends TestCase
         ]);
 
         $symbolLoader = new CompositeSymbolLoader([new PsrSymbolLoader()]);
-        $symbols = $symbolLoader->load($package);
+        $symbols = $symbolLoader->load(PackageDecorator::withBaseDir('', $package));
 
         $symbolsArray = iterator_to_array($symbols);
         self::assertCount(1, $symbolsArray);

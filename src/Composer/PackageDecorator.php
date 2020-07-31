@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused\Composer;
 
-use Composer\Package\RootPackageInterface;
+use Composer\Package\PackageInterface;
 use Composer\Repository\RepositoryInterface;
 use DateTime;
 
-class RootPackage implements RootPackageInterface
+class PackageDecorator implements PackageDecoratorInterface
 {
-    /** @var RootPackageInterface */
+    /** @var PackageInterface */
     private $package;
     /** @var string */
     private $baseDir;
 
-    private function __construct(RootPackageInterface $package)
+    private function __construct(PackageInterface $package)
     {
         $this->package = $package;
     }
 
-    public static function withBaseDir(string $baseDir, RootPackageInterface $package): RootPackage
+    public static function withBaseDir(string $baseDir, PackageInterface $package): PackageDecorator
     {
         $root = new self($package);
         $root->baseDir = $baseDir;
@@ -31,61 +31,6 @@ class RootPackage implements RootPackageInterface
     public function getBaseDir(): string
     {
         return $this->baseDir;
-    }
-
-    public function getScripts()
-    {
-        return $this->package->getScripts();
-    }
-
-    public function getRepositories(): array
-    {
-        return $this->package->getRepositories();
-    }
-
-    public function getLicense(): array
-    {
-        return $this->package->getLicense();
-    }
-
-    public function getKeywords(): array
-    {
-        return $this->package->getKeywords();
-    }
-
-    public function getDescription(): string
-    {
-        return $this->package->getDescription();
-    }
-
-    public function getHomepage(): string
-    {
-        return $this->package->getHomepage();
-    }
-
-    public function getAuthors(): array
-    {
-        return $this->package->getAuthors();
-    }
-
-    public function getSupport(): array
-    {
-        return $this->package->getSupport();
-    }
-
-    public function getFunding(): array
-    {
-        return $this->package->getFunding();
-    }
-
-    public function isAbandoned(): bool
-    {
-        return $this->package->isAbandoned();
-    }
-
-    public function getReplacementPackage(): string
-    {
-        return $this->package->getReplacementPackage();
     }
 
     public function getName(): string
@@ -141,27 +86,27 @@ class RootPackage implements RootPackageInterface
         $this->package->setInstallationSource($type);
     }
 
-    public function getInstallationSource()
+    public function getInstallationSource(): string
     {
         return $this->package->getInstallationSource();
     }
 
-    public function getSourceType()
+    public function getSourceType(): string
     {
         return $this->package->getSourceType();
     }
 
-    public function getSourceUrl()
+    public function getSourceUrl(): string
     {
         return $this->package->getSourceUrl();
     }
 
-    public function getSourceUrls()
+    public function getSourceUrls(): array
     {
         return $this->package->getSourceUrls();
     }
 
-    public function getSourceReference()
+    public function getSourceReference(): string
     {
         return $this->package->getSourceReference();
     }
@@ -365,120 +310,5 @@ class RootPackage implements RootPackageInterface
     public function setSourceDistReferences($reference): void
     {
         $this->package->setSourceDistReferences($reference);
-    }
-
-    /**
-     * @return array<string>
-     */
-    public function getAliases(): array
-    {
-        return $this->package->getAliases();
-    }
-
-    public function getMinimumStability(): string
-    {
-        return $this->package->getMinimumStability();
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    public function getStabilityFlags(): array
-    {
-        return $this->package->getStabilityFlags();
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    public function getReferences(): array
-    {
-        return $this->package->getReferences();
-    }
-
-    public function getPreferStable(): bool
-    {
-        return $this->package->getPreferStable();
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function getConfig(): array
-    {
-        return $this->package->getConfig();
-    }
-
-    public function setRequires(array $requires): void
-    {
-        $this->package->setRequires($requires);
-    }
-
-    public function setDevRequires(array $devRequires): void
-    {
-        $this->package->setDevRequires($devRequires);
-    }
-
-    public function setConflicts(array $conflicts): void
-    {
-        $this->package->setConflicts($conflicts);
-    }
-
-    public function setProvides(array $provides): void
-    {
-        $this->package->setProvides($provides);
-    }
-
-    public function setReplaces(array $replaces): void
-    {
-        $this->package->setReplaces($replaces);
-    }
-
-    /**
-     * @param array<string, array> $repositories
-     */
-    public function setRepositories($repositories): void
-    {
-        $this->package->setRepositories($repositories);
-    }
-
-    /**
-     * @param array<string, array> $autoload
-     */
-    public function setAutoload(array $autoload): void
-    {
-        $this->package->setAutoload($autoload);
-    }
-
-    /**
-     * @param array<string, array> $devAutoload
-     */
-    public function setDevAutoload(array $devAutoload): void
-    {
-        $this->package->setDevAutoload($devAutoload);
-    }
-
-    /**
-     * @param array<string, string> $stabilityFlags
-     */
-    public function setStabilityFlags(array $stabilityFlags): void
-    {
-        $this->package->setStabilityFlags($stabilityFlags);
-    }
-
-    /**
-     * @param array<string, string> $suggests
-     */
-    public function setSuggests(array $suggests): void
-    {
-        $this->package->setSuggests($suggests);
-    }
-
-    /**
-     * @param array<string, mixed> $extra
-     */
-    public function setExtra(array $extra): void
-    {
-        $this->package->setExtra($extra);
     }
 }

@@ -11,7 +11,7 @@ use Composer\Package\Package;
 use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
 use Composer\Repository\InstalledRepositoryInterface;
-use Icanhazstring\Composer\Unused\Composer\RootPackage;
+use Icanhazstring\Composer\Unused\Composer\PackageDecorator;
 use Icanhazstring\Composer\Unused\Dependency\RequiredDependency;
 use Icanhazstring\Composer\Unused\Dependency\RequiredDependencyInterface;
 use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
@@ -21,7 +21,6 @@ use Icanhazstring\Composer\Unused\Loader\UsageLoader;
 use Icanhazstring\Composer\Unused\Output\SymfonyStyleFactory;
 use Icanhazstring\Composer\Unused\Subject\PackageSubject;
 use Icanhazstring\Composer\Unused\Subject\UsageInterface;
-use Icanhazstring\Composer\Unused\Symbol\Loader\RootSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\Loader\SymbolLoaderInterface;
 use Icanhazstring\Composer\Unused\Symbol\SymbolList;
 use Icanhazstring\Composer\Unused\UnusedPlugin;
@@ -31,6 +30,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Throwable;
+
 use function dirname;
 use function iterator_to_array;
 use function strpos;
@@ -318,14 +318,8 @@ class UnusedCommand extends BaseCommand
     /**
      * @return array<RequiredDependencyInterface>
      */
-    protected function resolveRequiredPackages(RootPackageInterface $rootPackage): array
+    protected function resolveRequiredPackages(Composer $composer, RootPackageInterface $rootPackage): array
     {
-        $composer = $this->getComposer();
-
-        if ($composer === null) {
-            return [];
-        }
-
         $requiredDependencies = [];
 
         foreach ($rootPackage->getRequires() as $require) {
@@ -337,6 +331,11 @@ class UnusedCommand extends BaseCommand
             if ($composerPackage === null) {
                 continue;
             }
+
+            $composerPackage = PackageDecorator::withBaseDir(
+                dirname($composer->getConfig()->getConfigSource()->getName()),
+                $composerPackage
+            );
 
             $requiredDependencies[] = new RequiredDependency(
                 $composerPackage,
@@ -385,14 +384,16 @@ class UnusedCommand extends BaseCommand
 
         $rootPackage = $composer->getPackage();
 
+        $baseDir = dirname($composer->getConfig()->getConfigSource()->getName());
+
         $usedSymbols = iterator_to_array($this->usedSymbolLoader->load(
-            RootPackage::withBaseDir(
-                dirname($composer->getConfig()->getConfigSource()->getName()),
+            PackageDecorator::withBaseDir(
+                $baseDir,
                 $rootPackage
             )
         ));
 
-        $requiredDependencies = $this->resolveRequiredPackages($rootPackage);
+        $requiredDependencies = $this->resolveRequiredPackages($composer, $rootPackage);
 
         foreach ($usedSymbols as $usedSymbol) {
             foreach ($requiredDependencies as $requiredDependency) {

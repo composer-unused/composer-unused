@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Test\Unused\Unit\Symbol;
+namespace Icanhazstring\Composer\Test\Unused\Unit\Symbol\Loader;
 
 use Composer\Package\Package;
 use Generator;
+use Icanhazstring\Composer\Unused\Composer\PackageDecorator;
 use Icanhazstring\Composer\Unused\Symbol\Loader\CompositeSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\Loader\FileSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\Loader\SymbolLoaderInterface;
-use Icanhazstring\Composer\Unused\Symbol\Provider\FileSymbolProvider;
 use Icanhazstring\Composer\Unused\Symbol\Symbol;
 use Icanhazstring\Composer\Unused\Symbol\SymbolInterface;
 use PHPUnit\Framework\TestCase;
@@ -60,7 +60,7 @@ class DependencySymbolLoaderTest extends TestCase
             ->willReturn($this->arrayAsGenerator([]));
 
         $symbolLoader = new CompositeSymbolLoader([$fileSymbolLoader, $symbolLoader]);
-        $symbols = $symbolLoader->load($package);
+        $symbols = $symbolLoader->load(PackageDecorator::withBaseDir('', $package));
 
         self::assertEmpty(iterator_to_array($symbols));
     }
@@ -93,7 +93,7 @@ class DependencySymbolLoaderTest extends TestCase
             ]));
 
         $symbolLoader = new CompositeSymbolLoader([$fileSymbolProvider, $symbolLoader]);
-        $symbols = $symbolLoader->load($package);
+        $symbols = $symbolLoader->load(PackageDecorator::withBaseDir('', $package));
 
         $symbolsArray = iterator_to_array($symbols);
         self::assertCount(1, $symbolsArray);

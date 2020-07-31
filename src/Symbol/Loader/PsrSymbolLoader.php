@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused\Symbol\Loader;
 
-use Composer\Package\PackageInterface;
 use Generator;
+use Icanhazstring\Composer\Unused\Composer\PackageDecoratorInterface;
 use Icanhazstring\Composer\Unused\Symbol\NamespaceSymbol;
 
 use function array_merge;
 
 final class PsrSymbolLoader implements SymbolLoaderInterface
 {
-    public function load(PackageInterface $package): Generator
+    public function load(PackageDecoratorInterface $package): Generator
     {
         $namespaces = array_merge(
             $package->getAutoload()['psr-4'] ?? [],

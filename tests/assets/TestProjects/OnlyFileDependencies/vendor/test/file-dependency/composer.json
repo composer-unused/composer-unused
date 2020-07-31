@@ -1,0 +1,14 @@
+{
+    "name": "test/file-dependency",
+    "type": "library",
+    "description": "test dependency",
+    "autoload": {
+        "files": [
+            "src/file.php"
+        ]
+    },
+    "require": {
+    },
+    "require-dev": {
+    }
+}
