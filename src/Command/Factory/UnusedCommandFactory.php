@@ -10,7 +10,6 @@ use Icanhazstring\Composer\Unused\File\FileContentProvider;
 use Icanhazstring\Composer\Unused\Loader\LoaderBuilder;
 use Icanhazstring\Composer\Unused\Output\SymfonyStyleFactory;
 use Icanhazstring\Composer\Unused\Parser\PHP\ForeignSymbolCollector;
-use Icanhazstring\Composer\Unused\Parser\PHP\ForeignSymbolNameParserInterface;
 use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\ClassConstStrategy;
 use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\NewStrategy;
 use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\PhpExtensionStrategy;
@@ -27,7 +26,6 @@ use Icanhazstring\Composer\Unused\Symbol\Provider\FileSymbolProvider;
 use PhpParser\ParserFactory;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
-
 use function get_loaded_extensions;
 
 class UnusedCommandFactory

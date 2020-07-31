@@ -17,21 +17,14 @@ use Icanhazstring\Composer\Unused\Loader\UsageLoader;
 use Icanhazstring\Composer\Unused\Log\Factory\DebugLoggerFactory;
 use Icanhazstring\Composer\Unused\Log\Factory\FileHandlerFactory;
 use Icanhazstring\Composer\Unused\Log\LogHandlerInterface;
-use Icanhazstring\Composer\Unused\Parser\PHP\Factory\ForeignSymbolNameParserFactory;
 use Icanhazstring\Composer\Unused\Parser\PHP\Factory\NodeVisitorFactory;
 use Icanhazstring\Composer\Unused\Parser\PHP\Factory\PHPUsageParserFactory;
-use Icanhazstring\Composer\Unused\Parser\PHP\Factory\SymbolNameParserFactory;
-use Icanhazstring\Composer\Unused\Parser\PHP\ForeignSymbolNameParserInterface;
+use Icanhazstring\Composer\Unused\Parser\PHP\ForeignSymbolCollector;
 use Icanhazstring\Composer\Unused\Parser\PHP\NamespaceNodeVisitor;
 use Icanhazstring\Composer\Unused\Parser\PHP\PHPUsageParser;
 use Icanhazstring\Composer\Unused\Parser\PHP\UsedSymbolCollector;
-use Icanhazstring\Composer\Unused\Parser\PHP\RootSymbolNameParserInterface;
-use Icanhazstring\Composer\Unused\Parser\PHP\SymbolNameParser;
-use Icanhazstring\Composer\Unused\Parser\PHP\ForeignSymbolCollector;
 use Icanhazstring\Composer\Unused\Subject\Factory\PackageSubjectFactory;
 use Icanhazstring\Composer\Unused\Symbol\Loader\ExtensionSymbolLoader;
-use Icanhazstring\Composer\Unused\Symbol\Loader\Factory\FileSymbolLoaderFactory;
-use Icanhazstring\Composer\Unused\Symbol\Loader\FileSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\Loader\PsrSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\Provider\Factory\FileSymbolProviderFactory;
 use Icanhazstring\Composer\Unused\Symbol\Provider\FileSymbolProvider;
@@ -55,7 +48,6 @@ return [
         // 0.8 dependencies
         ExtensionSymbolLoader::class => InvokableFactory::class,
         PsrSymbolLoader::class => InvokableFactory::class,
-        //FileSymbolLoader::class => FileSymbolLoaderFactory::class,
         FileSymbolProvider::class => FileSymbolProviderFactory::class,
         FileContentProvider::class => InvokableFactory::class,
         ForeignSymbolCollector::class => InvokableFactory::class,
