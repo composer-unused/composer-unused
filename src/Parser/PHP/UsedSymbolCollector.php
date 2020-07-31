@@ -9,6 +9,7 @@ use PhpParser\Node;
 use PhpParser\NodeVisitorAbstract;
 
 use function array_merge;
+use function array_unique;
 
 class UsedSymbolCollector extends NodeVisitorAbstract implements SymbolCollectorInterface
 {
@@ -46,6 +47,6 @@ class UsedSymbolCollector extends NodeVisitorAbstract implements SymbolCollector
 
     public function getSymbolNames(): array
     {
-        return $this->symbols;
+        return array_unique($this->symbols);
     }
 }
