@@ -13,6 +13,9 @@ final class CompositeSymbolLoader implements SymbolLoaderInterface
     /** @var array<SymbolLoaderInterface> */
     private $symbolLoader;
 
+    /**
+     * @param array<SymbolLoaderInterface> $symbolLoader
+     */
     public function __construct(array $symbolLoader)
     {
         $this->symbolLoader = $symbolLoader;

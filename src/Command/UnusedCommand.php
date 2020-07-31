@@ -9,35 +9,31 @@ use Composer\Composer;
 use Composer\Package\Link;
 use Composer\Package\Package;
 use Composer\Package\PackageInterface;
+use Composer\Package\RootPackageInterface;
+use Composer\Repository\InstalledRepositoryInterface;
+use Icanhazstring\Composer\Unused\Composer\RootPackage;
 use Icanhazstring\Composer\Unused\Dependency\RequiredDependency;
+use Icanhazstring\Composer\Unused\Dependency\RequiredDependencyInterface;
 use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
-use Icanhazstring\Composer\Unused\File\FileContentProvider;
 use Icanhazstring\Composer\Unused\Loader\LoaderBuilder;
 use Icanhazstring\Composer\Unused\Loader\PackageLoader;
 use Icanhazstring\Composer\Unused\Loader\UsageLoader;
 use Icanhazstring\Composer\Unused\Output\SymfonyStyleFactory;
-use Icanhazstring\Composer\Unused\Parser\PHP\SymbolNameParser;
-use Icanhazstring\Composer\Unused\Parser\PHP\SymbolNodeVisitor;
 use Icanhazstring\Composer\Unused\Subject\PackageSubject;
 use Icanhazstring\Composer\Unused\Subject\UsageInterface;
-use Icanhazstring\Composer\Unused\Symbol\Loader\CompositeSymbolLoader;
-use Icanhazstring\Composer\Unused\Symbol\Loader\ExtensionSymbolLoader;
-use Icanhazstring\Composer\Unused\Symbol\Loader\FileSymbolLoader;
-use Icanhazstring\Composer\Unused\Symbol\Loader\PsrSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\Loader\RootSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\Loader\SymbolLoaderInterface;
-use Icanhazstring\Composer\Unused\Symbol\Provider\FileSymbolProvider;
-use Icanhazstring\Composer\Unused\Symbol\Symbol;
 use Icanhazstring\Composer\Unused\Symbol\SymbolList;
 use Icanhazstring\Composer\Unused\UnusedPlugin;
-use PhpParser\ParserFactory;
-use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Throwable;
+use function dirname;
+use function iterator_to_array;
+use function strpos;
 
 class UnusedCommand extends BaseCommand
 {
@@ -53,13 +49,16 @@ class UnusedCommand extends BaseCommand
     private $loaderBuilder;
     /** @var SymbolLoaderInterface */
     private $dependencySymbolLoader;
+    /** @var SymbolLoaderInterface */
+    private $usedSymbolLoader;
 
     public function __construct(
         ErrorHandlerInterface $errorHandler,
         SymfonyStyleFactory $outputFactory,
         LoaderBuilder $loaderBuilder,
         LoggerInterface $logger,
-        SymbolLoaderInterface $dependencySymbolLoader
+        SymbolLoaderInterface $dependencySymbolLoader,
+        SymbolLoaderInterface $rootSymbolLoader
     ) {
         parent::__construct('unused');
         $this->errorHandler = $errorHandler;
@@ -67,6 +66,7 @@ class UnusedCommand extends BaseCommand
         $this->loaderBuilder = $loaderBuilder;
         $this->logger = $logger;
         $this->dependencySymbolLoader = $dependencySymbolLoader;
+        $this->usedSymbolLoader = $rootSymbolLoader;
     }
 
     protected function configure(): void
@@ -104,11 +104,20 @@ class UnusedCommand extends BaseCommand
             InputOption::VALUE_NONE,
             'Show no progress bar'
         );
+
+        $this->addOption(
+            'experimental',
+            'x',
+            InputOption::VALUE_NONE,
+            'Run in experimental mode with new symbol scanning'
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->io = ($this->symfonyStyleFactory)($input, $output);
+        /** @var bool $isExperimentalMode */
+        $isExperimentalMode = $input->getOption('experimental');
         /** @var Composer|null $composer */
         $composer = $this->getComposer();
 
@@ -117,68 +126,17 @@ class UnusedCommand extends BaseCommand
             return 1;
         }
 
-        $repo = $composer->getRepositoryManager()->getLocalRepository();
+        $rootPackage = $composer->getPackage();
 
-        $resolvePackage = function (Link $require) use ($repo): ?PackageInterface {
-            if (strpos($require->getTarget(), 'ext-') === 0 || $require->getTarget() === 'php') {
-                return new Package(strtolower($require->getTarget()), '*', '*');
-            }
-
-            return $repo->findPackage($require->getTarget(), $require->getConstraint() ?? '');
-        };
-
-        $rootPackage = $composer->getPackage(); // self
-        $rootSymbolLoader = new CompositeSymbolLoader(
-            [
-                new RootSymbolLoader(
-                    (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
-                    dirname($composer->getConfig()->getConfigSource()->getName()),
-                    []
-                )
-            ]
-        );
-
-        $dependencySymbolLoader = $this->dependencySymbolLoader;
-
-        $requiredDependencies = [];
-        $usedSymbols = [
-            LoggerInterface::class => new Symbol(LoggerInterface::class),
-            'PHP_BINARY' => new Symbol('PHP_BINARY'),
-            'json_encode' => new Symbol('json_encode'),
-            PackageInterface::class => new Symbol(PackageInterface::class),
-            ContainerInterface::class => new Symbol(ContainerInterface::class),
-        ]; //$rootSymbolLoader->load($rootPackage);
-
-        foreach ($rootPackage->getRequires() as $require) {
-            $composerPackage = $resolvePackage($require);
-
-            if ($composerPackage === null) {
-                continue;
-            }
-
-            $requiredDependency = new RequiredDependency(
-                $composerPackage,
-                (new SymbolList())->addAll(
-                    $dependencySymbolLoader->load($composerPackage)
-                )
-            );
-
-            foreach ($usedSymbols as $symbolIdentifier => $usedSymbol) {
-                if ($requiredDependency->provides($usedSymbol)) {
-                    $requiredDependency->markUsed();
-                    unset($usedSymbols[$symbolIdentifier]);
-                    break;
-                }
-            }
-
-            $requiredDependencies[] = $requiredDependency;
+        if ($isExperimentalMode) {
+            return $this->runExperimental($input, $output);
         }
 
         $this->logCommandInfo($composer);
 
         /** @var string[] $excludePackagesOption */
         $excludePackagesOption = $input->getOption('excludePackage');
-        $excludePackagesConfig = $composer->getPackage()->getExtra()['unused'] ?? [];
+        $excludePackagesConfig = $rootPackage->getExtra()['unused'] ?? [];
 
         /** @var string[] $excludeDirs */
         $excludeDirs = $input->getOption('excludeDir');
@@ -355,5 +313,99 @@ class UnusedCommand extends BaseCommand
         $this->logger->info('dev-requires', $devRequires);
         $this->logger->info('autoload', $composer->getPackage()->getAutoload());
         $this->logger->info('dev-autoload', $composer->getPackage()->getDevAutoload());
+    }
+
+    /**
+     * @return array<RequiredDependencyInterface>
+     */
+    protected function resolveRequiredPackages(RootPackageInterface $rootPackage): array
+    {
+        $composer = $this->getComposer();
+
+        if ($composer === null) {
+            return [];
+        }
+
+        $requiredDependencies = [];
+
+        foreach ($rootPackage->getRequires() as $require) {
+            $composerPackage = $this->resolveComposerPackage(
+                $require,
+                $composer->getRepositoryManager()->getLocalRepository()
+            );
+
+            if ($composerPackage === null) {
+                continue;
+            }
+
+            $requiredDependencies[] = new RequiredDependency(
+                $composerPackage,
+                (new SymbolList())->addAll(
+                    $this->dependencySymbolLoader->load($composerPackage)
+                )
+            );
+        }
+
+        return $requiredDependencies;
+    }
+
+    protected function resolveComposerPackage(
+        Link $requiredPackage,
+        InstalledRepositoryInterface $repo
+    ): ?PackageInterface {
+        $isPhp = strpos($requiredPackage->getTarget(), 'php') === 0;
+        $isExtension = strpos($requiredPackage->getTarget(), 'ext-') === 0;
+
+        if ($isPhp || $isExtension) {
+            return new Package(
+                strtolower($requiredPackage->getTarget()),
+                '*',
+                '*'
+            );
+        }
+
+        $constaint = $requiredPackage->getConstraint();
+
+        if ($constaint === null) {
+            $constaint = '';
+        }
+
+        return $repo->findPackage($requiredPackage->getTarget(), $constaint);
+    }
+
+    private function runExperimental(InputInterface $input, OutputInterface $output): int
+    {
+        /** @var Composer|null $composer */
+        $composer = $this->getComposer();
+
+        if ($composer === null) {
+            $this->io->error('Could not get composer dependency');
+            return 1;
+        }
+
+        $rootPackage = $composer->getPackage();
+
+        $usedSymbols = iterator_to_array($this->usedSymbolLoader->load(
+            RootPackage::withBaseDir(
+                dirname($composer->getConfig()->getConfigSource()->getName()),
+                $rootPackage
+            )
+        ));
+
+        $requiredDependencies = $this->resolveRequiredPackages($rootPackage);
+
+        foreach ($usedSymbols as $usedSymbol) {
+            foreach ($requiredDependencies as $requiredDependency) {
+                if ($requiredDependency->isUsed()) {
+                    continue;
+                }
+
+                if ($requiredDependency->provides($usedSymbol)) {
+                    $requiredDependency->markUsed();
+                }
+            }
+        }
+
+        return 0;
     }
 }

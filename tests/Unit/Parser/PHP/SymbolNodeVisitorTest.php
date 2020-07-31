@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Test\Unused\Unit\Parser\PHP;
 
-use Icanhazstring\Composer\Unused\Parser\PHP\SymbolNodeVisitor;
+use Icanhazstring\Composer\Unused\Parser\PHP\ForeignSymbolCollector;
 use PhpParser\Node\Const_;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt\Class_;
@@ -19,7 +19,7 @@ class SymbolNodeVisitorTest extends TestCase
      */
     public function itShouldNotTraverseClasses(): void
     {
-        $visitor = new SymbolNodeVisitor();
+        $visitor = new ForeignSymbolCollector();
         $node = new Class_('test');
 
         self::assertSame(NodeTraverser::DONT_TRAVERSE_CHILDREN, $visitor->enterNode($node));
@@ -30,13 +30,13 @@ class SymbolNodeVisitorTest extends TestCase
      */
     public function itShouldAddFunctionSymbolNames(): void
     {
-        $visitor = new SymbolNodeVisitor();
+        $visitor = new ForeignSymbolCollector();
         $node = new Function_('Testfunction');
 
         $visitor->enterNode($node);
 
-        self::assertCount(1, $visitor->getFunctionNames());
-        self::assertContains('Testfunction', $visitor->getFunctionNames());
+        self::assertCount(1, $visitor->getSymbolNames());
+        self::assertContains('Testfunction', $visitor->getSymbolNames());
     }
 
     /**
@@ -44,12 +44,12 @@ class SymbolNodeVisitorTest extends TestCase
      */
     public function itShouldAddConstantSymbolNames(): void
     {
-        $visitor = new SymbolNodeVisitor();
+        $visitor = new ForeignSymbolCollector();
         $node = new Const_('Testconst', new String_('Conststring'));
 
         $visitor->enterNode($node);
 
-        self::assertCount(1, $visitor->getConstantNames());
-        self::assertContains('Testconst', $visitor->getConstantNames());
+        self::assertCount(1, $visitor->getSymbolNames());
+        self::assertContains('Testconst', $visitor->getSymbolNames());
     }
 }

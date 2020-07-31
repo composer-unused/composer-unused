@@ -7,7 +7,7 @@ namespace Icanhazstring\Composer\Unused\Parser\PHP\Factory;
 use Icanhazstring\Composer\Unused\Di\FactoryInterface;
 use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Loader\Result;
-use Icanhazstring\Composer\Unused\Parser\PHP\NodeVisitor;
+use Icanhazstring\Composer\Unused\Parser\PHP\NamespaceNodeVisitor;
 use Icanhazstring\Composer\Unused\Parser\PHP\PHPUsageParser;
 use PhpParser\ParserFactory;
 use Psr\Container\ContainerInterface;
@@ -25,7 +25,7 @@ class PHPUsageParserFactory implements FactoryInterface
     {
         return new PHPUsageParser(
             (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
-            $container->get(NodeVisitor::class),
+            $container->get(NamespaceNodeVisitor::class),
             $container->get(ErrorHandlerInterface::class),
             $container->get(LoggerInterface::class),
             new Result(),

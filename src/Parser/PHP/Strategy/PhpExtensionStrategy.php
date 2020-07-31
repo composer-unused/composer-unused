@@ -8,7 +8,7 @@ use ReflectionException;
 use ReflectionExtension;
 use ReflectionFunction;
 
-class PhpExtensionStrategy implements ParseStrategyInterface
+class PhpExtensionStrategy implements StrategyInterface
 {
     /** @var array<string, array<string, int>> */
     private $extensionConstants = [];
@@ -37,7 +37,7 @@ class PhpExtensionStrategy implements ParseStrategyInterface
         }
     }
 
-    public function meetsCriteria(Node $node): bool
+    public function canHandle(Node $node): bool
     {
         if ($node instanceof Node\Name\FullyQualified) {
             foreach ($this->extensionClasses as $extensionClass) {
@@ -76,7 +76,7 @@ class PhpExtensionStrategy implements ParseStrategyInterface
     /**
      * @return array<string>
      */
-    public function extractNamespaces(Node $node): array
+    public function extractSymbols(Node $node): array
     {
         $searchingName = $this->getNameFromNode($node);
 
