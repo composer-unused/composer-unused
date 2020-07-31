@@ -8,9 +8,7 @@ use Generator;
 use Icanhazstring\Composer\Unused\Composer\PackageDecoratorInterface;
 use Icanhazstring\Composer\Unused\Exception\IOException;
 use Icanhazstring\Composer\Unused\Symbol\Provider\FileSymbolProvider;
-use Icanhazstring\Composer\Unused\Symbol\SymbolInterface;
 use SplFileInfo;
-
 use function sprintf;
 
 class FileSymbolLoader implements SymbolLoaderInterface
