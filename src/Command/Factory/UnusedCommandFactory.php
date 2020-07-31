@@ -26,6 +26,7 @@ use Icanhazstring\Composer\Unused\Symbol\Provider\FileSymbolProvider;
 use PhpParser\ParserFactory;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+
 use function get_loaded_extensions;
 
 class UnusedCommandFactory

@@ -30,7 +30,7 @@ class FileSymbolProvider
     /**
      * @param array<SplFileInfo> $files
      *
-     * @return Generator<SymbolInterface>
+     * @return Generator<string, SymbolInterface>
      * @throws IOException
      */
     public function provide(?string $dir, iterable $files): Generator
@@ -39,7 +39,7 @@ class FileSymbolProvider
             $content = $this->fileContentProvider->getContent($dir, $file);
 
             foreach ($this->parser->parseSymbolNames($content) as $symbolName) {
-                yield new Symbol($symbolName);
+                yield $symbolName => new Symbol($symbolName);
             }
         }
     }
