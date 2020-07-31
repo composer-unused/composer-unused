@@ -6,18 +6,18 @@ namespace Icanhazstring\Composer\Unused\Parser\PHP;
 
 use Generator;
 use PhpParser\NodeTraverser;
-use PHPParser\Parser;
+use PhpParser\Parser;
 
-class SymbolNameParser
+final class SymbolNameParser implements SymbolNameParserInterface
 {
     /** @var Parser */
     private $parser;
     /** @var NodeTraverser */
     private $traverser;
-    /** @var SymbolNodeVisitor */
+    /** @var SymbolCollectorInterface */
     private $visitor;
 
-    public function __construct(Parser $parser, SymbolNodeVisitor $visitor)
+    public function __construct(Parser $parser, SymbolCollectorInterface $visitor)
     {
         $this->parser = $parser;
         $this->traverser = new NodeTraverser();
@@ -27,13 +27,18 @@ class SymbolNameParser
     }
 
     /**
-     * @return Generator<string>;
+     * @return Generator<string>
      */
     public function parseSymbolNames(string $code): Generator
     {
-        $this->traverser->traverse($this->parser->parse($code));
+        $nodes = $this->parser->parse($code);
 
-        yield from $this->visitor->getFunctionNames();
-        yield from $this->visitor->getConstantNames();
+        if ($nodes === null) {
+            return;
+        }
+
+        $this->traverser->traverse($nodes);
+
+        yield from $this->visitor->getSymbolNames();
     }
 }

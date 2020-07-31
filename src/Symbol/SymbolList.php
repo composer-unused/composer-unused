@@ -9,16 +9,19 @@ use Traversable;
 
 final class SymbolList implements SymbolListInterface
 {
-    /** @var Traversable<SymbolInterface> */
+    /** @var array<SymbolInterface> */
     private $items;
 
+    /**
+     * @param Traversable<SymbolInterface> $symbols
+     */
     public function addAll(Traversable $symbols): SymbolListInterface
     {
         $this->items = iterator_to_array($symbols);
         return $this;
     }
 
-    public function add(Symbol $symbol): SymbolListInterface
+    public function add(SymbolInterface $symbol): SymbolListInterface
     {
         $clone = clone $this;
         $clone->items[] = $symbol;
@@ -26,7 +29,7 @@ final class SymbolList implements SymbolListInterface
         return $clone;
     }
 
-    public function contains(Symbol $symbol): bool
+    public function contains(SymbolInterface $symbol): bool
     {
         foreach ($this->items as $item) {
             if ($item->matches($symbol)) {
@@ -37,6 +40,9 @@ final class SymbolList implements SymbolListInterface
         return false;
     }
 
+    /**
+     * @return Generator<SymbolInterface>
+     */
     public function getIterator(): Generator
     {
         yield from $this->items;

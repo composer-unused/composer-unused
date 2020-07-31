@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\{
-    UseParseStrategy,
-    StaticParseStrategy,
-    NewParseStrategy
+    UseStrategy,
+    StaticStrategy,
+    NewStrategy
 };

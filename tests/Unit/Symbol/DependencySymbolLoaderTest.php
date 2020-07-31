@@ -7,6 +7,7 @@ namespace Icanhazstring\Composer\Test\Unused\Unit\Symbol;
 use Composer\Package\Package;
 use Generator;
 use Icanhazstring\Composer\Unused\Symbol\Loader\CompositeSymbolLoader;
+use Icanhazstring\Composer\Unused\Symbol\Loader\FileSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\Loader\SymbolLoaderInterface;
 use Icanhazstring\Composer\Unused\Symbol\Provider\FileSymbolProvider;
 use Icanhazstring\Composer\Unused\Symbol\Symbol;
@@ -15,13 +16,18 @@ use PHPUnit\Framework\TestCase;
 
 class DependencySymbolLoaderTest extends TestCase
 {
+    /**
+     * @param array<mixed> $values
+     * @return Generator<mixed>
+     */
     protected function arrayAsGenerator(array $values): Generator
     {
-        foreach ($values as $value) {
-            yield $value;
-        }
+        yield from $values;
     }
 
+    /**
+     * @param array<SymbolInterface> $symbolHaystack
+     */
     private function assertContainsSymbol(SymbolInterface $symbol, array $symbolHaystack): void
     {
         foreach ($symbolHaystack as $refSymbol) {
@@ -30,7 +36,7 @@ class DependencySymbolLoaderTest extends TestCase
             }
         }
 
-        $this->fail($symbol->getIdentifier() . ' not found in haystack');
+        self::fail($symbol->getIdentifier() . ' not found in haystack');
     }
 
     /**
@@ -45,15 +51,15 @@ class DependencySymbolLoaderTest extends TestCase
         $symbolLoader = $this->getMockForAbstractClass(SymbolLoaderInterface::class);
         $symbolLoader->method('load')->willReturn($this->arrayAsGenerator([]));
 
-        $fileSymbolLoader = $this->getMockBuilder(FileSymbolProvider::class)
+        $fileSymbolLoader = $this->getMockBuilder(FileSymbolLoader::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $fileSymbolLoader
-            ->method('provide')
+            ->method('load')
             ->willReturn($this->arrayAsGenerator([]));
 
-        $symbolLoader = new CompositeSymbolLoader($fileSymbolLoader, $symbolLoader);
+        $symbolLoader = new CompositeSymbolLoader([$fileSymbolLoader, $symbolLoader]);
         $symbols = $symbolLoader->load($package);
 
         self::assertEmpty(iterator_to_array($symbols));
@@ -75,19 +81,18 @@ class DependencySymbolLoaderTest extends TestCase
         $symbolLoader = $this->getMockForAbstractClass(SymbolLoaderInterface::class);
         $symbolLoader->method('load')->willReturn($this->arrayAsGenerator([]));
 
-        $fileSymbolProvider = $this->getMockBuilder(FileSymbolProvider::class)
+        $fileSymbolProvider = $this->getMockBuilder(FileSymbolLoader::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $fileSymbolProvider
             ->expects($this->once())
-            ->method('provide')
-            ->with('foobar', ['include/functions.php'])
+            ->method('load')
             ->willReturn($this->arrayAsGenerator([
                 new Symbol('testfunction')
             ]));
 
-        $symbolLoader = new CompositeSymbolLoader($fileSymbolProvider, $symbolLoader);
+        $symbolLoader = new CompositeSymbolLoader([$fileSymbolProvider, $symbolLoader]);
         $symbols = $symbolLoader->load($package);
 
         $symbolsArray = iterator_to_array($symbols);

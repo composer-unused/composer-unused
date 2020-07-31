@@ -15,7 +15,7 @@ use Icanhazstring\Composer\Unused\Loader\LoaderBuilder;
 use Icanhazstring\Composer\Unused\Loader\PackageLoader;
 use Icanhazstring\Composer\Unused\Loader\UsageLoader;
 use Icanhazstring\Composer\Unused\Log\LogHandlerInterface;
-use Icanhazstring\Composer\Unused\Parser\PHP\NodeVisitor;
+use Icanhazstring\Composer\Unused\Parser\PHP\NamespaceNodeVisitor;
 use Icanhazstring\Composer\Unused\Subject\Factory\PackageSubjectFactory;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -39,7 +39,7 @@ class ServiceContainerTest extends TestCase
         $composer->getRepositoryManager()->willReturn($repositoryManager->reveal());
         $container->register(Composer::class, $composer->reveal());
 
-        $this->assertInstanceOf(NodeVisitor::class, $container->get(NodeVisitor::class));
+        $this->assertInstanceOf(NamespaceNodeVisitor::class, $container->get(NamespaceNodeVisitor::class));
         $this->assertInstanceOf(UsageLoader::class, $container->get(UsageLoader::class));
         $this->assertInstanceOf(PackageLoader::class, $container->get(PackageLoader::class));
         $this->assertInstanceOf(PackageSubjectFactory::class, $container->get(PackageSubjectFactory::class));

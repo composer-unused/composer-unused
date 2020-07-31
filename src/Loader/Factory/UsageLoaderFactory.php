@@ -9,7 +9,7 @@ use Icanhazstring\Composer\Unused\Di\ServiceContainer;
 use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Loader\Result;
 use Icanhazstring\Composer\Unused\Loader\UsageLoader;
-use Icanhazstring\Composer\Unused\Parser\PHP\NodeVisitor;
+use Icanhazstring\Composer\Unused\Parser\PHP\NamespaceNodeVisitor;
 use Icanhazstring\Composer\Unused\Parser\PHP\PHPUsageParser;
 use PhpParser\ParserFactory;
 use Psr\Container\ContainerInterface;

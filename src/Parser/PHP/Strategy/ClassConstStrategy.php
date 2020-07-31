@@ -7,9 +7,9 @@ namespace Icanhazstring\Composer\Unused\Parser\PHP\Strategy;
 use PhpParser\Node;
 use PhpParser\Node\Expr\ClassConstFetch;
 
-class ClassConstStrategy implements ParseStrategyInterface
+class ClassConstStrategy implements StrategyInterface
 {
-    public function meetsCriteria(Node $node): bool
+    public function canHandle(Node $node): bool
     {
         if (!$node instanceof ClassConstFetch) {
             return false;
@@ -26,7 +26,7 @@ class ClassConstStrategy implements ParseStrategyInterface
      * @param Node&ClassConstFetch $node
      * @return array<string>
      */
-    public function extractNamespaces(Node $node): array
+    public function extractSymbols(Node $node): array
     {
         /** @var Node\Name $class */
         $class = $node->class;

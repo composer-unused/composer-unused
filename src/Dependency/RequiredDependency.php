@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Icanhazstring\Composer\Unused\Dependency;
 
 use Composer\Package\PackageInterface;
-use Icanhazstring\Composer\Unused\Symbol\Symbol;
+use Icanhazstring\Composer\Unused\Symbol\SymbolInterface;
 use Icanhazstring\Composer\Unused\Symbol\SymbolListInterface;
 
 final class RequiredDependency implements RequiredDependencyInterface
@@ -38,7 +38,7 @@ final class RequiredDependency implements RequiredDependencyInterface
         return $this->used;
     }
 
-    public function provides(Symbol $symbol): bool
+    public function provides(SymbolInterface $symbol): bool
     {
         return $this->symbols->contains($symbol);
     }

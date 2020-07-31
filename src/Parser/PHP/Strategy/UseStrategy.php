@@ -9,9 +9,9 @@ use PhpParser\Node\Stmt\GroupUse;
 use PhpParser\Node\Stmt\Use_;
 use PhpParser\Node\Stmt\UseUse;
 
-class UseParseStrategy implements ParseStrategyInterface
+class UseStrategy implements StrategyInterface
 {
-    public function meetsCriteria(Node $node): bool
+    public function canHandle(Node $node): bool
     {
         return $node instanceof Use_ || $node instanceof GroupUse;
     }
@@ -20,7 +20,7 @@ class UseParseStrategy implements ParseStrategyInterface
      * @param Node $node
      * @return array<string>
      */
-    public function extractNamespaces(Node $node): array
+    public function extractSymbols(Node $node): array
     {
         if ($node instanceof Use_) {
             return [$node->uses[0]->name->toString()];

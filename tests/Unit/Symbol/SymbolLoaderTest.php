@@ -7,6 +7,7 @@ namespace Icanhazstring\Composer\Test\Unused\Unit\Symbol;
 use Composer\Package\Package;
 use Generator;
 use Icanhazstring\Composer\Unused\Symbol\Loader\CompositeSymbolLoader;
+use Icanhazstring\Composer\Unused\Symbol\Loader\FileSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\Loader\PsrSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\NamespaceSymbol;
 use Icanhazstring\Composer\Unused\Symbol\Provider\FileSymbolProvider;
@@ -15,13 +16,18 @@ use PHPUnit\Framework\TestCase;
 
 class SymbolLoaderTest extends TestCase
 {
+    /**
+     * @param array<mixed> $values
+     * @return Generator<mixed>
+     */
     protected function arrayAsGenerator(array $values): Generator
     {
-        foreach ($values as $value) {
-            yield $value;
-        }
+        yield from $values;
     }
 
+    /**
+     * @param array<SymbolInterface> $symbolHaystack
+     */
     private function assertContainsSymbol(SymbolInterface $symbol, array $symbolHaystack): void
     {
         foreach ($symbolHaystack as $refSymbol) {
@@ -30,7 +36,7 @@ class SymbolLoaderTest extends TestCase
             }
         }
 
-        $this->fail($symbol->getIdentifier() . ' not found in haystack');
+        self::fail($symbol->getIdentifier() . ' not found in haystack');
     }
 
     /**
@@ -46,17 +52,7 @@ class SymbolLoaderTest extends TestCase
             ]
         ]);
 
-        $symbolLoader = new PsrSymbolLoader();
-
-        $fileSymbolLoader = $this->getMockBuilder(FileSymbolProvider::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $fileSymbolLoader
-            ->method('provide')
-            ->willReturn($this->arrayAsGenerator([]));
-
-        $symbolLoader = new CompositeSymbolLoader($fileSymbolLoader, $symbolLoader);
+        $symbolLoader = new CompositeSymbolLoader([new PsrSymbolLoader()]);
         $symbols = $symbolLoader->load($package);
 
         $symbolsArray = iterator_to_array($symbols);
@@ -77,17 +73,7 @@ class SymbolLoaderTest extends TestCase
             ]
         ]);
 
-        $symbolLoader = new PsrSymbolLoader();
-
-        $fileSymbolLoader = $this->getMockBuilder(FileSymbolProvider::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $fileSymbolLoader
-            ->method('provide')
-            ->willReturn($this->arrayAsGenerator([]));
-
-        $symbolLoader = new CompositeSymbolLoader($fileSymbolLoader, $symbolLoader);
+        $symbolLoader = new CompositeSymbolLoader([new PsrSymbolLoader()]);
         $symbols = $symbolLoader->load($package);
 
         $symbolsArray = iterator_to_array($symbols);

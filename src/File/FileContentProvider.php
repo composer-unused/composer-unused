@@ -4,10 +4,22 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused\File;
 
+use Icanhazstring\Composer\Unused\Exception\IOException;
+use SplFileInfo;
+
 class FileContentProvider
 {
-    public function getContent(?string $baseDir, string $file)
+    /**
+     * @throws IOException
+     */
+    public function getContent(?string $baseDir, SplFileInfo $file): string
     {
-        return file_get_contents($baseDir . $file);
+        $contents = file_get_contents($baseDir . $file->getPathname());
+
+        if ($contents === false) {
+            throw IOException::unableToOpenHandle($baseDir . $file->getPathname());
+        }
+
+        return $contents;
     }
 }
