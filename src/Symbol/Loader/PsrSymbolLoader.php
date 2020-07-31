@@ -8,18 +8,18 @@ use Composer\Package\PackageInterface;
 use Generator;
 use Icanhazstring\Composer\Unused\Symbol\NamespaceSymbol;
 
+use function array_merge;
+
 final class PsrSymbolLoader implements SymbolLoaderInterface
 {
     public function load(PackageInterface $package): Generator
     {
-        $psr0 = $package->getAutoload()['psr-0'] ?? [];
-        $psr4 = $package->getAutoload()['psr-4'] ?? [];
+        $namespaces = array_merge(
+            $package->getAutoload()['psr-4'] ?? [],
+            $package->getAutoload()['psr-0'] ?? []
+        );
 
-        foreach ($psr0 as $namespace => $dir) {
-            yield new NamespaceSymbol($namespace);
-        }
-
-        foreach ($psr4 as $namespace => $dir) {
+        foreach ($namespaces as $namespace => $dir) {
             yield new NamespaceSymbol($namespace);
         }
     }

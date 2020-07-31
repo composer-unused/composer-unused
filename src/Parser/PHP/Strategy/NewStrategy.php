@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Icanhazstring\Composer\Unused\Parser\PHP\Strategy;
 
 use PhpParser\Node;
-use PhpParser\Node\Expr\StaticCall;
+use PhpParser\Node\Expr\New_;
+use PhpParser\Node\Name\FullyQualified;
 
-class StaticParseStrategy implements ParseStrategyInterface
+class NewStrategy implements StrategyInterface
 {
-    public function meetsCriteria(Node $node): bool
+    public function canHandle(Node $node): bool
     {
-        if (!$node instanceof StaticCall) {
+        if (!$node instanceof New_) {
             return false;
         }
 
@@ -23,12 +24,12 @@ class StaticParseStrategy implements ParseStrategyInterface
     }
 
     /**
-     * @param Node&StaticCall $node
+     * @param Node&New_$node
      * @return array<string>
      */
-    public function extractNamespaces(Node $node): array
+    public function extractSymbols(Node $node): array
     {
-        /** @var Node\Name $class */
+        /** @var FullyQualified $class */
         $class = $node->class;
 
         return [$class->toString()];
