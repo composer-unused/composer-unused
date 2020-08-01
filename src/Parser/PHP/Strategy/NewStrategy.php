@@ -27,7 +27,7 @@ class NewStrategy implements StrategyInterface
      * @param Node&New_$node
      * @return array<string>
      */
-    public function extractSymbols(Node $node): array
+    public function extractSymbolNames(Node $node): array
     {
         /** @var FullyQualified $class */
         $class = $node->class;

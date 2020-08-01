@@ -233,7 +233,7 @@ class NodeVisitorTest extends TestCase
         /** @var Node $node */
         $node = Argument::any();
         $exceptionParseStrategy->canHandle($node)->willReturn(true);
-        $exceptionParseStrategy->extractSymbols($node)->willThrow($exception);
+        $exceptionParseStrategy->extractSymbolNames($node)->willThrow($exception);
 
         $nodeVisitor = new NamespaceNodeVisitor([$exceptionParseStrategy->reveal()], $errorHandler->reveal());
         $fileInfo = new SplFileInfo($inputFile);
