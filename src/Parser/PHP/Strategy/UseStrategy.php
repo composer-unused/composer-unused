@@ -20,7 +20,7 @@ class UseStrategy implements StrategyInterface
      * @param Node $node
      * @return array<string>
      */
-    public function extractSymbols(Node $node): array
+    public function extractSymbolNames(Node $node): array
     {
         if ($node instanceof Use_) {
             return [$node->uses[0]->name->toString()];

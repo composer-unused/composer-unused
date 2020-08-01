@@ -76,7 +76,7 @@ class PhpExtensionStrategy implements StrategyInterface
     /**
      * @return array<string>
      */
-    public function extractSymbols(Node $node): array
+    public function extractSymbolNames(Node $node): array
     {
         $searchingName = $this->getNameFromNode($node);
 

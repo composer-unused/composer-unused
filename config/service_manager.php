@@ -7,6 +7,10 @@ use Icanhazstring\Composer\Unused\Command\UnusedCommand;
 use Icanhazstring\Composer\Unused\Di\InvokableFactory;
 use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Error\Factory\ErrorHandlerFactory;
+use Icanhazstring\Composer\Unused\Event\Factory\EventDispatcherFactory;
+use Icanhazstring\Composer\Unused\Event\Listener\Factory\RuntimeListenerProviderFactory;
+use Icanhazstring\Composer\Unused\Event\Listener\RuntimeListenerProvider;
+use Icanhazstring\Composer\Unused\Event\ListenerEventTypeResolver;
 use Icanhazstring\Composer\Unused\File\FileContentProvider;
 use Icanhazstring\Composer\Unused\Loader\Factory\LoaderBuilderFactory;
 use Icanhazstring\Composer\Unused\Loader\Factory\PackageLoaderFactory;
@@ -28,6 +32,7 @@ use Icanhazstring\Composer\Unused\Symbol\Loader\ExtensionSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\Loader\PsrSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\Provider\Factory\FileSymbolProviderFactory;
 use Icanhazstring\Composer\Unused\Symbol\Provider\FileSymbolProvider;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 
 return [
@@ -52,5 +57,10 @@ return [
         FileContentProvider::class => InvokableFactory::class,
         ForeignSymbolCollector::class => InvokableFactory::class,
         UsedSymbolCollector::class => InvokableFactory::class,
+
+        ListenerEventTypeResolver::class => InvokableFactory::class,
+        RuntimeListenerProvider::class => RuntimeListenerProviderFactory::class,
+        EventDispatcherInterface::class => EventDispatcherFactory::class,
+
     ]
 ];
