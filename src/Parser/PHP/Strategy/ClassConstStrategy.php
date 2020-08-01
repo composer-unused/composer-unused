@@ -26,7 +26,7 @@ class ClassConstStrategy implements StrategyInterface
      * @param Node&ClassConstFetch $node
      * @return array<string>
      */
-    public function extractSymbols(Node $node): array
+    public function extractSymbolNames(Node $node): array
     {
         /** @var Node\Name $class */
         $class = $node->class;
