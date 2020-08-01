@@ -6,13 +6,8 @@ namespace Icanhazstring\Composer\Unused\Command;
 
 use Composer\Command\BaseCommand;
 use Composer\Composer;
-use Composer\Package\Link;
-use Composer\Package\Package;
 use Composer\Package\PackageInterface;
 use Composer\Package\RootPackageInterface;
-use Composer\Repository\InstalledRepositoryInterface;
-use Icanhazstring\Composer\Unused\Composer\PackageDecorator;
-use Icanhazstring\Composer\Unused\Dependency\RequiredDependency;
 use Icanhazstring\Composer\Unused\Dependency\RequiredDependencyInterface;
 use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Loader\LoaderBuilder;
@@ -22,8 +17,8 @@ use Icanhazstring\Composer\Unused\Output\SymfonyStyleFactory;
 use Icanhazstring\Composer\Unused\Subject\PackageSubject;
 use Icanhazstring\Composer\Unused\Subject\UsageInterface;
 use Icanhazstring\Composer\Unused\Symbol\Loader\SymbolLoaderInterface;
-use Icanhazstring\Composer\Unused\Symbol\SymbolList;
 use Icanhazstring\Composer\Unused\UnusedPlugin;
+use Icanhazstring\Composer\Unused\UseCase\CollectRequiredDependenciesUseCase;
 use Icanhazstring\Composer\Unused\UseCase\CollectUsedSymbolsUseCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -33,8 +28,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Throwable;
 
 use function array_merge;
-use function dirname;
-use function strpos;
 
 class UnusedCommand extends BaseCommand
 {
@@ -48,26 +41,26 @@ class UnusedCommand extends BaseCommand
     private $logger;
     /** @var LoaderBuilder */
     private $loaderBuilder;
-    /** @var SymbolLoaderInterface */
-    private $dependencySymbolLoader;
     /** @var CollectUsedSymbolsUseCase */
     private $collectUsedSymbolsUseCase;
+    /** @var CollectRequiredDependenciesUseCase */
+    private $collectRequiredDependenciesUseCase;
 
     public function __construct(
         ErrorHandlerInterface $errorHandler,
         SymfonyStyleFactory $outputFactory,
         LoaderBuilder $loaderBuilder,
         LoggerInterface $logger,
-        SymbolLoaderInterface $dependencySymbolLoader,
-        CollectUsedSymbolsUseCase $collectUsedSymbolsUseCase
+        CollectUsedSymbolsUseCase $collectUsedSymbolsUseCase,
+        CollectRequiredDependenciesUseCase $collectRequiredDependenciesUseCase
     ) {
         parent::__construct('unused');
         $this->errorHandler = $errorHandler;
         $this->symfonyStyleFactory = $outputFactory;
         $this->loaderBuilder = $loaderBuilder;
         $this->logger = $logger;
-        $this->dependencySymbolLoader = $dependencySymbolLoader;
         $this->collectUsedSymbolsUseCase = $collectUsedSymbolsUseCase;
+        $this->collectRequiredDependenciesUseCase = $collectRequiredDependenciesUseCase;
     }
 
     protected function configure(): void
@@ -316,63 +309,6 @@ class UnusedCommand extends BaseCommand
         $this->logger->info('dev-autoload', $composer->getPackage()->getDevAutoload());
     }
 
-    /**
-     * @return array<RequiredDependencyInterface>
-     */
-    protected function resolveRequiredPackages(Composer $composer, RootPackageInterface $rootPackage): array
-    {
-        $requiredDependencies = [];
-
-        foreach ($rootPackage->getRequires() as $require) {
-            $composerPackage = $this->resolveComposerPackage(
-                $require,
-                $composer->getRepositoryManager()->getLocalRepository()
-            );
-
-            if ($composerPackage === null) {
-                continue;
-            }
-
-            $composerPackage = PackageDecorator::withBaseDir(
-                dirname($composer->getConfig()->getConfigSource()->getName()),
-                $composerPackage
-            );
-
-            $requiredDependencies[] = new RequiredDependency(
-                $composerPackage,
-                (new SymbolList())->addAll(
-                    $this->dependencySymbolLoader->load($composerPackage)
-                )
-            );
-        }
-
-        return $requiredDependencies;
-    }
-
-    protected function resolveComposerPackage(
-        Link $requiredPackage,
-        InstalledRepositoryInterface $repo
-    ): ?PackageInterface {
-        $isPhp = strpos($requiredPackage->getTarget(), 'php') === 0;
-        $isExtension = strpos($requiredPackage->getTarget(), 'ext-') === 0;
-
-        if ($isPhp || $isExtension) {
-            return new Package(
-                strtolower($requiredPackage->getTarget()),
-                '*',
-                '*'
-            );
-        }
-
-        $constaint = $requiredPackage->getConstraint();
-
-        if ($constaint === null) {
-            $constaint = '';
-        }
-
-        return $repo->findPackage($requiredPackage->getTarget(), $constaint);
-    }
-
     private function runExperimental(InputInterface $input, OutputInterface $output): int
     {
         /** @var Composer|null $composer */
@@ -384,8 +320,7 @@ class UnusedCommand extends BaseCommand
         }
 
         $usedSymbols = $this->collectUsedSymbolsUseCase->execute($composer);
-
-        $requiredDependencies = $this->resolveRequiredPackages($composer, $composer->getPackage());
+        $requiredDependencies = $this->collectRequiredDependenciesUseCase->execute($composer);
 
         foreach ($usedSymbols as $usedSymbol) {
             foreach ($requiredDependencies as $requiredDependency) {
