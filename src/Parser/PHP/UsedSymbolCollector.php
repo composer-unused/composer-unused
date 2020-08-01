@@ -35,7 +35,7 @@ class UsedSymbolCollector extends NodeVisitorAbstract implements SymbolCollector
                 continue;
             }
 
-            $symbols[] = $strategy->extractSymbols($node);
+            $symbols[] = $strategy->extractSymbolNames($node);
         }
 
         if (count($symbols) !== 0) {

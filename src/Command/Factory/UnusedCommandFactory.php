@@ -23,6 +23,7 @@ use Icanhazstring\Composer\Unused\Symbol\Loader\FileSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\Loader\PsrSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\Loader\UsedSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\Provider\FileSymbolProvider;
+use Icanhazstring\Composer\Unused\UseCase\CollectUsedSymbolsUseCase;
 use PhpParser\ParserFactory;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -53,26 +54,7 @@ class UnusedCommandFactory
                     )
                 ]
             ),
-            new UsedSymbolLoader(
-                new FileSymbolProvider(
-                    new SymbolNameParser(
-                        (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
-                        new UsedSymbolCollector(
-                            [
-                                new NewStrategy(),
-                                new StaticStrategy(),
-                                new UseStrategy(),
-                                new ClassConstStrategy(),
-                                new PhpExtensionStrategy(
-                                    get_loaded_extensions(),
-                                    $container->get(LoggerInterface::class)
-                                )
-                            ]
-                        )
-                    ),
-                    new FileContentProvider()
-                )
-            )
+            $container->get(CollectUsedSymbolsUseCase::class)
         );
     }
 }
