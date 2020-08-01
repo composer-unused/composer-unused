@@ -47,7 +47,7 @@ class NamespaceNodeVisitor extends NodeVisitorAbstract
                     continue;
                 }
 
-                $namespaces = $strategy->extractSymbols($node);
+                $namespaces = $strategy->extractSymbolNames($node);
 
                 foreach ($namespaces as $namespace) {
                     $this->usages[$namespace] = new NamespaceUsage($this->currentFile, $namespace, $node);
