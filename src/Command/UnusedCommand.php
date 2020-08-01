@@ -22,9 +22,9 @@ use Icanhazstring\Composer\Unused\Output\SymfonyStyleFactory;
 use Icanhazstring\Composer\Unused\Subject\PackageSubject;
 use Icanhazstring\Composer\Unused\Subject\UsageInterface;
 use Icanhazstring\Composer\Unused\Symbol\Loader\SymbolLoaderInterface;
-use Icanhazstring\Composer\Unused\Symbol\SymbolInterface;
 use Icanhazstring\Composer\Unused\Symbol\SymbolList;
 use Icanhazstring\Composer\Unused\UnusedPlugin;
+use Icanhazstring\Composer\Unused\UseCase\CollectUsedSymbolsUseCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -32,12 +32,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Throwable;
 
-use function array_filter;
-use function array_keys;
 use function array_merge;
 use function dirname;
-use function iterator_to_array;
-use function microtime;
 use function strpos;
 
 class UnusedCommand extends BaseCommand
@@ -54,8 +50,8 @@ class UnusedCommand extends BaseCommand
     private $loaderBuilder;
     /** @var SymbolLoaderInterface */
     private $dependencySymbolLoader;
-    /** @var SymbolLoaderInterface */
-    private $usedSymbolLoader;
+    /** @var CollectUsedSymbolsUseCase */
+    private $collectUsedSymbolsUseCase;
 
     public function __construct(
         ErrorHandlerInterface $errorHandler,
@@ -63,7 +59,7 @@ class UnusedCommand extends BaseCommand
         LoaderBuilder $loaderBuilder,
         LoggerInterface $logger,
         SymbolLoaderInterface $dependencySymbolLoader,
-        SymbolLoaderInterface $rootSymbolLoader
+        CollectUsedSymbolsUseCase $collectUsedSymbolsUseCase
     ) {
         parent::__construct('unused');
         $this->errorHandler = $errorHandler;
@@ -71,7 +67,7 @@ class UnusedCommand extends BaseCommand
         $this->loaderBuilder = $loaderBuilder;
         $this->logger = $logger;
         $this->dependencySymbolLoader = $dependencySymbolLoader;
-        $this->usedSymbolLoader = $rootSymbolLoader;
+        $this->collectUsedSymbolsUseCase = $collectUsedSymbolsUseCase;
     }
 
     protected function configure(): void
@@ -387,36 +383,9 @@ class UnusedCommand extends BaseCommand
             return 1;
         }
 
-        $rootPackage = $composer->getPackage();
+        $usedSymbols = $this->collectUsedSymbolsUseCase->execute($composer);
 
-        $baseDir = dirname($composer->getConfig()->getConfigSource()->getName());
-
-        $usedSymbols = iterator_to_array($this->usedSymbolLoader->load(
-            PackageDecorator::withBaseDir(
-                $baseDir,
-                $rootPackage
-            )
-        ));
-
-        $requiredDependencies = $this->resolveRequiredPackages($composer, $rootPackage);
-
-        $rootNamespaces = array_merge(
-            array_keys($rootPackage->getAutoload()['psr-0'] ?? []),
-            array_keys($rootPackage->getAutoload()['psr-4'] ?? [])
-        );
-
-        $usedSymbols = array_filter(
-            $usedSymbols,
-            static function (SymbolInterface $symbol) use ($rootNamespaces): bool {
-                foreach ($rootNamespaces as $rootNamespace) {
-                    if (strpos($symbol->getIdentifier(), $rootNamespace) === 0) {
-                        return false;
-                    }
-                }
-
-                return true;
-            }
-        );
+        $requiredDependencies = $this->resolveRequiredPackages($composer, $composer->getPackage());
 
         foreach ($usedSymbols as $usedSymbol) {
             foreach ($requiredDependencies as $requiredDependency) {
