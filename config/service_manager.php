@@ -32,7 +32,9 @@ use Icanhazstring\Composer\Unused\Symbol\Loader\ExtensionSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\Loader\PsrSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\Provider\Factory\FileSymbolProviderFactory;
 use Icanhazstring\Composer\Unused\Symbol\Provider\FileSymbolProvider;
+use Icanhazstring\Composer\Unused\UseCase\CollectRequiredDependenciesUseCase;
 use Icanhazstring\Composer\Unused\UseCase\CollectUsedSymbolsUseCase;
+use Icanhazstring\Composer\Unused\UseCase\Factory\CollectRequiredDependenciesUseCaseFactory;
 use Icanhazstring\Composer\Unused\UseCase\Factory\CollectUsedSymbolsUseCaseFactory;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
@@ -60,6 +62,7 @@ return [
         ForeignSymbolCollector::class => InvokableFactory::class,
         UsedSymbolCollector::class => InvokableFactory::class,
         CollectUsedSymbolsUseCase::class => CollectUsedSymbolsUseCaseFactory::class,
+        CollectRequiredDependenciesUseCase::class => CollectRequiredDependenciesUseCaseFactory::class,
 
         ListenerEventTypeResolver::class => InvokableFactory::class,
         RuntimeListenerProvider::class => RuntimeListenerProviderFactory::class,

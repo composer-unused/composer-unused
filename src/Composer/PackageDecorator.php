@@ -311,4 +311,9 @@ class PackageDecorator implements PackageDecoratorInterface
     {
         $this->package->setSourceDistReferences($reference);
     }
+
+    public function isDefaultBranch(): bool
+    {
+        return $this->package->isDefaultBranch();
+    }
 }
