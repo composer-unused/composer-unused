@@ -38,6 +38,10 @@ class UsedSymbolLoader implements SymbolLoaderInterface
             ->files()
             ->name('*.php')
             ->in($package->getBaseDir())
+            ->ignoreDotFiles(true)
+            ->ignoreVCS(true)
+            ->ignoreVCSIgnored(true)
+            ->ignoreUnreadableDirs()
             ->exclude(
                 array_merge(['vendor', 'data'])
             );
