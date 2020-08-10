@@ -61,6 +61,10 @@ class PHPUsageParser implements ParserInterface
             ->files()
             ->name('*.php')
             ->in($baseDir)
+            ->ignoreDotFiles(true)
+            ->ignoreUnreadableDirs()
+            ->ignoreVCS(true)
+            ->ignoreVCSIgnored(true)
             ->exclude(
                 array_merge(['vendor'], $this->excludes)
             );
