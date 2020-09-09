@@ -37,5 +37,5 @@ jobs:
         run: composer check
 
       - name: Check unused dependencies
-        run: bin/composer-unused
+        run: bin/composer-unused --excludeDir=data
 

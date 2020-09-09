@@ -34,4 +34,4 @@ jobs:
         run: php box.phar compile
 
       - name: Run phar against code
-        run: php build/composer-unused.phar
+        run: php build/composer-unused.phar --excludeDir=data
