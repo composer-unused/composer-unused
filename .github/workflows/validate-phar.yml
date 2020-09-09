@@ -22,6 +22,7 @@ jobs:
           php-version: '7.4'
           tools: composer
           ini-values: phar.readonly=false
+          extensions: ds
 
       - name: Composer install
         run: composer install --no-dev --prefer-dist
