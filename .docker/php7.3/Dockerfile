@@ -10,6 +10,8 @@ RUN apt-get update \
      libzip-dev \
     && docker-php-ext-install zip \
     && docker-php-ext-install opcache \
+    && pecl install -o ds \
+    && echo "extension=ds.so" > /usr/local/etc/php/conf.d/ds.ini \
     && rm -r /var/lib/apt/lists/*
 
 RUN pecl install xdebug \
