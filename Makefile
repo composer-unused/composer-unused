@@ -1,10 +1,6 @@
-CONTAINER=composer-unused-7.4
+CONTAINER=composer-unused-7.3
 
 up:
-	if [ "$(shell docker-machine status default)" != 'Running' ]; then \
-		docker-machine start default; \
-	fi;
-	eval ${shell docker-machine env}
 	docker-compose up -d
 
 down:
@@ -29,3 +25,6 @@ cs:
 
 csfix:
 	docker exec -it $(CONTAINER) vendor/bin/phpcbf
+
+ssh:
+	docker exec -it $(CONTAINER) /bin/bash

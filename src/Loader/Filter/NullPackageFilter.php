@@ -26,7 +26,7 @@ class NullPackageFilter implements FilterInterface
     public function match(Link $item): bool
     {
         return !$this->packageHelper->isPhpExtension($item) &&
-            $this->repository->findPackage($item->getTarget(), $item->getConstraint() ?? '') === null;
+            $this->repository->findPackage($item->getTarget(), $item->getConstraint()) === null;
     }
 
     public function getReason(): string

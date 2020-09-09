@@ -2,7 +2,8 @@ includes:
 	- vendor/jangregor/phpstan-prophecy/src/extension.neon
 
 parameters:
-    bootstrap: phpunit.bootstrap.php
+    bootstrapFiles:
+        - phpunit.bootstrap.php
     excludes_analyse:
         - %currentWorkingDirectory%/tests/assets
     level: max

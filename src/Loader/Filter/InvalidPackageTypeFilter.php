@@ -23,10 +23,7 @@ class InvalidPackageTypeFilter implements FilterInterface
 
     public function match(Link $item): bool
     {
-        /** @var string $constraint */
-        $constraint = $item->getConstraint();
-
-        $package = $this->repository->findPackage($item->getTarget(), $constraint);
+        $package = $this->repository->findPackage($item->getTarget(), $item->getConstraint());
 
         if ($package === null) {
             return false;

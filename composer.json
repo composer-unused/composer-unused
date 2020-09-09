@@ -27,6 +27,7 @@
         "symfony/finder": "^4.2 || ^5.0"
     },
     "require-dev": {
+        "ext-ds": "*",
         "ext-zend-opcache": "*",
         "jangregor/phpstan-prophecy": "^0.6.2",
         "phpspec/prophecy-phpunit": "^2.0",

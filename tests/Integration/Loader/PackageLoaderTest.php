@@ -6,12 +6,13 @@ namespace Icanhazstring\Composer\Test\Unused\Integration\Loader;
 
 use Composer\Composer;
 use Composer\Package\Link;
-use Composer\Package\PackageInterface;
-use Composer\Package\RootPackageInterface;
+use Composer\Package\Package;
+use Composer\Package\RootPackage;
+use Composer\Repository\ArrayRepository;
 use Composer\Repository\RepositoryInterface;
+use Composer\Semver\VersionParser;
 use Icanhazstring\Composer\Unused\Loader\Filter\ExcludePackageFilter;
 use Icanhazstring\Composer\Unused\Loader\Filter\InvalidNamespaceFilter;
-use Icanhazstring\Composer\Unused\Loader\Filter\NullConstraintFilter;
 use Icanhazstring\Composer\Unused\Loader\Filter\NullPackageFilter;
 use Icanhazstring\Composer\Unused\Loader\PackageHelper;
 use Icanhazstring\Composer\Unused\Loader\PackageLoader;
@@ -32,34 +33,36 @@ class PackageLoaderTest extends TestCase
      */
     public function itShouldSkipPackageThatProvidesNoNamespace(): void
     {
-        $link = $this->prophesize(Link::class);
-        $link->getTarget()->willReturn('package/A');
-        $link->getConstraint()->willReturn('^0.1');
+        $parser = new VersionParser();
+        $constraint = $parser->parseConstraints('*');
+        $require = new Link('', 'package/a', $constraint);
 
-        $rootPackage = $this->prophesize(RootPackageInterface::class);
-        $rootPackage->getRequires()->willReturn([$link->reveal()]);
+        $rootPackage = new RootPackage('Rootpackage', '0.1', '0.1');
+        $rootPackage->setRequires([$require]);
 
         $composer = $this->prophesize(Composer::class);
-        $composer->getPackage()->willReturn($rootPackage->reveal());
+        $composer->getPackage()->willReturn($rootPackage);
 
-        $package = $this->prophesize(PackageInterface::class);
-        $package->getAutoload()->willReturn([]);
-        $package->getDevAutoload()->willReturn([]);
+        $package = new Package('package/a', '0.1', '0.1');
+        $package->setAutoload([]);
+        $package->setDevAutoload([]);
 
-        $packageRepository = $this->prophesize(RepositoryInterface::class);
-        $packageRepository->findPackage('package/A', '^0.1')->willReturn($package->reveal());
+        $packageRepository = new ArrayRepository([$package]);
 
         $result = $this->prophesize(Result::class);
-        $result->skipItem('package/A', 'Package provides no namespace')->shouldBeCalled()->willReturn($result->reveal());
+        $result->skipItem(
+            'package/a',
+            'Package provides no namespace'
+        )->shouldBeCalled()->willReturn($result->reveal());
         $result->getItems()->willReturn([]);
 
         $loader = new PackageLoader(
-            $packageRepository->reveal(),
+            $packageRepository,
             new PackageSubjectFactory(),
             $result->reveal(),
             new PackageHelper(),
             [
-                new InvalidNamespaceFilter($packageRepository->reveal())
+                new InvalidNamespaceFilter($packageRepository)
             ]
         );
 
@@ -74,67 +77,29 @@ class PackageLoaderTest extends TestCase
      */
     public function itShouldSkipPackageThatWasNotFound(): void
     {
-        $link = $this->prophesize(Link::class);
-        $link->getTarget()->willReturn('package/A');
-        $link->getConstraint()->willReturn('^0.1');
+        $parser = new VersionParser();
+        $constraint = $parser->parseConstraints('*');
+        $require = new Link('', 'package/a', $constraint);
 
-        $rootPackage = $this->prophesize(RootPackageInterface::class);
-        $rootPackage->getRequires()->willReturn([$link->reveal()]);
+        $rootPackage = new RootPackage('Rootpackage', '0.1', '0.1');
+        $rootPackage->setRequires([$require]);
 
         $composer = $this->prophesize(Composer::class);
-        $composer->getPackage()->willReturn($rootPackage->reveal());
+        $composer->getPackage()->willReturn($rootPackage);
 
-        $packageRepository = $this->prophesize(RepositoryInterface::class);
-        $packageRepository->findPackage('package/A', '^0.1')->willReturn(null);
+        $packageRepository = new ArrayRepository([$rootPackage]);
 
         $result = $this->prophesize(Result::class);
-        $result->skipItem('package/A', 'Unable to locate package')->shouldBeCalled()->willReturn($result->reveal());
+        $result->skipItem('package/a', 'Unable to locate package')->shouldBeCalled()->willReturn($result->reveal());
         $result->getItems()->willReturn([]);
 
         $loader = new PackageLoader(
-            $packageRepository->reveal(),
+            $packageRepository,
             new PackageSubjectFactory(),
             $result->reveal(),
             new PackageHelper(),
             [
-                new NullPackageFilter($packageRepository->reveal(), new PackageHelper())
-            ]
-        );
-
-        $loader->load(
-            $composer->reveal(),
-            new SymfonyStyle(new ArrayInput([]), new NullOutput())
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function itShouldSkipPackageWithInvalidConstraint(): void
-    {
-        $link = $this->prophesize(Link::class);
-        $link->getTarget()->willReturn('package/A');
-        $link->getConstraint()->willReturn(null);
-
-        $rootPackage = $this->prophesize(RootPackageInterface::class);
-        $rootPackage->getRequires()->willReturn([$link->reveal()]);
-
-        $composer = $this->prophesize(Composer::class);
-        $composer->getPackage()->willReturn($rootPackage->reveal());
-
-        $packageRepository = $this->prophesize(RepositoryInterface::class);
-
-        $result = $this->prophesize(Result::class);
-        $result->skipItem('package/A', 'Invalid constraint')->shouldBeCalled()->willReturn($result->reveal());
-        $result->getItems()->willReturn([]);
-
-        $loader = new PackageLoader(
-            $packageRepository->reveal(),
-            new PackageSubjectFactory(),
-            $result->reveal(),
-            new PackageHelper(),
-            [
-                new NullConstraintFilter()
+                new NullPackageFilter($packageRepository, new PackageHelper())
             ]
         );
 
@@ -149,11 +114,11 @@ class PackageLoaderTest extends TestCase
      */
     public function itShouldReturnLoaderResultWhenPackagesAreEmpty(): void
     {
-        $rootPackage = $this->prophesize(RootPackageInterface::class);
-        $rootPackage->getRequires()->willReturn([]);
+        $rootPackage = new RootPackage('Rootpackage', '0.1', '0.1');
+        $rootPackage->setRequires([]);
 
         $composer = $this->prophesize(Composer::class);
-        $composer->getPackage()->willReturn($rootPackage->reveal());
+        $composer->getPackage()->willReturn($rootPackage);
 
         $packageRepository = $this->prophesize(RepositoryInterface::class);
         $result = new Result();
@@ -171,8 +136,8 @@ class PackageLoaderTest extends TestCase
             new SymfonyStyle(new ArrayInput([]), new NullOutput())
         );
 
-        $this->assertSame($result, $loaderResult);
-        $this->assertEmpty($loaderResult->getItems());
+        self::assertSame($result, $loaderResult);
+        self::assertEmpty($loaderResult->getItems());
     }
 
     /**
@@ -180,31 +145,30 @@ class PackageLoaderTest extends TestCase
      */
     public function itShouldReturnLoaderResultWhenPackagesAreEmptyWhenFiltered(): void
     {
-        $link = $this->prophesize(Link::class);
-        $link->getTarget()->willReturn('package/A');
+        $parser = new VersionParser();
+        $constraint = $parser->parseConstraints('*');
+        $require = new Link('', 'package/a', $constraint);
 
-        $rootPackage = $this->prophesize(RootPackageInterface::class);
-        $rootPackage->getRequires()->willReturn([$link->reveal()]);
+        $rootPackage = new RootPackage('Rootpackage', '0.1', '0.1');
+        $rootPackage->setRequires([$require]);
 
         $composer = $this->prophesize(Composer::class);
-        $composer->getPackage()->willReturn($rootPackage->reveal());
+        $composer->getPackage()->willReturn($rootPackage);
 
-        $package = $this->prophesize(PackageInterface::class);
-        $package->getAutoload()->willReturn(['psr-4' => ['ABC\\' => 'src']]);
-        $package->getDevAutoload()->willReturn([]);
+        $package = new Package('package/a', '0.1', '0.1');
+        $package->setAutoload(['psr-4' => ['ABC\\' => 'src']]);
+        $package->setDevAutoload([]);
 
-        $packageRepository = $this->prophesize(RepositoryInterface::class);
-        $packageRepository->findPackage('package/A', '^0.1')->willReturn($package->reveal());
-
+        $packageRepository = new ArrayRepository([$package]);
         $result = new Result();
 
         $loader = new PackageLoader(
-            $packageRepository->reveal(),
+            $packageRepository,
             new PackageSubjectFactory(),
             $result,
             new PackageHelper(),
             [
-                new ExcludePackageFilter(['package/A'])
+                new ExcludePackageFilter(['package/a'])
             ]
         );
 
@@ -213,6 +177,6 @@ class PackageLoaderTest extends TestCase
             new SymfonyStyle(new ArrayInput([]), new NullOutput())
         );
 
-        $this->assertEmpty($loaderResult->getItems(), 'All packages should be filtered');
+        self::assertEmpty($loaderResult->getItems(), 'All packages should be filtered');
     }
 }

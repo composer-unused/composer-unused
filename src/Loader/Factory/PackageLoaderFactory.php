@@ -36,7 +36,6 @@ class PackageLoaderFactory implements FactoryInterface
             $packageHelper,
             [
                 new ExcludePackageFilter($options['excludes'] ?? []),
-                new NullConstraintFilter(),
                 new NullPackageFilter($repository, $packageHelper),
                 new InvalidPackageTypeFilter($repository),
                 new InvalidNamespaceFilter($repository)

@@ -73,7 +73,7 @@ class PackageLoader implements LoaderInterface
             } else {
                 $composerPackage = $this->packageRepository->findPackage(
                     $require->getTarget(),
-                    $require->getConstraint() ?? ''
+                    $require->getConstraint()
                 );
             }
 

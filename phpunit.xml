@@ -1,33 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
-         bootstrap="phpunit.bootstrap.php"
-         colors="true">
-    <testsuites>
-        <testsuite name="integration">
-            <directory>./tests/Integration</directory>
-        </testsuite>
-        <testsuite name="unit">
-            <directory>./tests/Unit</directory>
-        </testsuite>
-        <testsuite name="functional">
-            <directory>./tests/Functional</directory>
-        </testsuite>
-    </testsuites>
-
-    <groups>
-        <exclude>
-            <group>disable</group>
-        </exclude>
-    </groups>
-
-    <filter>
-        <whitelist>
-            <directory suffix=".php">./src</directory>
-        </whitelist>
-    </filter>
-
-    <php>
-        <ini name="date.timezone" value="UTC"/>
-    </php>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd" bootstrap="phpunit.bootstrap.php" colors="true">
+  <coverage>
+    <include>
+      <directory suffix=".php">./src</directory>
+    </include>
+  </coverage>
+  <testsuites>
+    <testsuite name="integration">
+      <directory>./tests/Integration</directory>
+    </testsuite>
+    <testsuite name="unit">
+      <directory>./tests/Unit</directory>
+    </testsuite>
+    <testsuite name="functional">
+      <directory>./tests/Functional</directory>
+    </testsuite>
+  </testsuites>
+  <groups>
+    <exclude>
+      <group>disable</group>
+    </exclude>
+  </groups>
+  <php>
+    <ini name="date.timezone" value="UTC"/>
+  </php>
 </phpunit>

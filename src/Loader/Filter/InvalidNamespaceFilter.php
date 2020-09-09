@@ -19,7 +19,7 @@ class InvalidNamespaceFilter implements FilterInterface
 
     public function match(Link $item): bool
     {
-        $package = $this->repository->findPackage($item->getTarget(), $item->getConstraint() ?? '');
+        $package = $this->repository->findPackage($item->getTarget(), $item->getConstraint());
 
         if ($package === null) {
             return false;

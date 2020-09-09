@@ -3,6 +3,7 @@
 namespace Icanhazstring\Composer\Test\Unused\Unit\Loader;
 
 use Composer\Package\Link;
+use Composer\Semver\Constraint\ConstraintInterface;
 use Icanhazstring\Composer\Unused\Loader\PackageHelper;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -34,10 +35,12 @@ class PackageHelperTest extends TestCase
      */
     public function validPhpExtensionDataProvider(): array
     {
+        $constraint = $this->prophesize(ConstraintInterface::class)->reveal();
+
         return [
-            [new Link('', 'php')],
-            [new Link('', 'ext-php')],
-            [new Link('', 'ext-json')],
+            [new Link('', 'php', $constraint)],
+            [new Link('', 'ext-php', $constraint)],
+            [new Link('', 'ext-json', $constraint)],
         ];
     }
 
@@ -46,11 +49,13 @@ class PackageHelperTest extends TestCase
      */
     public function invalidPhpExtensionDataProvider(): array
     {
+        $constraint = $this->prophesize(ConstraintInterface::class)->reveal();
+
         return [
-            [new Link('', 'json-ext')],
-            [new Link('', 'php7')],
-            [new Link('', 'Package/Name')],
-            [new Link('', '')],
+            [new Link('', 'json-ext', $constraint)],
+            [new Link('', 'php7', $constraint)],
+            [new Link('', 'Package/Name', $constraint)],
+            [new Link('', '', $constraint)],
         ];
     }
 }
