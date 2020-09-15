@@ -8,6 +8,8 @@ use Exception;
 use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Parser\PHP\NodeVisitor;
 use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\ClassConstStrategy;
+use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\ExtendsParseStrategy;
+use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\ImplementsParseStrategy;
 use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\NewParseStrategy;
 use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\ParseStrategyInterface;
 use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\PhpExtensionStrategy;
@@ -22,6 +24,8 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\NullLogger;
 use SplFileInfo;
 
+use const ASSET_DIR;
+
 class NodeVisitorTest extends TestCase
 {
     use ProphecyTrait;
@@ -32,39 +36,39 @@ class NodeVisitorTest extends TestCase
     public function itShouldParseUsagesDataProvider(): array
     {
         return [
-            'StaticParseStrategyShouldReturnEmptyUsageOnVariableCall'  => [
+            'StaticParseStrategyShouldReturnEmptyUsageOnVariableCall' => [
                 'expectedUsedNamespaces' => [],
-                'inputFile'              => ASSET_DIR . '/TestFiles/StaticVariableCall.php',
-                'strategy'               => new StaticParseStrategy()
+                'inputFile' => ASSET_DIR . '/TestFiles/StaticVariableCall.php',
+                'strategy' => new StaticParseStrategy()
             ],
-            'StaticParseStrategyShouldReturnEmptyUsageOnNonFQCall'     => [
+            'StaticParseStrategyShouldReturnEmptyUsageOnNonFQCall' => [
                 'expectedUsedNamespaces' => [],
-                'inputFile'              => ASSET_DIR . '/TestFiles/StaticNonFullyQualifiedCall.php',
-                'strategy'               => new StaticParseStrategy()
+                'inputFile' => ASSET_DIR . '/TestFiles/StaticNonFullyQualifiedCall.php',
+                'strategy' => new StaticParseStrategy()
             ],
-            'StaticParseStrategyShouldReturnCorrectNamespaceOnFQCall'      => [
+            'StaticParseStrategyShouldReturnCorrectNamespaceOnFQCall' => [
                 'expectedUsedNamespaces' => [
                     'StaticFullyQualifiedCall'
                 ],
-                'inputFile'              => ASSET_DIR . '/TestFiles/StaticFullyQualifiedCall.php',
-                'strategy'               => new StaticParseStrategy()
+                'inputFile' => ASSET_DIR . '/TestFiles/StaticFullyQualifiedCall.php',
+                'strategy' => new StaticParseStrategy()
             ],
             'NewParseStrategyShouldReturnEmptyUsageOnDynamicClassnameCall' => [
                 'expectedUsedNamespaces' => [],
-                'inputFile'              => ASSET_DIR . '/TestFiles/NewInstantiateDynamicClass.php',
-                'strategy'               => new NewParseStrategy()
+                'inputFile' => ASSET_DIR . '/TestFiles/NewInstantiateDynamicClass.php',
+                'strategy' => new NewParseStrategy()
             ],
-            'NewParseStrategyShouldReturnEmptyUsageOnNonFQCall'        => [
+            'NewParseStrategyShouldReturnEmptyUsageOnNonFQCall' => [
                 'expectedUsedNamespaces' => [],
-                'inputFile'              => ASSET_DIR . '/TestFiles/NewInstantiateNonFullyQualifiedCall.php',
-                'strategy'               => new NewParseStrategy()
+                'inputFile' => ASSET_DIR . '/TestFiles/NewInstantiateNonFullyQualifiedCall.php',
+                'strategy' => new NewParseStrategy()
             ],
-            'NewParseStrategyShouldReturnCorrectNamespaceOnFQCall'     => [
+            'NewParseStrategyShouldReturnCorrectNamespaceOnFQCall' => [
                 'expectedUsedNamespaces' => [
                     'NewInstantiateFullyQualifiedCall'
                 ],
-                'inputFile'              => ASSET_DIR . '/TestFiles/NewInstantiateFullyQualifiedCall.php',
-                'strategy'               => new NewParseStrategy()
+                'inputFile' => ASSET_DIR . '/TestFiles/NewInstantiateFullyQualifiedCall.php',
+                'strategy' => new NewParseStrategy()
             ],
             'UseParseStrategyShouldReturnSingleLineImportedNamespaces' => [
                 'expectedUsedNamespaces' => [
@@ -72,107 +76,123 @@ class NodeVisitorTest extends TestCase
                     'Icanhazstring\Composer\Unused\Parser\PHP',
                     'Icanhazstring\Composer\Unused\Command'
                 ],
-                'inputFile'              => ASSET_DIR . '/TestFiles/UseSingleLineNoGroup.php',
-                'strategy'               => new UseParseStrategy()
+                'inputFile' => ASSET_DIR . '/TestFiles/UseSingleLineNoGroup.php',
+                'strategy' => new UseParseStrategy()
             ],
-            'UseParseStrategyShouldReturnMultiLineImportedNamespaces'  => [
+            'UseParseStrategyShouldReturnMultiLineImportedNamespaces' => [
                 'expectedUsedNamespaces' => [
                     UseParseStrategy::class,
                     StaticParseStrategy::class,
                     NewParseStrategy::class
                 ],
-                'inputFile'              => ASSET_DIR . '/TestFiles/UseMultiLineGroup.php',
-                'strategy'               => new UseParseStrategy()
+                'inputFile' => ASSET_DIR . '/TestFiles/UseMultiLineGroup.php',
+                'strategy' => new UseParseStrategy()
             ],
-            'ClassConstStrategyShouldReturnCorrectNamespace'           => [
+            'ClassConstStrategyShouldReturnCorrectNamespace' => [
                 'expectedUsedNamespaces' => [
                     UseParseStrategy::class,
                     StaticParseStrategy::class
                 ],
-                'inputFile'              => ASSET_DIR . '/TestFiles/ClassConst.php',
-                'strategy'               => new ClassConstStrategy()
+                'inputFile' => ASSET_DIR . '/TestFiles/ClassConst.php',
+                'strategy' => new ClassConstStrategy()
             ],
-            'NewParseStrategyShouldReturnQualifiedNamespace'           => [
+            'NewParseStrategyShouldReturnQualifiedNamespace' => [
                 'expectedUsedNamespaces' => [
                     'TestFile\NewInstantiateQualifiedClass'
                 ],
-                'inputFile'              => ASSET_DIR . '/TestFiles/NewInstantiateQualifiedClass.php',
-                'strategy'               => new NewParseStrategy()
+                'inputFile' => ASSET_DIR . '/TestFiles/NewInstantiateQualifiedClass.php',
+                'strategy' => new NewParseStrategy()
             ],
-            'StaticParseStrategyShouldReturnQualifiedNamespace'        => [
+            'StaticParseStrategyShouldReturnQualifiedNamespace' => [
                 'expectedUsedNamespaces' => [
                     'TestFile\StaticQualifiedCall'
                 ],
-                'inputFile'              => ASSET_DIR . '/TestFiles/StaticQualifiedCall.php',
-                'strategy'               => new StaticParseStrategy()
+                'inputFile' => ASSET_DIR . '/TestFiles/StaticQualifiedCall.php',
+                'strategy' => new StaticParseStrategy()
             ],
-            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---1'        => [
+            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---1' => [
                 'expectedUsedNamespaces' => [],
-                'inputFile'              => ASSET_DIR . '/TestFiles/PhpExtensionStrategy/ClassWithCustomInterfaceName.php',
-                'strategy'               => new PhpExtensionStrategy(['json'], new NullLogger())
+                'inputFile' => ASSET_DIR . '/TestFiles/PhpExtensionStrategy/ClassWithCustomInterfaceName.php',
+                'strategy' => new PhpExtensionStrategy(['json'], new NullLogger())
             ],
-            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---2'        => [
+            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---2' => [
                 'expectedUsedNamespaces' => [],
-                'inputFile'              => ASSET_DIR . '/TestFiles/PhpExtensionStrategy/ClassWithCustomInterface.php',
-                'strategy'               => new PhpExtensionStrategy(['json'], new NullLogger())
+                'inputFile' => ASSET_DIR . '/TestFiles/PhpExtensionStrategy/ClassWithCustomInterface.php',
+                'strategy' => new PhpExtensionStrategy(['json'], new NullLogger())
             ],
-            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---3'        => [
+            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---3' => [
                 'expectedUsedNamespaces' => ['ext-json'],
-                'inputFile'              => ASSET_DIR . '/TestFiles/PhpExtensionStrategy/ClassWithExtensionInterface.php',
-                'strategy'               => new PhpExtensionStrategy(['json'], new NullLogger())
+                'inputFile' => ASSET_DIR . '/TestFiles/PhpExtensionStrategy/ClassWithExtensionInterface.php',
+                'strategy' => new PhpExtensionStrategy(['json'], new NullLogger())
             ],
-            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---4'        => [
+            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---4' => [
                 'expectedUsedNamespaces' => ['ext-json'],
-                'inputFile'              => ASSET_DIR . '/TestFiles/PhpExtensionStrategy/ClassWithExtensionInterfaceInUse.php',
-                'strategy'               => new PhpExtensionStrategy(['json'], new NullLogger())
+                'inputFile' => ASSET_DIR . '/TestFiles/PhpExtensionStrategy/ClassWithExtensionInterfaceInUse.php',
+                'strategy' => new PhpExtensionStrategy(['json'], new NullLogger())
             ],
-            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---5'        => [
+            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---5' => [
                 'expectedUsedNamespaces' => [],
-                'inputFile'              => ASSET_DIR . '/TestFiles/PhpExtensionStrategy/ClassWithCustomConstant.php',
-                'strategy'               => new PhpExtensionStrategy(['json'], new NullLogger())
+                'inputFile' => ASSET_DIR . '/TestFiles/PhpExtensionStrategy/ClassWithCustomConstant.php',
+                'strategy' => new PhpExtensionStrategy(['json'], new NullLogger())
             ],
-            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---6'        => [
+            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---6' => [
                 'expectedUsedNamespaces' => ['ext-json'],
-                'inputFile'              => ASSET_DIR . '/TestFiles/PhpExtensionStrategy/ClassWithJsonConstant.php',
-                'strategy'               => new PhpExtensionStrategy(['json'], new NullLogger())
+                'inputFile' => ASSET_DIR . '/TestFiles/PhpExtensionStrategy/ClassWithJsonConstant.php',
+                'strategy' => new PhpExtensionStrategy(['json'], new NullLogger())
             ],
-            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---7'        => [
+            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---7' => [
                 'expectedUsedNamespaces' => ['ext-json'],
-                'inputFile'              => ASSET_DIR . '/TestFiles/PhpExtensionStrategy/ClassWithExtensionFunction.php',
-                'strategy'               => new PhpExtensionStrategy(['json'], new NullLogger())
+                'inputFile' => ASSET_DIR . '/TestFiles/PhpExtensionStrategy/ClassWithExtensionFunction.php',
+                'strategy' => new PhpExtensionStrategy(['json'], new NullLogger())
             ],
-            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---8'        => [
+            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---8' => [
                 'expectedUsedNamespaces' => [],
-                'inputFile'              => ASSET_DIR . '/TestFiles/PhpExtensionStrategy/ClassWithCustomFunction.php',
-                'strategy'               => new PhpExtensionStrategy(['json'], new NullLogger())
+                'inputFile' => ASSET_DIR . '/TestFiles/PhpExtensionStrategy/ClassWithCustomFunction.php',
+                'strategy' => new PhpExtensionStrategy(['json'], new NullLogger())
             ],
-            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---9'        => [
+            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---9' => [
                 'expectedUsedNamespaces' => ['ext-zend-opcache'],
-                'inputFile'              => ASSET_DIR . '/TestFiles/PhpExtensionStrategy/ClassWithZendOpcache.php',
-                'strategy'               => new PhpExtensionStrategy(['Zend Opcache'], new NullLogger())
+                'inputFile' => ASSET_DIR . '/TestFiles/PhpExtensionStrategy/ClassWithZendOpcache.php',
+                'strategy' => new PhpExtensionStrategy(['Zend Opcache'], new NullLogger())
             ],
-            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---10'        => [
+            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---10' => [
                 'expectedUsedNamespaces' => ['php'],
-                'inputFile'              => ASSET_DIR . '/TestFiles/PhpExtensionStrategy/ClassWithCore.php',
-                'strategy'               => new PhpExtensionStrategy(['Core'], new NullLogger())
+                'inputFile' => ASSET_DIR . '/TestFiles/PhpExtensionStrategy/ClassWithCore.php',
+                'strategy' => new PhpExtensionStrategy(['Core'], new NullLogger())
             ],
-            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---11'        => [
+            'PhpExtensionParseStrategyShouldReturnQualifiedNamespace---11' => [
                 'expectedUsedNamespaces' => ['ext-ds'],
-                'inputFile'              => ASSET_DIR . '/TestFiles/PhpExtensionStrategy/ClassWithDs.php',
-                'strategy'               => new PhpExtensionStrategy(['ds'], new NullLogger())
+                'inputFile' => ASSET_DIR . '/TestFiles/PhpExtensionStrategy/ClassWithDs.php',
+                'strategy' => new PhpExtensionStrategy(['ds'], new NullLogger())
             ],
+            'ClassExtendsFQN' => [
+                'expectedUseNamespaces' => ['A\B'],
+                'inputFile' => ASSET_DIR . '/TestFiles/ClassExtendsFQN.php',
+                'strategy' => new ExtendsParseStrategy()
+            ],
+            'ClassImplements' => [
+                'expectedUseNamespaces' => [
+                    'A\InterfaceA',
+                    'B\InterfaceB'
+                ],
+                'inputFile' => ASSET_DIR . '/TestFiles/ClassImplements.php',
+                'strategy' => new ImplementsParseStrategy()
+            ]
         ];
     }
 
     /**
      * @test
-     * @param array<string>  $expectedUsedNamespaces
+     * @param array<string> $expectedUsedNamespaces
      * @param string $inputFile
      * @param ParseStrategyInterface $strategy
      * @dataProvider itShouldParseUsagesDataProvider
      */
-    public function itShouldParseUsages(array $expectedUsedNamespaces, string $inputFile, ParseStrategyInterface $strategy): void
-    {
+    public function itShouldParseUsages(
+        array $expectedUsedNamespaces,
+        string $inputFile,
+        ParseStrategyInterface $strategy
+    ): void {
         $parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
         /** @var string $contents */
         $contents = file_get_contents($inputFile);

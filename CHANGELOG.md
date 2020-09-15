@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Fixed
 - Fixed an issue where `ext-ds` classes where not recognized as used [#88](https://github.com/composer-unused/composer-unused/pull/88)
+- Fixed an issue where `extends` and `implements` of FQN was not markes as used [#90](https://github.com/composer-unused/composer-unused/pull/90)
 
 ## [0.7.3] - 2020-05-19
 ### Added
