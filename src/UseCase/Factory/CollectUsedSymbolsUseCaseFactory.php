@@ -18,6 +18,7 @@ use Icanhazstring\Composer\Unused\UseCase\CollectUsedSymbolsUseCase;
 use PhpParser\ParserFactory;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+
 use function get_loaded_extensions;
 
 class CollectUsedSymbolsUseCaseFactory
