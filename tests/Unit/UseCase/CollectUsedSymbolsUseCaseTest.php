@@ -12,6 +12,7 @@ use Icanhazstring\Composer\Unused\Symbol\SymbolInterface;
 use Icanhazstring\Composer\Unused\UseCase\CollectUsedSymbolsUseCase;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+
 use function iterator_to_array;
 
 class CollectUsedSymbolsUseCaseTest extends TestCase
