@@ -9,6 +9,9 @@ use Closure;
 use Countable;
 use IteratorAggregate;
 
+/**
+ * @implements IteratorAggregate<RequiredDependency>
+ */
 final class DependencyCollection implements IteratorAggregate, Countable
 {
     /** @var array<RequiredDependency> */

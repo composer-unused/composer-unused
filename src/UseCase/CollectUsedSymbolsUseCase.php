@@ -9,6 +9,7 @@ use Generator;
 use Icanhazstring\Composer\Unused\Composer\PackageDecorator;
 use Icanhazstring\Composer\Unused\Symbol\Loader\UsedSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\SymbolInterface;
+
 use function array_keys;
 use function array_merge;
 use function strpos;
