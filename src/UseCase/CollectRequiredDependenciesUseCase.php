@@ -8,6 +8,7 @@ use Composer\Package\Link;
 use Composer\Repository\InstalledRepositoryInterface;
 use Icanhazstring\Composer\Unused\Composer\PackageDecorator;
 use Icanhazstring\Composer\Unused\Dependency\DependencyCollection;
+use Icanhazstring\Composer\Unused\Dependency\InvalidDependency;
 use Icanhazstring\Composer\Unused\Dependency\RequiredDependency;
 use Icanhazstring\Composer\Unused\PackageResolver;
 use Icanhazstring\Composer\Unused\Symbol\Loader\SymbolLoaderInterface;
@@ -20,8 +21,10 @@ class CollectRequiredDependenciesUseCase
     /** @var PackageResolver */
     private $packageResolver;
 
-    public function __construct(SymbolLoaderInterface $dependencySymbolLoader, PackageResolver $packageResolver)
-    {
+    public function __construct(
+        SymbolLoaderInterface $dependencySymbolLoader,
+        PackageResolver $packageResolver
+    ) {
         $this->dependencySymbolLoader = $dependencySymbolLoader;
         $this->packageResolver = $packageResolver;
     }
@@ -44,7 +47,7 @@ class CollectRequiredDependenciesUseCase
             );
 
             if ($composerPackage === null) {
-                // TODO handle package filtering
+                $dependencyCollection->add(new InvalidDependency($require, 'Unable to locate package'));
                 continue;
             }
 

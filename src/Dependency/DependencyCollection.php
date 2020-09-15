@@ -10,15 +10,15 @@ use Countable;
 use IteratorAggregate;
 
 /**
- * @implements IteratorAggregate<RequiredDependency>
+ * @implements IteratorAggregate<DependencyInterface>
  */
 final class DependencyCollection implements IteratorAggregate, Countable
 {
-    /** @var array<RequiredDependency> */
+    /** @var array<DependencyInterface> */
     private $items;
 
     /**
-     * @param array<RequiredDependency> $items
+     * @param array<DependencyInterface> $items
      */
     public function __construct(array $items = [])
     {
@@ -35,7 +35,7 @@ final class DependencyCollection implements IteratorAggregate, Countable
         return count($this->items);
     }
 
-    public function add(RequiredDependency $dependency): void
+    public function add(DependencyInterface $dependency): void
     {
         $this->items[] = $dependency;
     }

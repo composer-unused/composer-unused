@@ -30,7 +30,7 @@ final class DependencyCollectionTest extends TestCase
 
         [$usedDependencyCollection, $unusedDependencyCollection] = $collection->partition(
             static function (RequiredDependency $dependency) {
-                return $dependency->isUsed();
+                return $dependency->inState($dependency::STATE_USED);
             }
         );
 

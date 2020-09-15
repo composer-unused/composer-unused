@@ -22,10 +22,10 @@ class RequiredDependencyTest extends TestCase
         $package = $this->getMockForAbstractClass(PackageInterface::class);
         $requiredDependency = new RequiredDependency($package, new SymbolList());
 
-        self::assertFalse($requiredDependency->isUsed());
+        self::assertFalse($requiredDependency->inState($requiredDependency::STATE_USED));
         $requiredDependency->markUsed();
 
-        self::assertTrue($requiredDependency->isUsed());
+        self::assertTrue($requiredDependency->inState($requiredDependency::STATE_USED));
     }
 
     /**

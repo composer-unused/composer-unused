@@ -8,10 +8,10 @@ use Composer\Package\PackageInterface;
 use Icanhazstring\Composer\Unused\Symbol\SymbolInterface;
 use Icanhazstring\Composer\Unused\Symbol\SymbolListInterface;
 
-final class RequiredDependency
+final class RequiredDependency implements DependencyInterface
 {
-    /** @var bool */
-    private $used = false;
+    /** @var string */
+    private $state = self::STATE_UNUSED;
     /** @var PackageInterface */
     private $package;
     /** @var SymbolListInterface */
@@ -30,12 +30,12 @@ final class RequiredDependency
 
     public function markUsed(): void
     {
-        $this->used = true;
+        $this->state = self::STATE_USED;
     }
 
-    public function isUsed(): bool
+    public function inState(string $state): bool
     {
-        return $this->used;
+        return $this->state === $state;
     }
 
     public function provides(SymbolInterface $symbol): bool
