@@ -7,7 +7,10 @@ namespace Icanhazstring\Composer\Unused\Command;
 use Composer\Command\BaseCommand;
 use Composer\Composer;
 use Composer\Package\PackageInterface;
+use Icanhazstring\Composer\Unused\Dependency\DependencyCollection;
 use Icanhazstring\Composer\Unused\Dependency\DependencyInterface;
+use Icanhazstring\Composer\Unused\Dependency\InvalidDependency;
+use Icanhazstring\Composer\Unused\Dependency\RequiredDependency;
 use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Loader\LoaderBuilder;
 use Icanhazstring\Composer\Unused\Loader\PackageLoader;
@@ -328,7 +331,7 @@ class UnusedCommand extends BaseCommand
             $composerBaseDir
         );
 
-        /** @phpstan-var DependencyCollection<RequiredDependency> $requiredDependencyCollection */
+        /** @var DependencyCollection<RequiredDependency> $requiredDependencyCollection */
         $requiredDependencyCollection = $this->collectRequiredDependenciesUseCase->execute(
             $rootPackage->getRequires(),
             $composer->getRepositoryManager()->getLocalRepository(),
@@ -353,7 +356,7 @@ class UnusedCommand extends BaseCommand
             }
         );
 
-        /** @phpstan-var DependencyCollection<InvalidDependency> $invalidDependencyCollection */
+        /** @var DependencyCollection<InvalidDependency> $invalidDependencyCollection */
         [$invalidDependencyCollection, $unusedDependencyCollection] = $unusedDependencyCollection->partition(
             static function (DependencyInterface $dependency) {
                 return $dependency->inState($dependency::STATE_INVALID);
