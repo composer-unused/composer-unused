@@ -8,7 +8,7 @@ use Composer\Package\PackageInterface;
 use Icanhazstring\Composer\Unused\Symbol\SymbolInterface;
 use Icanhazstring\Composer\Unused\Symbol\SymbolListInterface;
 
-final class RequiredDependency implements RequiredDependencyInterface
+final class RequiredDependency
 {
     /** @var bool */
     private $used = false;
