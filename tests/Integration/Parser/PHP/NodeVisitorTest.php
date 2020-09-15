@@ -23,6 +23,7 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\NullLogger;
 use SplFileInfo;
+
 use const ASSET_DIR;
 
 class NodeVisitorTest extends TestCase

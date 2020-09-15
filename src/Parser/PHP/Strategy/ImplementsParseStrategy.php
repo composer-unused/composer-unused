@@ -6,6 +6,7 @@ namespace Icanhazstring\Composer\Unused\Parser\PHP\Strategy;
 
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
+
 use function array_merge;
 
 class ImplementsParseStrategy implements ParseStrategyInterface
@@ -29,7 +30,7 @@ class ImplementsParseStrategy implements ParseStrategyInterface
      */
     public function extractNamespaces(Node $node): array
     {
-        /** @var Node\Name[] $class */
+        /** @var Node\Name[] $implements */
         $implements = $node->implements;
 
         $namespaces = [];

@@ -28,7 +28,7 @@ class ExtendsParseStrategy implements ParseStrategyInterface
      */
     public function extractNamespaces(Node $node): array
     {
-        /** @var Node\Name $class */
+        /** @var Node\Name $extends */
         $extends = $node->extends;
 
         return [$extends->toString()];
