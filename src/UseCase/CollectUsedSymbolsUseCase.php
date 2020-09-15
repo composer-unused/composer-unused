@@ -4,22 +4,21 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused\UseCase;
 
-use Composer\Composer;
+use Composer\Package\RootPackageInterface;
 use Generator;
 use Icanhazstring\Composer\Unused\Composer\PackageDecorator;
-use Icanhazstring\Composer\Unused\Symbol\Loader\SymbolLoaderInterface;
+use Icanhazstring\Composer\Unused\Symbol\Loader\UsedSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\SymbolInterface;
-
 use function array_keys;
 use function array_merge;
 use function strpos;
 
 class CollectUsedSymbolsUseCase
 {
-    /** @var SymbolLoaderInterface */
+    /** @var UsedSymbolLoader */
     private $usedSymbolLoader;
 
-    public function __construct(SymbolLoaderInterface $usedSymbolLoader)
+    public function __construct(UsedSymbolLoader $usedSymbolLoader)
     {
         $this->usedSymbolLoader = $usedSymbolLoader;
     }
@@ -27,14 +26,11 @@ class CollectUsedSymbolsUseCase
     /**
      * @return Generator<string, SymbolInterface>
      */
-    public function execute(Composer $composer): Generator
+    public function execute(RootPackageInterface $rootPackage, string $composerBaseDir): Generator
     {
-        $rootPackage = $composer->getPackage();
-        $baseDir = dirname($composer->getConfig()->getConfigSource()->getName());
-
         $usedSymbols = $this->usedSymbolLoader->load(
             PackageDecorator::withBaseDir(
-                $baseDir,
+                $composerBaseDir,
                 $rootPackage
             )
         );
@@ -48,6 +44,8 @@ class CollectUsedSymbolsUseCase
     }
 
     /**
+     * Ignore symbols that are provided and used by the root namespace.
+     *
      * @param iterable<string> $rootNamespaces
      * @param iterable<string, SymbolInterface> $symbols
      *
