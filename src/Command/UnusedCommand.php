@@ -7,7 +7,7 @@ namespace Icanhazstring\Composer\Unused\Command;
 use Composer\Command\BaseCommand;
 use Composer\Composer;
 use Composer\Package\PackageInterface;
-use Icanhazstring\Composer\Unused\Dependency\RequiredDependency;
+use Icanhazstring\Composer\Unused\Dependency\DependencyInterface;
 use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Loader\LoaderBuilder;
 use Icanhazstring\Composer\Unused\Loader\PackageLoader;
@@ -18,7 +18,6 @@ use Icanhazstring\Composer\Unused\Subject\UsageInterface;
 use Icanhazstring\Composer\Unused\UnusedPlugin;
 use Icanhazstring\Composer\Unused\UseCase\CollectRequiredDependenciesUseCase;
 use Icanhazstring\Composer\Unused\UseCase\CollectUsedSymbolsUseCase;
-use Icanhazstring\Composer\Unused\V2\Collection\TypedSequence;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -329,6 +328,7 @@ class UnusedCommand extends BaseCommand
             $composerBaseDir
         );
 
+        /** @phpstan-var DependencyCollection<RequiredDependency> $requiredDependencyCollection */
         $requiredDependencyCollection = $this->collectRequiredDependenciesUseCase->execute(
             $rootPackage->getRequires(),
             $composer->getRepositoryManager()->getLocalRepository(),
@@ -337,7 +337,7 @@ class UnusedCommand extends BaseCommand
 
         foreach ($usedSymbols as $usedSymbol) {
             foreach ($requiredDependencyCollection as $requiredDependency) {
-                if ($requiredDependency->isUsed()) {
+                if ($requiredDependency->inState($requiredDependency::STATE_USED)) {
                     continue;
                 }
 
@@ -348,8 +348,15 @@ class UnusedCommand extends BaseCommand
         }
 
         [$usedDependencyCollection, $unusedDependencyCollection] = $requiredDependencyCollection->partition(
-            static function (RequiredDependency $dependency) {
-                return $dependency->isUsed();
+            static function (DependencyInterface $dependency) {
+                return $dependency->inState($dependency::STATE_USED);
+            }
+        );
+
+        /** @phpstan-var DependencyCollection<InvalidDependency> $invalidDependencyCollection */
+        [$invalidDependencyCollection, $unusedDependencyCollection] = $unusedDependencyCollection->partition(
+            static function (DependencyInterface $dependency) {
+                return $dependency->inState($dependency::STATE_INVALID);
             }
         );
 
@@ -360,7 +367,7 @@ class UnusedCommand extends BaseCommand
                 'Found <fg=green>%d used</>, <fg=red>%d unused</> and <fg=yellow>%d ignored</> packages',
                 count($usedDependencyCollection),
                 count($unusedDependencyCollection),
-                0
+                count($invalidDependencyCollection)
             )
         );
 
@@ -394,7 +401,16 @@ class UnusedCommand extends BaseCommand
         $this->io->newLine();
         $this->io->text('<fg=yellow>Ignored packages</>');
 
-        // TODO ignored packages
+        foreach ($invalidDependencyCollection as $dependency) {
+            $this->io->writeln(
+                sprintf(
+                    ' <fg=yellow>%s</> %s (<fg=cyan>%s</>)',
+                    "\u{25CB}",
+                    $dependency->getName(),
+                    $dependency->getReason()
+                )
+            );
+        }
 
         return 0;
     }
