@@ -18,7 +18,6 @@ final class Symbol implements SymbolInterface
         return $this->identifier;
     }
 
-
     public function matches(SymbolInterface $symbol): bool
     {
         return $this->identifier === $symbol->getIdentifier();

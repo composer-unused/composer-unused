@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Test\Unused\Unit\UseCase;
 
-use Composer\Composer;
-use Composer\Config;
-use Composer\Package\PackageInterface;
+use Composer\Package\RootPackage;
 use Generator;
-use Icanhazstring\Composer\Unused\Symbol\Loader\SymbolLoaderInterface;
+use Icanhazstring\Composer\Unused\Symbol\Loader\UsedSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\Symbol;
 use Icanhazstring\Composer\Unused\Symbol\SymbolInterface;
 use Icanhazstring\Composer\Unused\UseCase\CollectUsedSymbolsUseCase;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use function iterator_to_array;
 
@@ -33,23 +30,13 @@ class CollectUsedSymbolsUseCaseTest extends TestCase
     /**
      * @test
      */
-    public function itRemoveRootNamespaceSymbols(): void
+    public function itShouldRemoveRootNamespaceSymbols(): void
     {
-        $rootPackage = $this->prophesize(PackageInterface::class);
-        $rootPackage->getAutoload()->willReturn(['psr-4' => ['Test\\' => 'src']]);
+        $rootPackage = new RootPackage('test/package', '0.1.0', '0.1.0');
+        $rootPackage->setAutoload(['psr-4' => ['Test\\' => 'src']]);
 
-        $configSource = $this->prophesize(Config\ConfigSourceInterface::class);
-        $configSource->getName()->willReturn(__DIR__);
-
-        $composerConfig = $this->prophesize(Config::class);
-        $composerConfig->getConfigSource()->willReturn($configSource->reveal());
-
-        $composer = $this->prophesize(Composer::class);
-        $composer->getPackage()->willReturn($rootPackage);
-        $composer->getConfig()->willReturn($composerConfig->reveal());
-
-        $symbolLoader = $this->prophesize(SymbolLoaderInterface::class);
-        $symbolLoader->load(Argument::any())->willReturn(
+        $symbolLoader = $this->createMock(UsedSymbolLoader::class);
+        $symbolLoader->method('load')->willReturn(
             $this->arrayAsGenerator([
                 new Symbol('Test\\Sub\\Classname'),
                 new Symbol('Test\\SecondClassname'),
@@ -57,9 +44,9 @@ class CollectUsedSymbolsUseCaseTest extends TestCase
             ])
         );
 
-        $useCase = new CollectUsedSymbolsUseCase($symbolLoader->reveal());
+        $useCase = new CollectUsedSymbolsUseCase($symbolLoader);
         /** @var array<SymbolInterface> $symbols */
-        $symbols = iterator_to_array($useCase->execute($composer->reveal()));
+        $symbols = iterator_to_array($useCase->execute($rootPackage, dirname(__DIR__)));
 
         $symbol = current($symbols);
 

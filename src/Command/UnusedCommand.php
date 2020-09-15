@@ -7,8 +7,7 @@ namespace Icanhazstring\Composer\Unused\Command;
 use Composer\Command\BaseCommand;
 use Composer\Composer;
 use Composer\Package\PackageInterface;
-use Composer\Package\RootPackageInterface;
-use Icanhazstring\Composer\Unused\Dependency\RequiredDependencyInterface;
+use Icanhazstring\Composer\Unused\Dependency\RequiredDependency;
 use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Loader\LoaderBuilder;
 use Icanhazstring\Composer\Unused\Loader\PackageLoader;
@@ -16,18 +15,20 @@ use Icanhazstring\Composer\Unused\Loader\UsageLoader;
 use Icanhazstring\Composer\Unused\Output\SymfonyStyleFactory;
 use Icanhazstring\Composer\Unused\Subject\PackageSubject;
 use Icanhazstring\Composer\Unused\Subject\UsageInterface;
-use Icanhazstring\Composer\Unused\Symbol\Loader\SymbolLoaderInterface;
 use Icanhazstring\Composer\Unused\UnusedPlugin;
 use Icanhazstring\Composer\Unused\UseCase\CollectRequiredDependenciesUseCase;
 use Icanhazstring\Composer\Unused\UseCase\CollectUsedSymbolsUseCase;
+use Icanhazstring\Composer\Unused\V2\Collection\TypedSequence;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Throwable;
-
 use function array_merge;
+use function dirname;
+use function implode;
+use function sprintf;
 
 class UnusedCommand extends BaseCommand
 {
@@ -319,11 +320,22 @@ class UnusedCommand extends BaseCommand
             return 1;
         }
 
-        $usedSymbols = $this->collectUsedSymbolsUseCase->execute($composer);
-        $requiredDependencies = $this->collectRequiredDependenciesUseCase->execute($composer);
+        $composerBaseDir = dirname($composer->getConfig()->getConfigSource()->getName());
+        $rootPackage = $composer->getPackage();
+
+        $usedSymbols = $this->collectUsedSymbolsUseCase->execute(
+            $rootPackage,
+            $composerBaseDir
+        );
+
+        $requiredDependencyCollection = $this->collectRequiredDependenciesUseCase->execute(
+            $rootPackage->getRequires(),
+            $composer->getRepositoryManager()->getLocalRepository(),
+            $composerBaseDir
+        );
 
         foreach ($usedSymbols as $usedSymbol) {
-            foreach ($requiredDependencies as $requiredDependency) {
+            foreach ($requiredDependencyCollection as $requiredDependency) {
                 if ($requiredDependency->isUsed()) {
                     continue;
                 }
@@ -333,6 +345,55 @@ class UnusedCommand extends BaseCommand
                 }
             }
         }
+
+        [$usedDependencyCollection, $unusedDependencyCollection] = $requiredDependencyCollection->partition(
+            static function (RequiredDependency $dependency) {
+                return $dependency->isUsed();
+            }
+        );
+
+        $this->io->section('Results');
+
+        $this->io->writeln(
+            sprintf(
+                'Found <fg=green>%d used</>, <fg=red>%d unused</> and <fg=yellow>%d ignored</> packages',
+                count($usedDependencyCollection),
+                count($unusedDependencyCollection),
+                0
+            )
+        );
+
+        $this->io->newLine();
+        $this->io->text('<fg=green>Used packages</>');
+        foreach ($usedDependencyCollection as $usedDependency) {
+            // TODO add required by dependency
+            // TODO add suggest by dependency
+
+            $this->io->writeln(
+                sprintf(
+                    ' <fg=green>%s</> %s',
+                    "\u{2713}",
+                    $usedDependency->getName()
+                )
+            );
+        }
+
+        $this->io->newLine();
+        $this->io->text('<fg=red>Unused packages</>');
+        foreach ($unusedDependencyCollection as $dependency) {
+            $this->io->writeln(
+                sprintf(
+                    ' <fg=red>%s</> %s',
+                    "\u{2717}",
+                    $dependency->getName()
+                )
+            );
+        }
+
+        $this->io->newLine();
+        $this->io->text('<fg=yellow>Ignored packages</>');
+
+        // TODO ignored packages
 
         return 0;
     }

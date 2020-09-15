@@ -12,6 +12,12 @@ install:
 update:
 	docker exec -it $(CONTAINER) composer update
 
+require:
+	docker exec -it $(CONTAINER) composer require $(filter-out $@, $(MAKECMDGOALS))
+
+remove:
+	docker exec -it $(CONTAINER) composer remove $(filter-out $@, $(MAKECMDGOALS))
+
 check: csfix cs phpunit analyse
 
 phpunit:
@@ -31,3 +37,6 @@ box:
 
 ssh:
 	docker exec -it $(CONTAINER) /bin/sh
+
+%:
+	@true

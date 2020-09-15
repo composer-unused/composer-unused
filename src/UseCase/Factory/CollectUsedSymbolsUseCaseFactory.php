@@ -18,34 +18,37 @@ use Icanhazstring\Composer\Unused\UseCase\CollectUsedSymbolsUseCase;
 use PhpParser\ParserFactory;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
-
 use function get_loaded_extensions;
 
 class CollectUsedSymbolsUseCaseFactory
 {
     public function __invoke(ContainerInterface $container): CollectUsedSymbolsUseCase
     {
-        return new CollectUsedSymbolsUseCase(
-            new UsedSymbolLoader(
-                new FileSymbolProvider(
-                    new SymbolNameParser(
-                        (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
-                        new UsedSymbolCollector(
-                            [
-                                new NewStrategy(),
-                                new StaticStrategy(),
-                                new UseStrategy(),
-                                new ClassConstStrategy(),
-                                new PhpExtensionStrategy(
-                                    get_loaded_extensions(),
-                                    $container->get(LoggerInterface::class)
-                                )
-                            ]
-                        )
-                    ),
-                    new FileContentProvider()
+        $usedSymbolCollector = new UsedSymbolCollector(
+            [
+                new NewStrategy(),
+                new StaticStrategy(),
+                new UseStrategy(),
+                new ClassConstStrategy(),
+                new PhpExtensionStrategy(
+                    get_loaded_extensions(),
+                    $container->get(LoggerInterface::class)
                 )
-            )
+            ]
+        );
+
+        $symbolNameParser = new SymbolNameParser(
+            (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+            $usedSymbolCollector
+        );
+
+        $fileSymbolProvider = new FileSymbolProvider(
+            $symbolNameParser,
+            new FileContentProvider()
+        );
+
+        return new CollectUsedSymbolsUseCase(
+            new UsedSymbolLoader($fileSymbolProvider)
         );
     }
 }
