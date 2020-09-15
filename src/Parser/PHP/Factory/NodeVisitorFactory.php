@@ -7,6 +7,8 @@ namespace Icanhazstring\Composer\Unused\Parser\PHP\Factory;
 use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Parser\PHP\NodeVisitor;
 use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\ClassConstStrategy;
+use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\ExtendsParseStrategy;
+use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\ImplementsParseStrategy;
 use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\NewParseStrategy;
 use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\PhpExtensionStrategy;
 use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\StaticParseStrategy;
@@ -27,6 +29,8 @@ class NodeVisitorFactory
                 get_loaded_extensions(),
                 $container->get(LoggerInterface::class)
             ),
+            new ExtendsParseStrategy(),
+            new ImplementsParseStrategy(),
         ], $container->get(ErrorHandlerInterface::class));
     }
 }
