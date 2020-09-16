@@ -57,11 +57,11 @@ class CollectUsedSymbolsUseCase
         foreach ($symbols as $identifier => $symbol) {
             foreach ($rootNamespaces as $rootNamespace) {
                 if (strpos($symbol->getIdentifier(), $rootNamespace) === 0) {
-                    continue;
+                    continue 2;
                 }
-
-                yield $identifier => $symbol;
             }
+
+            yield $identifier => $symbol;
         }
     }
 }
