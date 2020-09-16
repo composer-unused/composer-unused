@@ -13,6 +13,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
 use function array_merge;
+use function file_exists;
 
 class UsedSymbolLoader implements SymbolLoaderInterface
 {
@@ -33,18 +34,21 @@ class UsedSymbolLoader implements SymbolLoaderInterface
     {
         $finder = new Finder();
 
-        /** @var SplFileInfo[] $files */
+        /** @var SplFileInfo[]|Finder $files */
         $files = $finder
             ->files()
             ->name('*.php')
             ->in($package->getBaseDir())
             ->ignoreDotFiles(true)
             ->ignoreVCS(true)
-            ->ignoreVCSIgnored(true)
             ->ignoreUnreadableDirs()
             ->exclude(
-                array_merge(['vendor', 'data'])
+                array_merge(['vendor'])
             );
+
+        if (file_exists($package->getBaseDir() . '/.gitignore')) {
+            $files = $files->ignoreVCSIgnored(true);
+        }
 
         yield from $this->fileSymbolProvider->provide($package->getTargetDir(), $files);
     }
