@@ -1,0 +1,12 @@
+{
+  "name": "foo/bar",
+  "description": "foobar",
+  "type": "library",
+  "minimum-stability": "stable",
+  "require": {
+      "php": "*"
+  },
+  "autoload": {
+    "classmap": ["src"]
+  }
+}
