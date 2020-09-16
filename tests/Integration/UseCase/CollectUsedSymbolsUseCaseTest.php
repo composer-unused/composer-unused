@@ -13,6 +13,7 @@ use Icanhazstring\Composer\Unused\Symbol\Provider\FileSymbolProvider;
 use Icanhazstring\Composer\Unused\Symbol\SymbolInterface;
 use Icanhazstring\Composer\Unused\UseCase\CollectUsedSymbolsUseCase;
 use PhpParser\ParserFactory;
+
 use function iterator_to_array;
 
 final class CollectUsedSymbolsUseCaseTest extends AbstractIntegrationTestCase
