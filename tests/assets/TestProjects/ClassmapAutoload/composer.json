@@ -1,12 +1,15 @@
 {
-  "name": "foo/bar",
-  "description": "foobar",
-  "type": "library",
-  "minimum-stability": "stable",
-  "require": {
-      "php": "*"
-  },
-  "autoload": {
-    "classmap": ["src"]
-  }
+    "name": "foo/bar",
+    "description": "foobar",
+    "type": "library",
+    "minimum-stability": "stable",
+    "require": {
+        "lulco/redis-proxy": "^0.4.2",
+        "nette/database": "^3.0"
+    },
+    "autoload": {
+        "classmap": [
+            "app"
+        ]
+    }
 }

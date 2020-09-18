@@ -1,0 +1,8 @@
+{
+    "name": "nette/database",
+    "autoload": {
+        "classmap": [
+            "src/"
+        ]
+    }
+}
