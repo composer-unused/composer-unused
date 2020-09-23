@@ -6,6 +6,7 @@ namespace Icanhazstring\Composer\Test\Unused\Unit\UseCase;
 
 use Composer\Package\RootPackage;
 use Generator;
+use Icanhazstring\Composer\Unused\Symbol\Loader\FileSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\Loader\UsedSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\Symbol;
 use Icanhazstring\Composer\Unused\Symbol\SymbolInterface;
@@ -36,8 +37,8 @@ class CollectUsedSymbolsUseCaseTest extends TestCase
         $rootPackage = new RootPackage('test/package', '0.1.0', '0.1.0');
         $rootPackage->setAutoload(['psr-4' => ['Test\\' => 'src']]);
 
-        $symbolLoader = $this->createMock(UsedSymbolLoader::class);
-        $symbolLoader->method('load')->willReturn(
+        $fileSymbolLoader = $this->createMock(FileSymbolLoader::class);
+        $fileSymbolLoader->method('load')->willReturn(
             $this->arrayAsGenerator([
                 new Symbol('Test\\Sub\\Classname'),
                 new Symbol('Test\\SecondClassname'),
@@ -45,7 +46,7 @@ class CollectUsedSymbolsUseCaseTest extends TestCase
             ])
         );
 
-        $useCase = new CollectUsedSymbolsUseCase($symbolLoader);
+        $useCase = new CollectUsedSymbolsUseCase($fileSymbolLoader);
         /** @var array<SymbolInterface> $symbols */
         $symbols = iterator_to_array($useCase->execute($rootPackage, dirname(__DIR__)));
 
