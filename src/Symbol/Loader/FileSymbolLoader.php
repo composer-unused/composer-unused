@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused\Symbol\Loader;
 
+use Composer\Util\Filesystem;
 use Generator;
 use Icanhazstring\Composer\Unused\Composer\PackageDecoratorInterface;
 use Icanhazstring\Composer\Unused\Exception\IOException;
@@ -12,16 +13,23 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
 use function array_map;
-use function sprintf;
+use function array_merge;
+use function preg_match;
 
 class FileSymbolLoader implements SymbolLoaderInterface
 {
     /** @var FileSymbolProvider */
     private $fileSymbolProvider;
+    /** @var array<string> */
+    private $autoloadTypes;
 
-    public function __construct(FileSymbolProvider $fileSymbolProvider)
+    /**
+     * @param array<string> $autoloadTypes
+     */
+    public function __construct(FileSymbolProvider $fileSymbolProvider, array $autoloadTypes)
     {
         $this->fileSymbolProvider = $fileSymbolProvider;
+        $this->autoloadTypes = $autoloadTypes;
     }
 
     /**
@@ -29,13 +37,17 @@ class FileSymbolLoader implements SymbolLoaderInterface
      */
     public function load(PackageDecoratorInterface $package): Generator
     {
-        $classmapPaths = $this->resolvePackageSourcePath(
-            $package,
-            $package->getAutoload()['classmap'] ?? []
-        );
-        $filePaths = $this->resolvePackageSourcePath(
-            $package,
-            $package->getAutoload()['files'] ?? []
+        $paths = [];
+
+        foreach ($this->autoloadTypes as $autoloadType) {
+            $paths[] = $this->resolvePackageSourcePath(
+                $package,
+                $package->getAutoload()[$autoloadType] ?? []
+            );
+        }
+
+        [$sourceFiles, $sourceFolders] = $this->partitionFilesAndFolders(
+            array_merge(...$paths)
         );
 
         $finder = new Finder();
@@ -44,8 +56,12 @@ class FileSymbolLoader implements SymbolLoaderInterface
         $files = $finder
             ->files()
             ->name('*.php')
-            ->in($classmapPaths)
-            ->append($filePaths);
+            ->in($sourceFolders)
+            ->append($sourceFiles)
+            ->ignoreDotFiles(true)
+            ->ignoreVCS(true)
+            ->ignoreUnreadableDirs()
+            ->exclude(['vendor']);
 
         yield from $this->fileSymbolProvider->provide($package->getTargetDir(), $files);
     }
@@ -56,13 +72,35 @@ class FileSymbolLoader implements SymbolLoaderInterface
      */
     private function resolvePackageSourcePath(PackageDecoratorInterface $package, array $paths): array
     {
-        return array_map(static function (string $path) use ($package) {
-            return sprintf(
-                '%s/vendor/%s/%s',
-                $package->getBaseDir(),
-                $package->getName(),
-                $path
-            );
+        $filesystem = new Filesystem();
+
+        return array_map(static function (string $path) use ($package, $filesystem) {
+            return $filesystem->normalizePath($package->getBaseDir() . '/' . $path);
         }, $paths);
+    }
+
+    /**
+     * @param array<string> $classmapPaths
+     * @return array<array<string>>
+     */
+    private function partitionFilesAndFolders(array $classmapPaths): array
+    {
+        $files = [];
+        $folders = [];
+
+        foreach ($classmapPaths as $path) {
+            if ($this->isFilePath($path)) {
+                $files[] = $path;
+            } else {
+                $folders[] = $path;
+            }
+        }
+
+        return [$files, $folders];
+    }
+
+    private function isFilePath(string $path): bool
+    {
+        return (bool)preg_match('/\..*$/', $path);
     }
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Test\Unused\Integration\Symbol\Loader;
 
+use ClassmapAutoload\Addon\Parsed\Lib\ParsedClass;
+use ClassmapAutoload\Redis\MyRedis;
 use Composer\Package\RootPackageInterface;
 use Generator;
 use Icanhazstring\Composer\Test\Unused\Integration\AbstractIntegrationTestCase;
@@ -13,7 +15,6 @@ use Icanhazstring\Composer\Unused\File\FileContentProvider;
 use Icanhazstring\Composer\Unused\Parser\PHP\ForeignSymbolCollector;
 use Icanhazstring\Composer\Unused\Parser\PHP\SymbolNameParser;
 use Icanhazstring\Composer\Unused\Symbol\Loader\FileSymbolLoader;
-use Icanhazstring\Composer\Unused\Symbol\Loader\UsedSymbolLoader;
 use Icanhazstring\Composer\Unused\Symbol\Provider\FileSymbolProvider;
 use Icanhazstring\Composer\Unused\Symbol\SymbolInterface;
 use PhpParser\ParserFactory;
@@ -37,9 +38,12 @@ class ClassmapAutoloadTest extends AbstractIntegrationTestCase
         );
 
         /** @var array<SymbolInterface> $symbols */
-        $symbols = iterator_to_array($this->collectUsedSymbols($package));
+        $symbols = iterator_to_array($this->collectSymbols($package));
 
-        self::assertCount(1, $symbols);
+        self::assertCount(3, $symbols);
+        self::assertArrayHasKey('ClassmapAutoload\Addon\Parsed\Lib\ParsedClass', $symbols);
+        self::assertArrayHasKey('ClassmapAutoload\ParsedClass', $symbols);
+        self::assertArrayHasKey('ClassmapAutoload\Redis\MyRedis', $symbols);
     }
 
     /**
@@ -58,11 +62,11 @@ class ClassmapAutoloadTest extends AbstractIntegrationTestCase
 
             /** @phpstan-ignore-next-line */
             $package = PackageDecorator::withBaseDir(
-                self::BASE_DIR,
+                self::BASE_DIR . '/vendor/' . $require->getTarget(),
                 $composerPackage
             );
 
-            $requiredSymbols[] = iterator_to_array($this->collectRequiredSymbols($package));
+            $requiredSymbols[] = iterator_to_array($this->collectSymbols($package));
         }
 
         $requiredSymbols = array_merge(...$requiredSymbols);
@@ -72,23 +76,7 @@ class ClassmapAutoloadTest extends AbstractIntegrationTestCase
     /**
      * @return Generator<SymbolInterface>
      */
-    private function collectUsedSymbols(PackageDecoratorInterface $package): Generator
-    {
-        return (new UsedSymbolLoader(
-            new FileSymbolProvider(
-                new SymbolNameParser(
-                    (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
-                    new ForeignSymbolCollector()
-                ),
-                new FileContentProvider()
-            )
-        ))->load($package);
-    }
-
-    /**
-     * @return Generator<SymbolInterface>
-     */
-    private function collectRequiredSymbols(PackageDecoratorInterface $package): Generator
+    private function collectSymbols(PackageDecoratorInterface $package): Generator
     {
         return (new FileSymbolLoader(
             new FileSymbolProvider(
@@ -97,7 +85,8 @@ class ClassmapAutoloadTest extends AbstractIntegrationTestCase
                     new ForeignSymbolCollector()
                 ),
                 new FileContentProvider()
-            )
+            ),
+            ['classmap']
         ))->load($package);
     }
 
