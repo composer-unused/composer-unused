@@ -43,7 +43,8 @@ class FileSymbolLoaderTest extends AbstractIntegrationTestCase
                     new ForeignSymbolCollector()
                 ),
                 new FileContentProvider()
-            )
+            ),
+            ['files']
         );
     }
 }

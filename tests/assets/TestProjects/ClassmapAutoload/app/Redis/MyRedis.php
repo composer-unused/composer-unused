@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ClassmapAutoload;
+namespace ClassmapAutoload\Redis;
 
 use RedisProxy\RedisProxy;
 
