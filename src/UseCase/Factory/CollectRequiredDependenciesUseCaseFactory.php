@@ -35,7 +35,7 @@ class CollectRequiredDependenciesUseCaseFactory
             [
                 $container->get(ExtensionSymbolLoader::class),
                 $container->get(PsrSymbolLoader::class),
-                new FileSymbolLoader($fileSymbolProvider)
+                new FileSymbolLoader($fileSymbolProvider, ['classmap', 'files'])
             ]
         );
 

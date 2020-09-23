@@ -31,6 +31,7 @@ use Throwable;
 use function array_merge;
 use function dirname;
 use function implode;
+use function iterator_to_array;
 use function sprintf;
 
 class UnusedCommand extends BaseCommand
@@ -326,10 +327,10 @@ class UnusedCommand extends BaseCommand
         $composerBaseDir = dirname($composer->getConfig()->getConfigSource()->getName());
         $rootPackage = $composer->getPackage();
 
-        $usedSymbols = $this->collectUsedSymbolsUseCase->execute(
+        $usedSymbols = iterator_to_array($this->collectUsedSymbolsUseCase->execute(
             $rootPackage,
             $composerBaseDir
-        );
+        ));
 
         /** @var DependencyCollection<RequiredDependency> $requiredDependencyCollection */
         $requiredDependencyCollection = $this->collectRequiredDependenciesUseCase->execute(

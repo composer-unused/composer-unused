@@ -52,7 +52,7 @@ class CollectRequiredDependenciesUseCase
             }
 
             $composerPackage = PackageDecorator::withBaseDir(
-                $composerBaseDir,
+                $composerBaseDir . '/vendor/' . $require->getTarget(),
                 $composerPackage
             );
 

@@ -7,7 +7,7 @@ namespace Icanhazstring\Composer\Unused\UseCase;
 use Composer\Package\RootPackageInterface;
 use Generator;
 use Icanhazstring\Composer\Unused\Composer\PackageDecorator;
-use Icanhazstring\Composer\Unused\Symbol\Loader\UsedSymbolLoader;
+use Icanhazstring\Composer\Unused\Symbol\Loader\SymbolLoaderInterface;
 use Icanhazstring\Composer\Unused\Symbol\SymbolInterface;
 
 use function array_keys;
@@ -16,10 +16,10 @@ use function strpos;
 
 class CollectUsedSymbolsUseCase
 {
-    /** @var UsedSymbolLoader */
+    /** @var SymbolLoaderInterface */
     private $usedSymbolLoader;
 
-    public function __construct(UsedSymbolLoader $usedSymbolLoader)
+    public function __construct(SymbolLoaderInterface $usedSymbolLoader)
     {
         $this->usedSymbolLoader = $usedSymbolLoader;
     }

@@ -30,6 +30,6 @@ class FileHandler implements LogHandlerInterface
             self::$fileHandle = $handle;
         }
 
-        return fwrite(self::$fileHandle, json_encode($record) . PHP_EOL) !== false;
+        return fwrite(self::$fileHandle, json_encode($record, JSON_THROW_ON_ERROR) . PHP_EOL) !== false;
     }
 }

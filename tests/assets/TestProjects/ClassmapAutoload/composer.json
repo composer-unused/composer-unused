@@ -1,5 +1,5 @@
 {
-    "name": "foo/bar",
+    "name": "classmap/autoload",
     "description": "foobar",
     "type": "library",
     "minimum-stability": "stable",
@@ -9,7 +9,9 @@
     },
     "autoload": {
         "classmap": [
-            "app"
+            "app",
+            "src/Addon/*/Lib/",
+            "ParsedClass.php"
         ]
     }
 }

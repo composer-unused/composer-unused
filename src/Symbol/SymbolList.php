@@ -7,6 +7,8 @@ namespace Icanhazstring\Composer\Unused\Symbol;
 use Generator;
 use Traversable;
 
+use function iterator_to_array;
+
 final class SymbolList implements SymbolListInterface
 {
     /** @var array<SymbolInterface> */

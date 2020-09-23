@@ -12,8 +12,6 @@ use Icanhazstring\Composer\Unused\Composer\PackageDecorator;
 use Icanhazstring\Composer\Unused\Composer\PackageDecoratorInterface;
 use PHPUnit\Framework\TestCase;
 
-use function realpath;
-
 class AbstractIntegrationTestCase extends TestCase
 {
     protected function getComposer(string $cwd): Composer
@@ -37,7 +35,9 @@ class AbstractIntegrationTestCase extends TestCase
         );
 
         return PackageDecorator::withBaseDir(
-            dirname($composer->getConfig()->getConfigSource()->getName()),
+            dirname($composer->getConfig()->getConfigSource()->getName())
+            . '/vendor/'
+            . $testDependency->getTarget(),
             $package
         );
     }
