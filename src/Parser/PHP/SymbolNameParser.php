@@ -40,5 +40,6 @@ final class SymbolNameParser implements SymbolNameParserInterface
         $this->traverser->traverse($nodes);
 
         yield from $this->visitor->getSymbolNames();
+        $this->visitor->reset();
     }
 }

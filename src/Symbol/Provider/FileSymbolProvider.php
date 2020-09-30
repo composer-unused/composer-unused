@@ -33,10 +33,10 @@ class FileSymbolProvider
      * @return Generator<string, SymbolInterface>
      * @throws IOException
      */
-    public function provide(?string $dir, iterable $files): Generator
+    public function provide(iterable $files): Generator
     {
         foreach ($files as $file) {
-            $content = $this->fileContentProvider->getContent($dir, $file);
+            $content = $this->fileContentProvider->getContent($file);
 
             foreach ($this->parser->parseSymbolNames($content) as $symbolName) {
                 yield $symbolName => new Symbol($symbolName);

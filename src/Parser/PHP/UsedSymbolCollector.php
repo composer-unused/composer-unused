@@ -49,4 +49,9 @@ class UsedSymbolCollector extends NodeVisitorAbstract implements SymbolCollector
     {
         return array_unique($this->symbols);
     }
+
+    public function reset(): void
+    {
+        $this->symbols = [];
+    }
 }

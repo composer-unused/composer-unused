@@ -12,4 +12,9 @@ interface SymbolCollectorInterface extends NodeVisitor
      * @return array<string>
      */
     public function getSymbolNames(): array;
+
+    /**
+     * Reset all previously found symbols
+     */
+    public function reset(): void;
 }
