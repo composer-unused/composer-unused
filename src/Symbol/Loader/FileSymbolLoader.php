@@ -63,7 +63,7 @@ class FileSymbolLoader implements SymbolLoaderInterface
             ->ignoreUnreadableDirs()
             ->exclude(['vendor']);
 
-        yield from $this->fileSymbolProvider->provide($package->getTargetDir(), $files);
+        yield from $this->fileSymbolProvider->provide($files);
     }
 
     /**
