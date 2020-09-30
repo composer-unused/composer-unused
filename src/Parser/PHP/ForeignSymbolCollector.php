@@ -41,15 +41,23 @@ class ForeignSymbolCollector extends NodeVisitorAbstract implements SymbolCollec
 
         if ($node instanceof Node\Stmt\Function_) {
             $this->functions[] = $this->namespace . $node->name;
-            return null;
+            return NodeTraverser::DONT_TRAVERSE_CHILDREN;
         }
 
         if ($node instanceof Node\Const_) {
             $this->constants[] = $this->namespace . $node->name;
-            return null;
+            return NodeTraverser::DONT_TRAVERSE_CHILDREN;
         }
 
         return null;
+    }
+
+    public function reset(): void
+    {
+        $this->classes = [];
+        $this->constants = [];
+        $this->functions = [];
+        $this->namespace = '';
     }
 
     public function getSymbolNames(): array

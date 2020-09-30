@@ -12,12 +12,12 @@ class FileContentProvider
     /**
      * @throws IOException
      */
-    public function getContent(?string $baseDir, SplFileInfo $file): string
+    public function getContent(SplFileInfo $file): string
     {
-        $contents = file_get_contents($baseDir . $file->getPathname());
+        $contents = file_get_contents($file->getPathname());
 
         if ($contents === false) {
-            throw IOException::unableToOpenHandle($baseDir . $file->getPathname());
+            throw IOException::unableToOpenHandle($file->getPathname());
         }
 
         return $contents;
