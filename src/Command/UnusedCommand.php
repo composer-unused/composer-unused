@@ -340,6 +340,7 @@ class UnusedCommand extends BaseCommand
         );
 
         foreach ($usedSymbols as $usedSymbol) {
+            /** @var RequiredDependency $requiredDependency */
             foreach ($requiredDependencyCollection as $requiredDependency) {
                 if ($requiredDependency->inState($requiredDependency::STATE_USED)) {
                     continue;
