@@ -8,6 +8,7 @@ use Icanhazstring\Composer\Unused\Parser\PHP\ForeignSymbolCollector;
 use Icanhazstring\Composer\Unused\Parser\PHP\SymbolNameParser;
 use PhpParser\ParserFactory;
 use PHPUnit\Framework\TestCase;
+
 use function iterator_to_array;
 
 final class SymbolNameParserTest extends TestCase
