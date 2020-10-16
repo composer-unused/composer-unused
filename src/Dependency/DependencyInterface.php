@@ -19,4 +19,6 @@ interface DependencyInterface
     public function provides(SymbolInterface $symbol): bool;
 
     public function requires(DependencyInterface $dependency): bool;
+
+    public function suggests(DependencyInterface $dependency): bool;
 }

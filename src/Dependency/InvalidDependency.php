@@ -44,4 +44,9 @@ final class InvalidDependency implements DependencyInterface
     {
         return false;
     }
+
+    public function suggests(DependencyInterface $dependency): bool
+    {
+        return false;
+    }
 }
