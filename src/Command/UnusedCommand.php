@@ -348,6 +348,19 @@ class UnusedCommand extends BaseCommand
 
                 if ($requiredDependency->provides($usedSymbol)) {
                     $requiredDependency->markUsed();
+                    continue;
+                }
+
+                /** @var RequiredDependency $secondRequiredDependency */
+                foreach ($requiredDependencyCollection as $secondRequiredDependency) {
+                    if ($requiredDependency === $secondRequiredDependency) {
+                        continue;
+                    }
+
+                    if ($secondRequiredDependency->requires($requiredDependency)) {
+                        // TODO add "required by" in output
+                        $requiredDependency->markUsed();
+                    }
                 }
             }
         }

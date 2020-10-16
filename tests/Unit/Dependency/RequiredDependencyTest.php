@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Test\Unused\Unit\Dependency;
 
+use Composer\Package\Link;
+use Composer\Package\Package;
 use Composer\Package\PackageInterface;
+use Composer\Semver\Constraint\ConstraintInterface;
 use Icanhazstring\Composer\Unused\Dependency\Dependency;
-use Icanhazstring\Composer\Unused\Dependency\DependencyInterface;
 use Icanhazstring\Composer\Unused\Dependency\RequiredDependency;
 use Icanhazstring\Composer\Unused\Symbol\Symbol;
 use Icanhazstring\Composer\Unused\Symbol\SymbolList;
@@ -39,5 +41,25 @@ class RequiredDependencyTest extends TestCase
         $requiredDependency = new RequiredDependency($package, (new SymbolList())->add($symbol));
 
         self::assertTrue($requiredDependency->provides(new Symbol('test')));
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldSuggestDependency(): void
+    {
+        $rootRequirement = new RequiredDependency(
+            new Package('root/requirement', '1.0.0', '1.0.0'),
+            new SymbolList()
+        );
+
+        $requiredPackage = new Package('required/pacakge', '1.0.0', '1.0.0');
+        $requiredPackage->setRequires([
+            new Link('', 'root/requirement', $this->createStub(ConstraintInterface::class))
+        ]);
+
+        $requiredDependency = new RequiredDependency($requiredPackage, new SymbolList());
+
+        self::assertTrue($requiredDependency->requires($rootRequirement));
     }
 }

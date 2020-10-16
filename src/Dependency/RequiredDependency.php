@@ -42,4 +42,15 @@ final class RequiredDependency implements DependencyInterface
     {
         return $this->symbols->contains($symbol);
     }
+
+    public function requires(DependencyInterface $dependency): bool
+    {
+        foreach ($this->package->getRequires() as $require) {
+            if ($require->getTarget() === $dependency->getName()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
