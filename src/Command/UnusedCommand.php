@@ -360,6 +360,13 @@ class UnusedCommand extends BaseCommand
                     if ($secondRequiredDependency->requires($requiredDependency)) {
                         // TODO add "required by" in output
                         $requiredDependency->markUsed();
+                        continue 2;
+                    }
+
+                    if ($secondRequiredDependency->suggests($requiredDependency)) {
+                        // TODO add "suggested by" in output
+                        $requiredDependency->markUsed();
+                        continue 2;
                     }
                 }
             }
