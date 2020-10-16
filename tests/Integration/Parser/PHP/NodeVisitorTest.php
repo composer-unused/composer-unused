@@ -10,6 +10,7 @@ use Icanhazstring\Composer\Unused\Parser\PHP\NodeVisitor;
 use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\ClassConstStrategy;
 use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\ExtendsParseStrategy;
 use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\ImplementsParseStrategy;
+use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\InstanceofStrategy;
 use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\NewParseStrategy;
 use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\ParseStrategyInterface;
 use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\PhpExtensionStrategy;
@@ -177,7 +178,15 @@ class NodeVisitorTest extends TestCase
                 ],
                 'inputFile' => ASSET_DIR . '/TestFiles/ClassImplements.php',
                 'strategy' => new ImplementsParseStrategy()
-            ]
+            ],
+            'Instanceof' => [
+                'expectedUseNamespaces' => [
+                    'Foo\Bar\Qux',
+                    'Foo\Bar\Quz',
+                ],
+                'inputFile' => ASSET_DIR . '/TestFiles/Instanceof.php',
+                'strategy' => new InstanceofStrategy(),
+            ],
         ];
     }
 

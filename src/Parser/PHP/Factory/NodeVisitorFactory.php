@@ -9,6 +9,7 @@ use Icanhazstring\Composer\Unused\Parser\PHP\NodeVisitor;
 use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\ClassConstStrategy;
 use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\ExtendsParseStrategy;
 use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\ImplementsParseStrategy;
+use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\InstanceofStrategy;
 use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\NewParseStrategy;
 use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\PhpExtensionStrategy;
 use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\StaticParseStrategy;
@@ -31,6 +32,7 @@ class NodeVisitorFactory
             ),
             new ExtendsParseStrategy(),
             new ImplementsParseStrategy(),
+            new InstanceofStrategy(),
         ], $container->get(ErrorHandlerInterface::class));
     }
 }
