@@ -17,4 +17,6 @@ interface DependencyInterface
     public function inState(string $state): bool;
 
     public function provides(SymbolInterface $symbol): bool;
+
+    public function requires(DependencyInterface $dependency): bool;
 }
