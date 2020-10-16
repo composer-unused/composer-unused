@@ -8,6 +8,8 @@ use Composer\Package\PackageInterface;
 use Icanhazstring\Composer\Unused\Symbol\SymbolInterface;
 use Icanhazstring\Composer\Unused\Symbol\SymbolListInterface;
 
+use function array_key_exists;
+
 final class RequiredDependency implements DependencyInterface
 {
     /** @var string */
@@ -52,5 +54,10 @@ final class RequiredDependency implements DependencyInterface
         }
 
         return false;
+    }
+
+    public function suggests(DependencyInterface $dependency): bool
+    {
+        return array_key_exists($dependency->getName(), $this->package->getSuggests());
     }
 }

@@ -19,7 +19,6 @@
     "require": {
         "php": ">=7.3",
         "ext-json": "*",
-        "ext-tokenizer": "*",
         "composer-plugin-api": "^1.1 || ^2.0",
         "composer/composer": "^1.1 || ^2.0@dev",
         "nikic/php-parser": "^4.2",
