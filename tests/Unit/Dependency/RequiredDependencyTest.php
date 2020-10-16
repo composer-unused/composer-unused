@@ -46,7 +46,7 @@ class RequiredDependencyTest extends TestCase
     /**
      * @test
      */
-    public function itShouldSuggestDependency(): void
+    public function itShouldRequireDependency(): void
     {
         $rootRequirement = new RequiredDependency(
             new Package('root/requirement', '1.0.0', '1.0.0'),
@@ -61,5 +61,23 @@ class RequiredDependencyTest extends TestCase
         $requiredDependency = new RequiredDependency($requiredPackage, new SymbolList());
 
         self::assertTrue($requiredDependency->requires($rootRequirement));
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldSuggestDependency(): void
+    {
+        $rootRequirement = new RequiredDependency(
+            new Package('root/requirement', '1.0.0', '1.0.0'),
+            new SymbolList()
+        );
+
+        $requiredPackage = new Package('required/pacakge', '1.0.0', '1.0.0');
+        $requiredPackage->setSuggests(['root/requirement' => '*']);
+
+        $requiredDependency = new RequiredDependency($requiredPackage, new SymbolList());
+
+        self::assertTrue($requiredDependency->suggests($rootRequirement));
     }
 }
