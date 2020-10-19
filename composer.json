@@ -41,7 +41,7 @@
         "sort-packages": true
     },
     "extra": {
-        "class": "Icanhazstring\\Composer\\Unused\\UnusedPlugin",
+        "class": "Icanhazstring\\Composer\\Unused\\UnusedPlugin"
     },
     "autoload": {
         "psr-4": {
