@@ -13,6 +13,7 @@ interface ParseStrategyInterface
     /**
      * @param Node $node
      * @return string[]
+     * @phpstan-return array<class-string>
      */
     public function extractNamespaces(Node $node): array;
 }
