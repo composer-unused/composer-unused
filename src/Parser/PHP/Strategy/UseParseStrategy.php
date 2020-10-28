@@ -19,6 +19,7 @@ class UseParseStrategy implements ParseStrategyInterface
     /**
      * @param Node $node
      * @return array<string>
+     * @phpstan-return array<class-string>
      */
     public function extractNamespaces(Node $node): array
     {
