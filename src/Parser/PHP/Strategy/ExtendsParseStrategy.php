@@ -25,6 +25,7 @@ class ExtendsParseStrategy implements ParseStrategyInterface
     /**
      * @param Node&Class_ $node
      * @return array<string>
+     * @phpstan-return array<class-string>
      */
     public function extractNamespaces(Node $node): array
     {
