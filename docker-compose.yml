@@ -7,9 +7,6 @@ services:
     volumes:
       - .:/docker:rw
     tty: true
-    environment:
-      - PHP_IDE_CONFIG=serverName=php-dev
-      - XDEBUG_CONFIG="idekey=PHPSTORM remote_host=192.168.1.102 remote_port=9001"
 
   php7.4:
     build: .docker/php7.4
@@ -17,6 +14,10 @@ services:
     volumes:
       - .:/docker:rw
     tty: true
-    environment:
-      - PHP_IDE_CONFIG=serverName=php-dev
-      - XDEBUG_CONFIG="idekey=PHPSTORM remote_host=192.168.1.102 remote_port=9001"
+
+  php8.0:
+    build: .docker/php8.0
+    container_name: composer-unused-8.0
+    volumes:
+      - .:/docker:rw
+    tty: true

@@ -1,21 +1,19 @@
-name: validate-code
-
+name: CI Pipeline
 on:
   push:
     branches:
-      - main
+      - "[0-9]+.[0-9]+.x"
   pull_request:
-    branches:
-      - main
 
 jobs:
-  run:
-    runs-on: ${{ matrix.os }}
+  coding-standard:
+    name: "Coding Standard"
+    runs-on: "${{ matrix.os }}"
     strategy:
+      fail-fast: true
       matrix:
-        os: [ubuntu-latest]
-        php: ['7.3', '7.4']
-    name: PHP ${{ matrix.php }} Test on ${{ matrix.os }}
+        os: ["ubuntu-latest"]
+        php: ["7.4"]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -24,17 +22,95 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          tools: composer, pecl
+          tools: composer:v2, pecl
           extensions: ds
 
-      - name: Validate composer.json and composer.lock
-        run: composer validate
+      - name: Install dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Check codestyle
+        run: vendor/bin/phpcs -s
+
+  static-analysis:
+    name: "Static Analysis"
+    runs-on: "${{ matrix.os }}"
+    strategy:
+      fail-fast: true
+      matrix:
+        php: ["7.4"]
+        os: ["ubuntu-latest"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v2, pecl
+          extensions: ds
+
+      - name: Install dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Analyze code with static-analysis
+        run: vendor/bin/phpstan analyse --no-progress
+
+  unit-tests:
+    name: "Unit Tests"
+    runs-on: "${{ matrix.os }}"
+    continue-on-error: "${{ matrix.experimental }}"
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ["7.3", "7.4", "8.0"]
+        os: ["ubuntu-latest"]
+        experimental: [false]
+        include:
+          - php: "8.0"
+            composer-options: "--ignore-platform-req=php"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v2, pecl
+          extensions: ds
+
+      - name: Install dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader ${{ matrix.composer-options }}
+
+      - name: Execute tests
+        run: vendor/bin/phpunit --colors=always --coverage-text
+
+  composer-unused:
+    name: "Composer Unused"
+    runs-on: "${{ matrix.os }}"
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ "7.3", "7.4", "8.0" ]
+        os: [ "ubuntu-latest" ]
+        include:
+          - php: "8.0"
+            composer-options: "--ignore-platform-req=php"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v2, pecl
+          extensions: ds
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
-
-      - name: Code check
-        run: composer check
 
       - name: Check unused dependencies
         run: bin/composer-unused --excludeDir=data

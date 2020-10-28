@@ -1,5 +1,5 @@
 includes:
-	- vendor/jangregor/phpstan-prophecy/src/extension.neon
+	- vendor/jangregor/phpstan-prophecy/extension.neon
 
 parameters:
     bootstrapFiles:

@@ -1,4 +1,4 @@
-FROM php:7.3-alpine
+FROM php:8.0.0RC2-alpine
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/
 RUN install-php-extensions ds xdebug opcache
