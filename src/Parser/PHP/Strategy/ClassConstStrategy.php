@@ -25,6 +25,7 @@ class ClassConstStrategy implements ParseStrategyInterface
     /**
      * @param Node&ClassConstFetch $node
      * @return array<string>
+     * @phpstan-return array<class-string>
      */
     public function extractNamespaces(Node $node): array
     {
