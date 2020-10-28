@@ -1,8 +1,17 @@
 # Changelog
 
-## [Unreleased]
+## [Unreleased] - TBA
+### Added
+
+### Changed
+
+### Removed
+
+## [0.7.5]. 2020-10-28
 ### Added
 - Added an `InstanceofStrategy` which detects usages in `instanceof` expressions [#100](https://github.com/composer-unused/composer-unused/pull/100)
+
+## [0.7.4] - 2020-09-15
 ### Fixed
 - Fixed an issue where `ext-ds` classes where not recognized as used [#88](https://github.com/composer-unused/composer-unused/pull/88)
 - Fixed an issue where `extends` and `implements` of FQN was not markes as used [#90](https://github.com/composer-unused/composer-unused/pull/90)
