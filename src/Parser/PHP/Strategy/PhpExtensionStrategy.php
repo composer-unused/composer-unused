@@ -74,7 +74,6 @@ class PhpExtensionStrategy implements ParseStrategyInterface
     }
 
     /**
-     * @param Node&StaticCall $node
      * @return array<string>
      * @phpstan-return array<class-string>
      */
