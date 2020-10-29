@@ -1,4 +1,4 @@
-CONTAINER=composer-unused-8.0
+CONTAINER=composer-unused-7.4
 
 up:
 	docker-compose up -d
@@ -25,6 +25,9 @@ cs:
 
 csfix:
 	docker exec -it $(CONTAINER) vendor/bin/phpcbf
+
+box:
+	docker exec -it $(CONTAINER) php box.phar compile
 
 ssh:
 	docker exec -it $(CONTAINER) /bin/bash
