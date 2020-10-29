@@ -20,7 +20,7 @@
         "php": ">=7.3 || ^8.0",
         "ext-json": "*",
         "composer-plugin-api": "^1.1 || ^2.0",
-        "composer/composer": "^1.1 || ^2.0@dev",
+        "composer/composer": "^2.0.3",
         "nikic/php-parser": "^4.2",
         "psr/container": "^1.0",
         "psr/log": "^1.1",
