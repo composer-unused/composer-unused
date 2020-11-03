@@ -54,6 +54,9 @@
             "Icanhazstring\\Composer\\Test\\Unused\\Unit\\": "tests/Unit"
         }
     },
+    "bin": [
+        "bin/composer-unused"
+    ],
     "scripts": {
         "analyse": "phpstan analyse --no-progress",
         "check": [
@@ -67,16 +70,23 @@
     },
     "scripts-descriptions": {
         "analyse": "Use \"phpstan\" to the analyse static code. See phpstan.neon",
+        "check": "Check the coding covention and run the tests",
         "cs-check": "Use \"phpcs\" to check the coding convention. See phpcs.xml",
         "cs-fix": "Use \"phpcbf\" to fix the coding convention. See phpcs.xml",
-        "test": "Use \"phpunit\" to run the tests. See phpunit.xml",
-        "check": "Check the coding covention and run the tests"
+        "test": "Use \"phpunit\" to run the tests. See phpunit.xml"
     },
-    "bin": [
-        "bin/composer-unused"
-    ],
     "support": {
         "issues": "https://github.com/composer-unused/composer-unused/issues",
         "source": "https://github.com/composer-unused/composer-unused"
-    }
+    },
+    "funding": [
+        {
+            "type": "other",
+            "url": "https://paypal.me/icanhazstring"
+        },
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/icanhazstring"
+        }
+    ]
 }
