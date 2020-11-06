@@ -4,11 +4,35 @@ Thank you for considering contributing to this package!
 
 ## Steps to contribute
 
+### Installation
+
 1. Fork the repository
-2. `git clone yourname/composer-unsed`
-3. Make your changes
-4. Run `composer check`
-5. Create your Pull-Request
+2. `git clone yourname/composer-unused`
+3. Download the [ext-ds extension](https://pecl.php.net/package/ds/) and make sure it is enabled in php.ini using the [installation instructions](https://github.com/php-ds/ext-ds)
+    
+    a. If you are on Windows, place the DLL file in the php/ext folder in your *ampp directory
+
+4. Download the [ext-zend-opcache extension](https://pecl.php.net/package/ZendOpcache) tgz file and compile it and make sure it is enabled in php.ini using the [installation instructions](https://github.com/zendtech/ZendOptimizerPlus)
+    
+    - Windows users
+
+        1. Download a [pre-compiled DLL file](https://windows.php.net/downloads/pecl/releases/opcache/) 
+
+        2. Place the DLL file in the php/ext folder in your *ampp directory
+        
+        3. Run the following lines:
+        ```
+        zend_extension=php_opcache.dll
+        opcache.enable=On
+        opcache.enable_cli=On
+        ```
+5. Run `composer install`
+
+### Submitting Changes
+
+6. Make your changes
+7. Run `composer check`
+8. Create your Pull-Request
 
 ## Check your changes against local projects
 
