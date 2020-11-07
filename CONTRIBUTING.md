@@ -10,7 +10,7 @@ Thank you for considering contributing to this package!
 2. `git clone yourname/composer-unused`
 3. Download the [ext-ds extension](https://pecl.php.net/package/ds/) and make sure it is enabled in php.ini using the [installation instructions](https://github.com/php-ds/ext-ds)
     
-    a. If you are on Windows, place the DLL file in the php/ext folder in your *ampp directory
+   - Windows users - Place the DLL file in the php/ext folder in your *ampp directory
 
 4. Download the [ext-zend-opcache extension](https://pecl.php.net/package/ZendOpcache) tgz file and compile it and make sure it is enabled in php.ini using the [installation instructions](https://github.com/zendtech/ZendOptimizerPlus)
     
@@ -27,6 +27,14 @@ Thank you for considering contributing to this package!
         opcache.enable_cli=On
         ```
 5. Run `composer install`
+
+### Setting up Docker
+
+1. Run `docker-composer -d`
+2. Use the corresponding created containers
+    - composer-unused-7.3
+    - composer-unused-7.4
+    - composer-unused-8.0
 
 ### Submitting Changes
 
