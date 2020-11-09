@@ -83,6 +83,13 @@ class UnusedCommand extends BaseCommand
             InputOption::VALUE_NONE,
             'Show no progress bar'
         );
+
+        $this->addOption(
+            'interactive',
+            null,
+            InputOption::VALUE_OPTIONAL,
+            "Choose between remove, skip, and ignore"
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
