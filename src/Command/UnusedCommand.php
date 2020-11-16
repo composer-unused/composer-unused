@@ -205,8 +205,8 @@ class UnusedCommand extends BaseCommand
                 )
             );
         }
-        
-        // If there is at least one unused package 
+
+        // If there is at least one unused package
         if (count($unusedPackages) > 0 && !$input->getOption('ignore-exit-code')) {
             if ($input->getOption("interactive")) {
                 $removeArray = [];
@@ -220,21 +220,23 @@ class UnusedCommand extends BaseCommand
 
                     $helper = $this->getHelper("question");
                     $action = $helper->ask($input, $output, $question);
-                    
+
                     switch ($action) {
                         case "remove":
                             array_push($removeArray, $unusedPackage);
-                        break;
+                            break;
                         case "skip":
-                        break;
+                            break;
                         case "ignore":
-                            
-                        break;
+                            // TODO Implement ignore
+                            break;
                         default:
                             $output->writeLn("That action is invalid");
-                        break;
+                            break;
                     }
                 }
+
+                $application = $this->getApplication();
             }
             return 1;
         }
