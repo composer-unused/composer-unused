@@ -19,6 +19,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Throwable;
 
@@ -88,7 +89,8 @@ class UnusedCommand extends BaseCommand
             'interactive',
             null,
             InputOption::VALUE_OPTIONAL,
-            "Choose between remove, skip, and ignore"
+            "Choose between remove, skip, and ignore",
+            false
         );
     }
 
@@ -203,8 +205,37 @@ class UnusedCommand extends BaseCommand
                 )
             );
         }
-
+        
+        // If there is at least one unused package 
         if (count($unusedPackages) > 0 && !$input->getOption('ignore-exit-code')) {
+            if ($input->getOption("interactive")) {
+                $removeArray = [];
+
+                foreach ($unusedPackages as $unusedPackage) {
+                    $question = new ChoiceQuestion(
+                        "Would you like to remove, skip, or ignore this package? (defaults to skip)",
+                        ["remove", "skip", "ignore"],
+                        1
+                    );
+
+                    $helper = $this->getHelper("question");
+                    $action = $helper->ask($input, $output, $question);
+                    
+                    switch ($action) {
+                        case "remove":
+                            array_push($removeArray, $unusedPackage);
+                        break;
+                        case "skip":
+                        break;
+                        case "ignore":
+                            
+                        break;
+                        default:
+                            $output->writeLn("That action is invalid");
+                        break;
+                    }
+                }
+            }
             return 1;
         }
 
