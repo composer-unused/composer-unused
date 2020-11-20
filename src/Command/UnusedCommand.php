@@ -16,8 +16,11 @@ use Icanhazstring\Composer\Unused\Subject\PackageSubject;
 use Icanhazstring\Composer\Unused\Subject\UsageInterface;
 use Icanhazstring\Composer\Unused\UnusedPlugin;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -211,9 +214,12 @@ class UnusedCommand extends BaseCommand
             if ($input->getOption("interactive")) {
                 $removeArray = [];
 
+                // Prompt user to remove, skip, or ignore each package
                 foreach ($unusedPackages as $unusedPackage) {
+                    $packageName = $unusedPackage->getName();
+
                     $question = new ChoiceQuestion(
-                        "Would you like to remove, skip, or ignore this package? (defaults to skip)",
+                        "Would you like to remove, skip, or ignore package $packageName? (defaults to skip)",
                         ["remove", "skip", "ignore"],
                         1
                     );
@@ -225,18 +231,37 @@ class UnusedCommand extends BaseCommand
                         case "remove":
                             array_push($removeArray, $unusedPackage);
                             break;
-                        case "skip":
-                            break;
                         case "ignore":
-                            // TODO Implement ignore
+                            // Add package name to unused property of extras directive in composer.json
+                            $composerJsonContents = file_get_contents("/composer.json");
+                            $composerJsonContents = json_decode($composerJsonContents, true);
+                            $extraDirectiveUnusedArr = $composerJsonContents["extra"]["unused"];
+                            if (in_array($packageName, $extraDirectiveUnusedArr)) {
+                                array_push(
+                                    $extraDirectiveUnusedArr,
+                                    $packageName
+                                );
+                            }
+                            $newContents = json_encode($composerJsonContents);
+                            file_put_contents('/composer.json', $newContents);
                             break;
-                        default:
-                            $output->writeLn("That action is invalid");
+                        default: // For skip and anything else, continue loop
                             break;
                     }
                 }
 
+                // Run composer remove on all the packages the user specified to remove
                 $application = $this->getApplication();
+                $arguments = [
+                    "packages" => $removeArray
+                ];
+
+                $command = $application->get("remove");
+
+                $command->run(
+                    new ArrayInput($arguments),
+                    new ConsoleOutput()
+                );
             }
             return 1;
         }
