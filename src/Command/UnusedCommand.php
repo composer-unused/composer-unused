@@ -20,7 +20,6 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -91,9 +90,8 @@ class UnusedCommand extends BaseCommand
         $this->addOption(
             'interactive',
             null,
-            InputOption::VALUE_OPTIONAL,
-            "Choose between remove, skip, and ignore",
-            false
+            InputOption::VALUE_NONE,
+            "Choose between remove, skip, and ignore"
         );
     }
 
@@ -229,7 +227,7 @@ class UnusedCommand extends BaseCommand
 
                     switch ($action) {
                         case "remove":
-                            array_push($removeArray, $unusedPackage);
+                            array_push($removeArray, $packageName);
                             break;
                         case "ignore":
                             // Add package name to unused property of extras directive in composer.json
@@ -262,8 +260,9 @@ class UnusedCommand extends BaseCommand
                     new ArrayInput($arguments),
                     new ConsoleOutput()
                 );
+                return 1;
             }
-            return 1;
+            
         }
 
         return 0;
