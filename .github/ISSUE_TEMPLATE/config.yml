@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
-    - name: Ask a Question
+    - name: "Ask a Question :question:"
       url: https://github.com/composer-unused/composer-unused/discussions/new?category=q-a
       about: Ask the community for help
-    - name: Feature Request
+    - name: "Feature Request :bulb:"
       url: https://github.com/composer-unused/composer-unused/discussions/new?category=ideas
       about: Share ideas for new features
