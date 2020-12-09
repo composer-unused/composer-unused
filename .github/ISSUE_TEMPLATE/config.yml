@@ -6,6 +6,3 @@ contact_links:
     - name: Feature Request
       url: https://github.com/composer-unused/composer-unused/discussions/new?category=ideas
       about: Share ideas for new features
-    - name: Bug Report
-      url: https://github.com/composer-unused/composer-unused/issues/new?template=bug-report.md
-      about: Report a reproducable bug
