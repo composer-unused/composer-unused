@@ -6,9 +6,9 @@ namespace Icanhazstring\Composer\Unused\Parser\PHP\Strategy;
 
 use PhpParser\Node;
 
-final class InstanceofStrategy implements ParseStrategyInterface
+final class InstanceofStrategy implements StrategyInterface
 {
-    public function meetsCriteria(Node $node): bool
+    public function canHandle(Node $node): bool
     {
         if (!$node instanceof Node\Expr\Instanceof_) {
             return false;
@@ -25,7 +25,7 @@ final class InstanceofStrategy implements ParseStrategyInterface
      * @param Node&Node\Expr\Instanceof_ $node
      * @return array<string>
      */
-    public function extractNamespaces(Node $node): array
+    public function extractSymbolNames(Node $node): array
     {
         /** @var Node\Name $class */
         $class = $node->class;
