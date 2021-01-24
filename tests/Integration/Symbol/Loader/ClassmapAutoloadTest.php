@@ -60,7 +60,10 @@ class ClassmapAutoloadTest extends AbstractIntegrationTestCase
                 $require->getConstraint()
             );
 
-            /** @phpstan-ignore-next-line */
+            if ($composerPackage === null) {
+                continue;
+            }
+
             $package = PackageDecorator::withBaseDir(
                 self::BASE_DIR . '/vendor/' . $require->getTarget(),
                 $composerPackage

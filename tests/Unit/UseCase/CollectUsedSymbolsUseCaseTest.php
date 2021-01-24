@@ -47,9 +47,8 @@ class CollectUsedSymbolsUseCaseTest extends TestCase
         );
 
         $useCase = new CollectUsedSymbolsUseCase($fileSymbolLoader);
-        /** @var array<SymbolInterface> $symbols */
         $symbols = iterator_to_array($useCase->execute($rootPackage, dirname(__DIR__)));
-
+        /** @var SymbolInterface $symbol */
         $symbol = current($symbols);
 
         self::assertCount(1, $symbols);
