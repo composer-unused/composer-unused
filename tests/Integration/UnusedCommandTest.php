@@ -12,7 +12,6 @@ use Icanhazstring\Composer\Unused\Di\ServiceContainer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class UnusedCommandTest extends TestCase
 {
@@ -21,7 +20,6 @@ class UnusedCommandTest extends TestCase
 
     protected function setUp(): void
     {
-        /** @var ServiceContainer $container */
         $this->container = require __DIR__ . '/../../config/container.php';
     }
 
