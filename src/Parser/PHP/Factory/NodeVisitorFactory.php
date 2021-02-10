@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused\Parser\PHP\Factory;
 
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\ClassConstStrategy;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\ExtendsParseStrategy;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\ImplementsParseStrategy;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\InstanceofStrategy;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\NewStrategy;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\PhpExtensionStrategy;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\StaticStrategy;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\UseStrategy;
 use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Parser\PHP\NamespaceNodeVisitor;
-use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\ClassConstStrategy;
-use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\ExtendsParseStrategy;
-use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\ImplementsParseStrategy;
-use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\InstanceofStrategy;
-use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\NewStrategy;
-use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\PhpExtensionStrategy;
-use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\StaticStrategy;
-use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\UseStrategy;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 

@@ -19,6 +19,7 @@
     "require": {
         "php": ">=7.3 || ^8.0",
         "composer-plugin-api": "^2.0",
+        "composer-unused/symbol-parser": "dev-master",
         "nikic/php-parser": "^4.13",
         "psr/container": "^1.0",
         "psr/log": "^1.1 || ^2 || ^3",
@@ -27,7 +28,7 @@
     "require-dev": {
         "ext-ds": "*",
         "ext-zend-opcache": "*",
-        "composer/composer": "^2.1",
+        "composer/composer": "^2.1.5",
         "jangregor/phpstan-prophecy": "^0.8.1",
         "phpspec/prophecy-phpunit": "^2.0.1",
         "phpstan/phpstan": "^0.12.99",
@@ -47,6 +48,15 @@
             "Icanhazstring\\Composer\\Unused\\": "src"
         }
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "/docker/symbol-parser",
+            "options": {
+                "symlink": false
+            }
+        }
+    ],
     "autoload-dev": {
         "psr-4": {
             "Icanhazstring\\Composer\\Test\\Unused\\Integration\\": "tests/Integration",

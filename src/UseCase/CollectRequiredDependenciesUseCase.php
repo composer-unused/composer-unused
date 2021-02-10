@@ -6,13 +6,13 @@ namespace Icanhazstring\Composer\Unused\UseCase;
 
 use Composer\Package\Link;
 use Composer\Repository\InstalledRepositoryInterface;
+use ComposerUnused\SymbolParser\Symbol\Loader\SymbolLoaderInterface;
+use ComposerUnused\SymbolParser\Symbol\SymbolList;
 use Icanhazstring\Composer\Unused\Composer\PackageDecorator;
 use Icanhazstring\Composer\Unused\Dependency\DependencyCollection;
 use Icanhazstring\Composer\Unused\Dependency\InvalidDependency;
 use Icanhazstring\Composer\Unused\Dependency\RequiredDependency;
 use Icanhazstring\Composer\Unused\PackageResolver;
-use Icanhazstring\Composer\Unused\Symbol\Loader\SymbolLoaderInterface;
-use Icanhazstring\Composer\Unused\Symbol\SymbolList;
 
 class CollectRequiredDependenciesUseCase
 {

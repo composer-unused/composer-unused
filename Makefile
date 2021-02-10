@@ -13,7 +13,7 @@ install:
 	docker exec -it $(CONTAINER) composer install
 
 update:
-	docker exec -it $(CONTAINER) composer update
+	docker exec -it $(CONTAINER) composer update $(filter-out $@, $(MAKECMDGOALS))
 
 require:
 	docker exec -it $(CONTAINER) composer require $(filter-out $@, $(MAKECMDGOALS))

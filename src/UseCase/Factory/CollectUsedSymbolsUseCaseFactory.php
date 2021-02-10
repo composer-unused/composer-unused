@@ -4,18 +4,12 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused\UseCase\Factory;
 
-use Icanhazstring\Composer\Unused\File\FileContentProvider;
-use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\ClassConstStrategy;
-use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\NewStrategy;
-use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\UsedExtensionSymbolStrategy;
-use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\PhpExtensionStrategy;
-use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\StaticStrategy;
-use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\UseStrategy;
-use Icanhazstring\Composer\Unused\Parser\PHP\SymbolNameParser;
-use Icanhazstring\Composer\Unused\Parser\PHP\UsedSymbolCollector;
-use Icanhazstring\Composer\Unused\Symbol\Loader\FileSymbolLoader;
-use Icanhazstring\Composer\Unused\Symbol\Loader\UsedSymbolLoader;
-use Icanhazstring\Composer\Unused\Symbol\Provider\FileSymbolProvider;
+use ComposerUnused\SymbolParser\Parser\PHP\ConsumedSymbolCollector;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\ClassConstStrategy;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\NewStrategy;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\StaticStrategy;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\UsedExtensionSymbolStrategy;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\UseStrategy;
 use Icanhazstring\Composer\Unused\UseCase\CollectUsedSymbolsUseCase;
 use PhpParser\ParserFactory;
 use Psr\Container\ContainerInterface;
@@ -27,7 +21,7 @@ class CollectUsedSymbolsUseCaseFactory
 {
     public function __invoke(ContainerInterface $container): CollectUsedSymbolsUseCase
     {
-        $usedSymbolCollector = new UsedSymbolCollector(
+        $usedSymbolCollector = new ConsumedSymbolCollector(
             [
                 new NewStrategy(),
                 new StaticStrategy(),

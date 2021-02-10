@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Icanhazstring\Composer\Unused\Dependency;
 
 use Composer\Package\Link;
-use Icanhazstring\Composer\Unused\Symbol\SymbolInterface;
+use ComposerUnused\SymbolParser\Symbol\SymbolInterface;
 
 final class InvalidDependency implements DependencyInterface
 {
