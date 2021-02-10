@@ -5,12 +5,14 @@ services:
     build: .docker/php7.4
     container_name: composer-unused-7.4
     volumes:
-      - .:/docker:rw
+      - .:/docker/composer-unused:rw
+      - ../symbol-parser:/docker/symbol-parser:rw
     tty: true
 
   php8.0:
     build: .docker/php8.0
     container_name: composer-unused-8.0
     volumes:
-      - .:/docker:rw
+      - .:/docker/composer-unused:rw
+      - ../symbol-parser:/docker/symbol-parser:rw
     tty: true

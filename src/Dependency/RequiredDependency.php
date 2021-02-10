@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Icanhazstring\Composer\Unused\Dependency;
 
 use Composer\Package\PackageInterface;
-use Icanhazstring\Composer\Unused\Symbol\SymbolInterface;
-use Icanhazstring\Composer\Unused\Symbol\SymbolListInterface;
+use ComposerUnused\SymbolParser\Symbol\SymbolInterface;
+use ComposerUnused\SymbolParser\Symbol\SymbolListInterface;
 
 use function array_key_exists;
 

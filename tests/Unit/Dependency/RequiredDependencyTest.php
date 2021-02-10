@@ -10,8 +10,8 @@ use Composer\Package\PackageInterface;
 use Composer\Semver\Constraint\ConstraintInterface;
 use Icanhazstring\Composer\Unused\Dependency\Dependency;
 use Icanhazstring\Composer\Unused\Dependency\RequiredDependency;
-use Icanhazstring\Composer\Unused\Symbol\Symbol;
-use Icanhazstring\Composer\Unused\Symbol\SymbolList;
+use ComposerUnused\SymbolParser\Symbol\Symbol;
+use ComposerUnused\SymbolParser\Symbol\SymbolList;
 use PHPUnit\Framework\TestCase;
 
 class RequiredDependencyTest extends TestCase

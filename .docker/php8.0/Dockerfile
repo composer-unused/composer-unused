@@ -1,4 +1,4 @@
-FROM php:8.0.0RC2-alpine
+FROM php:8.0-alpine
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/
 RUN install-php-extensions ds xdebug opcache
@@ -9,7 +9,3 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 WORKDIR /docker
 # Workaround to keep container running
 CMD ["tail", "-f", "/dev/null"]
-
-
-
-
