@@ -6,10 +6,10 @@ namespace Icanhazstring\Composer\Test\Unused\Unit\UseCase;
 
 use Composer\Package\RootPackage;
 use Generator;
-use Icanhazstring\Composer\Unused\Symbol\Loader\FileSymbolLoader;
-use Icanhazstring\Composer\Unused\Symbol\Loader\UsedSymbolLoader;
-use Icanhazstring\Composer\Unused\Symbol\Symbol;
-use Icanhazstring\Composer\Unused\Symbol\SymbolInterface;
+use ComposerUnused\SymbolParser\Symbol\Loader\FileSymbolLoader;
+use ComposerUnused\SymbolParser\Symbol\Loader\UsedSymbolLoader;
+use ComposerUnused\SymbolParser\Symbol\Symbol;
+use ComposerUnused\SymbolParser\Symbol\SymbolInterface;
 use Icanhazstring\Composer\Unused\UseCase\CollectUsedSymbolsUseCase;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
