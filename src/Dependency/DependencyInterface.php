@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused\Dependency;
 
-use Icanhazstring\Composer\Unused\Symbol\SymbolInterface;
+use ComposerUnused\SymbolParser\Symbol\SymbolInterface;
 
 interface DependencyInterface
 {

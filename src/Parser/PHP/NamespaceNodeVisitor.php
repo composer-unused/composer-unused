@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused\Parser\PHP;
 
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\StrategyInterface;
 use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
-use Icanhazstring\Composer\Unused\Parser\PHP\Strategy\StrategyInterface;
 use Icanhazstring\Composer\Unused\Subject\NamespaceUsage;
 use Icanhazstring\Composer\Unused\Subject\UsageInterface;
 use PhpParser\Node;

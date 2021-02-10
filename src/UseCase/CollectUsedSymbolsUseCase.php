@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Icanhazstring\Composer\Unused\UseCase;
 
 use Composer\Package\RootPackageInterface;
+use ComposerUnused\SymbolParser\Symbol\Loader\SymbolLoaderInterface;
+use ComposerUnused\SymbolParser\Symbol\SymbolInterface;
 use Generator;
 use Icanhazstring\Composer\Unused\Composer\PackageDecorator;
-use Icanhazstring\Composer\Unused\Symbol\Loader\SymbolLoaderInterface;
-use Icanhazstring\Composer\Unused\Symbol\SymbolInterface;
 
 use function array_keys;
 use function array_merge;

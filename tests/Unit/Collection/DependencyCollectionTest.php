@@ -7,7 +7,7 @@ namespace Icanhazstring\Composer\Test\Unused\Unit\Collection;
 use Composer\Package\PackageInterface;
 use Icanhazstring\Composer\Unused\Dependency\DependencyCollection;
 use Icanhazstring\Composer\Unused\Dependency\RequiredDependency;
-use Icanhazstring\Composer\Unused\Symbol\SymbolListInterface;
+use ComposerUnused\SymbolParser\Symbol\SymbolListInterface;
 use PHPUnit\Framework\TestCase;
 
 final class DependencyCollectionTest extends TestCase

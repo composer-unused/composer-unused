@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused\UseCase\Factory;
 
-use Icanhazstring\Composer\Unused\File\FileContentProvider;
+use ComposerUnused\SymbolParser\File\FileContentProvider;
+use ComposerUnused\SymbolParser\Parser\PHP\DefinedSymbolCollector;
+use ComposerUnused\SymbolParser\Parser\PHP\SymbolNameParser;
+use ComposerUnused\SymbolParser\Symbol\Loader\CompositeSymbolLoader;
+use ComposerUnused\SymbolParser\Symbol\Loader\ExtensionSymbolLoader;
+use ComposerUnused\SymbolParser\Symbol\Loader\FileSymbolLoader;
+use ComposerUnused\SymbolParser\Symbol\Loader\PsrSymbolLoader;
+use ComposerUnused\SymbolParser\Symbol\Provider\FileSymbolProvider;
 use Icanhazstring\Composer\Unused\PackageResolver;
-use Icanhazstring\Composer\Unused\Parser\PHP\ForeignSymbolCollector;
-use Icanhazstring\Composer\Unused\Parser\PHP\SymbolNameParser;
-use Icanhazstring\Composer\Unused\Symbol\Loader\CompositeSymbolLoader;
-use Icanhazstring\Composer\Unused\Symbol\Loader\ExtensionSymbolLoader;
-use Icanhazstring\Composer\Unused\Symbol\Loader\FileSymbolLoader;
-use Icanhazstring\Composer\Unused\Symbol\Loader\PsrSymbolLoader;
-use Icanhazstring\Composer\Unused\Symbol\Provider\FileSymbolProvider;
 use Icanhazstring\Composer\Unused\UseCase\CollectRequiredDependenciesUseCase;
 use PhpParser\ParserFactory;
 use Psr\Container\ContainerInterface;
@@ -23,7 +23,7 @@ class CollectRequiredDependenciesUseCaseFactory
     {
         $symbolNameParser = new SymbolNameParser(
             (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
-            new ForeignSymbolCollector()
+            new DefinedSymbolCollector()
         );
 
         $fileSymbolProvider = new FileSymbolProvider(
