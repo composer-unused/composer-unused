@@ -30,4 +30,4 @@ box:
 	docker exec -it $(CONTAINER) php box.phar compile
 
 ssh:
-	docker exec -it $(CONTAINER) /bin/bash
+	docker exec -it $(CONTAINER) /bin/sh
