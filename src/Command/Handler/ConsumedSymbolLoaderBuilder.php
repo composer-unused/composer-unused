@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Unused\UseCase\Factory;
+namespace Icanhazstring\Composer\Unused\Command\Handler;
 
 use ComposerUnused\SymbolParser\File\FileContentProvider;
 use ComposerUnused\SymbolParser\Parser\PHP\ConsumedSymbolCollector;
@@ -13,17 +13,15 @@ use ComposerUnused\SymbolParser\Parser\PHP\Strategy\UsedExtensionSymbolStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\UseStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\SymbolNameParser;
 use ComposerUnused\SymbolParser\Symbol\Loader\FileSymbolLoader;
+use ComposerUnused\SymbolParser\Symbol\Loader\SymbolLoaderInterface;
 use ComposerUnused\SymbolParser\Symbol\Provider\FileSymbolProvider;
-use Icanhazstring\Composer\Unused\UseCase\CollectUsedSymbolsUseCase;
 use PhpParser\ParserFactory;
-use Psr\Container\ContainerInterface;
-use Psr\Log\LoggerInterface;
-
+use Psr\Log\NullLogger;
 use function get_loaded_extensions;
 
-class CollectUsedSymbolsUseCaseFactory
+final class ConsumedSymbolLoaderBuilder
 {
-    public function __invoke(ContainerInterface $container): CollectUsedSymbolsUseCase
+    public function build(string $packageRoot): SymbolLoaderInterface
     {
         $usedSymbolCollector = new ConsumedSymbolCollector(
             [
@@ -33,7 +31,8 @@ class CollectUsedSymbolsUseCaseFactory
                 new ClassConstStrategy(),
                 new UsedExtensionSymbolStrategy(
                     get_loaded_extensions(),
-                    $container->get(LoggerInterface::class)
+                    // TODO logger
+                    new NullLogger()
                 )
             ]
         );
@@ -48,11 +47,10 @@ class CollectUsedSymbolsUseCaseFactory
             new FileContentProvider()
         );
 
-        return new CollectUsedSymbolsUseCase(
-            new FileSymbolLoader(
-                $fileSymbolProvider,
-                ['classmap', 'files', 'psr-0', 'psr-4']
-            )
+        return new FileSymbolLoader(
+            $packageRoot,
+            $fileSymbolProvider,
+            ['classmap', 'files', 'psr-0', 'psr-4']
         );
     }
 }
