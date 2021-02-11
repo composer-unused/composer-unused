@@ -34,7 +34,7 @@ use function implode;
 use function iterator_to_array;
 use function sprintf;
 
-class UnusedCommand extends BaseCommand
+class UnusedCommandLegacy extends BaseCommand
 {
     /** @var ErrorHandlerInterface */
     private $errorHandler;

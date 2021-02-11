@@ -5,7 +5,7 @@
 use Composer\Composer;
 use Composer\Console\Application;
 use Composer\IO\IOInterface;
-use Icanhazstring\Composer\Unused\Command\UnusedCommand;
+use Icanhazstring\Composer\Unused\Console\Command\UnusedCommand;
 use Symfony\Component\Console\Input\ArgvInput;
 
 (static function ($argv) {
