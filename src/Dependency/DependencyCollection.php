@@ -25,12 +25,15 @@ final class DependencyCollection implements IteratorAggregate, Countable
         $this->items = $items;
     }
 
-    public function getIterator()
+    /**
+     * @return ArrayIterator<DependencyInterface>
+     */
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->items);
     }
 
-    public function count()
+    public function count(): int
     {
         return count($this->items);
     }

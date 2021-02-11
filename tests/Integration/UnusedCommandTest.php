@@ -7,7 +7,7 @@ namespace Icanhazstring\Composer\Test\Unused\Integration;
 use Composer\Composer;
 use Composer\Console\Application;
 use Composer\IO\IOInterface;
-use Icanhazstring\Composer\Unused\Command\UnusedCommand;
+use Icanhazstring\Composer\Unused\Command\UnusedCommandLegacy;
 use Icanhazstring\Composer\Unused\Di\ServiceContainer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -30,7 +30,7 @@ class UnusedCommandTest extends TestCase
 
         $this->container->register(IOInterface::class, $application->getIO());
         $this->container->register(Composer::class, $application->getComposer());
-        $application->add($this->container->get(UnusedCommand::class));
+        $application->add($this->container->get(UnusedCommandLegacy::class));
 
         return $application;
     }

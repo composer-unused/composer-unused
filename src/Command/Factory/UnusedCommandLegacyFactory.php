@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused\Command\Factory;
 
-use Icanhazstring\Composer\Unused\Command\UnusedCommand;
+use Icanhazstring\Composer\Unused\Command\UnusedCommandLegacy;
 use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Loader\LoaderBuilder;
 use Icanhazstring\Composer\Unused\Output\SymfonyStyleFactory;
@@ -13,11 +13,11 @@ use Icanhazstring\Composer\Unused\UseCase\CollectUsedSymbolsUseCase;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
-class UnusedCommandFactory
+class UnusedCommandLegacyFactory
 {
-    public function __invoke(ContainerInterface $container): UnusedCommand
+    public function __invoke(ContainerInterface $container): UnusedCommandLegacy
     {
-        return new UnusedCommand(
+        return new UnusedCommandLegacy(
             $container->get(ErrorHandlerInterface::class),
             new SymfonyStyleFactory(),
             $container->get(LoaderBuilder::class),

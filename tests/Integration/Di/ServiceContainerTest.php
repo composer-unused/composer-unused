@@ -8,7 +8,7 @@ use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Repository\RepositoryManager;
 use Composer\Repository\WritableRepositoryInterface;
-use Icanhazstring\Composer\Unused\Command\UnusedCommand;
+use Icanhazstring\Composer\Unused\Command\UnusedCommandLegacy;
 use Icanhazstring\Composer\Unused\Di\ServiceContainer;
 use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
 use Icanhazstring\Composer\Unused\Loader\LoaderBuilder;
@@ -44,7 +44,7 @@ class ServiceContainerTest extends TestCase
         $this->assertInstanceOf(PackageLoader::class, $container->get(PackageLoader::class));
         $this->assertInstanceOf(PackageSubjectFactory::class, $container->get(PackageSubjectFactory::class));
         $this->assertInstanceOf(ErrorHandlerInterface::class, $container->get(ErrorHandlerInterface::class));
-        $this->assertInstanceOf(UnusedCommand::class, $container->get(UnusedCommand::class));
+        $this->assertInstanceOf(UnusedCommandLegacy::class, $container->get(UnusedCommandLegacy::class));
         $this->assertInstanceOf(LoggerInterface::class, $container->get(LoggerInterface::class));
         $this->assertInstanceOf(LogHandlerInterface::class, $container->get(LogHandlerInterface::class));
         $this->assertInstanceOf(LoaderBuilder::class, $container->get(LoaderBuilder::class));
