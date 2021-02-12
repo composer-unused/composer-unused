@@ -10,6 +10,7 @@ use Icanhazstring\Composer\Unused\Dependency\DependencyCollection;
 use Icanhazstring\Composer\Unused\Dependency\InvalidDependency;
 use Icanhazstring\Composer\Unused\Dependency\RequiredDependency;
 use Icanhazstring\Composer\Unused\PackageResolver;
+use Icanhazstring\Composer\Unused\Symbol\ProvidedSymbolLoaderBuilder;
 
 final class CollectRequiredDependenciesCommandHandler
 {

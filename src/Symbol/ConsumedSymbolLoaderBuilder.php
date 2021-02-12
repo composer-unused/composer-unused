@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Unused\Command\Handler;
+namespace Icanhazstring\Composer\Unused\Symbol;
 
 use ComposerUnused\SymbolParser\File\FileContentProvider;
 use ComposerUnused\SymbolParser\Parser\PHP\ConsumedSymbolCollector;
@@ -17,6 +17,7 @@ use ComposerUnused\SymbolParser\Symbol\Loader\SymbolLoaderInterface;
 use ComposerUnused\SymbolParser\Symbol\Provider\FileSymbolProvider;
 use PhpParser\ParserFactory;
 use Psr\Log\NullLogger;
+
 use function get_loaded_extensions;
 
 final class ConsumedSymbolLoaderBuilder
