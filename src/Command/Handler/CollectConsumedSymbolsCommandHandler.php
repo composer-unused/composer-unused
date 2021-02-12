@@ -7,6 +7,8 @@ namespace Icanhazstring\Composer\Unused\Command\Handler;
 use ComposerUnused\SymbolParser\Symbol\SymbolInterface;
 use Generator;
 use Icanhazstring\Composer\Unused\Command\CollectConsumedSymbolsCommand;
+use Icanhazstring\Composer\Unused\Symbol\ConsumedSymbolLoaderBuilder;
+
 use function array_keys;
 use function array_merge;
 use function strpos;

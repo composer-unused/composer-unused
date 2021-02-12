@@ -26,7 +26,7 @@ final class DependencyCollection implements IteratorAggregate, Countable
     }
 
     /**
-     * @return ArrayIterator<DependencyInterface>
+     * @return ArrayIterator<int, DependencyInterface>
      */
     public function getIterator(): ArrayIterator
     {
