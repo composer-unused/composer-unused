@@ -19,7 +19,7 @@
     "require": {
         "php": ">=7.3 || ^8.0",
         "composer-plugin-api": "^2.0",
-        "composer-unused/symbol-parser": "dev-master",
+        "composer-unused/symbol-parser": "^0.1",
         "composer/composer": "^2.1.3",
         "nikic/php-parser": "^4.11",
         "psr/container": "^1.0",
@@ -48,15 +48,6 @@
             "Icanhazstring\\Composer\\Unused\\": "src"
         }
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "/docker/symbol-parser",
-            "options": {
-                "symlink": false
-            }
-        }
-    ],
     "autoload-dev": {
         "psr-4": {
             "Icanhazstring\\Composer\\Test\\Unused\\Integration\\": "tests/Integration",
