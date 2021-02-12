@@ -7,21 +7,34 @@ namespace Icanhazstring\Composer\Unused\Console\Command;
 use Composer\Command\BaseCommand;
 use Icanhazstring\Composer\Unused\Command\CollectConsumedSymbolsCommand;
 use Icanhazstring\Composer\Unused\Command\Handler\CollectConsumedSymbolsCommandHandler;
+use Icanhazstring\Composer\Unused\Command\Handler\CollectRequiredDependenciesCommandHandler;
+use Icanhazstring\Composer\Unused\Command\LoadRequiredDependenciesCommand;
+use Icanhazstring\Composer\Unused\Dependency\DependencyCollection;
+use Icanhazstring\Composer\Unused\Dependency\DependencyInterface;
+use Icanhazstring\Composer\Unused\Dependency\InvalidDependency;
+use Icanhazstring\Composer\Unused\Dependency\RequiredDependency;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use function sprintf;
 use const DIRECTORY_SEPARATOR;
-use const PATH_SEPARATOR;
 
 final class UnusedCommand extends BaseCommand
 {
     /** @var CollectConsumedSymbolsCommandHandler */
     private $collectConsumedSymbolsCommandHandler;
+    /** @var CollectRequiredDependenciesCommandHandler */
+    private $collectRequiredDependenciesCommandHandler;
 
-    public function __construct(CollectConsumedSymbolsCommandHandler $collectConsumedSymbolsCommandHandler)
+    public function __construct(
+        CollectConsumedSymbolsCommandHandler $collectConsumedSymbolsCommandHandler,
+        CollectRequiredDependenciesCommandHandler $collectRequiredDependenciesCommandHandler
+    )
     {
         parent::__construct('unused');
         $this->collectConsumedSymbolsCommandHandler = $collectConsumedSymbolsCommandHandler;
+        $this->collectRequiredDependenciesCommandHandler = $collectRequiredDependenciesCommandHandler;
     }
 
     protected function configure(): void
@@ -81,21 +94,113 @@ final class UnusedCommand extends BaseCommand
             )
         );
 
-        /**
-        $providedSymbols = $this->collectProvidedSymbolsCommandHandler->collect(
-            new CollectProvidedSymbolsCommand(
-                $baseDir . DIRECTORY_SEPARATOR . $composer->getConfig()->get('vendor-dir'),
-                $rootPackage->getRequires()
-            )
-        );
-        */
-
-        $requiredDependencyCollection = $this->loadRequiredDependenciesCommandHandler->execute(
+        $requiredDependencyCollection = $this->collectRequiredDependenciesCommandHandler->collect(
             new LoadRequiredDependenciesCommand(
                 $baseDir . DIRECTORY_SEPARATOR . $composer->getConfig()->get('vendor-dir'),
-                $rootPackage->getRequires()
+                $rootPackage->getRequires(),
+                $composer->getRepositoryManager()->getLocalRepository()
             )
         );
+
+        $io = new SymfonyStyle($input, $output);
+
+        foreach ($consumedSymbols as $symbol) {
+            /** @var RequiredDependency $requiredDependency */
+            foreach ($requiredDependencyCollection as $requiredDependency) {
+                if ($requiredDependency->inState($requiredDependency::STATE_USED)) {
+                    continue;
+                }
+
+                if ($requiredDependency->provides($symbol)) {
+                    $requiredDependency->markUsed();
+                    continue;
+                }
+
+                /** @var RequiredDependency $secondRequiredDependency */
+                foreach ($requiredDependencyCollection as $secondRequiredDependency) {
+                    if ($requiredDependency === $secondRequiredDependency) {
+                        continue;
+                    }
+
+                    if ($secondRequiredDependency->requires($requiredDependency)) {
+                        // TODO add "required by" in output
+                        $requiredDependency->markUsed();
+                        continue 2;
+                    }
+
+                    if ($secondRequiredDependency->suggests($requiredDependency)) {
+                        // TODO add "suggested by" in output
+                        $requiredDependency->markUsed();
+                        continue 2;
+                    }
+                }
+            }
+        }
+
+        [$usedDependencyCollection, $unusedDependencyCollection] = $requiredDependencyCollection->partition(
+            static function (DependencyInterface $dependency) {
+                return $dependency->inState($dependency::STATE_USED);
+            }
+        );
+
+        /** @var DependencyCollection<InvalidDependency> $invalidDependencyCollection */
+        [$invalidDependencyCollection, $unusedDependencyCollection] = $unusedDependencyCollection->partition(
+            static function (DependencyInterface $dependency) {
+                return $dependency->inState($dependency::STATE_INVALID);
+            }
+        );
+
+        $io->section('Results');
+
+        $io->writeln(
+            sprintf(
+                'Found <fg=green>%d used</>, <fg=red>%d unused</> and <fg=yellow>%d ignored</> packages',
+                count($usedDependencyCollection),
+                count($unusedDependencyCollection),
+                count($invalidDependencyCollection)
+            )
+        );
+
+        $io->newLine();
+        $io->text('<fg=green>Used packages</>');
+        foreach ($usedDependencyCollection as $usedDependency) {
+            // TODO add required by dependency
+            // TODO add suggest by dependency
+
+            $io->writeln(
+                sprintf(
+                    ' <fg=green>%s</> %s',
+                    "\u{2713}",
+                    $usedDependency->getName()
+                )
+            );
+        }
+
+        $io->newLine();
+        $io->text('<fg=red>Unused packages</>');
+        foreach ($unusedDependencyCollection as $dependency) {
+            $io->writeln(
+                sprintf(
+                    ' <fg=red>%s</> %s',
+                    "\u{2717}",
+                    $dependency->getName()
+                )
+            );
+        }
+
+        $io->newLine();
+        $io->text('<fg=yellow>Ignored packages</>');
+
+        foreach ($invalidDependencyCollection as $dependency) {
+            $io->writeln(
+                sprintf(
+                    ' <fg=yellow>%s</> %s (<fg=cyan>%s</>)',
+                    "\u{25CB}",
+                    $dependency->getName(),
+                    $dependency->getReason()
+                )
+            );
+        }
 
         return 0;
     }

@@ -14,11 +14,11 @@ use function strpos;
 final class CollectConsumedSymbolsCommandHandler
 {
     /** @var ConsumedSymbolLoaderBuilder */
-    private $symbolLoaderBuilder;
+    private $consumedSymbolLoaderBuilder;
 
-    public function __construct(ConsumedSymbolLoaderBuilder $symbolLoaderBuilder)
+    public function __construct(ConsumedSymbolLoaderBuilder $consumedSymbolLoaderBuilder)
     {
-        $this->symbolLoaderBuilder = $symbolLoaderBuilder;
+        $this->consumedSymbolLoaderBuilder = $consumedSymbolLoaderBuilder;
     }
 
     /**
@@ -27,7 +27,7 @@ final class CollectConsumedSymbolsCommandHandler
     public function collect(CollectConsumedSymbolsCommand $command): Generator
     {
         $package = $command->getPackage();
-        $symbolLoader = $this->symbolLoaderBuilder->build($command->getPackageRoot());
+        $symbolLoader = $this->consumedSymbolLoaderBuilder->build($command->getPackageRoot());
 
         $rootNamespaces = array_merge(
             array_keys($package->getAutoload()['psr-0'] ?? []),
