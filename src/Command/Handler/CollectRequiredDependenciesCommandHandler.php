@@ -2,48 +2,39 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Unused\UseCase;
+namespace Icanhazstring\Composer\Unused\Command\Handler;
 
-use Composer\Package\Link;
-use Composer\Repository\InstalledRepositoryInterface;
-use ComposerUnused\SymbolParser\Symbol\Loader\SymbolLoaderInterface;
 use ComposerUnused\SymbolParser\Symbol\SymbolList;
-use Icanhazstring\Composer\Unused\Composer\PackageDecorator;
+use Icanhazstring\Composer\Unused\Command\LoadRequiredDependenciesCommand;
 use Icanhazstring\Composer\Unused\Dependency\DependencyCollection;
 use Icanhazstring\Composer\Unused\Dependency\InvalidDependency;
 use Icanhazstring\Composer\Unused\Dependency\RequiredDependency;
 use Icanhazstring\Composer\Unused\PackageResolver;
 
-class CollectRequiredDependenciesUseCase
+final class CollectRequiredDependenciesCommandHandler
 {
-    /** @var SymbolLoaderInterface */
-    private $dependencySymbolLoader;
     /** @var PackageResolver */
     private $packageResolver;
+    /** @var ProvidedSymbolLoaderBuilder */
+    private $providedSymbolLoaderBuilder;
 
     public function __construct(
-        SymbolLoaderInterface $dependencySymbolLoader,
-        PackageResolver $packageResolver
+        PackageResolver $packageResolver,
+        ProvidedSymbolLoaderBuilder $providedSymbolLoaderBuilder
     ) {
-        $this->dependencySymbolLoader = $dependencySymbolLoader;
         $this->packageResolver = $packageResolver;
+        $this->providedSymbolLoaderBuilder = $providedSymbolLoaderBuilder;
     }
 
-    /**
-     * @param array<Link> $packageLinks
-     * @return DependencyCollection
-     */
-    public function execute(
-        array $packageLinks,
-        InstalledRepositoryInterface $repository,
-        string $composerBaseDir
-    ): DependencyCollection {
+    public function collect(LoadRequiredDependenciesCommand $command): DependencyCollection
+    {
         $dependencyCollection = new DependencyCollection();
+        $providedSymbolLoader = $this->providedSymbolLoaderBuilder->build($command->getBaseDir());
 
-        foreach ($packageLinks as $require) {
+        foreach ($command->getPackageLinks() as $require) {
             $composerPackage = $this->packageResolver->resolve(
                 $require,
-                $repository
+                $command->getPackageRepository()
             );
 
             if ($composerPackage === null) {
@@ -51,16 +42,11 @@ class CollectRequiredDependenciesUseCase
                 continue;
             }
 
-            $composerPackage = PackageDecorator::withBaseDir(
-                $composerBaseDir . '/vendor/' . $require->getTarget(),
-                $composerPackage
-            );
-
             $dependencyCollection->add(
                 new RequiredDependency(
                     $composerPackage,
                     (new SymbolList())->addAll(
-                        $this->dependencySymbolLoader->load($composerPackage)
+                        $providedSymbolLoader->load($composerPackage)
                     )
                 )
             );
