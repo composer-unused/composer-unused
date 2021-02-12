@@ -21,6 +21,8 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 
+use function gettype;
+
 class ServiceContainerTest extends TestCase
 {
     use ProphecyTrait;
@@ -39,14 +41,10 @@ class ServiceContainerTest extends TestCase
         $composer->getRepositoryManager()->willReturn($repositoryManager->reveal());
         $container->register(Composer::class, $composer->reveal());
 
-        $this->assertInstanceOf(NamespaceNodeVisitor::class, $container->get(NamespaceNodeVisitor::class));
-        $this->assertInstanceOf(UsageLoader::class, $container->get(UsageLoader::class));
-        $this->assertInstanceOf(PackageLoader::class, $container->get(PackageLoader::class));
-        $this->assertInstanceOf(PackageSubjectFactory::class, $container->get(PackageSubjectFactory::class));
-        $this->assertInstanceOf(ErrorHandlerInterface::class, $container->get(ErrorHandlerInterface::class));
-        $this->assertInstanceOf(UnusedCommandLegacy::class, $container->get(UnusedCommandLegacy::class));
-        $this->assertInstanceOf(LoggerInterface::class, $container->get(LoggerInterface::class));
-        $this->assertInstanceOf(LogHandlerInterface::class, $container->get(LogHandlerInterface::class));
-        $this->assertInstanceOf(LoaderBuilder::class, $container->get(LoaderBuilder::class));
+        $services = require __DIR__ . '/../../../config/service_manager.php';
+
+        foreach ($services['factories'] as $type => $factory) {
+            self::assertInstanceOf($type, $container->get($type));
+        }
     }
 }

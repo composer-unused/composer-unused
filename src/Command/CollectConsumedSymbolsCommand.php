@@ -10,7 +10,7 @@ final class CollectConsumedSymbolsCommand
 {
     /** @var PackageInterface */
     private $package;
-    /** @var string|null */
+    /** @var string */
     private $packageRoot;
 
     public function __construct(?string $packageRoot, PackageInterface $package)

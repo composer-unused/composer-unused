@@ -17,7 +17,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+
 use function sprintf;
+
 use const DIRECTORY_SEPARATOR;
 
 final class UnusedCommand extends BaseCommand
@@ -30,8 +32,7 @@ final class UnusedCommand extends BaseCommand
     public function __construct(
         CollectConsumedSymbolsCommandHandler $collectConsumedSymbolsCommandHandler,
         CollectRequiredDependenciesCommandHandler $collectRequiredDependenciesCommandHandler
-    )
-    {
+    ) {
         parent::__construct('unused');
         $this->collectConsumedSymbolsCommandHandler = $collectConsumedSymbolsCommandHandler;
         $this->collectRequiredDependenciesCommandHandler = $collectRequiredDependenciesCommandHandler;
