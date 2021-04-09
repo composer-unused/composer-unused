@@ -34,7 +34,7 @@
         "phpstan/phpstan": "^0.12.83",
         "phpunit/phpunit": "^9.5.4",
         "roave/security-advisories": "dev-master",
-        "squizlabs/php_codesniffer": "^3.5"
+        "squizlabs/php_codesniffer": "^3.6"
     },
     "config": {
         "preferred-install": "dist",
