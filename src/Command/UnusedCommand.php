@@ -16,9 +16,12 @@ use Icanhazstring\Composer\Unused\Subject\PackageSubject;
 use Icanhazstring\Composer\Unused\Subject\UsageInterface;
 use Icanhazstring\Composer\Unused\UnusedPlugin;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Throwable;
 
@@ -82,6 +85,13 @@ class UnusedCommand extends BaseCommand
             null,
             InputOption::VALUE_NONE,
             'Show no progress bar'
+        );
+
+        $this->addOption(
+            'interactive',
+            null,
+            InputOption::VALUE_NONE,
+            "Choose between remove, skip, and ignore"
         );
     }
 
@@ -197,8 +207,62 @@ class UnusedCommand extends BaseCommand
             );
         }
 
+        // If there is at least one unused package
         if (count($unusedPackages) > 0 && !$input->getOption('ignore-exit-code')) {
-            return 1;
+            if ($input->getOption("interactive")) {
+                $removeArray = [];
+
+                // Prompt user to remove, skip, or ignore each package
+                foreach ($unusedPackages as $unusedPackage) {
+                    $packageName = $unusedPackage->getName();
+
+                    $question = new ChoiceQuestion(
+                        "Would you like to remove, skip, or ignore package $packageName? (defaults to skip)",
+                        ["remove", "skip", "ignore"],
+                        1
+                    );
+
+                    $helper = $this->getHelper("question");
+                    $action = $helper->ask($input, $output, $question);
+
+                    switch ($action) {
+                        case "remove":
+                            array_push($removeArray, $packageName);
+                            break;
+                        case "ignore":
+                            // Add package name to unused property of extras directive in composer.json
+                            $composerJsonContents = file_get_contents("/composer.json");
+                            $composerJsonContents = json_decode($composerJsonContents, true);
+                            $extraDirectiveUnusedArr = $composerJsonContents["extra"]["unused"];
+                            if (in_array($packageName, $extraDirectiveUnusedArr)) {
+                                array_push(
+                                    $extraDirectiveUnusedArr,
+                                    $packageName
+                                );
+                            }
+                            $newContents = json_encode($composerJsonContents);
+                            file_put_contents('/composer.json', $newContents);
+                            break;
+                        default: // For skip and anything else, continue loop
+                            break;
+                    }
+                }
+
+                // Run composer remove on all the packages the user specified to remove
+                $application = $this->getApplication();
+                $arguments = [
+                    "packages" => $removeArray
+                ];
+
+                $command = $application->get("remove");
+
+                $command->run(
+                    new ArrayInput($arguments),
+                    new ConsoleOutput()
+                );
+                return 1;
+            }
+            
         }
 
         return 0;
