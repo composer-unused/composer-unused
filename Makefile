@@ -1,4 +1,4 @@
-CONTAINER=composer-unused-7.4
+CONTAINER=composer-unused-8.0
 
 up:
 	docker-compose up -d
