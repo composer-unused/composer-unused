@@ -71,4 +71,20 @@ class UnusedCommandTest extends TestCase
             )
         );
     }
+
+    /**
+     * @test
+     */
+    public function itShouldNotReportExtDsAsUnused(): void
+    {
+        chdir(__DIR__ . '/../assets/TestProjects/ExtDsRequirement');
+
+        self::assertEquals(
+            0,
+            $this->getApplication()->run(
+                new ArrayInput(['unused']),
+                new NullOutput()
+            )
+        );
+    }
 }
