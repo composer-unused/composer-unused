@@ -7,7 +7,11 @@
 
 ### Removed
 
-## [0.7.5]. 2020-10-28
+## [0.7.6| - 2021-07-15
+### Removed
+- Dropped support for composer v1
+
+## [0.7.5] - 2020-10-28
 ### Added
 - Added an `InstanceofStrategy` which detects usages in `instanceof` expressions [#100](https://github.com/composer-unused/composer-unused/pull/100)
 
