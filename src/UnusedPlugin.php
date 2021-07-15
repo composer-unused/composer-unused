@@ -9,7 +9,7 @@ use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Plugin;
 use Exception;
-use Icanhazstring\Composer\Unused\Command\UnusedCommand;
+use Icanhazstring\Composer\Unused\Console\Command\UnusedCommand;
 use Icanhazstring\Composer\Unused\Di\ServiceContainer;
 
 final class UnusedPlugin implements Plugin\PluginInterface, Plugin\Capable, Plugin\Capability\CommandProvider

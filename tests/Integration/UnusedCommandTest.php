@@ -7,7 +7,8 @@ namespace Icanhazstring\Composer\Test\Unused\Integration;
 use Composer\Composer;
 use Composer\Console\Application;
 use Composer\IO\IOInterface;
-use Icanhazstring\Composer\Unused\Command\UnusedCommand;
+use Icanhazstring\Composer\Unused\Command\UnusedCommandLegacy;
+use Icanhazstring\Composer\Unused\Console\Command\UnusedCommand;
 use Icanhazstring\Composer\Unused\Di\ServiceContainer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -57,6 +58,22 @@ class UnusedCommandTest extends TestCase
     public function itShouldNotReportPHPAsUnused(): void
     {
         chdir(__DIR__ . '/../assets/TestProjects/OnlyLanguageRequirement');
+
+        self::assertEquals(
+            0,
+            $this->getApplication()->run(
+                new ArrayInput(['unused']),
+                new NullOutput()
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldNotReportExtDsAsUnused(): void
+    {
+        chdir(__DIR__ . '/../assets/TestProjects/ExtDsRequirement');
 
         self::assertEquals(
             0,

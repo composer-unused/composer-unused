@@ -67,7 +67,7 @@ class ServiceContainerTest extends TestCase
 
         $container = new ServiceContainer([
             'factories' => [
-                'test' => static function ($container, $options) use ($refObject) {
+                'test' => static function ($container, $requestedName, $options) use ($refObject) {
                     $refObject->{$options['flagName']} = $options['flagValue'];
 
                     return $refObject;
@@ -76,7 +76,7 @@ class ServiceContainerTest extends TestCase
         ]);
 
         $object = $container->build('test', ['flagName' => 'flag', 'flagValue' => true]);
-        $this->assertTrue($object->flag);
+        self::assertTrue($object->flag);
     }
 
     /**

@@ -1,4 +1,4 @@
-CONTAINER=composer-unused-7.4
+CONTAINER=composer-unused-8.0
 
 up:
 	docker-compose up -d
@@ -10,7 +10,13 @@ install:
 	docker exec -it $(CONTAINER) composer install
 
 update:
-	docker exec -it $(CONTAINER) composer update
+	docker exec -it $(CONTAINER) composer update $(filter-out $@, $(MAKECMDGOALS))
+
+require:
+	docker exec -it $(CONTAINER) composer require $(filter-out $@, $(MAKECMDGOALS))
+
+remove:
+	docker exec -it $(CONTAINER) composer remove $(filter-out $@, $(MAKECMDGOALS))
 
 check: csfix cs phpunit analyse
 
@@ -31,3 +37,6 @@ box:
 
 ssh:
 	docker exec -it $(CONTAINER) /bin/sh
+
+%:
+	@true

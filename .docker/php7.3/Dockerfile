@@ -9,7 +9,3 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 WORKDIR /docker
 # Workaround to keep container running
 CMD ["tail", "-f", "/dev/null"]
-
-
-
-

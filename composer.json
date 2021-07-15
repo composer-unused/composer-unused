@@ -18,8 +18,8 @@
     ],
     "require": {
         "php": ">=7.3 || ^8.0",
-        "ext-json": "*",
         "composer-plugin-api": "^2.0",
+        "composer-unused/symbol-parser": "^0.1",
         "composer/composer": "^2.1.3",
         "nikic/php-parser": "^4.11",
         "psr/container": "^1.0",
@@ -30,7 +30,7 @@
         "ext-ds": "*",
         "ext-zend-opcache": "*",
         "jangregor/phpstan-prophecy": "^0.8.1",
-        "phpspec/prophecy-phpunit": "^2.0",
+        "phpspec/prophecy-phpunit": "^2.0.1",
         "phpstan/phpstan": "^0.12.92",
         "phpunit/phpunit": "^9.5.6",
         "roave/security-advisories": "dev-master",
@@ -64,8 +64,8 @@
             "@analyse",
             "@test"
         ],
-        "cs-check": "phpcs",
-        "cs-fix": "phpcbf",
+        "cs-check": "phpcs --parallel=50",
+        "cs-fix": "phpcbf --parallel=50",
         "test": "phpunit"
     },
     "scripts-descriptions": {

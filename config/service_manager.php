@@ -2,39 +2,24 @@
 
 declare(strict_types=1);
 
-use Icanhazstring\Composer\Unused\Command\Factory\UnusedCommandFactory;
-use Icanhazstring\Composer\Unused\Command\UnusedCommand;
-use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
-use Icanhazstring\Composer\Unused\Error\Factory\ErrorHandlerFactory;
-use Icanhazstring\Composer\Unused\Loader\Factory\LoaderBuilderFactory;
-use Icanhazstring\Composer\Unused\Loader\Factory\PackageLoaderFactory;
-use Icanhazstring\Composer\Unused\Loader\Factory\UsageLoaderFactory;
-use Icanhazstring\Composer\Unused\Loader\LoaderBuilder;
-use Icanhazstring\Composer\Unused\Loader\PackageLoader;
-use Icanhazstring\Composer\Unused\Loader\UsageLoader;
-use Icanhazstring\Composer\Unused\Log\Factory\DebugLoggerFactory;
-use Icanhazstring\Composer\Unused\Log\Factory\FileHandlerFactory;
-use Icanhazstring\Composer\Unused\Log\LogHandlerInterface;
-use Icanhazstring\Composer\Unused\Parser\PHP\Factory\NodeVisitorFactory;
-use Icanhazstring\Composer\Unused\Parser\PHP\Factory\PHPUsageParserFactory;
-use Icanhazstring\Composer\Unused\Parser\PHP\NodeVisitor;
-use Icanhazstring\Composer\Unused\Parser\PHP\PHPUsageParser;
-use Icanhazstring\Composer\Unused\Subject\Factory\PackageSubjectFactory;
-use Psr\Log\LoggerInterface;
+use Icanhazstring\Composer\Unused\Command\Handler\CollectConsumedSymbolsCommandHandler;
+use Icanhazstring\Composer\Unused\Command\Handler\CollectRequiredDependenciesCommandHandler;
+use Icanhazstring\Composer\Unused\Command\Handler\Factory\CollectConsumedSymbolsCommandHandlerFactory;
+use Icanhazstring\Composer\Unused\Command\Handler\Factory\CollectRequiredDependenciesCommandHandlerFactory;
+use Icanhazstring\Composer\Unused\Console\Command\UnusedCommand;
+use Icanhazstring\Composer\Unused\Console\Command\UnusedCommandFactory;
+use Icanhazstring\Composer\Unused\Di\InvokableFactory;
+use Icanhazstring\Composer\Unused\PackageResolver;
+use Icanhazstring\Composer\Unused\Symbol\ConsumedSymbolLoaderBuilder;
+use Icanhazstring\Composer\Unused\Symbol\ProvidedSymbolLoaderBuilder;
 
 return [
     'factories' => [
-        NodeVisitor::class => NodeVisitorFactory::class,
-        UsageLoader::class => UsageLoaderFactory::class,
-        PackageLoader::class => PackageLoaderFactory::class,
-        PackageSubjectFactory::class => static function () {
-            return new PackageSubjectFactory();
-        },
-        ErrorHandlerInterface::class => ErrorHandlerFactory::class,
         UnusedCommand::class => UnusedCommandFactory::class,
-        LoggerInterface::class => DebugLoggerFactory::class,
-        LogHandlerInterface::class => FileHandlerFactory::class,
-        LoaderBuilder::class => LoaderBuilderFactory::class,
-        PHPUsageParser::class => PHPUsageParserFactory::class
+        CollectConsumedSymbolsCommandHandler::class => CollectConsumedSymbolsCommandHandlerFactory::class,
+        CollectRequiredDependenciesCommandHandler::class => CollectRequiredDependenciesCommandHandlerFactory::class,
+        ConsumedSymbolLoaderBuilder::class => InvokableFactory::class,
+        ProvidedSymbolLoaderBuilder::class => InvokableFactory::class,
+        PackageResolver::class => InvokableFactory::class,
     ]
 ];
