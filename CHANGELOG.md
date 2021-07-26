@@ -7,6 +7,10 @@
 
 ### Removed
 
+## [0.7.7] - 2021-07-26
+### Added
+- Added support for `psr/log` v2 and 3 [#200](https://github.com/composer-unused/composer-unused/pull/200) (thanks to [@simPod](https://github.com/simPod))
+
 ## [0.7.6| - 2021-07-15
 ### Removed
 - Dropped support for composer v1
