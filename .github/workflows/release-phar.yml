@@ -1,0 +1,101 @@
+name: "Release Phar"
+
+on:
+  push:
+    tags:
+      - "**"
+
+env:
+  COMPOSER_VERSION: "2.0.13"
+  PHP_EXTENSIONS: "mbstring, ds"
+  PHP_INI_VALUES: "memory_limit=-1, phar.readonly=0"
+
+jobs:
+  release:
+    name: "Release"
+
+    runs-on: "ubuntu-latest"
+
+    strategy:
+      matrix:
+        php-version:
+          - "7.4"
+
+    env:
+      COMPOSER_UNUSED_PHAR: "build/composer-unused.phar"
+      COMPOSER_UNUSED_PHAR_SIGNATURE: "build/composer-unused.phar.asc"
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v2.3.4"
+
+      - name: "Install PHP with extensions"
+        uses: "shivammathur/setup-php@2.11.0"
+        with:
+          coverage: "none"
+          tools: "composer"
+          extensions: "${{ env.PHP_EXTENSIONS }}"
+          ini-values: "${{ env.PHP_INI_VALUES }}"
+          php-version: "${{ matrix.php-version }}"
+
+      - name: "Require composer/composer"
+        run: "composer require composer/composer:${{ env.COMPOSER_VERSION }} --no-interaction --no-progress"
+
+      - name: "Remove dev dependencies"
+        run: "composer install --no-progress --no-dev --prefer-dist --optimize-autoloader"
+
+      - name: "Validate configuration for humbug/box"
+        run: ".phive/box.phar validate box.json"
+
+      - name: "Compile composer-unused.phar with humbug/box"
+        run: ".phive/box.phar compile --config=box.json"
+
+      - name: "Show info about composer-unused.phar with humbug/box"
+        run: ".phive/box.phar info ${{ env.COMPOSER_UNUSED_PHAR }}"
+
+      - name: "Validate composer-unused.phar against code"
+        run: "php ${{ env.COMPOSER_UNUSED_PHAR }} --excludeDir=data"
+
+      - name: "Import GPG key"
+        id: "import_gpg"
+        uses: "crazy-max/ghaction-import-gpg@v3"
+        with:
+          gpg-private-key: "${{ secrets.GPG_PRIVATE_KEY }}"
+          passphrase: "${{ secrets.GPG_PRIVATE_KEY }}"
+
+      - name: "Determine tag"
+        id: "determine-tag"
+        run: "echo \"::set-output name=tag::${GITHUB_REF#refs/tags/}\""
+
+      - name: "Create release"
+        id: "create-release"
+        uses: "actions/create-release@v1.1.4"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        with:
+          draft: false
+          prerelease: false
+          release_name: "${{ steps.determine-tag.outputs.tag }}"
+          tag_name: "${{ steps.determine-tag.outputs.tag }}"
+
+      - name: "Upload composer-unused.phar"
+        if: "always()"
+        uses: "actions/upload-release-asset@v1.0.2"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        with:
+          asset_content_type: "text/plain"
+          asset_name: "composer-unused.phar"
+          asset_path: "${{ env.COMPOSER_UNUSED_PHAR }}"
+          upload_url: "${{ steps.create-release.outputs.upload_url }}"
+
+      - name: "Upload composer-unused.phar.asc"
+        if: "always()"
+        uses: "actions/upload-release-asset@v1.0.2"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        with:
+          asset_content_type: "text/plain"
+          asset_name: "composer-unused.phar.asc"
+          asset_path: "${{ env.COMPOSER_NORMALIZE_PHAR_SIGNATURE }}"
+          upload_url: "${{ steps.create-release.outputs.upload_url }}"
