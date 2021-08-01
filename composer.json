@@ -19,11 +19,10 @@
     "require": {
         "php": ">=7.3 || ^8.0",
         "composer-plugin-api": "^2.0",
-        "composer-unused/symbol-parser": "^0.1.1",
+        "composer-unused/symbol-parser": "^0.1.2",
         "nikic/php-parser": "^4.13",
         "psr/container": "^1.0 || ^2.0",
-        "psr/log": "^1.1 || ^2 || ^3",
-        "symfony/finder": "^4.2 || ^5.0"
+        "psr/log": "^1.1 || ^2 || ^3"
     },
     "require-dev": {
         "ext-ds": "*",
