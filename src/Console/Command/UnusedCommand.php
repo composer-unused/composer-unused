@@ -112,7 +112,7 @@ final class UnusedCommand extends BaseCommand
                     continue;
                 }
 
-                if ($requiredDependency->provides($symbol)) {
+                if ($requiredDependency->getName() === 'php' || $requiredDependency->provides($symbol)) {
                     $requiredDependency->markUsed();
                     continue;
                 }
@@ -201,6 +201,10 @@ final class UnusedCommand extends BaseCommand
                     $dependency->getReason()
                 )
             );
+        }
+
+        if ($unusedDependencyCollection->count() > 0) {
+            return 1;
         }
 
         return 0;

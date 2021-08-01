@@ -87,4 +87,20 @@ class UnusedCommandTest extends TestCase
             )
         );
     }
+
+    /**
+     * @test
+     */
+    public function itShouldNoReportUnusedWithAutoloadFilesWithRequire(): void
+    {
+        chdir(__DIR__ . '/../assets/TestProjects/AutoloadFilesWithRequire');
+
+        self::assertEquals(
+            0,
+            $this->getApplication()->run(
+                new ArrayInput(['unused']),
+                new NullOutput()
+            )
+        );
+    }
 }
