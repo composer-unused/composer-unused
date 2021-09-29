@@ -8,18 +8,9 @@ use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Repository\RepositoryManager;
 use Composer\Repository\WritableRepositoryInterface;
-use Icanhazstring\Composer\Unused\Command\UnusedCommandLegacy;
 use Icanhazstring\Composer\Unused\Di\ServiceContainer;
-use Icanhazstring\Composer\Unused\Error\ErrorHandlerInterface;
-use Icanhazstring\Composer\Unused\Loader\LoaderBuilder;
-use Icanhazstring\Composer\Unused\Loader\PackageLoader;
-use Icanhazstring\Composer\Unused\Loader\UsageLoader;
-use Icanhazstring\Composer\Unused\Log\LogHandlerInterface;
-use Icanhazstring\Composer\Unused\Parser\PHP\NamespaceNodeVisitor;
-use Icanhazstring\Composer\Unused\Subject\Factory\PackageSubjectFactory;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\Log\LoggerInterface;
 
 use function gettype;
 
