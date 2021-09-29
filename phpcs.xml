@@ -4,7 +4,7 @@
 
     <arg value="p"/>
     <arg name="colors"/>
-    <arg name="cache" value="cs-check.json"/>
+    <arg name="cache" value="data/cs-check.json"/>
     <arg name="parallel" value="8" />
     <arg name="ignore" value="tests/assets"/>
 

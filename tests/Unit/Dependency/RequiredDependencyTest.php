@@ -55,7 +55,7 @@ class RequiredDependencyTest extends TestCase
 
         $requiredPackage = new Package('required/pacakge', '1.0.0', '1.0.0');
         $requiredPackage->setRequires([
-            new Link('', 'root/requirement', $this->createStub(ConstraintInterface::class))
+            'root/requirement' => new Link('', 'root/requirement', $this->createStub(ConstraintInterface::class))
         ]);
 
         $requiredDependency = new RequiredDependency($requiredPackage, new SymbolList());
