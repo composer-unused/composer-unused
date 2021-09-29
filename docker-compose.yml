@@ -1,13 +1,6 @@
 version: "3.7"
 
 services:
-  php7.3:
-    build: .docker/php7.3
-    container_name: composer-unused-7.3
-    volumes:
-      - .:/docker:rw
-    tty: true
-
   php7.4:
     build: .docker/php7.4
     container_name: composer-unused-7.4

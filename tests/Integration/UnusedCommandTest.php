@@ -28,8 +28,12 @@ class UnusedCommandTest extends TestCase
         $application = new Application();
         $application->setAutoExit(false);
 
-        $this->container->register(IOInterface::class, $application->getIO());
-        $this->container->register(Composer::class, $application->getComposer());
+        $io = $application->getIO();
+        /** @var Composer $composer */
+        $composer = $application->getComposer();
+
+        $this->container->register(IOInterface::class, $io);
+        $this->container->register(Composer::class, $composer);
         $application->add($this->container->get(UnusedCommand::class));
 
         return $application;

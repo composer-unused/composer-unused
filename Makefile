@@ -6,6 +6,9 @@ up:
 down:
 	docker-compose down
 
+clean:
+	rm -rf vendor/ composer.lock
+
 install:
 	docker exec -it $(CONTAINER) composer install
 

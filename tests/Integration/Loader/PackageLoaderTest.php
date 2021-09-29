@@ -38,7 +38,7 @@ class PackageLoaderTest extends TestCase
         $require = new Link('', 'package/a', $constraint);
 
         $rootPackage = new RootPackage('Rootpackage', '0.1', '0.1');
-        $rootPackage->setRequires([$require]);
+        $rootPackage->setRequires(['package/a' => $require]);
 
         $composer = $this->prophesize(Composer::class);
         $composer->getPackage()->willReturn($rootPackage);
@@ -82,7 +82,7 @@ class PackageLoaderTest extends TestCase
         $require = new Link('', 'package/a', $constraint);
 
         $rootPackage = new RootPackage('Rootpackage', '0.1', '0.1');
-        $rootPackage->setRequires([$require]);
+        $rootPackage->setRequires(['package/a' => $require]);
 
         $composer = $this->prophesize(Composer::class);
         $composer->getPackage()->willReturn($rootPackage);
@@ -150,7 +150,7 @@ class PackageLoaderTest extends TestCase
         $require = new Link('', 'package/a', $constraint);
 
         $rootPackage = new RootPackage('Rootpackage', '0.1', '0.1');
-        $rootPackage->setRequires([$require]);
+        $rootPackage->setRequires(['package/a' => $require]);
 
         $composer = $this->prophesize(Composer::class);
         $composer->getPackage()->willReturn($rootPackage);
