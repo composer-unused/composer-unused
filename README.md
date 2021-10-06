@@ -7,8 +7,6 @@ A Composer tool to show unused Composer dependencies by scanning your code.
 
 Created by [Andreas Frömer](https://twitter.com/icanhazstring) and [contributors](https://github.com/icanhazstring/composer-unused/graphs/contributors), logo by [Caneco](https://twitter.com/caneco).
 
-:fire::fire: Now available as Github Action on the [Marketplace](https://github.com/marketplace/actions/composer-unused) :fire::fire:
-
 [![](https://img.shields.io/github/workflow/status/composer-unused/composer-unused/validate-code?label=build&style=flat-square)](https://github.com/composer-unused/composer-unused)
 [![](https://img.shields.io/github/workflow/status/composer-unused/composer-unused/validate-phar?label=build-phar&style=flat-square)](https://github.com/composer-unused/composer-unused)
 [![](https://img.shields.io/github/tag-date/composer-unused/composer-unused.svg?label=version&style=flat-square)](https://github.com/icanhazstring/composer-unused/releases/latest)
