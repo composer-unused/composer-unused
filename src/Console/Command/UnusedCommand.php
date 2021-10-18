@@ -6,7 +6,9 @@ namespace Icanhazstring\Composer\Unused\Console\Command;
 
 use Composer\Command\BaseCommand;
 use Icanhazstring\Composer\Unused\Command\CollectConsumedSymbolsCommand;
+use Icanhazstring\Composer\Unused\Command\FilterDependencyCollectionCommand;
 use Icanhazstring\Composer\Unused\Command\Handler\CollectConsumedSymbolsCommandHandler;
+use Icanhazstring\Composer\Unused\Command\Handler\CollectFilteredDependenciesCommandHandler;
 use Icanhazstring\Composer\Unused\Command\Handler\CollectRequiredDependenciesCommandHandler;
 use Icanhazstring\Composer\Unused\Command\LoadRequiredDependenciesCommand;
 use Icanhazstring\Composer\Unused\Dependency\DependencyCollection;
@@ -28,14 +30,18 @@ final class UnusedCommand extends BaseCommand
     private $collectConsumedSymbolsCommandHandler;
     /** @var CollectRequiredDependenciesCommandHandler */
     private $collectRequiredDependenciesCommandHandler;
+    /** @var CollectFilteredDependenciesCommandHandler */
+    private $collectFilteredDependenciesCommandHandler;
 
     public function __construct(
         CollectConsumedSymbolsCommandHandler $collectConsumedSymbolsCommandHandler,
-        CollectRequiredDependenciesCommandHandler $collectRequiredDependenciesCommandHandler
+        CollectRequiredDependenciesCommandHandler $collectRequiredDependenciesCommandHandler,
+        CollectFilteredDependenciesCommandHandler $collectFilteredDependenciesCommandHandler
     ) {
         parent::__construct('unused');
         $this->collectConsumedSymbolsCommandHandler = $collectConsumedSymbolsCommandHandler;
         $this->collectRequiredDependenciesCommandHandler = $collectRequiredDependenciesCommandHandler;
+        $this->collectFilteredDependenciesCommandHandler = $collectFilteredDependenciesCommandHandler;
     }
 
     protected function configure(): void
@@ -95,11 +101,18 @@ final class UnusedCommand extends BaseCommand
             )
         );
 
-        $requiredDependencyCollection = $this->collectRequiredDependenciesCommandHandler->collect(
+        $unfilteredRequiredDependencyCollection = $this->collectRequiredDependenciesCommandHandler->collect(
             new LoadRequiredDependenciesCommand(
                 $baseDir . DIRECTORY_SEPARATOR . $composer->getConfig()->get('vendor-dir'),
                 $rootPackage->getRequires(),
                 $composer->getRepositoryManager()->getLocalRepository()
+            )
+        );
+
+        $requiredDependencyCollection = $this->collectFilteredDependenciesCommandHandler->collect(
+            new FilterDependencyCollectionCommand(
+                $unfilteredRequiredDependencyCollection,
+                $input->getOption('excludePackage')
             )
         );
 

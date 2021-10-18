@@ -3,8 +3,10 @@
 declare(strict_types=1);
 
 use Icanhazstring\Composer\Unused\Command\Handler\CollectConsumedSymbolsCommandHandler;
+use Icanhazstring\Composer\Unused\Command\Handler\CollectFilteredDependenciesCommandHandler;
 use Icanhazstring\Composer\Unused\Command\Handler\CollectRequiredDependenciesCommandHandler;
 use Icanhazstring\Composer\Unused\Command\Handler\Factory\CollectConsumedSymbolsCommandHandlerFactory;
+use Icanhazstring\Composer\Unused\Command\Handler\Factory\CollectFilteredDependenciesCommandHandlerFactory;
 use Icanhazstring\Composer\Unused\Command\Handler\Factory\CollectRequiredDependenciesCommandHandlerFactory;
 use Icanhazstring\Composer\Unused\Console\Command\UnusedCommand;
 use Icanhazstring\Composer\Unused\Console\Command\UnusedCommandFactory;
@@ -18,6 +20,7 @@ return [
         UnusedCommand::class => UnusedCommandFactory::class,
         CollectConsumedSymbolsCommandHandler::class => CollectConsumedSymbolsCommandHandlerFactory::class,
         CollectRequiredDependenciesCommandHandler::class => CollectRequiredDependenciesCommandHandlerFactory::class,
+        CollectFilteredDependenciesCommandHandler::class => CollectFilteredDependenciesCommandHandlerFactory::class,
         ConsumedSymbolLoaderBuilder::class => InvokableFactory::class,
         ProvidedSymbolLoaderBuilder::class => InvokableFactory::class,
         PackageResolver::class => InvokableFactory::class,
