@@ -1,0 +1,6 @@
+{
+    "name": "ns/lib",
+    "require": {
+        "composer-plugin-api": "^2.0"
+    }
+}
