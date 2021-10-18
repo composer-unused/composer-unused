@@ -12,6 +12,7 @@ use Icanhazstring\Composer\Unused\Console\Command\UnusedCommand;
 use Icanhazstring\Composer\Unused\Di\ServiceContainer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\NullOutput;
 
 class UnusedCommandTest extends TestCase
@@ -102,5 +103,39 @@ class UnusedCommandTest extends TestCase
                 new NullOutput()
             )
         );
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldNotReportSpecialPackages(): void
+    {
+        chdir(__DIR__ . '/../assets/TestProjects/IgnoreSpecialPackages');
+
+        $output = new BufferedOutput();
+
+        $this->getApplication()->run(
+            new ArrayInput(['unused']),
+            $output
+        );
+
+        self::assertStringNotContainsString('composer-plugin-api', $output->fetch());
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldNotReportExcludedPackages(): void
+    {
+        chdir(__DIR__ . '/../assets/TestProjects/IgnoreExcludedPackages');
+
+        $output = new BufferedOutput();
+
+        $this->getApplication()->run(
+            new ArrayInput(['unused', '--excludePackage' => ['dummy/test-package']]),
+            $output
+        );
+
+        self::assertStringNotContainsString('dummy/test-package', $output->fetch());
     }
 }
