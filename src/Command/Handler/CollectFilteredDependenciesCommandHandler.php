@@ -11,15 +11,10 @@ final class CollectFilteredDependenciesCommandHandler
 {
     public function collect(FilterDependencyCollectionCommand $command): DependencyCollection
     {
-        $dependencyCollection = new DependencyCollection();
         $namedExclusion = $command->getNamedExclusion();
 
-        foreach ($command->getRequiredDependencyCollection() as $dependency) {
-            if (!in_array($dependency->getName(), $namedExclusion)) {
-                $dependencyCollection->add($dependency);
-            }
-        }
-
-        return $dependencyCollection;
+        return $command->getRequiredDependencyCollection()->filter(static function ($dependency) use ($namedExclusion) {
+            return !in_array($dependency->getName(), $namedExclusion);
+        });
     }
 }
