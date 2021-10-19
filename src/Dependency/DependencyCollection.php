@@ -65,4 +65,15 @@ final class DependencyCollection implements IteratorAggregate, Countable
             new self($noMatches)
         ];
     }
+
+    /**
+     * @param Closure $fn
+     * @return DependencyCollection
+     */
+    public function filter(Closure $fn): DependencyCollection
+    {
+        return new self(
+            array_filter($this->items, $fn)
+        );
+    }
 }
