@@ -129,7 +129,7 @@ final class UnusedCommand extends BaseCommand
                     $requiredDependency->markUsed();
                     continue;
                 }
-
+                $relatedRequiredDependencies  = [];
                 /** @var RequiredDependency $secondRequiredDependency */
                 foreach ($requiredDependencyCollection as $secondRequiredDependency) {
                     if ($requiredDependency === $secondRequiredDependency) {
@@ -138,6 +138,7 @@ final class UnusedCommand extends BaseCommand
 
                     if ($secondRequiredDependency->requires($requiredDependency)) {
                         // TODO add "required by" in output
+                        $relatedRequiredDependencies[$secondRequiredDependency->getName()] = $requiredDependency->getName();
                         $requiredDependency->markUsed();
                         continue 2;
                     }
@@ -178,16 +179,21 @@ final class UnusedCommand extends BaseCommand
         $io->newLine();
         $io->text('<fg=green>Used packages</>');
         foreach ($usedDependencyCollection as $usedDependency) {
-            // TODO add required by dependency
-            // TODO add suggest by dependency
-
-            $io->writeln(
-                sprintf(
-                    ' <fg=green>%s</> %s',
-                    "\u{2713}",
-                    $usedDependency->getName()
-                )
+            $message =  sprintf(
+                ' <fg=green>%s</> %s',
+                "\u{2713}",
+                $usedDependency->getName()
             );
+            if (isset($relatedRequiredDependencies[$usedDependency->getName()])) {
+                $message = sprintf(
+                    ' <fg=green>%s</> %s (required by %s)',
+                    "\u{2713}",
+                    $usedDependency->getName(),
+                    $relatedRequiredDependencies[$usedDependency->getName()]
+                );
+            }
+            // TODO add suggest by dependency
+            $io->writeln($message);
         }
 
         $io->newLine();
