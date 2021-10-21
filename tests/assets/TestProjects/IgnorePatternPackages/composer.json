@@ -1,0 +1,8 @@
+{
+    "name": "ns/lib",
+    "require": {
+        "dummy/test-package": "1.0",
+        "psr/log-implementation": "1.0.0",
+        "dummy/ff-implementation": "1.0.0"
+    }
+}

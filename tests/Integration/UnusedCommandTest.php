@@ -138,4 +138,21 @@ class UnusedCommandTest extends TestCase
 
         self::assertStringNotContainsString('dummy/test-package', $output->fetch());
     }
+
+    /**
+     * @test
+     */
+    public function itShouldNotReportPatternExcludedPackages(): void
+    {
+        chdir(__DIR__ . '/../assets/TestProjects/IgnorePatternPackages');
+
+        $output = new BufferedOutput();
+
+        $this->getApplication()->run(
+            new ArrayInput(['unused']),
+            $output
+        );
+
+        self::assertStringNotContainsString('-implementation', $output->fetch());
+    }
 }

@@ -12,9 +12,23 @@ final class CollectFilteredDependenciesCommandHandler
     public function collect(FilterDependencyCollectionCommand $command): DependencyCollection
     {
         $namedExclusion = $command->getNamedExclusion();
+        $patternExclusion = $command->getPatternExclusion();
 
-        return $command->getRequiredDependencyCollection()->filter(static function ($dependency) use ($namedExclusion) {
-            return !in_array($dependency->getName(), $namedExclusion);
+        return $command->getRequiredDependencyCollection()->filter(static function ($dependency) use (
+            $namedExclusion,
+            $patternExclusion
+        ) {
+            if (in_array($dependency->getName(), $namedExclusion)) {
+                return false;
+            }
+
+            foreach ($patternExclusion as $exclusion) {
+                if (preg_match($exclusion, $dependency->getName())) {
+                    return false;
+                }
+            }
+
+            return true;
         });
     }
 }
