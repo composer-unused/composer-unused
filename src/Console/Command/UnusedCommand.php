@@ -97,7 +97,6 @@ final class UnusedCommand extends BaseCommand
             new CollectConsumedSymbolsCommand(
                 $baseDir,
                 $rootPackage
-                // TODO add excludes
             )
         );
 
@@ -112,7 +111,8 @@ final class UnusedCommand extends BaseCommand
         $requiredDependencyCollection = $this->collectFilteredDependenciesCommandHandler->collect(
             new FilterDependencyCollectionCommand(
                 $unfilteredRequiredDependencyCollection,
-                $input->getOption('excludePackage')
+                $input->getOption('excludePackage'),
+                [] // TODO use pattern exclude option from command line
             )
         );
 
