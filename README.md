@@ -51,7 +51,7 @@ You can also install `composer-unused` as a local __development__ dependency:
 ## Usage
 Depending on the kind of your installation the command might differ.
 
-*Note: Packages must installed via `composer install` or `composer update` prior to running `composer-unused`.*
+*Note: Packages must be installed via `composer install` or `composer update` prior to running `composer-unused`.*
 
 ### PHAR
 The `phar` archive can be run directly in you project:
