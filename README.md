@@ -27,7 +27,7 @@ How do we check whether the provided *symbols* of a package are used in our code
 
 ## Installation
 
-⚠️ This tool heavily depends on certain versions of its dependencies. A **local or global installation of this package is not recommended** as it might not work as intended or can't be installed correctly. We do recommened you are download the `.phar` archive or use **PHIVE**  to install it locally.
+⚠️ This tool heavily depends on certain versions of its dependencies. A **local or global installation of this tool is not recommended** as it might not work as intended or can't be installed correctly. We do recommened you are download the `.phar` archive or use **PHIVE**  to install it locally.
 
 ### PHAR (PHP Archive) (recommended)
 Install via `phive` or grab the latest `composer-unused.phar` from the latest release:
