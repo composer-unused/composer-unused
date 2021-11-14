@@ -27,7 +27,7 @@
     "require-dev": {
         "ext-ds": "*",
         "ext-zend-opcache": "*",
-        "composer/composer": "^2.1.5",
+        "composer/composer": "^2.1.9",
         "jangregor/phpstan-prophecy": "^0.8.1",
         "phpspec/prophecy-phpunit": "^2.0.1",
         "phpstan/phpstan": "^0.12.99",
