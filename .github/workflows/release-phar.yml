@@ -6,7 +6,7 @@ on:
       - "**"
 
 env:
-  COMPOSER_VERSION: "2.0.13"
+  COMPOSER_VERSION: "^2.1"
   PHP_EXTENSIONS: "mbstring, ds"
   PHP_INI_VALUES: "memory_limit=-1, phar.readonly=0"
 
