@@ -69,7 +69,7 @@ jobs:
       - name: "Detach signature"
         run: "gpg --default-key ${{ steps.import_gpg.outputs.keyid }} --output ${{ env.COMPOSER_UNUSED_PHAR_SIGNATURE }} --detach-sig ${{ env.COMPOSER_UNUSED_PHAR }}"
 
-      - name: "Verfiy signature"
+      - name: "Verify signature"
         run: "gpg --verify ${{ env.COMPOSER_UNUSED_PHAR_SIGNATURE }} ${{ env.COMPOSER_UNUSED_PHAR }}"
 
       - name: "Get release"
