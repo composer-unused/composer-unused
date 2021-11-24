@@ -61,11 +61,16 @@ jobs:
         uses: "crazy-max/ghaction-import-gpg@v4"
         with:
           gpg_private_key: "${{ secrets.GPG_PRIVATE_KEY }}"
-          passphrase: "${{ secrets.GPG_PRIVATE_KEY }}"
+          passphrase: "${{ secrets.GPG_PASSPHRASE }}"
 
-      - name: "Determine tag"
-        id: "determine-tag"
-        run: "echo \"::set-output name=tag::${GITHUB_REF#refs/tags/}\""
+      - name: "Sign composer-unused.phar"
+        run: "gpg --default-key ${{ steps.import_gpg.outputs.keyid }} --sign ${{ env.COMPOSER_UNUSED_PHAR }}"
+
+      - name: "Detach signature"
+        run: "gpg --default-key ${{ steps.import_gpg.outputs.keyid }} --output ${{ env.COMPOSER_UNUSED_PHAR_SIGNATURE }} --detach-sig ${{ env.COMPOSER_UNUSED_PHAR }}"
+
+      - name: "Verfiy signature"
+        run: "gpg --verify ${{ env.COMPOSER_UNUSED_PHAR_SIGNATURE }} ${{ env.COMPOSER_UNUSED_PHAR }}"
 
       - name: "Get release"
         id: "get-release"
@@ -92,5 +97,5 @@ jobs:
         with:
           asset_content_type: "text/plain"
           asset_name: "composer-unused.phar.asc"
-          asset_path: "${{ env.COMPOSER_NORMALIZE_PHAR_SIGNATURE }}"
+          asset_path: "${{ env.COMPOSER_UNUSED_PHAR_SIGNATURE }}"
           upload_url: "${{ steps.get-release.outputs.upload_url }}"
