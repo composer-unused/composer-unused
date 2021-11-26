@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v2.4.0
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@2.15.0
+        uses: shivammathur/setup-php@2.16.0
         with:
           php-version: ${{ matrix.php }}
           tools: composer:v2, pecl
@@ -44,7 +44,7 @@ jobs:
         uses: actions/checkout@v2.4.0
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@2.15.0
+        uses: shivammathur/setup-php@2.16.0
         with:
           php-version: ${{ matrix.php }}
           tools: composer:v2, pecl
@@ -75,7 +75,7 @@ jobs:
         uses: actions/checkout@v2.4.0
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@2.15.0
+        uses: shivammathur/setup-php@2.16.0
         with:
           php-version: ${{ matrix.php }}
           tools: composer:v2, pecl
@@ -103,7 +103,7 @@ jobs:
         uses: actions/checkout@v2.4.0
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@2.15.0
+        uses: shivammathur/setup-php@2.16.0
         with:
           php-version: ${{ matrix.php }}
           tools: composer:v2, pecl
