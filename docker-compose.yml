@@ -16,3 +16,11 @@ services:
       - .:/docker/composer-unused:rw
       - ../symbol-parser:/docker/symbol-parser:rw
     tty: true
+
+  php8.1:
+    build: .docker/php8.1
+    container_name: composer-unused-8.1
+    volumes:
+      - .:/docker/composer-unused:rw
+      - ../symbol-parser:/docker/symbol-parser:rw
+    tty: true
