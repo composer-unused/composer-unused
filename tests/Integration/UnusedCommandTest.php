@@ -113,4 +113,20 @@ class UnusedCommandTest extends TestCase
         self::assertStringContainsString('dummy/test-package', $commandTester->getDisplay());
         self::assertStringContainsString('Found 0 used, 1 unused and 0 ignored packages', $commandTester->getDisplay());
     }
+
+    /**
+     * @test
+     */
+    public function itShouldNotReportFileDependencyWithFunctionGuard(): void
+    {
+        chdir(__DIR__ . '/../assets/TestProjects/FileDependencyFunctionWithGuard');
+
+        self::assertEquals(
+            0,
+            $this->getApplication()->run(
+                new ArrayInput(['unused']),
+                new NullOutput()
+            )
+        );
+    }
 }
