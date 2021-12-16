@@ -1,0 +1,16 @@
+{
+  "name": "foo/bar",
+  "description": "foobar",
+  "type": "library",
+  "minimum-stability": "stable",
+  "require": {
+      "test/file-dependency": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "FileDependencyFunctionWithGuard\\": "src/"
+    }
+  },
+  "require-dev": {
+  }
+}

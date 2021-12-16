@@ -6,7 +6,7 @@ parameters:
         - phpunit.bootstrap.php
     excludes_analyse:
         - %currentWorkingDirectory%/tests/assets
-    level: max
+    level: 8
     inferPrivatePropertyTypeFromConstructor: true
     paths:
         - bin/
