@@ -42,7 +42,10 @@
         "sort-packages": true
     },
     "extra": {
-        "class": "Icanhazstring\\Composer\\Unused\\UnusedPlugin"
+        "class": "Icanhazstring\\Composer\\Unused\\UnusedPlugin",
+        "unused": [
+            "symfony/process"
+        ]
     },
     "autoload": {
         "psr-4": {
