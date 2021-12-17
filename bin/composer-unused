@@ -36,6 +36,18 @@ use Symfony\Component\Console\Input\ArgvInput;
 
     require UNUSED_COMPOSER_INSTALL;
 
+    if (!class_exists('Composer\Console\Application')) {
+        echo 'DEPRECATION WARNING: Running in fallback mode as composer/composer will no longer be shipped. ' .
+                'Executing "composer unused <args>" now.' . PHP_EOL;
+
+        $args = array_slice($argv, 1);
+        $process = new Symfony\Component\Process\Process('composer unused ' . implode(' ', $args));
+        $process->run(function ($type, $buffer) {
+            echo $buffer;
+        });
+        die($process->getExitCode());
+    }
+
     $container = require __DIR__ . '/../config/container.php';
 
     $application = new Application();

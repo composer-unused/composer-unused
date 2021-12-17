@@ -23,7 +23,8 @@
         "nikic/php-parser": "^4.13",
         "psr/container": "^1.0 || ^2.0",
         "psr/log": "^1.1 || ^2 || ^3",
-        "symfony/finder": "^4.2 || ^5.0"
+        "symfony/finder": "^4.2 || ^5.0",
+        "symfony/process": "^2.8.52 || ^3.4.35 || ^4.4 || ^5.0 || ^6.0"
     },
     "require-dev": {
         "ext-ds": "*",
@@ -54,6 +55,9 @@
             "Icanhazstring\\Composer\\Test\\Unused\\Unit\\": "tests/Unit"
         }
     },
+    "bin": [
+        "bin/composer-unused"
+    ],
     "scripts": {
         "analyse": "phpstan analyse --no-progress",
         "check": [

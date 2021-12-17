@@ -7,6 +7,22 @@
 
 ### Removed
 
+## [0.7.11] - 2021-12-17
+### Changed
+- Added a fallback to `bin/composer-unused` when `composer/composer` dependency is no longer present
+
+## [0.7.10] - 2021-12-17
+### Removed
+- Removed `composer/composer` from direct dependencies and moved to `--dev`
+
+## [0.7.9] - 2021-12-14
+### Fixed
+- Fixed phar build
+
+## [0.7.8] - 2021-11-20
+### Added
+- Added support for `psr/container` v2  [#239](https://github.com/composer-unused/composer-unused/pull/239) (thanks to [@alex-winter](https://github.com/alex-winter))
+
 ## [0.7.7] - 2021-07-26
 ### Added
 - Added support for `psr/log` v2 and 3 [#200](https://github.com/composer-unused/composer-unused/pull/200) (thanks to [@simPod](https://github.com/simPod))
