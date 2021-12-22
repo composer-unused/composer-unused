@@ -54,6 +54,9 @@
             "Icanhazstring\\Composer\\Test\\Unused\\Unit\\": "tests/Unit"
         }
     },
+    "bin": [
+        "bin/composer-unused"
+    ],
     "scripts": {
         "analyse": "phpstan analyse --no-progress",
         "check": [

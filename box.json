@@ -1,10 +1,9 @@
 {
-    "base-path": null,
-    "main": "bin/composer-unused",
-    "output": "build/composer-unused.phar",
-    "php-scoper": "scoper.inc.php",
-    "files": [
-        "config/container.php",
-        "config/service_manager.php"
-    ]
+  "base-path": null,
+  "output": "build/composer-unused.phar",
+  "php-scoper": "scoper.inc.php",
+  "files": [
+    "config/container.php",
+    "config/service_manager.php"
+  ]
 }
