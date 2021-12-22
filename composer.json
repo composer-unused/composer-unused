@@ -20,6 +20,7 @@
         "php": ">=7.3 || ^8.0",
         "ext-json": "*",
         "composer-plugin-api": "^2.0",
+        "composer/composer": "^2.1",
         "nikic/php-parser": "^4.13",
         "psr/container": "^1.0 || ^2.0",
         "psr/log": "^1.1 || ^2 || ^3",
@@ -28,7 +29,6 @@
     "require-dev": {
         "ext-ds": "*",
         "ext-zend-opcache": "*",
-        "composer/composer": "^2.1",
         "jangregor/phpstan-prophecy": "^0.8.1",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpstan/phpstan": "^0.12.99",
