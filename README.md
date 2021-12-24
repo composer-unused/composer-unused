@@ -1,15 +1,15 @@
 <p align="center">
-    <img src="https://raw.githubusercontent.com/icanhazstring/composer-unused/main/art/logo.png" width="450" alt="composer-unused logo">
+    <img src="https://raw.githubusercontent.com/composer-unused/composer-unused/main/art/logo.png" width="450" alt="composer-unused logo">
 </p>
 
 # composer-unused
 A Composer tool to show unused Composer dependencies by scanning your code.
 
-Created by [Andreas Frömer](https://twitter.com/icanhazstring) and [contributors](https://github.com/icanhazstring/composer-unused/graphs/contributors), logo by [Caneco](https://twitter.com/caneco).
+Created by [Andreas Frömer](https://twitter.com/icanhazstring) and [contributors](https://github.com/composer-unused/composer-unused/graphs/contributors), logo by [Caneco](https://twitter.com/caneco).
 
 [![](https://img.shields.io/github/workflow/status/composer-unused/composer-unused/validate-code?label=build&style=flat-square)](https://github.com/composer-unused/composer-unused)
 [![](https://img.shields.io/github/workflow/status/composer-unused/composer-unused/validate-phar?label=build-phar&style=flat-square)](https://github.com/composer-unused/composer-unused)
-[![](https://img.shields.io/github/tag-date/composer-unused/composer-unused.svg?label=version&style=flat-square)](https://github.com/icanhazstring/composer-unused/releases/latest)
+[![](https://img.shields.io/github/tag-date/composer-unused/composer-unused.svg?label=version&style=flat-square)](https://github.com/composer-unused/composer-unused/releases/latest)
 
 ## Motivation
 
@@ -33,7 +33,7 @@ How do we check whether the provided *symbols* of a package are used in our code
 Install via `phive` or grab the latest `composer-unused.phar` from the latest release:
 
     phive install composer-unused
-    curl -JOL https://github.com/icanhazstring/composer-unused/releases/latest/download/composer-unused.phar
+    curl -JOL https://github.com/composer-unused/composer-unused/releases/latest/download/composer-unused.phar
 
 ### Global
 If you have a lot of projects and don't want to install this package per project, simply install it
