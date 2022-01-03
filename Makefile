@@ -22,7 +22,7 @@ remove: ## Run `composer remove`
 	docker compose run php$(PHP_VERSION) composer remove $(filter-out $@, $(MAKECMDGOALS))
 
 check: ## Run all checks in succession (phpcs, phpunit, phpstan)
-	cs phpunit analyse
+	cs analyse phpunit
 
 phpunit: ## Run phpunit tests
 	docker compose run php$(PHP_VERSION) vendor/bin/phpunit
