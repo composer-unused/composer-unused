@@ -21,8 +21,7 @@ require: ## Run `composer require`
 remove: ## Run `composer remove`
 	docker compose run php$(PHP_VERSION) composer remove $(filter-out $@, $(MAKECMDGOALS))
 
-check: ## Run all checks in succession (phpcs, phpunit, phpstan)
-	cs analyse phpunit
+check: cs analyse phpunit ## Run all checks in succession (phpcs, phpunit, phpstan)
 
 phpunit: ## Run phpunit tests
 	docker compose run php$(PHP_VERSION) vendor/bin/phpunit

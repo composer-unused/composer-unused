@@ -49,4 +49,13 @@ final class InvalidDependency implements DependencyInterface
     {
         return false;
     }
+
+    public function requiredBy(DependencyInterface $dependency): void
+    {
+    }
+
+    public function getRequiredBy(): array
+    {
+        return [];
+    }
 }
