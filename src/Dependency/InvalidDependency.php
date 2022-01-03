@@ -58,4 +58,13 @@ final class InvalidDependency implements DependencyInterface
     {
         return [];
     }
+
+    public function suggestedBy(DependencyInterface $dependency): void
+    {
+    }
+
+    public function getSuggestedBy(): array
+    {
+        return [];
+    }
 }

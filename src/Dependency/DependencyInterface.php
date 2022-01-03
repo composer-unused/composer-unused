@@ -28,4 +28,11 @@ interface DependencyInterface
      * @return array<DependencyInterface>
      */
     public function getRequiredBy(): array;
+
+    public function suggestedBy(DependencyInterface $dependency): void;
+
+    /**
+     * @return array<DependencyInterface>
+     */
+    public function getSuggestedBy(): array;
 }

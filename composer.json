@@ -13,7 +13,7 @@
     "authors": [
         {
             "name": "Andreas Frömer",
-            "email": "github@icanhazstring.com"
+            "email": "composer-unused@icanhazstring.com"
         }
     ],
     "require": {

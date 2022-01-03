@@ -20,6 +20,8 @@ final class RequiredDependency implements DependencyInterface
     private $symbols;
     /** @var array<DependencyInterface> */
     private $requiredBy = [];
+    /** @var array<DependencyInterface> */
+    private $suggestBy = [];
 
     public function __construct(PackageInterface $package, SymbolListInterface $symbols)
     {
@@ -71,5 +73,15 @@ final class RequiredDependency implements DependencyInterface
     public function getRequiredBy(): array
     {
         return $this->requiredBy;
+    }
+
+    public function suggestedBy(DependencyInterface $dependency): void
+    {
+        $this->suggestBy[$dependency->getName()] = $dependency;
+    }
+
+    public function getSuggestedBy(): array
+    {
+        return $this->suggestBy;
     }
 }
