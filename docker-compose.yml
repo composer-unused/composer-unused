@@ -6,7 +6,6 @@ services:
     container_name: composer-unused-7.4
     volumes:
       - .:/docker/composer-unused:rw
-      - ../symbol-parser:/docker/symbol-parser:rw
     tty: true
 
   php8.0:
@@ -14,7 +13,6 @@ services:
     container_name: composer-unused-8.0
     volumes:
       - .:/docker/composer-unused:rw
-      - ../symbol-parser:/docker/symbol-parser:rw
     tty: true
 
   php8.1:
@@ -22,5 +20,4 @@ services:
     container_name: composer-unused-8.1
     volumes:
       - .:/docker/composer-unused:rw
-      - ../symbol-parser:/docker/symbol-parser:rw
     tty: true
