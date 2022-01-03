@@ -8,7 +8,6 @@ use Composer\Package\Link;
 use Composer\Package\Package;
 use Composer\Package\PackageInterface;
 use Composer\Semver\Constraint\ConstraintInterface;
-use Icanhazstring\Composer\Unused\Dependency\Dependency;
 use Icanhazstring\Composer\Unused\Dependency\RequiredDependency;
 use ComposerUnused\SymbolParser\Symbol\Symbol;
 use ComposerUnused\SymbolParser\Symbol\SymbolList;

@@ -21,4 +21,11 @@ interface DependencyInterface
     public function requires(DependencyInterface $dependency): bool;
 
     public function suggests(DependencyInterface $dependency): bool;
+
+    public function requiredBy(DependencyInterface $dependency): void;
+
+    /**
+     * @return array<DependencyInterface>
+     */
+    public function getRequiredBy(): array;
 }
