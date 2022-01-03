@@ -143,7 +143,7 @@ final class UnusedCommand extends BaseCommand
                     }
 
                     if ($secondRequiredDependency->suggests($requiredDependency)) {
-                        // TODO add "suggested by" in output
+                        $requiredDependency->suggestedBy($secondRequiredDependency);
                         $requiredDependency->markUsed();
                         continue 2;
                     }
@@ -179,7 +179,7 @@ final class UnusedCommand extends BaseCommand
         $io->text('<fg=green>Used packages</>');
         foreach ($usedDependencyCollection as $usedDependency) {
             $requiredBy = '';
-            // TODO add suggest by dependency
+            $suggestedBy = '';
 
             if (!empty($usedDependency->getRequiredBy())) {
                 $requiredByNames = array_map(static function (DependencyInterface $dependency) {
@@ -192,12 +192,24 @@ final class UnusedCommand extends BaseCommand
                 );
             }
 
+            if (!empty($usedDependency->getSuggestedBy())) {
+                $suggestedByNames = array_map(static function (DependencyInterface $dependency) {
+                    return $dependency->getName();
+                }, $usedDependency->getSuggestedBy());
+
+                $requiredBy = sprintf(
+                    ' (<fg=cyan>suggested by: %s</>)',
+                    implode(', ', $suggestedByNames)
+                );
+            }
+
             $io->writeln(
                 sprintf(
-                    ' <fg=green>%s</> %s%s',
+                    ' <fg=green>%s</> %s%s%s',
                     "\u{2713}",
                     $usedDependency->getName(),
-                    $requiredBy
+                    $requiredBy,
+                    $suggestedBy
                 )
             );
         }
