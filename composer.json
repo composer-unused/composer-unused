@@ -4,7 +4,6 @@
     "description": "Show unused packages by scanning your code",
     "keywords": [
         "composer",
-        "plugin",
         "unused",
         "php-parser"
     ],
