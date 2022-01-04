@@ -1,0 +1,13 @@
+{
+    "name": "ns/lib",
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "first/dependency": "*",
+        "second/dependency": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "MultiDependencyWithClassmap\\": "src"
+        }
+    }
+}

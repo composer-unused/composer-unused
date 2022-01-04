@@ -140,4 +140,18 @@ class UnusedCommandTest extends TestCase
         self::assertStringNotContainsString('dummy/test-package', $commandTester->getDisplay());
         self::assertStringContainsString('Found 0 used, 0 unused, 0 ignored and 1 zombie packages', $commandTester->getDisplay());
     }
+
+    /**
+     * @test
+     */
+    public function itShouldRunWithMultiDependenciesWithClassmap(): void
+    {
+        chdir(__DIR__ . '/../assets/TestProjects/MultiDependencyWithClassmap');
+        $commandTester = new CommandTester($this->container->get(UnusedCommand::class));
+        $exitCode = $commandTester->execute([]);
+
+        self::assertSame(0, $exitCode);
+        self::assertStringNotContainsString('dummy/test-package', $commandTester->getDisplay());
+        self::assertStringContainsString('Found 3 used, 0 unused, 0 ignored and 0 zombie packages', $commandTester->getDisplay());
+    }
 }

@@ -1,0 +1,6 @@
+{
+    "name": "second/dependency",
+    "autoload": {
+        "classmap": ["src/"]
+    }
+}
