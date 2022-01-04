@@ -1,15 +1,10 @@
 {
   "name": "foo/bar",
-  "description": "foobar",
-  "type": "library",
-  "minimum-stability": "stable",
   "require": {
   },
   "autoload": {
     "psr-4": {
       "EmptyRequire\\": "src/"
     }
-  },
-  "require-dev": {
   }
 }

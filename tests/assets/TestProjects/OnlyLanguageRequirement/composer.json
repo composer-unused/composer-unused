@@ -1,8 +1,5 @@
 {
   "name": "foo/bar",
-  "description": "foobar",
-  "type": "library",
-  "minimum-stability": "stable",
   "require": {
     "php": ">=7.4 <7.5"
   },

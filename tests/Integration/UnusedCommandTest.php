@@ -55,7 +55,7 @@ class UnusedCommandTest extends TestCase
         $exitCode = $commandTester->execute([]);
 
         self::assertSame(0, $exitCode);
-        self::assertStringContainsString('Found 2 used, 0 unused and 0 ignored packages', $commandTester->getDisplay());
+        self::assertStringContainsString('Found 2 used, 0 unused, 0 ignored and 0 zombie packages', $commandTester->getDisplay());
     }
 
     /**
@@ -68,7 +68,7 @@ class UnusedCommandTest extends TestCase
         $exitCode = $commandTester->execute([]);
 
         self::assertSame(0, $exitCode);
-        self::assertStringContainsString('Found 2 used, 0 unused and 0 ignored packages', $commandTester->getDisplay());
+        self::assertStringContainsString('Found 2 used, 0 unused, 0 ignored and 0 zombie packages', $commandTester->getDisplay());
     }
 
     /**
@@ -82,7 +82,7 @@ class UnusedCommandTest extends TestCase
 
         self::assertSame(0, $exitCode);
         self::assertStringNotContainsString('composer-plugin-api', $commandTester->getDisplay());
-        self::assertStringContainsString('Found 0 used, 0 unused and 0 ignored packages', $commandTester->getDisplay());
+        self::assertStringContainsString('Found 0 used, 0 unused, 0 ignored and 0 zombie packages', $commandTester->getDisplay());
     }
 
     /**
@@ -96,7 +96,7 @@ class UnusedCommandTest extends TestCase
 
         self::assertSame(0, $exitCode);
         self::assertStringNotContainsString('dummy/test-package', $commandTester->getDisplay());
-        self::assertStringContainsString('Found 0 used, 0 unused and 0 ignored packages', $commandTester->getDisplay());
+        self::assertStringContainsString('Found 0 used, 0 unused, 0 ignored and 0 zombie packages', $commandTester->getDisplay());
     }
 
     /**
@@ -111,7 +111,7 @@ class UnusedCommandTest extends TestCase
         self::assertSame(1, $exitCode);
         self::assertStringNotContainsString('-implementation', $commandTester->getDisplay());
         self::assertStringContainsString('dummy/test-package', $commandTester->getDisplay());
-        self::assertStringContainsString('Found 0 used, 1 unused and 0 ignored packages', $commandTester->getDisplay());
+        self::assertStringContainsString('Found 0 used, 1 unused, 0 ignored and 0 zombie packages', $commandTester->getDisplay());
     }
 
     /**
@@ -124,6 +124,20 @@ class UnusedCommandTest extends TestCase
         $exitCode = $commandTester->execute([]);
 
         self::assertSame(0, $exitCode);
-        self::assertStringContainsString('Found 1 used, 0 unused and 0 ignored packages', $commandTester->getDisplay());
+        self::assertStringContainsString('Found 1 used, 0 unused, 0 ignored and 0 zombie packages', $commandTester->getDisplay());
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldReportUnusedZombies(): void
+    {
+        chdir(__DIR__ . '/../assets/TestProjects/UnusedZombies');
+        $commandTester = new CommandTester($this->container->get(UnusedCommand::class));
+        $exitCode = $commandTester->execute([]);
+
+        self::assertSame(1, $exitCode);
+        self::assertStringNotContainsString('dummy/test-package', $commandTester->getDisplay());
+        self::assertStringContainsString('Found 0 used, 0 unused, 0 ignored and 1 zombie packages', $commandTester->getDisplay());
     }
 }

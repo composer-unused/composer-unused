@@ -12,24 +12,18 @@ final class CollectFilteredDependenciesCommandHandler
 {
     public function collect(FilterDependencyCollectionCommand $command): DependencyCollection
     {
-        $namedExclusion = $command->getNamedExclusion();
-        $patternExclusion = $command->getPatternExclusion();
+        $filters = $command->getFilters();
 
-        return $command->getRequiredDependencyCollection()->filter(static function (DependencyInterface $dependency) use (
-            $namedExclusion,
-            $patternExclusion
-        ) {
-            if (in_array($dependency->getName(), $namedExclusion, true)) {
-                return false;
-            }
-
-            foreach ($patternExclusion as $exclusion) {
-                if (preg_match($exclusion, $dependency->getName())) {
-                    return false;
+        return $command->getRequiredDependencyCollection()->filter(
+            static function (DependencyInterface $dependency) use ($filters) {
+                foreach ($filters as $filter) {
+                    if ($filter->applies($dependency)) {
+                        return false;
+                    }
                 }
-            }
 
-            return true;
-        });
+                return true;
+            }
+        );
     }
 }

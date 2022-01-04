@@ -48,7 +48,8 @@
     "autoload-dev": {
         "psr-4": {
             "ComposerUnused\\ComposerUnused\\Test\\Integration\\": "tests/Integration",
-            "ComposerUnused\\ComposerUnused\\Test\\Unit\\": "tests/Unit"
+            "ComposerUnused\\ComposerUnused\\Test\\Unit\\": "tests/Unit",
+            "ComposerUnused\\ComposerUnused\\Test\\Stubs\\": "tests/Stubs"
         }
     },
     "bin": [

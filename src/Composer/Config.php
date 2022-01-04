@@ -15,6 +15,8 @@ final class Config
     private array $autoload = [];
     /** @var array<string, string>  */
     private array $suggests = [];
+    /** @var array<string, mixed> */
+    private array $extra = [];
 
     public function getName(): string
     {
@@ -43,6 +45,14 @@ final class Config
     public function getSuggests(): array
     {
         return $this->suggests;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getExtra(): array
+    {
+        return $this->extra;
     }
 
     public function get(string $property): string
