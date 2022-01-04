@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused\Console\Command;
 
-use Composer\Command\BaseCommand;
 use Icanhazstring\Composer\Unused\Command\CollectConsumedSymbolsCommand;
 use Icanhazstring\Composer\Unused\Command\FilterDependencyCollectionCommand;
 use Icanhazstring\Composer\Unused\Command\Handler\CollectConsumedSymbolsCommandHandler;
 use Icanhazstring\Composer\Unused\Command\Handler\CollectFilteredDependenciesCommandHandler;
 use Icanhazstring\Composer\Unused\Command\Handler\CollectRequiredDependenciesCommandHandler;
 use Icanhazstring\Composer\Unused\Command\LoadRequiredDependenciesCommand;
+use Icanhazstring\Composer\Unused\Composer\ConfigFactory;
+use Icanhazstring\Composer\Unused\Composer\LocalRepository;
+use Icanhazstring\Composer\Unused\Composer\Package;
 use Icanhazstring\Composer\Unused\Dependency\DependencyCollection;
 use Icanhazstring\Composer\Unused\Dependency\DependencyInterface;
 use Icanhazstring\Composer\Unused\Dependency\InvalidDependency;
 use Icanhazstring\Composer\Unused\Dependency\RequiredDependency;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,7 +28,7 @@ use function sprintf;
 
 use const DIRECTORY_SEPARATOR;
 
-final class UnusedCommand extends BaseCommand
+final class UnusedCommand extends Command
 {
     /** @var CollectConsumedSymbolsCommandHandler */
     private $collectConsumedSymbolsCommandHandler;
@@ -32,13 +36,16 @@ final class UnusedCommand extends BaseCommand
     private $collectRequiredDependenciesCommandHandler;
     /** @var CollectFilteredDependenciesCommandHandler */
     private $collectFilteredDependenciesCommandHandler;
+    private ConfigFactory $configFactory;
 
     public function __construct(
+        ConfigFactory $configFactory,
         CollectConsumedSymbolsCommandHandler $collectConsumedSymbolsCommandHandler,
         CollectRequiredDependenciesCommandHandler $collectRequiredDependenciesCommandHandler,
         CollectFilteredDependenciesCommandHandler $collectFilteredDependenciesCommandHandler
     ) {
         parent::__construct('unused');
+        $this->configFactory = $configFactory;
         $this->collectConsumedSymbolsCommandHandler = $collectConsumedSymbolsCommandHandler;
         $this->collectRequiredDependenciesCommandHandler = $collectRequiredDependenciesCommandHandler;
         $this->collectFilteredDependenciesCommandHandler = $collectFilteredDependenciesCommandHandler;
@@ -48,6 +55,13 @@ final class UnusedCommand extends BaseCommand
     {
         $this->setDescription(
             'Show unused packages by scanning and comparing package namespaces against your source.'
+        );
+
+        $this->addArgument(
+            'composer-json',
+            InputArgument::OPTIONAL,
+            'Provide a composer.json to be scanned',
+            getcwd() . DIRECTORY_SEPARATOR . 'composer.json'
         );
 
         $this->addOption(
@@ -83,15 +97,23 @@ final class UnusedCommand extends BaseCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $composer = $this->getComposer();
+        $composerJsonPath = $input->getArgument('composer-json');
 
-        if ($composer === null) {
-            // TODO IO Error
+        if (!file_exists($composerJsonPath) && !is_readable($composerJsonPath)) {
             return 1;
         }
 
-        $baseDir = dirname($composer->getConfig()->getConfigSource()->getName());
-        $rootPackage = $composer->getPackage();
+        $composerJson = file_get_contents($composerJsonPath);
+
+        if ($composerJson === false) {
+            return 1;
+        }
+
+        $config = $this->configFactory->fromComposerJson($composerJson);
+        $baseDir = dirname($composerJsonPath);
+
+        $rootPackage = Package::fromConfig($config);
+        $localRepository = new LocalRepository($baseDir . DIRECTORY_SEPARATOR . $config->get('vendor-dir'));
 
         $consumedSymbols = $this->collectConsumedSymbolsCommandHandler->collect(
             new CollectConsumedSymbolsCommand(
@@ -102,9 +124,9 @@ final class UnusedCommand extends BaseCommand
 
         $unfilteredRequiredDependencyCollection = $this->collectRequiredDependenciesCommandHandler->collect(
             new LoadRequiredDependenciesCommand(
-                $baseDir . DIRECTORY_SEPARATOR . $composer->getConfig()->get('vendor-dir'),
+                $baseDir . DIRECTORY_SEPARATOR . $config->get('vendor-dir'),
                 $rootPackage->getRequires(),
-                $composer->getRepositoryManager()->getLocalRepository()
+                $localRepository
             )
         );
 

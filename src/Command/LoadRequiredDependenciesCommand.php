@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused\Command;
 
-use Composer\Package\Link;
-use Composer\Repository\RepositoryInterface;
+use ComposerUnused\Contracts\LinkInterface;
+use ComposerUnused\Contracts\RepositoryInterface;
 
 final class LoadRequiredDependenciesCommand
 {
     /** @var string */
     private $baseDir;
-    /** @var array<Link> */
+    /** @var array<LinkInterface> */
     private $packageLinks;
     /** @var RepositoryInterface */
     private $packageRepository;
 
     /**
-     * @param array<Link> $packageLinks
+     * @param array<LinkInterface> $packageLinks
      */
     public function __construct(string $baseDir, array $packageLinks, RepositoryInterface $packageRepository)
     {
@@ -32,7 +32,7 @@ final class LoadRequiredDependenciesCommand
     }
 
     /**
-     * @return array<Link>
+     * @return array<LinkInterface>
      */
     public function getPackageLinks(): array
     {

@@ -9,6 +9,7 @@ parameters:
     level: max
     inferPrivatePropertyTypeFromConstructor: true
     paths:
+        - bin/
         - src/
         - tests/
     tmpDir: data

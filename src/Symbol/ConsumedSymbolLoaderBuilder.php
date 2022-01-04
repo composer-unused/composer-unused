@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Icanhazstring\Composer\Unused\Symbol;
 
 use ComposerUnused\SymbolParser\File\FileContentProvider;
+use ComposerUnused\SymbolParser\Parser\PHP\AutoloadType;
 use ComposerUnused\SymbolParser\Parser\PHP\ConsumedSymbolCollector;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\ClassConstStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\NewStrategy;
@@ -22,7 +23,7 @@ use function get_loaded_extensions;
 
 final class ConsumedSymbolLoaderBuilder
 {
-    public function build(string $packageRoot): SymbolLoaderInterface
+    public function build(): SymbolLoaderInterface
     {
         $usedSymbolCollector = new ConsumedSymbolCollector(
             [
@@ -49,9 +50,8 @@ final class ConsumedSymbolLoaderBuilder
         );
 
         return new FileSymbolLoader(
-            $packageRoot,
             $fileSymbolProvider,
-            ['classmap', 'files', 'psr-0', 'psr-4']
+            AutoloadType::all()
         );
     }
 }

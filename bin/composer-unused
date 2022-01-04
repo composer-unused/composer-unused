@@ -2,10 +2,9 @@
 
 <?php
 
-use Composer\Composer;
-use Composer\Console\Application;
-use Composer\IO\IOInterface;
 use Icanhazstring\Composer\Unused\Console\Command\UnusedCommand;
+use Psr\Container\ContainerInterface;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 
 (static function ($argv) {
@@ -36,19 +35,12 @@ use Symfony\Component\Console\Input\ArgvInput;
 
     require UNUSED_COMPOSER_INSTALL;
 
+    /** @var ContainerInterface $container */
     $container = require __DIR__ . '/../config/container.php';
 
     $application = new Application();
-
-    $container->register(IOInterface::class, $application->getIO());
-    $container->register(Composer::class, $application->getComposer());
-
     $application->add($container->get(UnusedCommand::class));
-
-    // Add 'unused' command if necessary
-    if (!isset($argv[1]) || $argv[1] !== 'unused') {
-        $argv = array_merge([$argv[0], 'unused'], array_slice($argv, 1));
-    }
+    $application->setDefaultCommand('unused', true);
 
     $application->run(new ArgvInput($argv));
 })($argv);

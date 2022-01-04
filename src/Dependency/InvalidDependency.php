@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused\Dependency;
 
-use Composer\Package\Link;
+use ComposerUnused\Contracts\LinkInterface;
 use ComposerUnused\SymbolParser\Symbol\SymbolInterface;
 
 final class InvalidDependency implements DependencyInterface
 {
-    /** @var Link */
+    /** @var LinkInterface */
     private $linkedPackage;
     /** @var string */
     private $reason;
 
-    public function __construct(Link $linkedPackage, string $reason)
+    public function __construct(LinkInterface $linkedPackage, string $reason)
     {
         $this->linkedPackage = $linkedPackage;
         $this->reason = $reason;

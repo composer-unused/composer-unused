@@ -30,7 +30,7 @@ final class CollectRequiredDependenciesCommandHandler
     public function collect(LoadRequiredDependenciesCommand $command): DependencyCollection
     {
         $dependencyCollection = new DependencyCollection();
-        $providedSymbolLoader = $this->providedSymbolLoaderBuilder->build($command->getBaseDir());
+        $providedSymbolLoader = $this->providedSymbolLoaderBuilder->build();
 
         foreach ($command->getPackageLinks() as $require) {
             $composerPackage = $this->packageResolver->resolve(
@@ -39,15 +39,22 @@ final class CollectRequiredDependenciesCommandHandler
             );
 
             if ($composerPackage === null) {
-                $dependencyCollection->add(new InvalidDependency($require, 'Unable to locate package'));
+                $dependencyCollection->add(
+                    new InvalidDependency(
+                        $require,
+                        'Dependency can\'t be located. Maybe not installed?'
+                    )
+                );
                 continue;
             }
+
+            $packageBaseDir = $command->getBaseDir() . DIRECTORY_SEPARATOR . $composerPackage->getName();
 
             $dependencyCollection->add(
                 new RequiredDependency(
                     $composerPackage,
                     (new SymbolList())->addAll(
-                        $providedSymbolLoader->load($composerPackage)
+                        $providedSymbolLoader->withBaseDir($packageBaseDir)->load($composerPackage)
                     )
                 )
             );

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Test\Unused\Unit\Collection;
 
-use Composer\Package\PackageInterface;
+use ComposerUnused\Contracts\PackageInterface;
 use Icanhazstring\Composer\Unused\Dependency\DependencyCollection;
 use Icanhazstring\Composer\Unused\Dependency\RequiredDependency;
 use ComposerUnused\SymbolParser\Symbol\SymbolListInterface;

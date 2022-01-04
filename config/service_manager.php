@@ -8,6 +8,7 @@ use Icanhazstring\Composer\Unused\Command\Handler\CollectRequiredDependenciesCom
 use Icanhazstring\Composer\Unused\Command\Handler\Factory\CollectConsumedSymbolsCommandHandlerFactory;
 use Icanhazstring\Composer\Unused\Command\Handler\Factory\CollectFilteredDependenciesCommandHandlerFactory;
 use Icanhazstring\Composer\Unused\Command\Handler\Factory\CollectRequiredDependenciesCommandHandlerFactory;
+use Icanhazstring\Composer\Unused\Composer\ConfigFactory;
 use Icanhazstring\Composer\Unused\Console\Command\UnusedCommand;
 use Icanhazstring\Composer\Unused\Console\Command\UnusedCommandFactory;
 use Icanhazstring\Composer\Unused\Di\InvokableFactory;
@@ -24,5 +25,6 @@ return [
         ConsumedSymbolLoaderBuilder::class => InvokableFactory::class,
         ProvidedSymbolLoaderBuilder::class => InvokableFactory::class,
         PackageResolver::class => InvokableFactory::class,
+        ConfigFactory::class => InvokableFactory::class,
     ]
 ];
