@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Test\Unused\Unit\Dependency;
 
-use Composer\Package\Link;
-use Composer\Package\Package;
-use Composer\Package\PackageInterface;
-use Composer\Semver\Constraint\ConstraintInterface;
+use ComposerUnused\Contracts\PackageInterface;
+use Icanhazstring\Composer\Unused\Composer\Link;
+use Icanhazstring\Composer\Unused\Composer\Package;
 use Icanhazstring\Composer\Unused\Dependency\RequiredDependency;
 use ComposerUnused\SymbolParser\Symbol\Symbol;
 use ComposerUnused\SymbolParser\Symbol\SymbolList;
@@ -48,13 +47,13 @@ class RequiredDependencyTest extends TestCase
     public function itShouldRequireDependency(): void
     {
         $rootRequirement = new RequiredDependency(
-            new Package('root/requirement', '1.0.0', '1.0.0'),
+            new Package('root/requirement'),
             new SymbolList()
         );
 
-        $requiredPackage = new Package('required/pacakge', '1.0.0', '1.0.0');
+        $requiredPackage = new Package('required/pacakge');
         $requiredPackage->setRequires([
-            'root/requirement' => new Link('', 'root/requirement', $this->createStub(ConstraintInterface::class))
+            'root/requirement' => new Link('root/requirement')
         ]);
 
         $requiredDependency = new RequiredDependency($requiredPackage, new SymbolList());
@@ -68,12 +67,12 @@ class RequiredDependencyTest extends TestCase
     public function itShouldSuggestDependency(): void
     {
         $rootRequirement = new RequiredDependency(
-            new Package('root/requirement', '1.0.0', '1.0.0'),
+            new Package('root/requirement'),
             new SymbolList()
         );
 
-        $requiredPackage = new Package('required/pacakge', '1.0.0', '1.0.0');
-        $requiredPackage->setSuggests(['root/requirement' => '*']);
+        $requiredPackage = new Package('required/pacakge');
+        $requiredPackage->setSuggests(['root/requirement']);
 
         $requiredDependency = new RequiredDependency($requiredPackage, new SymbolList());
 

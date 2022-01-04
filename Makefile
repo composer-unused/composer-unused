@@ -1,4 +1,4 @@
-PHP_VERSION=8.0
+PHP_VERSION=7.4
 
 up: ## Run all containers in all versions
 	docker compose up -d
@@ -39,7 +39,7 @@ box: ## Compile /build/composer-unused.phar
 	docker compose run php$(PHP_VERSION) php box.phar compile
 
 ssh: ## SSH into container
-	docker compose run $(PHP_VERSION) /bin/sh
+	docker compose run php$(PHP_VERSION) /bin/sh
 
 help: ## Displays this list of targets with descriptions
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}'

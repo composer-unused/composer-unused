@@ -6,6 +6,8 @@ services:
     container_name: composer-unused-7.4
     volumes:
       - .:/docker/composer-unused:rw
+      - ../contracts:/docker/contracts:rw
+      - ../symbol-parser:/docker/symbol-parser:rw
     tty: true
 
   php8.0:

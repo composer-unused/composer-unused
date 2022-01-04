@@ -4,28 +4,24 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused;
 
-use Composer\Package\Link;
-use Composer\Package\Package;
-use Composer\Package\PackageInterface;
-use Composer\Repository\RepositoryInterface;
+use ComposerUnused\Contracts\LinkInterface;
+use ComposerUnused\Contracts\PackageInterface;
+use ComposerUnused\Contracts\RepositoryInterface;
+use Icanhazstring\Composer\Unused\Composer\Package;
 
 final class PackageResolver
 {
     public function resolve(
-        Link $package,
+        LinkInterface $packageLink,
         RepositoryInterface $repository
     ): ?PackageInterface {
-        $isPhp = strpos($package->getTarget(), 'php') === 0;
-        $isExtension = strpos($package->getTarget(), 'ext-') === 0;
+        $isPhp = strpos($packageLink->getTarget(), 'php') === 0;
+        $isExtension = strpos($packageLink->getTarget(), 'ext-') === 0;
 
         if ($isPhp || $isExtension) {
-            return new Package(
-                strtolower($package->getTarget()),
-                '*',
-                '*'
-            );
+            return new Package(strtolower($packageLink->getTarget()));
         }
 
-        return $repository->findPackage($package->getTarget(), $package->getConstraint());
+        return $repository->findPackage($packageLink->getTarget());
     }
 }

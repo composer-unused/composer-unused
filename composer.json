@@ -1,6 +1,6 @@
 {
     "name": "icanhazstring/composer-unused",
-    "type": "composer-plugin",
+    "type": "library",
     "description": "Show unused packages by scanning your code",
     "keywords": [
         "composer",
@@ -17,17 +17,18 @@
         }
     ],
     "require": {
-        "php": "^7.3 || ^8.0",
-        "composer-plugin-api": "^2.0",
-        "composer-unused/symbol-parser": "^0.1.3",
+        "php": "^7.4 || ^8.0",
+        "composer-unused/contracts": "dev-main",
+        "composer-unused/symbol-parser": "dev-main",
         "nikic/php-parser": "^4.13",
         "psr/container": "^1.0 || ^2.0",
-        "psr/log": "^1.1 || ^2 || ^3"
+        "psr/log": "^1.1 || ^2 || ^3",
+        "symfony/console": "^4.4 || ^5.4 || ^6.0",
+        "symfony/serializer": "^4.4 || ^5.4 || ^6.0"
     },
     "require-dev": {
         "ext-ds": "*",
         "ext-zend-opcache": "*",
-        "composer/composer": "^2.2.3",
         "jangregor/phpstan-prophecy": "^0.8.1",
         "phpspec/prophecy-phpunit": "^2.0.1",
         "phpstan/phpstan": "^0.12.99",
@@ -38,9 +39,6 @@
     "config": {
         "preferred-install": "dist",
         "sort-packages": true
-    },
-    "extra": {
-        "class": "Icanhazstring\\Composer\\Unused\\UnusedPlugin"
     },
     "autoload": {
         "psr-4": {

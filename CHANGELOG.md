@@ -2,10 +2,14 @@
 
 ## [Unreleased] - TBA
 ### Added
-
+- Added CLI argument `composer-json` which can be used to parse external projects.
+  This will default to the current working directory.
 ### Changed
-
+- Change `bin/composer-unused` to be used as standalone binary
+- Package type is now `library` instead of `composer-plugin`
 ### Removed
+- Removed ability to work as `composer-plugin` (will be supported using `composer-unused/composer-unused-plugin`)
+- Dropped support for php `7.3`
 
 ## [0.7.7] - 2021-07-26
 ### Added

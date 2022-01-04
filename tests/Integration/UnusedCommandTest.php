@@ -4,15 +4,10 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Test\Unused\Integration;
 
-use Composer\Composer;
-use Composer\Console\Application;
-use Composer\IO\IOInterface;
 use Icanhazstring\Composer\Unused\Console\Command\UnusedCommand;
 use Icanhazstring\Composer\Unused\Di\ServiceContainer;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Console\Tester\CommandTester;
 
 class UnusedCommandTest extends TestCase
 {
@@ -24,36 +19,17 @@ class UnusedCommandTest extends TestCase
         $this->container = require __DIR__ . '/../../config/container.php';
     }
 
-    private function getApplication(): Application
-    {
-        $application = new Application();
-        $application->setAutoExit(false);
-
-        $io = $application->getIO();
-        /** @var Composer $composer */
-        $composer = $application->getComposer();
-
-        $this->container->register(IOInterface::class, $io);
-        $this->container->register(Composer::class, $composer);
-        $application->add($this->container->get(UnusedCommand::class));
-
-        return $application;
-    }
-
     /**
      * @test
      */
     public function itShouldHaveZeroExitCodeOnEmptyRequirements(): void
     {
         chdir(__DIR__ . '/../assets/TestProjects/EmptyRequire');
+        $commandTester = new CommandTester($this->container->get(UnusedCommand::class));
 
-        self::assertEquals(
-            0,
-            $this->getApplication()->run(
-                new ArrayInput(['unused']),
-                new NullOutput()
-            )
-        );
+        $exitCode = $commandTester->execute([]);
+
+        self::assertSame(0, $exitCode);
     }
 
     /**
@@ -62,14 +38,11 @@ class UnusedCommandTest extends TestCase
     public function itShouldNotReportPHPAsUnused(): void
     {
         chdir(__DIR__ . '/../assets/TestProjects/OnlyLanguageRequirement');
+        $commandTester = new CommandTester($this->container->get(UnusedCommand::class));
 
-        self::assertEquals(
-            0,
-            $this->getApplication()->run(
-                new ArrayInput(['unused']),
-                new NullOutput()
-            )
-        );
+        $exitCode = $commandTester->execute([]);
+
+        self::assertSame(0, $exitCode);
     }
 
     /**
@@ -78,14 +51,11 @@ class UnusedCommandTest extends TestCase
     public function itShouldNotReportExtDsAsUnused(): void
     {
         chdir(__DIR__ . '/../assets/TestProjects/ExtDsRequirement');
+        $commandTester = new CommandTester($this->container->get(UnusedCommand::class));
+        $exitCode = $commandTester->execute([]);
 
-        self::assertEquals(
-            0,
-            $this->getApplication()->run(
-                new ArrayInput(['unused']),
-                new NullOutput()
-            )
-        );
+        self::assertSame(0, $exitCode);
+        self::assertStringContainsString('Found 2 used, 0 unused and 0 ignored packages', $commandTester->getDisplay());
     }
 
     /**
@@ -94,14 +64,11 @@ class UnusedCommandTest extends TestCase
     public function itShouldNoReportUnusedWithAutoloadFilesWithRequire(): void
     {
         chdir(__DIR__ . '/../assets/TestProjects/AutoloadFilesWithRequire');
+        $commandTester = new CommandTester($this->container->get(UnusedCommand::class));
+        $exitCode = $commandTester->execute([]);
 
-        self::assertEquals(
-            0,
-            $this->getApplication()->run(
-                new ArrayInput(['unused']),
-                new NullOutput()
-            )
-        );
+        self::assertSame(0, $exitCode);
+        self::assertStringContainsString('Found 2 used, 0 unused and 0 ignored packages', $commandTester->getDisplay());
     }
 
     /**
@@ -110,15 +77,12 @@ class UnusedCommandTest extends TestCase
     public function itShouldNotReportSpecialPackages(): void
     {
         chdir(__DIR__ . '/../assets/TestProjects/IgnoreSpecialPackages');
+        $commandTester = new CommandTester($this->container->get(UnusedCommand::class));
+        $exitCode = $commandTester->execute([]);
 
-        $output = new BufferedOutput();
-
-        $this->getApplication()->run(
-            new ArrayInput(['unused']),
-            $output
-        );
-
-        self::assertStringNotContainsString('composer-plugin-api', $output->fetch());
+        self::assertSame(0, $exitCode);
+        self::assertStringNotContainsString('composer-plugin-api', $commandTester->getDisplay());
+        self::assertStringContainsString('Found 0 used, 0 unused and 0 ignored packages', $commandTester->getDisplay());
     }
 
     /**
@@ -127,15 +91,12 @@ class UnusedCommandTest extends TestCase
     public function itShouldNotReportExcludedPackages(): void
     {
         chdir(__DIR__ . '/../assets/TestProjects/IgnoreExcludedPackages');
+        $commandTester = new CommandTester($this->container->get(UnusedCommand::class));
+        $exitCode = $commandTester->execute(['--excludePackage' => ['dummy/test-package']]);
 
-        $output = new BufferedOutput();
-
-        $this->getApplication()->run(
-            new ArrayInput(['unused', '--excludePackage' => ['dummy/test-package']]),
-            $output
-        );
-
-        self::assertStringNotContainsString('dummy/test-package', $output->fetch());
+        self::assertSame(0, $exitCode);
+        self::assertStringNotContainsString('dummy/test-package', $commandTester->getDisplay());
+        self::assertStringContainsString('Found 0 used, 0 unused and 0 ignored packages', $commandTester->getDisplay());
     }
 
     /**
@@ -144,14 +105,12 @@ class UnusedCommandTest extends TestCase
     public function itShouldNotReportPatternExcludedPackages(): void
     {
         chdir(__DIR__ . '/../assets/TestProjects/IgnorePatternPackages');
+        $commandTester = new CommandTester($this->container->get(UnusedCommand::class));
+        $exitCode = $commandTester->execute([]);
 
-        $output = new BufferedOutput();
-
-        $this->getApplication()->run(
-            new ArrayInput(['unused']),
-            $output
-        );
-
-        self::assertStringNotContainsString('-implementation', $output->fetch());
+        self::assertSame(1, $exitCode);
+        self::assertStringNotContainsString('-implementation', $commandTester->getDisplay());
+        self::assertStringContainsString('dummy/test-package', $commandTester->getDisplay());
+        self::assertStringContainsString('Found 0 used, 1 unused and 0 ignored packages', $commandTester->getDisplay());
     }
 }

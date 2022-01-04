@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused\Dependency;
 
-use Composer\Package\PackageInterface;
+use ComposerUnused\Contracts\PackageInterface;
 use ComposerUnused\SymbolParser\Symbol\SymbolInterface;
 use ComposerUnused\SymbolParser\Symbol\SymbolListInterface;
 
@@ -62,7 +62,7 @@ final class RequiredDependency implements DependencyInterface
 
     public function suggests(DependencyInterface $dependency): bool
     {
-        return array_key_exists($dependency->getName(), $this->package->getSuggests());
+        return in_array($dependency->getName(), $this->package->getSuggests(), true);
     }
 
     public function requiredBy(DependencyInterface $dependency): void

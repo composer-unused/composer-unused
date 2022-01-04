@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Icanhazstring\Composer\Unused\Command;
 
-use Composer\Package\PackageInterface;
+use ComposerUnused\Contracts\PackageInterface;
 
 final class CollectConsumedSymbolsCommand
 {

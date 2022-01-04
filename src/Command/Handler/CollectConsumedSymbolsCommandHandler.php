@@ -29,7 +29,7 @@ final class CollectConsumedSymbolsCommandHandler
     public function collect(CollectConsumedSymbolsCommand $command): Generator
     {
         $package = $command->getPackage();
-        $symbolLoader = $this->consumedSymbolLoaderBuilder->build($command->getPackageRoot());
+        $symbolLoader = $this->consumedSymbolLoaderBuilder->build();
 
         $rootNamespaces = array_merge(
             array_keys($package->getAutoload()['psr-0'] ?? []),
@@ -38,7 +38,7 @@ final class CollectConsumedSymbolsCommandHandler
 
         yield from $this->filterRootPackageSymbols(
             $rootNamespaces,
-            $symbolLoader->load($package)
+            $symbolLoader->withBaseDir($command->getPackageRoot())->load($package)
         );
     }
 
