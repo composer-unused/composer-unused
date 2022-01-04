@@ -207,7 +207,7 @@ final class UnusedCommand extends Command
 
         $io->writeln(
             sprintf(
-                'Found <fg=green>%d used</>, <fg=red>%d unused</>, <fg=yellow>%d ignored</> and <fg=gray>%d zombie</> packages',
+                'Found <fg=green>%d used</>, <fg=red>%d unused</>, <fg=yellow>%d ignored</> and <fg=magenta>%d zombie</> packages',
                 count($usedDependencyCollection),
                 count($unusedDependencyCollection),
                 count($invalidDependencyCollection),
@@ -281,12 +281,12 @@ final class UnusedCommand extends Command
         }
 
         $io->newLine();
-        $io->text('<fg=gray>Zombies exclusions</> (<fg=cyan>did not match any package)</>)');
+        $io->text('<fg=magenta>Zombies exclusions</> (<fg=cyan>did not match any package)</>)');
 
         foreach ($filterCollection->getUnused() as $filter) {
             $io->writeln(
                 sprintf(
-                    ' <fg=gray>%s</> %s',
+                    ' <fg=magenta>%s</> %s',
                     "\u{1F480}",
                     $filter->toString()
                 )
