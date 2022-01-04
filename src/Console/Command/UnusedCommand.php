@@ -30,6 +30,8 @@ use const DIRECTORY_SEPARATOR;
 
 final class UnusedCommand extends Command
 {
+    public const VERSION = '0.8.0';
+
     /** @var CollectConsumedSymbolsCommandHandler */
     private $collectConsumedSymbolsCommandHandler;
     /** @var CollectRequiredDependenciesCommandHandler */

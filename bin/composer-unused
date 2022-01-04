@@ -38,7 +38,7 @@ use Symfony\Component\Console\Input\ArgvInput;
     /** @var ContainerInterface $container */
     $container = require __DIR__ . '/../config/container.php';
 
-    $application = new Application();
+    $application = new Application('composer-unused', UnusedCommand::VERSION);
     $application->add($container->get(UnusedCommand::class));
     $application->setDefaultCommand('unused', true);
 
