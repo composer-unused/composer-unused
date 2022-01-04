@@ -120,13 +120,10 @@ class UnusedCommandTest extends TestCase
     public function itShouldNotReportFileDependencyWithFunctionGuard(): void
     {
         chdir(__DIR__ . '/../assets/TestProjects/FileDependencyFunctionWithGuard');
+        $commandTester = new CommandTester($this->container->get(UnusedCommand::class));
+        $exitCode = $commandTester->execute([]);
 
-        self::assertEquals(
-            0,
-            $this->getApplication()->run(
-                new ArrayInput(['unused']),
-                new NullOutput()
-            )
-        );
+        self::assertSame(0, $exitCode);
+        self::assertStringContainsString('Found 1 used, 0 unused and 0 ignored packages', $commandTester->getDisplay());
     }
 }
