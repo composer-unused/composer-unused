@@ -97,15 +97,24 @@ final class UnusedCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $io = new SymfonyStyle($input, $output);
         $composerJsonPath = $input->getArgument('composer-json');
 
         if (!file_exists($composerJsonPath) && !is_readable($composerJsonPath)) {
+            $io->error(
+                sprintf(
+                    'composer.json on given path %s does not exist or is not readable.',
+                    $composerJsonPath
+                )
+            );
+
             return 1;
         }
 
         $composerJson = file_get_contents($composerJsonPath);
 
         if ($composerJson === false) {
+            $io->error('Unable to read contents from given composer.json');
             return 1;
         }
 
@@ -137,8 +146,6 @@ final class UnusedCommand extends Command
                 [] // TODO use pattern exclude option from command line
             )
         );
-
-        $io = new SymfonyStyle($input, $output);
 
         foreach ($consumedSymbols as $symbol) {
             /** @var RequiredDependency $requiredDependency */
