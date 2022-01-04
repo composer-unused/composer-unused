@@ -1,9 +1,12 @@
 # Changelog
 
 ## [Unreleased] - TBA
+### Fixed
+- Fixed version output when running `bin/composer-unused --version`
 ### Added
 - Added CLI argument `composer-json` which can be used to parse external projects.
   This will default to the current working directory.
+- Added error message when `composer.json` is not readable
 ### Changed
 - Change `bin/composer-unused` to be used as standalone binary
 - Package type is now `library` instead of `composer-plugin`
