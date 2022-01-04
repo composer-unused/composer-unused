@@ -17,6 +17,7 @@ use ComposerUnused\ComposerUnused\Dependency\DependencyCollection;
 use ComposerUnused\ComposerUnused\Dependency\DependencyInterface;
 use ComposerUnused\ComposerUnused\Dependency\InvalidDependency;
 use ComposerUnused\ComposerUnused\Dependency\RequiredDependency;
+use ComposerUnused\ComposerUnused\Filter\FilterCollection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -141,11 +142,18 @@ final class UnusedCommand extends Command
             )
         );
 
+        $filterCollection = new FilterCollection(
+            array_merge(
+                $config->getExtra()['unused'] ?? [],
+                $input->getOption('excludePackage')
+            ),
+            [] // TODO pattern exclusion from CLI
+        );
+
         $requiredDependencyCollection = $this->collectFilteredDependenciesCommandHandler->collect(
             new FilterDependencyCollectionCommand(
                 $unfilteredRequiredDependencyCollection,
-                $input->getOption('excludePackage'),
-                [] // TODO use pattern exclude option from command line
+                $filterCollection
             )
         );
 
@@ -199,10 +207,11 @@ final class UnusedCommand extends Command
 
         $io->writeln(
             sprintf(
-                'Found <fg=green>%d used</>, <fg=red>%d unused</> and <fg=yellow>%d ignored</> packages',
+                'Found <fg=green>%d used</>, <fg=red>%d unused</>, <fg=yellow>%d ignored</> and <fg=gray>%d zombie</> packages',
                 count($usedDependencyCollection),
                 count($unusedDependencyCollection),
-                count($invalidDependencyCollection)
+                count($invalidDependencyCollection),
+                count($filterCollection->getUnused())
             )
         );
 
@@ -271,7 +280,20 @@ final class UnusedCommand extends Command
             );
         }
 
-        if ($unusedDependencyCollection->count() > 0) {
+        $io->newLine();
+        $io->text('<fg=gray>Zombies exclusions</> (<fg=cyan>did not match any package)</>)');
+
+        foreach ($filterCollection->getUnused() as $filter) {
+            $io->writeln(
+                sprintf(
+                    ' <fg=gray>%s</> %s',
+                    "\u{1F480}",
+                    $filter->toString()
+                )
+            );
+        }
+
+        if ($unusedDependencyCollection->count() > 0 || count($filterCollection->getUnused()) > 0) {
             return 1;
         }
 
