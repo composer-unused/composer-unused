@@ -2,7 +2,7 @@
 
 <?php
 
-use Icanhazstring\Composer\Unused\Console\Command\UnusedCommand;
+use ComposerUnused\ComposerUnused\Console\Command\UnusedCommand;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;

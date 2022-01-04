@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Unused\Di;
+namespace ComposerUnused\ComposerUnused\Di;
 
 use Exception;
-use Icanhazstring\Composer\Unused\Di\Exception\ServiceNotCreatedException;
-use Icanhazstring\Composer\Unused\Di\Exception\ServiceNotFoundException;
+use ComposerUnused\ComposerUnused\Di\Exception\ServiceNotCreatedException;
+use ComposerUnused\ComposerUnused\Di\Exception\ServiceNotFoundException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 
-class ServiceContainer implements ContainerInterface
+final class ServiceContainer implements ContainerInterface
 {
     /** @var array<string, mixed> */
     private $factories = [];

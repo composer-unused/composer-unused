@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Unused\Command\Handler;
+namespace ComposerUnused\ComposerUnused\Command\Handler;
 
 use ComposerUnused\SymbolParser\Symbol\SymbolInterface;
 use Generator;
-use Icanhazstring\Composer\Unused\Command\CollectConsumedSymbolsCommand;
-use Icanhazstring\Composer\Unused\Symbol\ConsumedSymbolLoaderBuilder;
+use ComposerUnused\ComposerUnused\Command\CollectConsumedSymbolsCommand;
+use ComposerUnused\ComposerUnused\Symbol\ConsumedSymbolLoaderBuilder;
 
 use function array_keys;
 use function array_merge;

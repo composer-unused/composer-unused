@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Unused\Console\Command;
+namespace ComposerUnused\ComposerUnused\Console\Command;
 
-use Icanhazstring\Composer\Unused\Command\Handler\CollectConsumedSymbolsCommandHandler;
-use Icanhazstring\Composer\Unused\Command\Handler\CollectFilteredDependenciesCommandHandler;
-use Icanhazstring\Composer\Unused\Command\Handler\CollectRequiredDependenciesCommandHandler;
-use Icanhazstring\Composer\Unused\Composer\ConfigFactory;
+use ComposerUnused\ComposerUnused\Command\Handler\CollectConsumedSymbolsCommandHandler;
+use ComposerUnused\ComposerUnused\Command\Handler\CollectFilteredDependenciesCommandHandler;
+use ComposerUnused\ComposerUnused\Command\Handler\CollectRequiredDependenciesCommandHandler;
+use ComposerUnused\ComposerUnused\Composer\ConfigFactory;
 use Psr\Container\ContainerInterface;
 
 final class UnusedCommandFactory

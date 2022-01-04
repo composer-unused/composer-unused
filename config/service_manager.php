@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-use Icanhazstring\Composer\Unused\Command\Handler\CollectConsumedSymbolsCommandHandler;
-use Icanhazstring\Composer\Unused\Command\Handler\CollectFilteredDependenciesCommandHandler;
-use Icanhazstring\Composer\Unused\Command\Handler\CollectRequiredDependenciesCommandHandler;
-use Icanhazstring\Composer\Unused\Command\Handler\Factory\CollectConsumedSymbolsCommandHandlerFactory;
-use Icanhazstring\Composer\Unused\Command\Handler\Factory\CollectFilteredDependenciesCommandHandlerFactory;
-use Icanhazstring\Composer\Unused\Command\Handler\Factory\CollectRequiredDependenciesCommandHandlerFactory;
-use Icanhazstring\Composer\Unused\Composer\ConfigFactory;
-use Icanhazstring\Composer\Unused\Console\Command\UnusedCommand;
-use Icanhazstring\Composer\Unused\Console\Command\UnusedCommandFactory;
-use Icanhazstring\Composer\Unused\Di\InvokableFactory;
-use Icanhazstring\Composer\Unused\PackageResolver;
-use Icanhazstring\Composer\Unused\Symbol\ConsumedSymbolLoaderBuilder;
-use Icanhazstring\Composer\Unused\Symbol\ProvidedSymbolLoaderBuilder;
+use ComposerUnused\ComposerUnused\Command\Handler\CollectConsumedSymbolsCommandHandler;
+use ComposerUnused\ComposerUnused\Command\Handler\CollectFilteredDependenciesCommandHandler;
+use ComposerUnused\ComposerUnused\Command\Handler\CollectRequiredDependenciesCommandHandler;
+use ComposerUnused\ComposerUnused\Command\Handler\Factory\CollectConsumedSymbolsCommandHandlerFactory;
+use ComposerUnused\ComposerUnused\Command\Handler\Factory\CollectFilteredDependenciesCommandHandlerFactory;
+use ComposerUnused\ComposerUnused\Command\Handler\Factory\CollectRequiredDependenciesCommandHandlerFactory;
+use ComposerUnused\ComposerUnused\Composer\ConfigFactory;
+use ComposerUnused\ComposerUnused\Console\Command\UnusedCommand;
+use ComposerUnused\ComposerUnused\Console\Command\UnusedCommandFactory;
+use ComposerUnused\ComposerUnused\Di\InvokableFactory;
+use ComposerUnused\ComposerUnused\PackageResolver;
+use ComposerUnused\ComposerUnused\Symbol\ConsumedSymbolLoaderBuilder;
+use ComposerUnused\ComposerUnused\Symbol\ProvidedSymbolLoaderBuilder;
 
 return [
     'factories' => [

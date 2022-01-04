@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Unused\Command\Handler;
+namespace ComposerUnused\ComposerUnused\Command\Handler;
 
-use Icanhazstring\Composer\Unused\Command\FilterDependencyCollectionCommand;
-use Icanhazstring\Composer\Unused\Dependency\DependencyCollection;
-use Icanhazstring\Composer\Unused\Dependency\DependencyInterface;
+use ComposerUnused\ComposerUnused\Command\FilterDependencyCollectionCommand;
+use ComposerUnused\ComposerUnused\Dependency\DependencyCollection;
+use ComposerUnused\ComposerUnused\Dependency\DependencyInterface;
 
 final class CollectFilteredDependenciesCommandHandler
 {

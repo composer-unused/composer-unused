@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Unused\Di;
+namespace ComposerUnused\ComposerUnused\Di;
 
 use Psr\Container\ContainerInterface;
 

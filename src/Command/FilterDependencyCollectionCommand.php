@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Unused\Command;
+namespace ComposerUnused\ComposerUnused\Command;
 
-use Icanhazstring\Composer\Unused\Dependency\DependencyCollection;
+use ComposerUnused\ComposerUnused\Dependency\DependencyCollection;
 
 use function array_merge;
 

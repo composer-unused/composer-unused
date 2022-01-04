@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Unused\Command\Handler;
+namespace ComposerUnused\ComposerUnused\Command\Handler;
 
 use ComposerUnused\SymbolParser\Symbol\SymbolList;
-use Icanhazstring\Composer\Unused\Command\LoadRequiredDependenciesCommand;
-use Icanhazstring\Composer\Unused\Dependency\DependencyCollection;
-use Icanhazstring\Composer\Unused\Dependency\InvalidDependency;
-use Icanhazstring\Composer\Unused\Dependency\RequiredDependency;
-use Icanhazstring\Composer\Unused\PackageResolver;
-use Icanhazstring\Composer\Unused\Symbol\ProvidedSymbolLoaderBuilder;
+use ComposerUnused\ComposerUnused\Command\LoadRequiredDependenciesCommand;
+use ComposerUnused\ComposerUnused\Dependency\DependencyCollection;
+use ComposerUnused\ComposerUnused\Dependency\InvalidDependency;
+use ComposerUnused\ComposerUnused\Dependency\RequiredDependency;
+use ComposerUnused\ComposerUnused\PackageResolver;
+use ComposerUnused\ComposerUnused\Symbol\ProvidedSymbolLoaderBuilder;
 
 final class CollectRequiredDependenciesCommandHandler
 {

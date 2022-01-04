@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Unused\Composer;
+namespace ComposerUnused\ComposerUnused\Composer;
 
 use ComposerUnused\Contracts\LinkInterface;
 use ComposerUnused\Contracts\PackageInterface;

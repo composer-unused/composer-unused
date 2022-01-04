@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Unused;
+namespace ComposerUnused\ComposerUnused;
 
 use ComposerUnused\Contracts\LinkInterface;
 use ComposerUnused\Contracts\PackageInterface;
 use ComposerUnused\Contracts\RepositoryInterface;
-use Icanhazstring\Composer\Unused\Composer\Package;
+use ComposerUnused\ComposerUnused\Composer\Package;
 
 final class PackageResolver
 {

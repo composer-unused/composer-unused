@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Test\Unused\Unit\Dependency;
+namespace ComposerUnused\ComposerUnused\Test\Unit\Dependency;
 
 use ComposerUnused\Contracts\PackageInterface;
-use Icanhazstring\Composer\Unused\Composer\Link;
-use Icanhazstring\Composer\Unused\Composer\Package;
-use Icanhazstring\Composer\Unused\Dependency\RequiredDependency;
+use ComposerUnused\ComposerUnused\Composer\Link;
+use ComposerUnused\ComposerUnused\Composer\Package;
+use ComposerUnused\ComposerUnused\Dependency\RequiredDependency;
 use ComposerUnused\SymbolParser\Symbol\Symbol;
 use ComposerUnused\SymbolParser\Symbol\SymbolList;
 use PHPUnit\Framework\TestCase;

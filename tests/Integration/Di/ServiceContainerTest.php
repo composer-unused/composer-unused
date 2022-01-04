@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Test\Unused\Integration\Di;
+namespace ComposerUnused\ComposerUnused\Test\Integration\Di;
 
-use Icanhazstring\Composer\Unused\Di\ServiceContainer;
+use ComposerUnused\ComposerUnused\Di\ServiceContainer;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 

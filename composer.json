@@ -42,13 +42,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Icanhazstring\\Composer\\Unused\\": "src"
+            "ComposerUnused\\ComposerUnused\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Icanhazstring\\Composer\\Test\\Unused\\Integration\\": "tests/Integration",
-            "Icanhazstring\\Composer\\Test\\Unused\\Unit\\": "tests/Unit"
+            "ComposerUnused\\ComposerUnused\\Test\\Integration\\": "tests/Integration",
+            "ComposerUnused\\ComposerUnused\\Test\\Unit\\": "tests/Unit"
         }
     },
     "bin": [

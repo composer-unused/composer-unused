@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Unused\Command\Handler\Factory;
+namespace ComposerUnused\ComposerUnused\Command\Handler\Factory;
 
-use Icanhazstring\Composer\Unused\Command\Handler\CollectConsumedSymbolsCommandHandler;
-use Icanhazstring\Composer\Unused\Symbol\ConsumedSymbolLoaderBuilder;
+use ComposerUnused\ComposerUnused\Command\Handler\CollectConsumedSymbolsCommandHandler;
+use ComposerUnused\ComposerUnused\Symbol\ConsumedSymbolLoaderBuilder;
 use Psr\Container\ContainerInterface;
 
 final class CollectConsumedSymbolsCommandHandlerFactory

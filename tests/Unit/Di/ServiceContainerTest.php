@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Test\Unused\Unit\Di;
+namespace ComposerUnused\ComposerUnused\Test\Unit\Di;
 
-use Icanhazstring\Composer\Unused\Di\Exception\ServiceNotFoundException;
-use Icanhazstring\Composer\Unused\Di\ServiceContainer;
+use ComposerUnused\ComposerUnused\Di\Exception\ServiceNotFoundException;
+use ComposerUnused\ComposerUnused\Di\ServiceContainer;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use stdClass;

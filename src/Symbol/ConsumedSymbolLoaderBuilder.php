@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Unused\Symbol;
+namespace ComposerUnused\ComposerUnused\Symbol;
 
 use ComposerUnused\SymbolParser\File\FileContentProvider;
 use ComposerUnused\SymbolParser\Parser\PHP\AutoloadType;

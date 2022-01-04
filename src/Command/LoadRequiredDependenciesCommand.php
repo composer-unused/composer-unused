@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Unused\Command;
+namespace ComposerUnused\ComposerUnused\Command;
 
 use ComposerUnused\Contracts\LinkInterface;
 use ComposerUnused\Contracts\RepositoryInterface;

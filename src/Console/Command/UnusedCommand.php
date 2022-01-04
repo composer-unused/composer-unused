@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Unused\Console\Command;
+namespace ComposerUnused\ComposerUnused\Console\Command;
 
-use Icanhazstring\Composer\Unused\Command\CollectConsumedSymbolsCommand;
-use Icanhazstring\Composer\Unused\Command\FilterDependencyCollectionCommand;
-use Icanhazstring\Composer\Unused\Command\Handler\CollectConsumedSymbolsCommandHandler;
-use Icanhazstring\Composer\Unused\Command\Handler\CollectFilteredDependenciesCommandHandler;
-use Icanhazstring\Composer\Unused\Command\Handler\CollectRequiredDependenciesCommandHandler;
-use Icanhazstring\Composer\Unused\Command\LoadRequiredDependenciesCommand;
-use Icanhazstring\Composer\Unused\Composer\ConfigFactory;
-use Icanhazstring\Composer\Unused\Composer\LocalRepository;
-use Icanhazstring\Composer\Unused\Composer\Package;
-use Icanhazstring\Composer\Unused\Dependency\DependencyCollection;
-use Icanhazstring\Composer\Unused\Dependency\DependencyInterface;
-use Icanhazstring\Composer\Unused\Dependency\InvalidDependency;
-use Icanhazstring\Composer\Unused\Dependency\RequiredDependency;
+use ComposerUnused\ComposerUnused\Command\CollectConsumedSymbolsCommand;
+use ComposerUnused\ComposerUnused\Command\FilterDependencyCollectionCommand;
+use ComposerUnused\ComposerUnused\Command\Handler\CollectConsumedSymbolsCommandHandler;
+use ComposerUnused\ComposerUnused\Command\Handler\CollectFilteredDependenciesCommandHandler;
+use ComposerUnused\ComposerUnused\Command\Handler\CollectRequiredDependenciesCommandHandler;
+use ComposerUnused\ComposerUnused\Command\LoadRequiredDependenciesCommand;
+use ComposerUnused\ComposerUnused\Composer\ConfigFactory;
+use ComposerUnused\ComposerUnused\Composer\LocalRepository;
+use ComposerUnused\ComposerUnused\Composer\Package;
+use ComposerUnused\ComposerUnused\Dependency\DependencyCollection;
+use ComposerUnused\ComposerUnused\Dependency\DependencyInterface;
+use ComposerUnused\ComposerUnused\Dependency\InvalidDependency;
+use ComposerUnused\ComposerUnused\Dependency\RequiredDependency;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

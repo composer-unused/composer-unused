@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Test\Unused\Integration;
+namespace ComposerUnused\ComposerUnused\Test\Integration;
 
-use Icanhazstring\Composer\Unused\Console\Command\UnusedCommand;
-use Icanhazstring\Composer\Unused\Di\ServiceContainer;
+use ComposerUnused\ComposerUnused\Console\Command\UnusedCommand;
+use ComposerUnused\ComposerUnused\Di\ServiceContainer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 

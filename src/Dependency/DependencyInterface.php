@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Unused\Dependency;
+namespace ComposerUnused\ComposerUnused\Dependency;
 
 use ComposerUnused\SymbolParser\Symbol\SymbolInterface;
 

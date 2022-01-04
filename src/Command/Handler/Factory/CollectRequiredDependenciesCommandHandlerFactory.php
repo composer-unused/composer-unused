@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Icanhazstring\Composer\Unused\Command\Handler\Factory;
+namespace ComposerUnused\ComposerUnused\Command\Handler\Factory;
 
-use Icanhazstring\Composer\Unused\Command\Handler\CollectRequiredDependenciesCommandHandler;
-use Icanhazstring\Composer\Unused\PackageResolver;
-use Icanhazstring\Composer\Unused\Symbol\ProvidedSymbolLoaderBuilder;
+use ComposerUnused\ComposerUnused\Command\Handler\CollectRequiredDependenciesCommandHandler;
+use ComposerUnused\ComposerUnused\PackageResolver;
+use ComposerUnused\ComposerUnused\Symbol\ProvidedSymbolLoaderBuilder;
 use Psr\Container\ContainerInterface;
 
 final class CollectRequiredDependenciesCommandHandlerFactory
