@@ -24,6 +24,7 @@ final class Package implements PackageInterface
         $package->requires = array_map(static function (string $name) {
             return new Link($name);
         }, array_keys($config->getRequire()));
+        $package->suggests = array_keys($config->getSuggests());
 
         return $package;
     }
