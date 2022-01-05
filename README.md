@@ -11,6 +11,8 @@ Created by [Andreas Frömer](https://twitter.com/icanhazstring) and [contributor
 [![](https://img.shields.io/github/workflow/status/composer-unused/composer-unused/validate-phar?label=build-phar&style=flat-square)](https://github.com/composer-unused/composer-unused)
 [![](https://img.shields.io/github/tag-date/composer-unused/composer-unused.svg?label=version&style=flat-square)](https://github.com/composer-unused/composer-unused/releases/latest)
 
+> ⚠️ If you want to use this tool as composer-plugin head over to [composer-unused-plugin](https://github.com/composer-unused/composer-unused-plugin).
+
 ## Motivation
 
 When working in a big repository, you sometimes lose track of your required Composer
