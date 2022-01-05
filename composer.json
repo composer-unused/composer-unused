@@ -17,8 +17,8 @@
     ],
     "require": {
         "php": "^7.4 || ^8.0",
-        "composer-unused/contracts": "dev-main",
-        "composer-unused/symbol-parser": "dev-main",
+        "composer-unused/contracts": "^0.1",
+        "composer-unused/symbol-parser": "^0.1.4",
         "nikic/php-parser": "^4.13",
         "psr/container": "^1.0 || ^2.0",
         "psr/log": "^1.1 || ^2 || ^3",
