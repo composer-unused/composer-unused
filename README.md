@@ -23,23 +23,17 @@ How do we check whether the provided *symbols* of a package are used in our code
 
 `composer unused` to the rescue!
 
-![example](https://i.imgur.com/aTLwpgL.gif)
+![example](art/example.gif)
 
 ## Installation
 
-⚠️ This tool heavily depends on certain versions of its dependencies. A **local or global installation of this tool is not recommended** as it might not work as intended or can't be installed correctly. We do recommened you download the `.phar` archive or use **PHIVE**  to install it locally.
+⚠️ This tool heavily depends on certain versions of its dependencies. A **local installation of this tool is not recommended** as it might not work as intended or can't be installed correctly. We do recommened you download the `.phar` archive or use **PHIVE**  to install it locally.
 
 ### PHAR (PHP Archive) (recommended)
 Install via `phive` or grab the latest `composer-unused.phar` from the latest release:
 
     phive install composer-unused
-    curl -JOL https://github.com/composer-unused/composer-unused/releases/latest/download/composer-unused.phar
-
-### Global
-If you have a lot of projects and don't want to install this package per project, simply install it
-as a global dependency (e.g. on your CI):
-
-    composer global require icanhazstring/composer-unused
+    curl -OL https://github.com/composer-unused/composer-unused/releases/latest/download/composer-unused.phar
 
 ### Local
 You can also install `composer-unused` as a local __development__ dependency:
@@ -56,10 +50,10 @@ The `phar` archive can be run directly in you project:
 
     php composer-unused.phar
 
-### Local/Global
-Having `composer-unused` as a local or global dependency you can run it as an composer-plugin:
+### Local
+Having `composer-unused` as a local dependency you can run it using the shipped binary:
 
-    composer unused
+    vendor/bin/composer-unused
 
 
 ### Exclude folders and packages
@@ -90,21 +84,6 @@ directive in your `composer.json` file.
     }
 }
 ```
-
-### Suppress progress bar
-If you run `composer-unused` in CI the console progressbar often messes up your logs files.
-To suppress them use:
-
-    php composer-unused.phar --no-progress
-
-## Troubleshooting
-If you encounter some errors, try running:
-
-    php composer-unused.phar -vvv
-
-
-This command will enable the debug mode and create an error report beside your `composer.json`.
-> `composer-unused-dump-YmdHis`
 
 ## Changelog
 
