@@ -38,9 +38,6 @@ jobs:
           ini-values: "${{ env.PHP_INI_VALUES }}"
           php-version: "${{ matrix.php-version }}"
 
-      - name: "Require composer/composer"
-        run: "composer require composer/composer:${{ env.COMPOSER_VERSION }} --no-interaction --no-progress"
-
       - name: "Remove dev dependencies"
         run: "composer install --no-progress --no-dev --prefer-dist --optimize-autoloader"
 
@@ -99,3 +96,11 @@ jobs:
           asset_name: "composer-unused.phar.asc"
           asset_path: "${{ env.COMPOSER_UNUSED_PHAR_SIGNATURE }}"
           upload_url: "${{ steps.get-release.outputs.upload_url }}"
+
+      - name: "Dispatch plugin update"
+        uses: "peter-evans/repository-dispatch@v1"
+        with:
+          token: "${{ secrets.COMPOSER_UNUSED_PLUGIN }}"
+          repository: "composer-unused/composer-unused-plugin"
+          event-type: "update-plugin"
+          client-payload: '{"tag": "${{ steps.get-release.outputs.tag_name }}"}'
