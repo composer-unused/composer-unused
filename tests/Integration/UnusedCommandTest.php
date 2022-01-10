@@ -82,6 +82,7 @@ class UnusedCommandTest extends TestCase
 
         self::assertSame(0, $exitCode);
         self::assertStringNotContainsString('composer-plugin-api', $commandTester->getDisplay());
+        self::assertStringNotContainsString('composer-runtime-api', $commandTester->getDisplay());
         self::assertStringContainsString('Found 0 used, 0 unused, 0 ignored and 0 zombie packages', $commandTester->getDisplay());
     }
 
