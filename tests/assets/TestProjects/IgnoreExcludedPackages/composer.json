@@ -2,6 +2,7 @@
     "name": "ns/lib",
     "require": {
         "dummy/test-package": "1.0",
-        "composer-plugin-api": "^2.0"
+        "composer-plugin-api": "^2.0",
+        "composer-runtime-api": "^2.0"
     }
 }
