@@ -12,12 +12,11 @@ use ComposerUnused\ComposerUnused\Command\Handler\CollectRequiredDependenciesCom
 use ComposerUnused\ComposerUnused\Command\LoadRequiredDependenciesCommand;
 use ComposerUnused\ComposerUnused\Composer\ConfigFactory;
 use ComposerUnused\ComposerUnused\Composer\LocalRepository;
-use ComposerUnused\ComposerUnused\Composer\Package;
-use ComposerUnused\ComposerUnused\Dependency\DependencyCollection;
+use ComposerUnused\ComposerUnused\Composer\PackageFactory;
 use ComposerUnused\ComposerUnused\Dependency\DependencyInterface;
-use ComposerUnused\ComposerUnused\Dependency\InvalidDependency;
 use ComposerUnused\ComposerUnused\Dependency\RequiredDependency;
 use ComposerUnused\ComposerUnused\Filter\FilterCollection;
+use ComposerUnused\ComposerUnused\OutputFormatter\FormatterFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,14 +30,11 @@ use const DIRECTORY_SEPARATOR;
 
 final class UnusedCommand extends Command
 {
-    public const VERSION = '0.8.0';
+    public const VERSION = '0.8.1';
 
-    /** @var CollectConsumedSymbolsCommandHandler */
-    private $collectConsumedSymbolsCommandHandler;
-    /** @var CollectRequiredDependenciesCommandHandler */
-    private $collectRequiredDependenciesCommandHandler;
-    /** @var CollectFilteredDependenciesCommandHandler */
-    private $collectFilteredDependenciesCommandHandler;
+    private CollectConsumedSymbolsCommandHandler $collectConsumedSymbolsCommandHandler;
+    private CollectRequiredDependenciesCommandHandler $collectRequiredDependenciesCommandHandler;
+    private CollectFilteredDependenciesCommandHandler $collectFilteredDependenciesCommandHandler;
     private ConfigFactory $configFactory;
 
     public function __construct(
@@ -65,6 +61,14 @@ final class UnusedCommand extends Command
             InputArgument::OPTIONAL,
             'Provide a composer.json to be scanned',
             getcwd() . DIRECTORY_SEPARATOR . 'composer.json'
+        );
+
+        $this->addOption(
+            'output-format',
+            'o',
+            InputOption::VALUE_REQUIRED,
+            'Change output style (default, github)',
+            'default'
         );
 
         $this->addOption(
@@ -101,6 +105,7 @@ final class UnusedCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+        $outputFormatter = FormatterFactory::create($input->getOption('output-format'));
         $composerJsonPath = $input->getArgument('composer-json');
 
         if (!file_exists($composerJsonPath) && !is_readable($composerJsonPath)) {
@@ -124,7 +129,7 @@ final class UnusedCommand extends Command
         $config = $this->configFactory->fromComposerJson($composerJson);
         $baseDir = dirname($composerJsonPath);
 
-        $rootPackage = Package::fromConfig($config);
+        $rootPackage = PackageFactory::fromConfig($config, $composerJson);
         $localRepository = new LocalRepository($baseDir . DIRECTORY_SEPARATOR . $config->get('vendor-dir'));
 
         $consumedSymbols = $this->collectConsumedSymbolsCommandHandler->collect(
@@ -196,107 +201,20 @@ final class UnusedCommand extends Command
             }
         );
 
-        /** @var DependencyCollection<InvalidDependency> $invalidDependencyCollection */
         [$invalidDependencyCollection, $unusedDependencyCollection] = $unusedDependencyCollection->partition(
             static function (DependencyInterface $dependency) {
                 return $dependency->inState($dependency::STATE_INVALID);
             }
         );
 
-        $io->section('Results');
-
-        $io->writeln(
-            sprintf(
-                'Found <fg=green>%d used</>, <fg=red>%d unused</>, <fg=yellow>%d ignored</> and <fg=magenta>%d zombie</> packages',
-                count($usedDependencyCollection),
-                count($unusedDependencyCollection),
-                count($invalidDependencyCollection),
-                count($filterCollection->getUnused())
-            )
+        return $outputFormatter->formatOutput(
+            $rootPackage,
+            $composerJsonPath,
+            $usedDependencyCollection,
+            $unusedDependencyCollection,
+            $invalidDependencyCollection,
+            $filterCollection,
+            $io
         );
-
-        $io->newLine();
-        $io->text('<fg=green>Used packages</>');
-        foreach ($usedDependencyCollection as $usedDependency) {
-            $requiredBy = '';
-            $suggestedBy = '';
-
-            if (!empty($usedDependency->getRequiredBy())) {
-                $requiredByNames = array_map(static function (DependencyInterface $dependency) {
-                    return $dependency->getName();
-                }, $usedDependency->getRequiredBy());
-
-                $requiredBy = sprintf(
-                    ' (<fg=cyan>required by: %s</>)',
-                    implode(', ', $requiredByNames)
-                );
-            }
-
-            if (!empty($usedDependency->getSuggestedBy())) {
-                $suggestedByNames = array_map(static function (DependencyInterface $dependency) {
-                    return $dependency->getName();
-                }, $usedDependency->getSuggestedBy());
-
-                $requiredBy = sprintf(
-                    ' (<fg=cyan>suggested by: %s</>)',
-                    implode(', ', $suggestedByNames)
-                );
-            }
-
-            $io->writeln(
-                sprintf(
-                    ' <fg=green>%s</> %s%s%s',
-                    "\u{2713}",
-                    $usedDependency->getName(),
-                    $requiredBy,
-                    $suggestedBy
-                )
-            );
-        }
-
-        $io->newLine();
-        $io->text('<fg=red>Unused packages</>');
-        foreach ($unusedDependencyCollection as $dependency) {
-            $io->writeln(
-                sprintf(
-                    ' <fg=red>%s</> %s',
-                    "\u{2717}",
-                    $dependency->getName()
-                )
-            );
-        }
-
-        $io->newLine();
-        $io->text('<fg=yellow>Ignored packages</>');
-
-        foreach ($invalidDependencyCollection as $dependency) {
-            $io->writeln(
-                sprintf(
-                    ' <fg=yellow>%s</> %s (<fg=cyan>%s</>)',
-                    "\u{25CB}",
-                    $dependency->getName(),
-                    $dependency->getReason()
-                )
-            );
-        }
-
-        $io->newLine();
-        $io->text('<fg=magenta>Zombies exclusions</> (<fg=cyan>did not match any package</>)');
-
-        foreach ($filterCollection->getUnused() as $filter) {
-            $io->writeln(
-                sprintf(
-                    ' <fg=magenta>%s</> %s',
-                    "\u{1F480}",
-                    $filter->toString()
-                )
-            );
-        }
-
-        if ($unusedDependencyCollection->count() > 0 || count($filterCollection->getUnused()) > 0) {
-            return 1;
-        }
-
-        return 0;
     }
 }

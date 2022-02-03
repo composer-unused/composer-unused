@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ComposerUnused\ComposerUnused\Composer;
 
+use ComposerUnused\Contracts\Exception\LinkNotFoundException;
 use ComposerUnused\Contracts\LinkInterface;
 use ComposerUnused\Contracts\PackageInterface;
 
@@ -17,21 +18,17 @@ final class Package implements PackageInterface
     /** @phpstan-var array{psr-0?: array<string, string|string[]>, psr-4?: array<string, string|string[]>, classmap?: list<string>, files?: list<string>} */
     private array $autoload = [];
 
-    public static function fromConfig(Config $config): self
-    {
-        $package = new self($config->getName());
-        $package->autoload = $config->getAutoload();
-        $package->requires = array_map(static function (string $name) {
-            return new Link($name);
-        }, array_keys($config->getRequire()));
-        $package->suggests = array_keys($config->getSuggests());
-
-        return $package;
-    }
-
-    public function __construct(string $name)
+    /**
+     * @param array<string, mixed> $autoload
+     * @param array<LinkInterface> $requires
+     * @param array<string> $suggests
+     */
+    public function __construct(string $name, array $autoload = [], array $requires = [], array $suggests = [])
     {
         $this->name = $name;
+        $this->autoload = $autoload;
+        $this->requires = $requires;
+        $this->suggests = $suggests;
     }
 
     public function getAutoload(): array
@@ -68,5 +65,16 @@ final class Package implements PackageInterface
     public function setSuggests(array $suggests): void
     {
         $this->suggests = $suggests;
+    }
+
+    public function getRequire(string $name): LinkInterface
+    {
+        foreach ($this->requires as $require) {
+            if ($require->getTarget() === $name) {
+                return $require;
+            }
+        }
+
+        throw LinkNotFoundException::fromMissingLink($name);
     }
 }

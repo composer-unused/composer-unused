@@ -1,6 +1,17 @@
 # Changelog
 
 ## [Unreleased] - TBA
+### Added
+- Added `--output-format` option
+  - Currently supported values `default` and `github`
+  - `github` can be used to annotate PR
+### Fixed
+### Changed
+### Removed
+### Security
+### Deprecation
+
+## [0.8.0] - 2022-02-03
 ### Fixed
 - Fixed version output when running `bin/composer-unused --version`
 ### Added

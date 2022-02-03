@@ -41,6 +41,6 @@ final class LocalRepository implements RepositoryInterface
         }
 
         $config = $this->serializer->deserialize($jsonContent, Config::class, 'json');
-        return Package::fromConfig($config);
+        return PackageFactory::fromConfig($config, $jsonContent);
     }
 }
