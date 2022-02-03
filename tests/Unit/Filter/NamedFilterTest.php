@@ -42,4 +42,18 @@ final class NamedFilterTest extends TestCase
         self::assertFalse($filter->applies($dependency), 'dependency named "fubar" should not apply to named filter "test"');
         self::assertFalse($filter->used());
     }
+
+    /**
+     * @test
+     */
+    public function itShouldRemainUsed(): void
+    {
+        $filter = new NamedFilter('test');
+        $dependencyA = new TestDependency('test');
+        $dependencyB = new TestDependency('fubar');
+
+        self::assertTrue($filter->applies($dependencyA), 'dependency named "test" should apply to named filter "test"');
+        self::assertFalse($filter->applies($dependencyB), 'dependency named "fubar" should not apply to named filter "test"');
+        self::assertTrue($filter->used(), 'Filter should remain used');
+    }
 }

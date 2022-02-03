@@ -20,7 +20,13 @@ final class NamedFilter implements FilterInterface
 
     public function applies(DependencyInterface $dependency): bool
     {
-        return $this->used = $dependency->getName() === $this->filterString;
+        $applies = $dependency->getName() === $this->filterString;
+
+        if ($this->used === false && $applies === true) {
+            $this->used = true;
+        }
+
+        return $applies;
     }
 
     public function used(): bool
