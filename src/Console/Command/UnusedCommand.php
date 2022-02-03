@@ -281,7 +281,7 @@ final class UnusedCommand extends Command
         }
 
         $io->newLine();
-        $io->text('<fg=magenta>Zombies exclusions</> (<fg=cyan>did not match any package)</>)');
+        $io->text('<fg=magenta>Zombies exclusions</> (<fg=cyan>did not match any package</>)');
 
         foreach ($filterCollection->getUnused() as $filter) {
             $io->writeln(
