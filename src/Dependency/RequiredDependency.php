@@ -12,16 +12,13 @@ use function array_key_exists;
 
 final class RequiredDependency implements DependencyInterface
 {
-    /** @var string */
-    private $state = self::STATE_UNUSED;
-    /** @var PackageInterface */
-    private $package;
-    /** @var SymbolListInterface */
-    private $symbols;
+    private string $state = self::STATE_UNUSED;
+    private PackageInterface $package;
+    private SymbolListInterface $symbols;
     /** @var array<DependencyInterface> */
-    private $requiredBy = [];
+    private array $requiredBy = [];
     /** @var array<DependencyInterface> */
-    private $suggestBy = [];
+    private array $suggestBy = [];
 
     public function __construct(PackageInterface $package, SymbolListInterface $symbols)
     {

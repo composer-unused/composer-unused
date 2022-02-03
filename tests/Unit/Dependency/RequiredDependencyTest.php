@@ -53,7 +53,7 @@ class RequiredDependencyTest extends TestCase
 
         $requiredPackage = new Package('required/pacakge');
         $requiredPackage->setRequires([
-            'root/requirement' => new Link('root/requirement')
+            'root/requirement' => new Link('root/requirement', 0)
         ]);
 
         $requiredDependency = new RequiredDependency($requiredPackage, new SymbolList());

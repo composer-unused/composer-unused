@@ -107,5 +107,5 @@ jobs:
         run: composer install --prefer-dist --no-progress --no-suggest
 
       - name: Check unused dependencies
-        run: bin/composer-unused --excludeDir=data
+        run: bin/composer-unused --excludeDir=data --output-format=github
 
