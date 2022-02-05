@@ -200,4 +200,17 @@ class UnusedCommandTest extends TestCase
             $commandTester->getDisplay()
         );
     }
+
+    /**
+     * @test
+     */
+    public function itShouldHaveZeroExitCodeOnArrayNamespace(): void
+    {
+        chdir(__DIR__ . '/../assets/TestProjects/ArrayNamespace');
+        $commandTester = new CommandTester($this->container->get(UnusedCommand::class));
+
+        $exitCode = $commandTester->execute([]);
+
+        self::assertSame(0, $exitCode);
+    }
 }
