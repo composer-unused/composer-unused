@@ -42,13 +42,13 @@ jobs:
         run: "composer install --no-progress --no-dev --prefer-dist --optimize-autoloader"
 
       - name: "Validate configuration for humbug/box"
-        run: ".phive/box.phar validate box.json"
+        run: ".phive/box validate box.json"
 
       - name: "Compile composer-unused.phar with humbug/box"
-        run: ".phive/box.phar compile --config=box.json"
+        run: ".phive/box compile --config=box.json"
 
       - name: "Show info about composer-unused.phar with humbug/box"
-        run: ".phive/box.phar info ${{ env.COMPOSER_UNUSED_PHAR }}"
+        run: ".phive/box info ${{ env.COMPOSER_UNUSED_PHAR }}"
 
       - name: "Validate composer-unused.phar against code"
         run: "php ${{ env.COMPOSER_UNUSED_PHAR }} --excludeDir=data"
