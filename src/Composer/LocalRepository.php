@@ -30,7 +30,7 @@ final class LocalRepository implements RepositoryInterface
         $packageDir = $this->vendorDir . DIRECTORY_SEPARATOR . $name;
         $packageComposerJson = $packageDir . DIRECTORY_SEPARATOR . 'composer.json';
 
-        if (!is_dir($packageDir) && !file_exists($packageComposerJson)) {
+        if (!file_exists($packageComposerJson)) {
             return null;
         }
 
