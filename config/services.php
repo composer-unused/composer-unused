@@ -14,7 +14,8 @@ use ComposerUnused\SymbolParser\Parser\PHP\Strategy\NewStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\StaticStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\UsedExtensionSymbolStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\UseStrategy;
-use PhpParser\Lexer;
+use OndraM\CiDetector\CiDetector;
+use OndraM\CiDetector\CiDetectorInterface;
 use PhpParser\Lexer\Emulative;
 use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -57,6 +58,8 @@ return static function (ContainerConfigurator $configurator) {
             service(UsedExtensionSymbolStrategy::class),
             service(UseStrategy::class)
         ]);
+
+    $services->set(CiDetectorInterface::class, CiDetector::class);
 
     $lexerVersion = Emulative::PHP_8_1;
 

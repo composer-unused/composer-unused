@@ -36,18 +36,21 @@ final class UnusedCommand extends Command
     private CollectRequiredDependenciesCommandHandler $collectRequiredDependenciesCommandHandler;
     private CollectFilteredDependenciesCommandHandler $collectFilteredDependenciesCommandHandler;
     private ConfigFactory $configFactory;
+    private FormatterFactory $formatterFactory;
 
     public function __construct(
         ConfigFactory $configFactory,
         CollectConsumedSymbolsCommandHandler $collectConsumedSymbolsCommandHandler,
         CollectRequiredDependenciesCommandHandler $collectRequiredDependenciesCommandHandler,
-        CollectFilteredDependenciesCommandHandler $collectFilteredDependenciesCommandHandler
+        CollectFilteredDependenciesCommandHandler $collectFilteredDependenciesCommandHandler,
+        FormatterFactory $formatterFactory
     ) {
         parent::__construct('unused');
         $this->configFactory = $configFactory;
         $this->collectConsumedSymbolsCommandHandler = $collectConsumedSymbolsCommandHandler;
         $this->collectRequiredDependenciesCommandHandler = $collectRequiredDependenciesCommandHandler;
         $this->collectFilteredDependenciesCommandHandler = $collectFilteredDependenciesCommandHandler;
+        $this->formatterFactory = $formatterFactory;
     }
 
     protected function configure(): void
@@ -112,7 +115,7 @@ final class UnusedCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $outputFormatter = FormatterFactory::create($input->getOption('output-format'));
+        $outputFormatter = $this->formatterFactory->create($input->getOption('output-format'));
         $composerJsonPath = $input->getArgument('composer-json');
 
         if (!file_exists($composerJsonPath) && !is_readable($composerJsonPath)) {
