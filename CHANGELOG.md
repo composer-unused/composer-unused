@@ -3,11 +3,18 @@
 ## [Unreleased] - TBA
 ### Added
 - Added `--output-format` option
-  - Currently supported values `default` and `github`
+  - Current supported values: `default` and `github`
   - `github` can be used to annotate PR
+- Added `symfony/dependency-injection` to leverage autowiring
 ### Fixed
+- Fix `Lexer\Emulative` to use the current php version instead of latest one
+- Removed `is_dir()` check from `LocalRepository` to avoid crashing `file_get_contents`
+- Fix phar build using the latest `box-project/box` version
+- Fix error if `composer.json` does not exist in given path
+- Fix issue where `Filter` was marked as unused again after being already used
 ### Changed
 ### Removed
+- Removed custom implementation of DI
 ### Security
 ### Deprecation
 
