@@ -24,5 +24,6 @@
     </groups>
     <php>
         <ini name="date.timezone" value="UTC"/>
+        <const name="ENV" value="test"/>
     </php>
 </phpunit>
