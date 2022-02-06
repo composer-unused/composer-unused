@@ -29,7 +29,6 @@ final class CollectRequiredDependenciesCommandHandler
     public function collect(LoadRequiredDependenciesCommand $command): DependencyCollection
     {
         $dependencyCollection = new DependencyCollection();
-        $providedSymbolLoader = $this->providedSymbolLoaderBuilder->build();
 
         foreach ($command->getPackageLinks() as $require) {
             $composerPackage = $this->packageResolver->resolve(
@@ -46,6 +45,11 @@ final class CollectRequiredDependenciesCommandHandler
             }
 
             $packageBaseDir = $command->getBaseDir() . DIRECTORY_SEPARATOR . $composerPackage->getName();
+
+            $providedSymbolLoader = $this
+                ->providedSymbolLoaderBuilder
+                ->setAdditionalFiles($command->getConfiguration()->getAdditionalFilesFor($composerPackage->getName()))
+                ->build();
 
             $dependencyCollection->add(
                 new RequiredDependency(

@@ -26,7 +26,8 @@
         "symfony/config": "^4.4 || ^5.4 || ^6.0",
         "symfony/console": "^4.4 || ^5.4 || ^6.0",
         "symfony/dependency-injection": "^4.4 || ^5.4 || ^6.0",
-        "symfony/serializer": "^4.4 || ^5.4 || ^6.0"
+        "symfony/serializer": "^4.4 || ^5.4 || ^6.0",
+        "webmozart/assert": "^1.10"
     },
     "require-dev": {
         "ext-ds": "*",
@@ -79,12 +80,6 @@
     "support": {
         "issues": "https://github.com/composer-unused/composer-unused/issues",
         "source": "https://github.com/composer-unused/composer-unused"
-    },
-    "extra": {
-        "unused": [
-            "symfony/config",
-            "symfony/dependency-injection"
-        ]
     },
     "funding": [
         {

@@ -15,7 +15,7 @@ final class PatternFilterTest extends TestCase
      */
     public function itShouldAlwaysBeUsed(): void
     {
-        $filter = new PatternFilter('/test/', true);
+        $filter = PatternFilter::fromString('/test/', true);
         $dependency = new TestDependency('fubar');
 
         self::assertFalse($filter->applies($dependency), 'Dependency named "fubar" should not apply to pattern "/test/"');
@@ -27,7 +27,7 @@ final class PatternFilterTest extends TestCase
      */
     public function itShouldMarkFilterAsUsed(): void
     {
-        $filter = new PatternFilter('/test/');
+        $filter = PatternFilter::fromString('/test/');
         $dependency = new TestDependency('test');
 
         self::assertTrue($filter->applies($dependency), 'dependency named "test" should apply to pattern "/test/"');
@@ -39,7 +39,7 @@ final class PatternFilterTest extends TestCase
      */
     public function itShouldRemainUnused(): void
     {
-        $filter = new PatternFilter('/test/');
+        $filter = PatternFilter::fromString('/test/');
         $dependency = new TestDependency('fubar');
 
         self::assertFalse($filter->applies($dependency), 'dependency named "fubar" should not apply to pattern "/test/"');

@@ -81,4 +81,10 @@ final class DependencyCollection implements IteratorAggregate, Countable
     {
         return new self(array_merge($this->items, $other->items));
     }
+
+    public function map(Closure $callback): DependencyCollection
+    {
+        array_map($callback, $this->items);
+        return $this;
+    }
 }

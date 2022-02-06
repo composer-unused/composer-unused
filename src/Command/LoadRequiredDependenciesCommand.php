@@ -4,26 +4,31 @@ declare(strict_types=1);
 
 namespace ComposerUnused\ComposerUnused\Command;
 
+use ComposerUnused\ComposerUnused\Configuration\Configuration;
 use ComposerUnused\Contracts\LinkInterface;
 use ComposerUnused\Contracts\RepositoryInterface;
 
 final class LoadRequiredDependenciesCommand
 {
-    /** @var string */
-    private $baseDir;
+    private string $baseDir;
     /** @var array<LinkInterface> */
-    private $packageLinks;
-    /** @var RepositoryInterface */
-    private $packageRepository;
+    private array $packageLinks;
+    private RepositoryInterface $packageRepository;
+    private Configuration $configuration;
 
     /**
      * @param array<LinkInterface> $packageLinks
      */
-    public function __construct(string $baseDir, array $packageLinks, RepositoryInterface $packageRepository)
-    {
+    public function __construct(
+        string $baseDir,
+        array $packageLinks,
+        RepositoryInterface $packageRepository,
+        Configuration $configuration
+    ) {
         $this->baseDir = $baseDir;
         $this->packageLinks = $packageLinks;
         $this->packageRepository = $packageRepository;
+        $this->configuration = $configuration;
     }
 
     public function getBaseDir(): string
@@ -42,5 +47,10 @@ final class LoadRequiredDependenciesCommand
     public function getPackageRepository(): RepositoryInterface
     {
         return $this->packageRepository;
+    }
+
+    public function getConfiguration(): Configuration
+    {
+        return $this->configuration;
     }
 }

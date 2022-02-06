@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ComposerUnused\ComposerUnused\Symbol;
 
+use ArrayIterator;
 use ComposerUnused\SymbolParser\File\FileContentProvider;
 use ComposerUnused\SymbolParser\Parser\PHP\AutoloadType;
 use ComposerUnused\SymbolParser\Parser\PHP\DefinedSymbolCollector;
@@ -16,10 +17,13 @@ use ComposerUnused\SymbolParser\Symbol\Loader\SymbolLoaderInterface;
 use ComposerUnused\SymbolParser\Symbol\Provider\FileSymbolProvider;
 use PhpParser\Lexer\Emulative;
 use PhpParser\ParserFactory;
+use SplFileInfo;
 
 final class ProvidedSymbolLoaderBuilder
 {
     private Emulative $lexer;
+    /** @var array<SplFileInfo> */
+    private array $additionalFiles = [];
 
     public function __construct(Emulative $lexer)
     {
@@ -38,6 +42,10 @@ final class ProvidedSymbolLoaderBuilder
             new FileContentProvider()
         );
 
+        if (!empty($this->additionalFiles)) {
+            $fileSymbolProvider->appendFiles(new ArrayIterator($this->additionalFiles));
+        }
+
         return new CompositeSymbolLoader(
             [
                 new ExtensionSymbolLoader(),
@@ -45,5 +53,15 @@ final class ProvidedSymbolLoaderBuilder
                 new FileSymbolLoader($fileSymbolProvider, [AutoloadType::CLASSMAP, AutoloadType::FILES])
             ]
         );
+    }
+
+    /**
+     * @param array<string> $filesPaths
+     */
+    public function setAdditionalFiles(array $filesPaths): self
+    {
+        $this->additionalFiles = array_map(static fn(string $filePath) => new SplFileInfo($filePath), $filesPaths);
+
+        return $this;
     }
 }
