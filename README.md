@@ -72,20 +72,35 @@ These options accept multiple values as shown next:
 
 > Make sure the package is named exactly as in your `composer.json`
 
-### Ignore by configuration
-You are also able to exclude packages by configuration. For this, you need to provide the `extra`
-directive in your `composer.json` file.
+### Configuration
+You can configure composer-unused by placing a `composer-unused.php` beside the projects `composer.json`
+This configuration can look something like this: [composer-unused.php](composer-unused.php)
 
-```json
-{
-    "extra": {
-        "unused": [
-            "package/a",
-            "package/b"
-        ]
-    }
-}
+#### Ignore dependencies by name
+To ignore dependencies by their name, add the following line to your configuration:
+
 ```
+$config->addNamedFilter(NamedFilter::fromString('dependency/name'));
+```
+
+#### Ignore dependencies by pattern
+To ignore dependencies by pattern, add the following line to your configuration
+
+```
+$config->addPatternFilter(PatternFilter::fromString('dependency/name'));
+```
+
+> You can ignore multiple dependencies by a single organization using `PatternFilter`
+
+#### Additional files to be parsed
+Per default, `composer-unused` is using the `composer.json` to determine where to look for files to parse.
+Sometimes dependencies don't have their composer.json correctly set up, or files get loaded in another way on production.
+Using this, you can define additional on a per-dependency basis.
+
+```
+$config->setAdditionalFilesFor('dependency/name', [<list-of-file-paths>]);
+```
+
 
 ## Changelog
 
