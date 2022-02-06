@@ -67,8 +67,7 @@ final class UnusedCommand extends Command
             'output-format',
             'o',
             InputOption::VALUE_REQUIRED,
-            'Change output style (default, github)',
-            'default'
+            'Change output style (default, github)'
         );
 
         $this->addOption(
