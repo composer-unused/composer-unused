@@ -5,6 +5,7 @@
 - Added `--output-format` option
   - Current supported values: `default` and `github`
   - `github` can be used to annotate PR
+- Added `CiDetector` to change output format according to the current ci environment
 - Added `symfony/dependency-injection` to leverage autowiring
 ### Fixed
 - Fix `Lexer\Emulative` to use the current php version instead of latest one
