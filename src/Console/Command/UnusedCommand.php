@@ -100,6 +100,14 @@ final class UnusedCommand extends Command
             InputOption::VALUE_NONE,
             'Show no progress bar'
         );
+
+        $this->addOption(
+            'configuration',
+            'c',
+            InputOption::VALUE_REQUIRED,
+            'composer-unused configuration file',
+            getcwd() . DIRECTORY_SEPARATOR . 'composer-unused.json.dist'
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -119,6 +127,11 @@ final class UnusedCommand extends Command
             return 1;
         }
 
+        if (!file_exists($composerJsonPath)) {
+            $io->error('composer.json not present in: ' . dirname($composerJsonPath));
+            return 1;
+        }
+
         $composerJson = file_get_contents($composerJsonPath);
 
         if ($composerJson === false) {
@@ -126,11 +139,11 @@ final class UnusedCommand extends Command
             return 1;
         }
 
-        $config = $this->configFactory->fromComposerJson($composerJson);
+        $composerConfig = $this->configFactory->fromComposerJson($composerJson);
         $baseDir = dirname($composerJsonPath);
 
-        $rootPackage = PackageFactory::fromConfig($config, $composerJson);
-        $localRepository = new LocalRepository($baseDir . DIRECTORY_SEPARATOR . $config->get('vendor-dir'));
+        $rootPackage = PackageFactory::fromConfig($composerConfig, $composerJson);
+        $localRepository = new LocalRepository($baseDir . DIRECTORY_SEPARATOR . $composerConfig->get('vendor-dir'));
 
         $consumedSymbols = $this->collectConsumedSymbolsCommandHandler->collect(
             new CollectConsumedSymbolsCommand(
@@ -141,7 +154,7 @@ final class UnusedCommand extends Command
 
         $unfilteredRequiredDependencyCollection = $this->collectRequiredDependenciesCommandHandler->collect(
             new LoadRequiredDependenciesCommand(
-                $baseDir . DIRECTORY_SEPARATOR . $config->get('vendor-dir'),
+                $baseDir . DIRECTORY_SEPARATOR . $composerConfig->get('vendor-dir'),
                 $rootPackage->getRequires(),
                 $localRepository
             )
@@ -149,7 +162,7 @@ final class UnusedCommand extends Command
 
         $filterCollection = new FilterCollection(
             array_merge(
-                $config->getExtra()['unused'] ?? [],
+                $composerConfig->getExtra()['unused'] ?? [],
                 $input->getOption('excludePackage')
             ),
             [] // TODO pattern exclusion from CLI
