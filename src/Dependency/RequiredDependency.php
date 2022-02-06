@@ -6,6 +6,7 @@ namespace ComposerUnused\ComposerUnused\Dependency;
 
 use ComposerUnused\Contracts\PackageInterface;
 use ComposerUnused\SymbolParser\Symbol\SymbolInterface;
+use ComposerUnused\SymbolParser\Symbol\SymbolList;
 use ComposerUnused\SymbolParser\Symbol\SymbolListInterface;
 
 use function array_key_exists;
@@ -19,11 +20,12 @@ final class RequiredDependency implements DependencyInterface
     private array $requiredBy = [];
     /** @var array<DependencyInterface> */
     private array $suggestBy = [];
+    private string $stateReason = '';
 
-    public function __construct(PackageInterface $package, SymbolListInterface $symbols)
+    public function __construct(PackageInterface $package, SymbolListInterface $symbols = null)
     {
         $this->package = $package;
-        $this->symbols = $symbols;
+        $this->symbols = $symbols ?? new SymbolList();
     }
 
     public function getName(): string
@@ -33,7 +35,19 @@ final class RequiredDependency implements DependencyInterface
 
     public function markUsed(): void
     {
+        $this->stateReason = '';
         $this->state = self::STATE_USED;
+    }
+
+    public function markIgnored(string $reason): void
+    {
+        $this->stateReason = $reason;
+        $this->state = self::STATE_IGNORED;
+    }
+
+    public function getStateReason(): string
+    {
+        return $this->stateReason;
     }
 
     public function inState(string $state): bool

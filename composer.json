@@ -80,6 +80,12 @@
         "issues": "https://github.com/composer-unused/composer-unused/issues",
         "source": "https://github.com/composer-unused/composer-unused"
     },
+    "extra": {
+        "unused": [
+            "symfony/config",
+            "symfony/dependency-injection"
+        ]
+    },
     "funding": [
         {
             "type": "other",

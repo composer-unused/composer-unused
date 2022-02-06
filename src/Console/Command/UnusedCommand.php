@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace ComposerUnused\ComposerUnused\Console\Command;
 
 use ComposerUnused\ComposerUnused\Command\CollectConsumedSymbolsCommand;
-use ComposerUnused\ComposerUnused\Command\FilterDependencyCollectionCommand;
 use ComposerUnused\ComposerUnused\Command\Handler\CollectConsumedSymbolsCommandHandler;
-use ComposerUnused\ComposerUnused\Command\Handler\CollectFilteredDependenciesCommandHandler;
 use ComposerUnused\ComposerUnused\Command\Handler\CollectRequiredDependenciesCommandHandler;
 use ComposerUnused\ComposerUnused\Command\LoadRequiredDependenciesCommand;
 use ComposerUnused\ComposerUnused\Composer\ConfigFactory;
@@ -34,7 +32,6 @@ final class UnusedCommand extends Command
 
     private CollectConsumedSymbolsCommandHandler $collectConsumedSymbolsCommandHandler;
     private CollectRequiredDependenciesCommandHandler $collectRequiredDependenciesCommandHandler;
-    private CollectFilteredDependenciesCommandHandler $collectFilteredDependenciesCommandHandler;
     private ConfigFactory $configFactory;
     private FormatterFactory $formatterFactory;
 
@@ -42,14 +39,12 @@ final class UnusedCommand extends Command
         ConfigFactory $configFactory,
         CollectConsumedSymbolsCommandHandler $collectConsumedSymbolsCommandHandler,
         CollectRequiredDependenciesCommandHandler $collectRequiredDependenciesCommandHandler,
-        CollectFilteredDependenciesCommandHandler $collectFilteredDependenciesCommandHandler,
         FormatterFactory $formatterFactory
     ) {
         parent::__construct('unused');
         $this->configFactory = $configFactory;
         $this->collectConsumedSymbolsCommandHandler = $collectConsumedSymbolsCommandHandler;
         $this->collectRequiredDependenciesCommandHandler = $collectRequiredDependenciesCommandHandler;
-        $this->collectFilteredDependenciesCommandHandler = $collectFilteredDependenciesCommandHandler;
         $this->formatterFactory = $formatterFactory;
     }
 
@@ -154,7 +149,7 @@ final class UnusedCommand extends Command
             )
         );
 
-        $unfilteredRequiredDependencyCollection = $this->collectRequiredDependenciesCommandHandler->collect(
+        $requiredDependencyCollection = $this->collectRequiredDependenciesCommandHandler->collect(
             new LoadRequiredDependenciesCommand(
                 $baseDir . DIRECTORY_SEPARATOR . $composerConfig->get('vendor-dir'),
                 $rootPackage->getRequires(),
@@ -170,11 +165,20 @@ final class UnusedCommand extends Command
             [] // TODO pattern exclusion from CLI
         );
 
-        $requiredDependencyCollection = $this->collectFilteredDependenciesCommandHandler->collect(
-            new FilterDependencyCollectionCommand(
-                $unfilteredRequiredDependencyCollection,
-                $filterCollection
-            )
+        [$requiredDependencyCollection, $ignoredDependencyCollection] = $requiredDependencyCollection->partition(
+            static function (DependencyInterface $dependency) use ($filterCollection) {
+                foreach ($filterCollection as $filter) {
+                    if ($filter->applies($dependency)) {
+                        if ($dependency instanceof RequiredDependency) {
+                            $dependency->markIgnored('ignored by ' . $filter->toString());
+                        }
+
+                        return false;
+                    }
+                }
+
+                return true;
+            }
         );
 
         foreach ($consumedSymbols as $symbol) {
@@ -222,12 +226,14 @@ final class UnusedCommand extends Command
             }
         );
 
+        $ignoredDependencyCollection->merge($invalidDependencyCollection);
+
         return $outputFormatter->formatOutput(
             $rootPackage,
             $composerJsonPath,
             $usedDependencyCollection,
             $unusedDependencyCollection,
-            $invalidDependencyCollection,
+            $ignoredDependencyCollection,
             $filterCollection,
             $io
         );
