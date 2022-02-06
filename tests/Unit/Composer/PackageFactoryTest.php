@@ -31,6 +31,6 @@ final class PackageFactoryTest extends TestCase
         JSON;
 
         $package = PackageFactory::fromConfig($config, $content);
-        self::assertEquals(2, $package->getRequires()[0]->getLineNumber());
+        self::assertEquals(3, $package->getRequires()[0]->getLineNumber());
     }
 }

@@ -32,7 +32,7 @@ final class PackageFactory
         foreach ($requires as $require) {
             foreach ($lines as $lineNumber => $line) {
                 if (preg_match(sprintf('#%s#', $require), $line)) {
-                    $matches[$require] = $lineNumber;
+                    $matches[$require] = $lineNumber + 1;
                     break;
                 }
             }
