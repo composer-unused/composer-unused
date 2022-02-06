@@ -79,10 +79,10 @@ class UnusedCommandTest extends TestCase
         $exitCode = $commandTester->execute(['composer-json' => __DIR__ . '/../assets/TestProjects/IgnoreSpecialPackages/composer.json']);
 
         self::assertSame(0, $exitCode);
-        self::assertStringNotContainsString('composer-plugin-api', $commandTester->getDisplay());
-        self::assertStringNotContainsString('composer-runtime-api', $commandTester->getDisplay());
+        self::assertStringContainsString('composer-plugin-api (ignored by NamedFilter', $commandTester->getDisplay());
+        self::assertStringContainsString('composer-runtime-api (ignored by NamedFilter', $commandTester->getDisplay());
         self::assertStringContainsString(
-            'Found 0 used, 0 unused, 0 ignored and 0 zombie packages',
+            'Found 0 used, 0 unused, 2 ignored and 0 zombie packages',
             $commandTester->getDisplay()
         );
     }
@@ -99,9 +99,9 @@ class UnusedCommandTest extends TestCase
         ]);
 
         self::assertSame(0, $exitCode);
-        self::assertStringNotContainsString('dummy/test-package', $commandTester->getDisplay());
+        self::assertStringContainsString('dummy/test-package (ignored by NamedFilter', $commandTester->getDisplay());
         self::assertStringContainsString(
-            'Found 0 used, 0 unused, 0 ignored and 0 zombie packages',
+            'Found 0 used, 0 unused, 3 ignored and 0 zombie packages',
             $commandTester->getDisplay()
         );
     }
@@ -115,10 +115,11 @@ class UnusedCommandTest extends TestCase
         $exitCode = $commandTester->execute(['composer-json' => __DIR__ . '/../assets/TestProjects/IgnorePatternPackages/composer.json']);
 
         self::assertSame(1, $exitCode);
-        self::assertStringNotContainsString('-implementation', $commandTester->getDisplay());
+        self::assertStringContainsString('psr/log-implementation (ignored by PatternFilter', $commandTester->getDisplay());
+        self::assertStringContainsString('dummy/ff-implementation (ignored by PatternFilter', $commandTester->getDisplay());
         self::assertStringContainsString('dummy/test-package', $commandTester->getDisplay());
         self::assertStringContainsString(
-            'Found 0 used, 1 unused, 0 ignored and 0 zombie packages',
+            'Found 0 used, 1 unused, 2 ignored and 0 zombie packages',
             $commandTester->getDisplay()
         );
     }

@@ -13,7 +13,9 @@
 - Fix phar build using the latest `box-project/box` version
 - Fix error if `composer.json` does not exist in given path
 - Fix issue where `Filter` was marked as unused again after being already used
+- Fix ignore/invalid dependencies showing up in `Ignored` section again
 ### Changed
+- Change the information about ignored dependencies
 ### Removed
 - Removed custom implementation of DI
 ### Security

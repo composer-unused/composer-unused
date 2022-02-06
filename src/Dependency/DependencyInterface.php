@@ -9,6 +9,7 @@ use ComposerUnused\SymbolParser\Symbol\SymbolInterface;
 interface DependencyInterface
 {
     public const STATE_INVALID = 'invalid';
+    public const STATE_IGNORED = 'ignored';
     public const STATE_USED = 'used';
     public const STATE_UNUSED = 'unused';
 
@@ -35,4 +36,10 @@ interface DependencyInterface
      * @return array<DependencyInterface>
      */
     public function getSuggestedBy(): array;
+
+    public function getStateReason(): string;
+
+    public function markUsed(): void;
+
+    public function markIgnored(string $reason): void;
 }

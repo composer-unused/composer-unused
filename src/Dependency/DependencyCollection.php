@@ -76,4 +76,9 @@ final class DependencyCollection implements IteratorAggregate, Countable
             array_filter($this->items, $fn)
         );
     }
+
+    public function merge(DependencyCollection $other): DependencyCollection
+    {
+        return new self(array_merge($this->items, $other->items));
+    }
 }

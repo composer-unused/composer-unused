@@ -5,22 +5,18 @@ declare(strict_types=1);
 namespace ComposerUnused\ComposerUnused\OutputFormatter;
 
 use ComposerUnused\ComposerUnused\Dependency\DependencyCollection;
-use ComposerUnused\ComposerUnused\Dependency\InvalidDependency;
 use ComposerUnused\ComposerUnused\Filter\FilterCollection;
 use ComposerUnused\Contracts\PackageInterface;
 use Symfony\Component\Console\Style\OutputStyle;
 
 final class GithubFormatter implements OutputFormatterInterface
 {
-    /**
-     * @param DependencyCollection<InvalidDependency> $invalidDependencyCollection
-     */
     public function formatOutput(
         PackageInterface $rootPackage,
         string $composerJsonPath,
         DependencyCollection $usedDependencyCollection,
         DependencyCollection $unusedDependencyCollection,
-        DependencyCollection $invalidDependencyCollection,
+        DependencyCollection $ignoredDependencyCollection,
         FilterCollection $filterCollection,
         OutputStyle $output
     ): int {
@@ -44,7 +40,7 @@ final class GithubFormatter implements OutputFormatterInterface
             $output->writeln('');
         }
 
-        foreach ($invalidDependencyCollection as $dependency) {
+        foreach ($ignoredDependencyCollection as $dependency) {
             $metas = [
                 'file' => $composerJsonPath,
                 'line' => $rootPackage->getRequire($dependency->getName())->getLineNumber(),

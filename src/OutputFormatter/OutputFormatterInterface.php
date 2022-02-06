@@ -20,7 +20,7 @@ interface OutputFormatterInterface
         string $composerJsonPath,
         DependencyCollection $usedDependencyCollection,
         DependencyCollection $unusedDependencyCollection,
-        DependencyCollection $invalidDependencyCollection,
+        DependencyCollection $ignoredDependencyCollection,
         FilterCollection $filterCollection,
         OutputStyle $output
     ): int;

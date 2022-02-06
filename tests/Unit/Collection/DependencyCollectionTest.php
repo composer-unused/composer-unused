@@ -38,4 +38,25 @@ final class DependencyCollectionTest extends TestCase
         self::assertCount(1, $usedDependencyCollection);
         self::assertCount(2, $unusedDependencyCollection);
     }
+
+    /**
+     * @test
+     */
+    public function itShouldMergeTwoCollections(): void
+    {
+        $package = $this->createStub(PackageInterface::class);
+        $symbolList = $this->createStub(SymbolListInterface::class);
+
+        $dependencyA = new RequiredDependency($package, $symbolList);
+        $dependencyB = new RequiredDependency($package, $symbolList);
+
+        $collectionA = new DependencyCollection([$dependencyA]);
+        $collectionB = new DependencyCollection([$dependencyB]);
+
+        $collectionC = $collectionA->merge($collectionB);
+
+        self::assertCount(1, $collectionA);
+        self::assertCount(1, $collectionB);
+        self::assertCount(2, $collectionC);
+    }
 }

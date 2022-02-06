@@ -36,6 +36,13 @@ final class NamedFilter implements FilterInterface
 
     public function toString(): string
     {
-        return $this->filterString;
+        $type = substr(self::class, strrpos(self::class, '\\') + 1);
+
+        return sprintf(
+            '%s(userProvided: %s, string: %s)',
+            $type,
+            $this->alwaysUsed ? 'false' : 'true',
+            $this->filterString
+        );
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ComposerUnused\ComposerUnused\Command\Handler;
 
+use ComposerUnused\ComposerUnused\Composer\InvalidPackage;
 use ComposerUnused\SymbolParser\Symbol\SymbolList;
 use ComposerUnused\ComposerUnused\Command\LoadRequiredDependenciesCommand;
 use ComposerUnused\ComposerUnused\Dependency\DependencyCollection;
@@ -37,12 +38,10 @@ final class CollectRequiredDependenciesCommandHandler
             );
 
             if ($composerPackage === null) {
-                $dependencyCollection->add(
-                    new InvalidDependency(
-                        $require,
-                        'Dependency can\'t be located. Maybe not installed?'
-                    )
-                );
+                $invalidDependency = new RequiredDependency(new InvalidPackage($require->getTarget()));
+                $invalidDependency->markIgnored('Dependency can\'t be located. Maybe not installed?');
+
+                $dependencyCollection->add($invalidDependency);
                 continue;
             }
 

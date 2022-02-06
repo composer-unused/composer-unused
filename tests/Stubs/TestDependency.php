@@ -58,4 +58,17 @@ final class TestDependency implements DependencyInterface
     {
         return [];
     }
+
+    public function getStateReason(): string
+    {
+        return '';
+    }
+
+    public function markUsed(): void
+    {
+    }
+
+    public function markIgnored(string $reason): void
+    {
+    }
 }
