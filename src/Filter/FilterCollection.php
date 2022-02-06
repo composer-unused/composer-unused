@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ComposerUnused\ComposerUnused\Filter;
 
 use ArrayIterator;
+use ComposerUnused\ComposerUnused\Configuration;
 use Countable;
 use IteratorAggregate;
 
@@ -37,26 +38,35 @@ final class FilterCollection implements IteratorAggregate, Countable
     private array $items;
 
     /**
-     * @param array<string> $namedFilter
-     * @param array<string> $patternFilter
+     * @param array<Configuration\NamedFilter> $namedFilter
+     * @param array<Configuration\PatternFilter> $patternFilter
      */
     public function __construct(array $namedFilter, array $patternFilter)
     {
         $globalNamedFilter = array_map(
-            static fn(string $named, $used) => new NamedFilter($named, $used),
+            static fn(
+                string $named,
+                bool $used
+            ) => new NamedFilter(Configuration\NamedFilter::fromString($named), $used),
             array_keys(self::GLOBAL_NAMED_EXCLUSION),
             array_values(self::GLOBAL_NAMED_EXCLUSION)
         );
 
         $globalPatternFilter =
             array_map(
-                static fn(string $pattern, $used) => new PatternFilter($pattern, $used),
+                static fn(
+                    string $pattern,
+                    bool $used
+                ) => new PatternFilter(Configuration\PatternFilter::fromString($pattern), $used),
                 array_keys(self::GLOBAL_PATTERN_EXCLUSION),
                 array_values(self::GLOBAL_PATTERN_EXCLUSION)
             );
 
-        $named = array_map(static fn(string $named) => new NamedFilter($named), $namedFilter);
-        $pattern = array_map(static fn(string $pattern) => new PatternFilter($pattern), $patternFilter);
+        $named = array_map(static fn(Configuration\NamedFilter $named) => new NamedFilter($named), $namedFilter);
+        $pattern = array_map(
+            static fn(Configuration\PatternFilter $pattern) => new PatternFilter($pattern),
+            $patternFilter
+        );
 
         $this->items = array_merge($globalNamedFilter, $globalPatternFilter, $named, $pattern);
     }

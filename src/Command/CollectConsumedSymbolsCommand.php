@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace ComposerUnused\ComposerUnused\Command;
 
+use ComposerUnused\ComposerUnused\Configuration\Configuration;
 use ComposerUnused\Contracts\PackageInterface;
 
 final class CollectConsumedSymbolsCommand
 {
-    /** @var PackageInterface */
-    private $package;
-    /** @var string */
-    private $packageRoot;
+    private PackageInterface $package;
+    private string $packageRoot;
+    private Configuration $configuration;
 
-    public function __construct(?string $packageRoot, PackageInterface $package)
+    public function __construct(?string $packageRoot, PackageInterface $package, Configuration $configuration)
     {
         $this->packageRoot = $packageRoot ?? '';
         $this->package = $package;
+        $this->configuration = $configuration;
     }
 
     public function getPackage(): PackageInterface
@@ -30,5 +31,10 @@ final class CollectConsumedSymbolsCommand
     public function getPackageRoot(): string
     {
         return $this->packageRoot;
+    }
+
+    public function getConfiguration(): Configuration
+    {
+        return $this->configuration;
     }
 }

@@ -5,22 +5,28 @@ declare(strict_types=1);
 namespace ComposerUnused\ComposerUnused\Filter;
 
 use ComposerUnused\ComposerUnused\Dependency\DependencyInterface;
+use ComposerUnused\ComposerUnused\Configuration;
 
 final class PatternFilter implements FilterInterface
 {
-    private string $pattern;
+    private Configuration\PatternFilter $pattern;
     private bool $used = false;
     private bool $alwaysUsed;
 
-    public function __construct(string $pattern, bool $alwaysUsed = false)
+    public function __construct(Configuration\PatternFilter $pattern, bool $alwaysUsed = false)
     {
         $this->pattern = $pattern;
         $this->alwaysUsed = $alwaysUsed;
     }
 
+    public static function fromString(string $pattern, bool $alwaysUsed = false): self
+    {
+        return new self(Configuration\PatternFilter::fromString($pattern), $alwaysUsed);
+    }
+
     public function applies(DependencyInterface $dependency): bool
     {
-        return $this->used = (bool)preg_match($this->pattern, $dependency->getName());
+        return $this->used = (bool)preg_match($this->pattern->toString(), $dependency->getName());
     }
 
     public function used(): bool
@@ -36,7 +42,7 @@ final class PatternFilter implements FilterInterface
             '%s(userProvided: %s, string: %s)',
             $type,
             $this->alwaysUsed ? 'false' : 'true',
-            $this->pattern
+            $this->pattern->toString()
         );
     }
 }

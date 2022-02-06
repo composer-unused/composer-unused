@@ -15,7 +15,7 @@ final class NamedFilterTest extends TestCase
      */
     public function itShouldAlwaysBeUsed(): void
     {
-        $filter = new NamedFilter('test', true);
+        $filter = NamedFilter::fromString('test', true);
         self::assertTrue($filter->used());
     }
 
@@ -24,7 +24,7 @@ final class NamedFilterTest extends TestCase
      */
     public function itShouldMarkFilterAsUsed(): void
     {
-        $filter = new NamedFilter('test');
+        $filter = NamedFilter::fromString('test');
         $dependency = new TestDependency('test');
 
         self::assertTrue($filter->applies($dependency), 'dependency named "test" should apply to named filter "test"');
@@ -36,7 +36,7 @@ final class NamedFilterTest extends TestCase
      */
     public function itShouldRemainUnused(): void
     {
-        $filter = new NamedFilter('test');
+        $filter = NamedFilter::fromString('test');
         $dependency = new TestDependency('fubar');
 
         self::assertFalse($filter->applies($dependency), 'dependency named "fubar" should not apply to named filter "test"');
@@ -48,7 +48,7 @@ final class NamedFilterTest extends TestCase
      */
     public function itShouldRemainUsed(): void
     {
-        $filter = new NamedFilter('test');
+        $filter = NamedFilter::fromString('test');
         $dependencyA = new TestDependency('test');
         $dependencyB = new TestDependency('fubar');
 

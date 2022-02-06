@@ -11,6 +11,8 @@ use ComposerUnused\ComposerUnused\Command\LoadRequiredDependenciesCommand;
 use ComposerUnused\ComposerUnused\Composer\ConfigFactory;
 use ComposerUnused\ComposerUnused\Composer\LocalRepository;
 use ComposerUnused\ComposerUnused\Composer\PackageFactory;
+use ComposerUnused\ComposerUnused\Configuration\Configuration;
+use ComposerUnused\ComposerUnused\Configuration\NamedFilter;
 use ComposerUnused\ComposerUnused\Dependency\DependencyInterface;
 use ComposerUnused\ComposerUnused\Dependency\RequiredDependency;
 use ComposerUnused\ComposerUnused\Filter\FilterCollection;
@@ -139,13 +141,16 @@ final class UnusedCommand extends Command
         $composerConfig = $this->configFactory->fromComposerJson($composerJson);
         $baseDir = dirname($composerJsonPath);
 
+        $configuration = $this->loadConfiguration($baseDir);
+
         $rootPackage = PackageFactory::fromConfig($composerConfig, $composerJson);
         $localRepository = new LocalRepository($baseDir . DIRECTORY_SEPARATOR . $composerConfig->get('vendor-dir'));
 
         $consumedSymbols = $this->collectConsumedSymbolsCommandHandler->collect(
             new CollectConsumedSymbolsCommand(
                 $baseDir,
-                $rootPackage
+                $rootPackage,
+                $configuration
             )
         );
 
@@ -153,38 +158,38 @@ final class UnusedCommand extends Command
             new LoadRequiredDependenciesCommand(
                 $baseDir . DIRECTORY_SEPARATOR . $composerConfig->get('vendor-dir'),
                 $rootPackage->getRequires(),
-                $localRepository
+                $localRepository,
+                $configuration
             )
         );
 
+        if (isset($composerConfig->getExtra()['unused'])) {
+            $io->warning(
+                'composer.json[extra][unused] is deprecated and will be removed. ' .
+                'Consider migrating to composer-unused.php configuration.'
+            );
+        }
+
         $filterCollection = new FilterCollection(
             array_merge(
-                $composerConfig->getExtra()['unused'] ?? [],
-                $input->getOption('excludePackage')
+                array_values($configuration->getNamedFilters()),
+                array_map(
+                    static fn(string $filter) => NamedFilter::fromString($filter),
+                    array_merge(
+                        $input->getOption('excludePackage'),
+                        $composerConfig->getExtra()['unused'] ?? []
+                    )
+                )
             ),
-            [] // TODO pattern exclusion from CLI
-        );
-
-        [$requiredDependencyCollection, $ignoredDependencyCollection] = $requiredDependencyCollection->partition(
-            static function (DependencyInterface $dependency) use ($filterCollection) {
-                foreach ($filterCollection as $filter) {
-                    if ($filter->applies($dependency)) {
-                        if ($dependency instanceof RequiredDependency) {
-                            $dependency->markIgnored('ignored by ' . $filter->toString());
-                        }
-
-                        return false;
-                    }
-                }
-
-                return true;
-            }
+            array_values($configuration->getPatternFilters())
         );
 
         foreach ($consumedSymbols as $symbol) {
             /** @var RequiredDependency $requiredDependency */
             foreach ($requiredDependencyCollection as $requiredDependency) {
-                if ($requiredDependency->inState($requiredDependency::STATE_USED)) {
+                if (
+                    $requiredDependency->inState($requiredDependency::STATE_USED)
+                ) {
                     continue;
                 }
 
@@ -220,13 +225,21 @@ final class UnusedCommand extends Command
             }
         );
 
-        [$invalidDependencyCollection, $unusedDependencyCollection] = $unusedDependencyCollection->partition(
-            static function (DependencyInterface $dependency) {
-                return $dependency->inState($dependency::STATE_INVALID);
+        $unusedDependencyCollection->map(
+            static function (DependencyInterface $dependency) use ($filterCollection) {
+                foreach ($filterCollection as $filter) {
+                    if ($filter->applies($dependency)) {
+                        $dependency->markIgnored('ignored by ' . $filter->toString());
+                    }
+                }
             }
         );
 
-        $ignoredDependencyCollection->merge($invalidDependencyCollection);
+        [$ignoredDependencyCollection, $unusedDependencyCollection] = $unusedDependencyCollection->partition(
+            static fn(
+                DependencyInterface $dependency
+            ) => $dependency->inState($dependency::STATE_IGNORED) || $dependency->inState($dependency::STATE_INVALID)
+        );
 
         return $outputFormatter->formatOutput(
             $rootPackage,
@@ -237,5 +250,19 @@ final class UnusedCommand extends Command
             $filterCollection,
             $io
         );
+    }
+
+    private function loadConfiguration(string $baseDir): Configuration
+    {
+        $configPath = $baseDir . DIRECTORY_SEPARATOR . 'composer-unused.php';
+        $configuration = new Configuration();
+
+        if (!file_exists($configPath)) {
+            return $configuration;
+        }
+
+        /** @var callable $configurationFactory */
+        $configurationFactory = require $configPath;
+        return $configurationFactory($configuration);
     }
 }
