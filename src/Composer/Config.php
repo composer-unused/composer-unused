@@ -8,7 +8,7 @@ final class Config
 {
     /** @var array<string, mixed> */
     protected array $config = [];
-    protected string $name;
+    protected string $name = '';
     /** @var array<string, mixed> */
     private array $require = [];
     /** @var array<string, mixed> */
