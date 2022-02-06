@@ -2,4 +2,16 @@
 
 declare(strict_types=1);
 
-return new \ComposerUnused\ComposerUnused\Di\ServiceContainer(require __DIR__ . '/service_manager.php');
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+
+return (static function () {
+    $container = new ContainerBuilder();
+    $loader = new PhpFileLoader($container, new FileLocator(__DIR__));
+    $loader->load('services.php');
+
+    $container->compile();
+
+    return $container;
+})();

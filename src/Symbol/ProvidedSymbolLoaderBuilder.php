@@ -14,14 +14,22 @@ use ComposerUnused\SymbolParser\Symbol\Loader\FileSymbolLoader;
 use ComposerUnused\SymbolParser\Symbol\Loader\PsrSymbolLoader;
 use ComposerUnused\SymbolParser\Symbol\Loader\SymbolLoaderInterface;
 use ComposerUnused\SymbolParser\Symbol\Provider\FileSymbolProvider;
+use PhpParser\Lexer\Emulative;
 use PhpParser\ParserFactory;
 
 final class ProvidedSymbolLoaderBuilder
 {
+    private Emulative $lexer;
+
+    public function __construct(Emulative $lexer)
+    {
+        $this->lexer = $lexer;
+    }
+
     public function build(): SymbolLoaderInterface
     {
         $symbolNameParser = new SymbolNameParser(
-            (new ParserFactory())->create(ParserFactory::ONLY_PHP7),
+            (new ParserFactory())->create(ParserFactory::ONLY_PHP7, $this->lexer),
             new DefinedSymbolCollector()
         );
 

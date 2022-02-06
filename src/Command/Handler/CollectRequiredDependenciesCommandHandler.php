@@ -14,10 +14,8 @@ use ComposerUnused\ComposerUnused\Symbol\ProvidedSymbolLoaderBuilder;
 
 final class CollectRequiredDependenciesCommandHandler
 {
-    /** @var PackageResolver */
-    private $packageResolver;
-    /** @var ProvidedSymbolLoaderBuilder */
-    private $providedSymbolLoaderBuilder;
+    private PackageResolver $packageResolver;
+    private ProvidedSymbolLoaderBuilder $providedSymbolLoaderBuilder;
 
     public function __construct(
         PackageResolver $packageResolver,

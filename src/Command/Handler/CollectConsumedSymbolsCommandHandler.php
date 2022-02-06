@@ -15,8 +15,7 @@ use function strpos;
 
 final class CollectConsumedSymbolsCommandHandler
 {
-    /** @var ConsumedSymbolLoaderBuilder */
-    private $consumedSymbolLoaderBuilder;
+    private ConsumedSymbolLoaderBuilder $consumedSymbolLoaderBuilder;
 
     public function __construct(ConsumedSymbolLoaderBuilder $consumedSymbolLoaderBuilder)
     {
