@@ -29,11 +29,13 @@ return static function (ContainerConfigurator $configurator) {
         ->autoconfigure()
         ->bind('$consumedSymbolCollector', service('collector.consumed'));
 
+    $vendorDir = dirname(realpath(UNUSED_COMPOSER_INSTALL));
+
     // makes classes in src/ available to be used as services
     // this creates a service per class whose id is the fully-qualified class name
     $services
         ->load('ComposerUnused\\ComposerUnused\\', __DIR__ . '/../src/*')
-        ->load('ComposerUnused\\SymbolParser\\', __DIR__ . '/../vendor/composer-unused/symbol-parser/src/*');
+        ->load('ComposerUnused\\SymbolParser\\', $vendorDir . '/composer-unused/symbol-parser/src/*');
 
     $services->set(UnusedCommand::class)->public();
 
