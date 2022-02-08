@@ -6,41 +6,44 @@ namespace ComposerUnused\ComposerUnused\Composer;
 
 use ComposerUnused\Contracts\PackageInterface;
 use ComposerUnused\Contracts\RepositoryInterface;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
-use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
-use Symfony\Component\Serializer\Serializer;
+use OutOfBoundsException;
 
 final class LocalRepository implements RepositoryInterface
 {
-    private string $vendorDir;
-    private Serializer $serializer;
+    private InstalledVersions $installedVersions;
+    private PackageFactory $packageFactory;
+    private ConfigFactory $configFactory;
 
-    public function __construct(string $vendorDir)
-    {
-        $this->vendorDir = $vendorDir;
-        $encoders = [new JsonEncoder()];
-        $normalizers = [new PropertyNormalizer(null, new CamelCaseToSnakeCaseNameConverter())];
-
-        $this->serializer = new Serializer($normalizers, $encoders);
+    public function __construct(
+        InstalledVersions $installedVersions,
+        PackageFactory $packageFactory,
+        ConfigFactory $configFactory
+    ) {
+        $this->installedVersions = $installedVersions;
+        $this->packageFactory = $packageFactory;
+        $this->configFactory = $configFactory;
     }
 
     public function findPackage(string $name): ?PackageInterface
     {
-        $packageDir = $this->vendorDir . DIRECTORY_SEPARATOR . $name;
+        try {
+            $packageDir = $this->installedVersions->getInstallPath($name);
+        } catch (OutOfBoundsException $e) {
+            return null;
+        }
+
         $packageComposerJson = $packageDir . DIRECTORY_SEPARATOR . 'composer.json';
 
         if (!file_exists($packageComposerJson)) {
             return null;
         }
 
-        $jsonContent = file_get_contents($packageComposerJson);
-
-        if ($jsonContent === false) {
+        try {
+            $config = $this->configFactory->fromPath($packageComposerJson);
+        } catch (\RuntimeException $e) {
             return null;
         }
 
-        $config = $this->serializer->deserialize($jsonContent, Config::class, 'json');
-        return PackageFactory::fromConfig($config, $jsonContent);
+        return $this->packageFactory->fromConfig($config);
     }
 }

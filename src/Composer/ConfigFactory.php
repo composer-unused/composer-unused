@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace ComposerUnused\ComposerUnused\Composer;
 
+use ComposerUnused\SymbolParser\Exception\IOException;
+use RuntimeException;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
@@ -22,8 +24,19 @@ final class ConfigFactory
         $this->serializer = new Serializer($normalizers, $encoders);
     }
 
-    public function fromComposerJson(string $jsonContent): Config
+    public function fromPath(string $jsonPath): Config
     {
-        return $this->serializer->deserialize($jsonContent, Config::class, 'json');
+        $composerJson = file_get_contents($jsonPath);
+
+        if ($composerJson === false) {
+            throw new RuntimeException('Unable to read contents from ' . $jsonPath);
+        }
+
+        /** @var Config $config */
+        $config = $this->serializer->deserialize($composerJson, Config::class, 'json');
+        $config->setRaw($composerJson);
+        $config->setBaseDir(dirname($jsonPath));
+
+        return $config;
     }
 }

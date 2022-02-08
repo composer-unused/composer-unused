@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace ComposerUnused\ComposerUnused\Composer;
 
+use ComposerUnused\Contracts\PackageInterface;
+
 final class PackageFactory
 {
-    public static function fromConfig(Config $config, string $jsonContent): Package
+    public function fromConfig(Config $config): PackageInterface
     {
-        $requireLines = self::matchJsonLineWithLink(array_keys($config->getRequire()), $jsonContent);
+        $requireLines = $this->matchJsonLineWithLink(array_keys($config->getRequire()), $config->getRaw());
 
         return new Package(
             $config->getName(),
@@ -24,7 +26,7 @@ final class PackageFactory
      * @param array<string> $requires
      * @return array<string, int>
      */
-    private static function matchJsonLineWithLink(array $requires, string $jsonContent): array
+    private function matchJsonLineWithLink(array $requires, string $jsonContent): array
     {
         $lines = explode(PHP_EOL, $jsonContent);
         $matches = [];

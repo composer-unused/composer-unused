@@ -9,7 +9,9 @@ use ComposerUnused\ComposerUnused\Command\Handler\CollectConsumedSymbolsCommandH
 use ComposerUnused\ComposerUnused\Command\Handler\CollectRequiredDependenciesCommandHandler;
 use ComposerUnused\ComposerUnused\Command\LoadRequiredDependenciesCommand;
 use ComposerUnused\ComposerUnused\Composer\ConfigFactory;
+use ComposerUnused\ComposerUnused\Composer\InstalledVersions;
 use ComposerUnused\ComposerUnused\Composer\LocalRepository;
+use ComposerUnused\ComposerUnused\Composer\LocalRepositoryFactory;
 use ComposerUnused\ComposerUnused\Composer\PackageFactory;
 use ComposerUnused\ComposerUnused\Configuration\Configuration;
 use ComposerUnused\ComposerUnused\Configuration\NamedFilter;
@@ -36,18 +38,24 @@ final class UnusedCommand extends Command
     private CollectRequiredDependenciesCommandHandler $collectRequiredDependenciesCommandHandler;
     private ConfigFactory $configFactory;
     private FormatterFactory $formatterFactory;
+    private LocalRepositoryFactory $localRepositoryFactory;
+    private PackageFactory $packageFactory;
 
     public function __construct(
         ConfigFactory $configFactory,
         CollectConsumedSymbolsCommandHandler $collectConsumedSymbolsCommandHandler,
         CollectRequiredDependenciesCommandHandler $collectRequiredDependenciesCommandHandler,
-        FormatterFactory $formatterFactory
+        FormatterFactory $formatterFactory,
+        LocalRepositoryFactory $localRepositoryFactory,
+        PackageFactory $packageFactory
     ) {
         parent::__construct('unused');
         $this->configFactory = $configFactory;
         $this->collectConsumedSymbolsCommandHandler = $collectConsumedSymbolsCommandHandler;
         $this->collectRequiredDependenciesCommandHandler = $collectRequiredDependenciesCommandHandler;
         $this->formatterFactory = $formatterFactory;
+        $this->localRepositoryFactory = $localRepositoryFactory;
+        $this->packageFactory = $packageFactory;
     }
 
     protected function configure(): void
@@ -115,7 +123,7 @@ final class UnusedCommand extends Command
         $outputFormatter = $this->formatterFactory->create($input->getOption('output-format'));
         $composerJsonPath = $input->getArgument('composer-json');
 
-        if (!file_exists($composerJsonPath) && !is_readable($composerJsonPath)) {
+        if (!file_exists($composerJsonPath) || !is_readable($composerJsonPath)) {
             $io->error(
                 sprintf(
                     'composer.json on given path %s does not exist or is not readable.',
@@ -126,25 +134,11 @@ final class UnusedCommand extends Command
             return 1;
         }
 
-        if (!file_exists($composerJsonPath)) {
-            $io->error('composer.json not present in: ' . dirname($composerJsonPath));
-            return 1;
-        }
-
-        $composerJson = file_get_contents($composerJsonPath);
-
-        if ($composerJson === false) {
-            $io->error('Unable to read contents from given composer.json');
-            return 1;
-        }
-
-        $composerConfig = $this->configFactory->fromComposerJson($composerJson);
+        $composerConfig = $this->configFactory->fromPath($composerJsonPath);
+        $rootPackage = $this->packageFactory->fromConfig($composerConfig);
+        $localRepository = $this->localRepositoryFactory->create($composerConfig);
         $baseDir = dirname($composerJsonPath);
-
         $configuration = $this->loadConfiguration($baseDir);
-
-        $rootPackage = PackageFactory::fromConfig($composerConfig, $composerJson);
-        $localRepository = new LocalRepository($baseDir . DIRECTORY_SEPARATOR . $composerConfig->get('vendor-dir'));
 
         $consumedSymbols = $this->collectConsumedSymbolsCommandHandler->collect(
             new CollectConsumedSymbolsCommand(

@@ -17,6 +17,8 @@ final class Config
     private array $suggests = [];
     /** @var array<string, mixed> */
     private array $extra = [];
+    private string $rawContent;
+    private string $baseDir;
 
     public function getName(): string
     {
@@ -64,5 +66,25 @@ final class Config
         }
 
         return $value;
+    }
+
+    public function setRaw(string $content): void
+    {
+        $this->rawContent = $content;
+    }
+
+    public function getRaw(): string
+    {
+        return $this->rawContent;
+    }
+
+    public function setBaseDir(string $basedir): void
+    {
+        $this->baseDir = $basedir;
+    }
+
+    public function getBaseDir(): string
+    {
+        return $this->baseDir;
     }
 }
