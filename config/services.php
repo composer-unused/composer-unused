@@ -29,7 +29,7 @@ return static function (ContainerConfigurator $configurator) {
         ->autoconfigure()
         ->bind('$consumedSymbolCollector', service('collector.consumed'));
 
-    $vendorDir = dirname(realpath(UNUSED_COMPOSER_INSTALL));
+    $vendorDir = dirname(UNUSED_COMPOSER_INSTALL);
 
     // makes classes in src/ available to be used as services
     // this creates a service per class whose id is the fully-qualified class name
