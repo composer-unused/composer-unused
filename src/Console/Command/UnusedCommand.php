@@ -113,7 +113,7 @@ final class UnusedCommand extends Command
             'c',
             InputOption::VALUE_REQUIRED,
             'composer-unused configuration file',
-            getcwd() . DIRECTORY_SEPARATOR . 'composer-unused.json.dist'
+            getcwd() . DIRECTORY_SEPARATOR . 'composer-unused.php'
         );
     }
 
