@@ -25,6 +25,5 @@
     <php>
         <ini name="date.timezone" value="UTC"/>
         <const name="ENV" value="test"/>
-        <const name="UNUSED_COMPOSER_INSTALL" value="./vendor/autoload.php"/>
     </php>
 </phpunit>
