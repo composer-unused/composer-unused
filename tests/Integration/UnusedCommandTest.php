@@ -185,4 +185,19 @@ class UnusedCommandTest extends TestCase
             $commandTester->getDisplay()
         );
     }
+
+    /**
+     * @test
+     */
+    public function itShouldRunWithComposerJsonNotInRoot(): void
+    {
+        $commandTester = new CommandTester(self::$container->get(UnusedCommand::class));
+        $exitCode = $commandTester->execute(['composer-json' => __DIR__ . '/../assets/TestProjects/ComposerJsonNotInRoot/lib/composer.json']);
+
+        self::assertSame(0, $exitCode);
+        self::assertStringContainsString(
+            'Found 1 used, 0 unused, 0 ignored and 0 zombie packages',
+            $commandTester->getDisplay()
+        );
+    }
 }
