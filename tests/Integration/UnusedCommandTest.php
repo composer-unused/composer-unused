@@ -207,7 +207,7 @@ class UnusedCommandTest extends TestCase
     public function itShouldHaveZeroExitCodeOnArrayNamespace(): void
     {
         chdir(__DIR__ . '/../assets/TestProjects/ArrayNamespace');
-        $commandTester = new CommandTester($this->container->get(UnusedCommand::class));
+        $commandTester = new CommandTester(self::$container->get(UnusedCommand::class));
 
         $exitCode = $commandTester->execute([]);
 
