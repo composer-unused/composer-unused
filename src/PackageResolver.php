@@ -15,7 +15,7 @@ final class PackageResolver
         LinkInterface $packageLink,
         RepositoryInterface $repository
     ): ?PackageInterface {
-        $isPhp = strpos($packageLink->getTarget(), 'php') === 0;
+        $isPhp = $packageLink->getTarget() === 'php';
         $isExtension = strpos($packageLink->getTarget(), 'ext-') === 0;
 
         if ($isPhp || $isExtension) {
