@@ -2,6 +2,14 @@
 
 ## [Unreleased] - TBA
 ### Added
+### Fixed
+### Changed
+### Removed
+### Security
+### Deprecation
+
+## [0.8.1] - 2022-02-15
+### Added
 - Add `--output-format` option
   - Current supported values: `default` and `github`
   - `github` can be used to annotate PR
@@ -17,6 +25,7 @@
 - Fix ignore/invalid dependencies showing up in `Ignored` section again
 ### Changed
 - Change the information about ignored dependencies
+- Raised minimum requirement for `composer-unused/symbol-parser` to `0.1.7`
 ### Removed
 - Removed custom implementation of DI
 ### Security
