@@ -9,8 +9,6 @@ use ComposerUnused\ComposerUnused\Command\Handler\CollectConsumedSymbolsCommandH
 use ComposerUnused\ComposerUnused\Command\Handler\CollectRequiredDependenciesCommandHandler;
 use ComposerUnused\ComposerUnused\Command\LoadRequiredDependenciesCommand;
 use ComposerUnused\ComposerUnused\Composer\ConfigFactory;
-use ComposerUnused\ComposerUnused\Composer\InstalledVersions;
-use ComposerUnused\ComposerUnused\Composer\LocalRepository;
 use ComposerUnused\ComposerUnused\Composer\LocalRepositoryFactory;
 use ComposerUnused\ComposerUnused\Composer\PackageFactory;
 use ComposerUnused\ComposerUnused\Configuration\Configuration;
@@ -32,7 +30,7 @@ use const DIRECTORY_SEPARATOR;
 
 final class UnusedCommand extends Command
 {
-    public const VERSION = '0.8.1';
+    public const VERSION = '0.8.2';
 
     private CollectConsumedSymbolsCommandHandler $collectConsumedSymbolsCommandHandler;
     private CollectRequiredDependenciesCommandHandler $collectRequiredDependenciesCommandHandler;
