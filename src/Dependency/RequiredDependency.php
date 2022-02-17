@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace ComposerUnused\ComposerUnused\Dependency;
 
+use ComposerUnused\Contracts\Exception\LinkNotFoundException;
 use ComposerUnused\Contracts\PackageInterface;
 use ComposerUnused\SymbolParser\Symbol\SymbolInterface;
 use ComposerUnused\SymbolParser\Symbol\SymbolList;
 use ComposerUnused\SymbolParser\Symbol\SymbolListInterface;
-
-use function array_key_exists;
 
 final class RequiredDependency implements DependencyInterface
 {
@@ -62,13 +61,12 @@ final class RequiredDependency implements DependencyInterface
 
     public function requires(DependencyInterface $dependency): bool
     {
-        foreach ($this->package->getRequires() as $require) {
-            if ($require->getTarget() === $dependency->getName()) {
-                return true;
-            }
+        try {
+            $this->package->getRequire($dependency->getName());
+            return true;
+        } catch (LinkNotFoundException $exception) {
+            return false;
         }
-
-        return false;
     }
 
     public function suggests(DependencyInterface $dependency): bool

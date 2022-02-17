@@ -11,7 +11,7 @@ use ComposerUnused\Contracts\PackageInterface;
 final class Package implements PackageInterface
 {
     private string $name;
-    /** @var array<LinkInterface> */
+    /** @var array<string, LinkInterface> */
     private array $requires = [];
     /** @var array<string> */
     private array $suggests = [];
@@ -27,8 +27,11 @@ final class Package implements PackageInterface
     {
         $this->name = $name;
         $this->autoload = $autoload;
-        $this->requires = $requires;
         $this->suggests = $suggests;
+        $this->requires = \array_combine(
+            \array_map(static fn(LinkInterface $link): string => $link->getTarget(), $requires),
+            $requires
+        );
     }
 
     public function getAutoload(): array
@@ -43,20 +46,12 @@ final class Package implements PackageInterface
 
     public function getRequires(): array
     {
-        return $this->requires;
+        return array_values($this->requires);
     }
 
     public function getSuggests(): array
     {
         return $this->suggests;
-    }
-
-    /**
-     * @param array<LinkInterface> $requires
-     */
-    public function setRequires(array $requires): void
-    {
-        $this->requires = $requires;
     }
 
     /**
@@ -69,10 +64,8 @@ final class Package implements PackageInterface
 
     public function getRequire(string $name): LinkInterface
     {
-        foreach ($this->requires as $require) {
-            if ($require->getTarget() === $name) {
-                return $require;
-            }
+        if (isset($this->requires[$name])) {
+            return $this->requires[$name];
         }
 
         throw LinkNotFoundException::fromMissingLink($name);
