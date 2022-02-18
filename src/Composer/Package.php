@@ -31,7 +31,7 @@ final class Package implements PackageInterface
         $this->requires = \array_combine(
             \array_map(static fn(LinkInterface $link): string => $link->getTarget(), $requires),
             $requires
-        );
+        ) ?: [];
     }
 
     public function getAutoload(): array
