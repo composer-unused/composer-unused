@@ -189,24 +189,31 @@ final class UnusedCommand extends Command
                     $requiredDependency->markUsed();
                     continue;
                 }
+            }
+        }
 
-                /** @var RequiredDependency $secondRequiredDependency */
-                foreach ($requiredDependencyCollection as $secondRequiredDependency) {
-                    if ($requiredDependency === $secondRequiredDependency) {
-                        continue;
-                    }
+        foreach ($requiredDependencyCollection as $requiredDependency) {
+            if (
+                $requiredDependency->inState($requiredDependency::STATE_USED)
+            ) {
+                continue;
+            }
+            /** @var RequiredDependency $secondRequiredDependency */
+            foreach ($requiredDependencyCollection as $secondRequiredDependency) {
+                if ($requiredDependency === $secondRequiredDependency) {
+                    continue;
+                }
 
-                    if ($secondRequiredDependency->requires($requiredDependency)) {
-                        $requiredDependency->requiredBy($secondRequiredDependency);
-                        $requiredDependency->markUsed();
-                        continue 2;
-                    }
+                if ($secondRequiredDependency->requires($requiredDependency)) {
+                    $requiredDependency->requiredBy($secondRequiredDependency);
+                    $requiredDependency->markUsed();
+                    continue 2;
+                }
 
-                    if ($secondRequiredDependency->suggests($requiredDependency)) {
-                        $requiredDependency->suggestedBy($secondRequiredDependency);
-                        $requiredDependency->markUsed();
-                        continue 2;
-                    }
+                if ($secondRequiredDependency->suggests($requiredDependency)) {
+                    $requiredDependency->suggestedBy($secondRequiredDependency);
+                    $requiredDependency->markUsed();
+                    continue 2;
                 }
             }
         }
