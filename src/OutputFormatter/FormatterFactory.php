@@ -19,13 +19,15 @@ final class FormatterFactory
 
     public function create(?string $type): OutputFormatterInterface
     {
-        try {
-            $ci = $this->ciDetector->detect();
-            if ($ci->getCiName() === CiDetector::CI_GITHUB_ACTIONS) {
-                $type = 'github';
+        if ($type === null) {
+            try {
+                $ci = $this->ciDetector->detect();
+                if ($ci->getCiName() === CiDetector::CI_GITHUB_ACTIONS) {
+                    $type = 'github';
+                }
+            } catch (CiNotDetectedException $exception) {
+                $type = 'default';
             }
-        } catch (CiNotDetectedException $exception) {
-            $type = 'default';
         }
 
         switch ($type) {
