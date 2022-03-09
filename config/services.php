@@ -7,11 +7,13 @@ use ComposerUnused\SymbolParser\Parser\PHP\ConsumedSymbolCollector;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\ClassConstStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\ConstStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\ExtendsParseStrategy;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\FullQualifiedParameterStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\FunctionInvocationStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\ImplementsParseStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\InstanceofStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\NewStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\StaticStrategy;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\TypedAttributeStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\UsedExtensionSymbolStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\UseStrategy;
 use OndraM\CiDetector\CiDetector;
@@ -49,16 +51,18 @@ return static function (ContainerConfigurator $configurator) {
     $services
         ->set('collector.consumed', ConsumedSymbolCollector::class)
         ->arg('$strategies', [
+            service(UseStrategy::class),
+            service(ExtendsParseStrategy::class),
+            service(ImplementsParseStrategy::class),
+            service(TypedAttributeStrategy::class),
+            service(FullQualifiedParameterStrategy::class),
             service(ClassConstStrategy::class),
             service(ConstStrategy::class),
-            service(ExtendsParseStrategy::class),
             service(FunctionInvocationStrategy::class),
-            service(ImplementsParseStrategy::class),
             service(InstanceofStrategy::class),
             service(NewStrategy::class),
             service(StaticStrategy::class),
             service(UsedExtensionSymbolStrategy::class),
-            service(UseStrategy::class)
         ]);
 
     $services->set(CiDetectorInterface::class, CiDetector::class);
