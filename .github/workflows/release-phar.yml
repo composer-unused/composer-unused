@@ -45,7 +45,7 @@ jobs:
         run: ".phive/box validate box.json"
 
       - name: "Compile composer-unused.phar with humbug/box"
-        run: ".phive/box compile --config=box.json"
+        run: ".phive/box compile --config=box.json --no-parallel"
 
       - name: "Show info about composer-unused.phar with humbug/box"
         run: ".phive/box info ${{ env.COMPOSER_UNUSED_PHAR }}"
