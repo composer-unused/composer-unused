@@ -2,6 +2,16 @@
 
 ## [Unreleased] - TBA
 ### Added
+- Added compression for composer-unused.phar. This is done to prepare composer-unused-plugin to work directly with the phar instead of composer requireent
+- Added scan strategies for `TypedAttributes` and `FullQualifiedParameters`
+### Fixed
+### Changed
+### Removed
+### Security
+### Deprecation
+
+## [Unreleased] - TBA
+### Added
 ### Fixed
 ### Changed
 ### Removed

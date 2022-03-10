@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Isolated\Symfony\Component\Finder\Finder;
 
 return [
-    'prefix' => 'ComposerUnused',
+    'prefix' => '__ComposerUnused__',
 
     // By default when running php-scoper add-prefix, it will prefix all relevant code found in the current working
     // directory. You can however define which files should be scoped by defining a collection of Finders in the
@@ -30,7 +30,7 @@ return [
         Finder::create()->append([
             'composer.json',
             'config/container.php',
-            'config/service_manager.php'
+            'config/services.php'
         ]),
     ],
 
@@ -44,5 +44,7 @@ return [
     //
     // Fore more see https://github.com/humbug/php-scoper#whitelist
     'whitelist' => [
+        \ComposerUnused\ComposerUnused\Configuration\Configuration::class,
+        \Webmozart\Glob\Glob::class
     ],
 ];

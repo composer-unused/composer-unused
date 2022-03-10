@@ -36,7 +36,7 @@ csfix: ## Run phpcs fixer
 	docker compose run php$(PHP_VERSION) vendor/bin/phpcbf
 
 box: ## Compile /build/composer-unused.phar
-	docker compose run php$(PHP_VERSION) php .phive/box compile
+	docker compose run php$(PHP_VERSION) php .phive/box compile --no-parallel
 
 ssh: ## SSH into container
 	docker compose run php$(PHP_VERSION) /bin/sh

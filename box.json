@@ -1,9 +1,11 @@
 {
     "base-path": null,
     "output": "build/composer-unused.phar",
-    "php-scoper": "scoper.inc.php",
     "files": [
         "config/container.php",
         "config/services.php"
+    ],
+    "compactors": [
+        "KevinGH\\Box\\Compactor\\PhpScoper"
     ]
 }

@@ -33,11 +33,16 @@ return static function (ContainerConfigurator $configurator) {
 
     $vendorDir = dirname(UNUSED_COMPOSER_INSTALL);
 
+    $nameSpacePrefix = '';
+    if (__NAMESPACE__ !== '') {
+        $nameSpacePrefix = __NAMESPACE__ . '\\';
+    }
+
     // makes classes in src/ available to be used as services
     // this creates a service per class whose id is the fully-qualified class name
     $services
-        ->load('ComposerUnused\\ComposerUnused\\', __DIR__ . '/../src/*')
-        ->load('ComposerUnused\\SymbolParser\\', $vendorDir . '/composer-unused/symbol-parser/src/*');
+        ->load($nameSpacePrefix . 'ComposerUnused\\ComposerUnused\\', __DIR__ . '/../src/*')
+        ->load($nameSpacePrefix . 'ComposerUnused\\SymbolParser\\', $vendorDir . '/composer-unused/symbol-parser/src/*');
 
     $services->set(UnusedCommand::class)->public();
 
