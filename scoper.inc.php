@@ -4,8 +4,26 @@ declare(strict_types=1);
 
 use Isolated\Symfony\Component\Finder\Finder;
 
+$stubs = [];
+
+$stubFinder = Finder::create();
+
+foreach ($stubFinder->files()->name('*.php')->in([
+    __DIR__ . '/vendor/symfony/polyfill-php81',
+    __DIR__ . '/vendor/symfony/polyfill-php80',
+    __DIR__ . '/vendor/symfony/polyfill-mbstring',
+    __DIR__ . '/vendor/symfony/polyfill-intl-normalizer',
+    __DIR__ . '/vendor/symfony/polyfill-intl-grapheme',
+]) as $file) {
+    if ($file->getPathName() === '../../vendor/jetbrains/phpstorm-stubs/PhpStormStubsMap.php') {
+        continue;
+    }
+    $stubs[] = $file->getPathName();
+}
+
 return [
     'prefix' => '__ComposerUnused__',
+    'exclude-files' => $stubs,
 
     // By default when running php-scoper add-prefix, it will prefix all relevant code found in the current working
     // directory. You can however define which files should be scoped by defining a collection of Finders in the
@@ -45,6 +63,13 @@ return [
     // Fore more see https://github.com/humbug/php-scoper#whitelist
     'whitelist' => [
         \ComposerUnused\ComposerUnused\Configuration\Configuration::class,
-        \Webmozart\Glob\Glob::class
+        \Webmozart\Glob\Glob::class,
+        'Symfony\Polyfill\Php80\*',
+        'Symfony\Polyfill\Mbstring\*',
+        'Symfony\Polyfill\Intl\Normalizer\*',
+        'Symfony\Polyfill\Intl\Grapheme\*',
     ],
+    'expose-namespaces' => [
+        'Symfony\Polyfill\*'
+    ]
 ];
