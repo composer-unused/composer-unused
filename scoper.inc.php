@@ -15,9 +15,6 @@ foreach ($stubFinder->files()->name('*.php')->in([
     __DIR__ . '/vendor/symfony/polyfill-intl-normalizer',
     __DIR__ . '/vendor/symfony/polyfill-intl-grapheme',
 ]) as $file) {
-    if ($file->getPathName() === '../../vendor/jetbrains/phpstorm-stubs/PhpStormStubsMap.php') {
-        continue;
-    }
     $stubs[] = $file->getPathName();
 }
 
@@ -62,14 +59,17 @@ return [
     //
     // Fore more see https://github.com/humbug/php-scoper#whitelist
     'whitelist' => [
-        \ComposerUnused\ComposerUnused\Configuration\Configuration::class,
         \Webmozart\Glob\Glob::class,
         'Symfony\Polyfill\Php80\*',
         'Symfony\Polyfill\Mbstring\*',
         'Symfony\Polyfill\Intl\Normalizer\*',
         'Symfony\Polyfill\Intl\Grapheme\*',
     ],
+    'exclude-namespaces' => [
+        #'ComposerUnused\ComposerUnused\Configuration'
+    ],
     'expose-namespaces' => [
-        'Symfony\Polyfill\*'
+        'Symfony\Polyfill',
+        'ComposerUnused\ComposerUnused\Configuration'
     ]
 ];
