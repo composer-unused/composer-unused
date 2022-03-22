@@ -2,10 +2,6 @@ name: "Release Phar"
 
 on:
   workflow_dispatch:
-    inputs:
-      tag:
-        description: 'Tag to build phar from'     
-        required: true
   push:
     tags:
       - "**"
@@ -29,7 +25,6 @@ jobs:
     env:
       COMPOSER_UNUSED_PHAR: "build/composer-unused.phar"
       COMPOSER_UNUSED_PHAR_SIGNATURE: "build/composer-unused.phar.asc"
-      WORKFLOW_TAG: ${{ github.event.inputs.tag }}
 
     steps:
       - name: "Checkout"
@@ -80,11 +75,6 @@ jobs:
         uses: "bruceadams/get-release@v1.2.3"
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          
-      - name: "Determine release tag"
-        run: "echo 'Used tag: ${WORKFLOW_TAG:${{ steps.get-release.outputs.tag_name }}}'"
-        env:
-          WORKFLOW_TAG: ${WORKFLOW_TAG:${{ steps.get-release.outputs.tag_name }}}
 
       - name: "Upload composer-unused.phar"
         if: "always()"
