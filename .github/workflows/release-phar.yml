@@ -82,6 +82,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           
       - name: "Determine release tag"
+        run: "echo 'Used tag: ${WORKFLOW_TAG:${{ steps.get-release.outputs.tag_name }}}'"
         env:
           WORKFLOW_TAG: ${WORKFLOW_TAG:${{ steps.get-release.outputs.tag_name }}}
 
