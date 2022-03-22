@@ -32,9 +32,9 @@ Thank you for considering contributing to this package!
 
 1. Run `docker-composer up -d`
 2. Use the corresponding created containers
-    - composer-unused-7.3
     - composer-unused-7.4
     - composer-unused-8.0
+    - composer-unused-8.1
 
 ### Submitting Changes
 
@@ -62,7 +62,7 @@ configuration of composer.
     
 After you have done this you can require your local clone as a global dependency (e.g. branch `feature/awesome`)
 
-    $ composer global require icanhazstring/composer-unused:dev-feature/awesome
+    $ composer require --dev icanhazstring/composer-unused:dev-feature/awesome
     
 This should setup a symlink and you are ready to go. 
 
