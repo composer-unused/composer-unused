@@ -99,7 +99,7 @@ jobs:
           upload_url: "${{ steps.get-release.outputs.upload_url }}"
 
       - name: "Dispatch plugin update"
-        uses: "peter-evans/repository-dispatch@v1"
+        uses: "peter-evans/repository-dispatch@v2"
         with:
           token: "${{ secrets.COMPOSER_UNUSED_PLUGIN }}"
           repository: "composer-unused/composer-unused-plugin"
