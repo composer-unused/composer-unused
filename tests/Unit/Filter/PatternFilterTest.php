@@ -45,4 +45,23 @@ final class PatternFilterTest extends TestCase
         self::assertFalse($filter->applies($dependency), 'dependency named "fubar" should not apply to pattern "/test/"');
         self::assertFalse($filter->used());
     }
+
+    /**
+     * @test
+     */
+    public function itShouldRemainUsed(): void
+    {
+        $filter = PatternFilter::fromString('/test/');
+        $dependencyApplies = new TestDependency('test');
+        $dependencyNotApplies = new TestDependency('fubar');
+
+        self::assertFalse($filter->applies($dependencyNotApplies), 'dependency named "fubar" should not apply to pattern "/test/"');
+        self::assertFalse($filter->used());
+
+        self::assertTrue($filter->applies($dependencyApplies), 'dependency named "test" should apply to pattern "/test/"');
+        self::assertTrue($filter->used());
+
+        self::assertFalse($filter->applies($dependencyNotApplies), 'dependency named "fubar" should not apply to pattern "/test/"');
+        self::assertTrue($filter->used());
+    }
 }

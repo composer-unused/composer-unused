@@ -26,7 +26,11 @@ final class PatternFilter implements FilterInterface
 
     public function applies(DependencyInterface $dependency): bool
     {
-        return $this->used = (bool)preg_match($this->pattern->toString(), $dependency->getName());
+        $applies = preg_match($this->pattern->toString(), $dependency->getName()) > 0;
+
+        $this->used = $this->used || $applies;
+
+        return $applies;
     }
 
     public function used(): bool
