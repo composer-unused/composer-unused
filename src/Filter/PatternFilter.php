@@ -28,7 +28,9 @@ final class PatternFilter implements FilterInterface
     {
         $applies = preg_match($this->pattern->toString(), $dependency->getName()) > 0;
 
-        $this->used = $this->used || $applies;
+        if ($this->used === false && $applies === true) {
+            $this->used = true;
+        }
 
         return $applies;
     }
