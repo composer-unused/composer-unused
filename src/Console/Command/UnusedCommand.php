@@ -109,9 +109,9 @@ final class UnusedCommand extends Command
         $this->addOption(
             'configuration',
             'c',
-            InputOption::VALUE_REQUIRED,
+            InputOption::VALUE_OPTIONAL,
             'composer-unused configuration file',
-            getcwd() . DIRECTORY_SEPARATOR . 'composer-unused.php'
+            null
         );
     }
 
@@ -136,7 +136,7 @@ final class UnusedCommand extends Command
         $rootPackage = $this->packageFactory->fromConfig($composerConfig);
         $localRepository = $this->localRepositoryFactory->create($composerConfig);
         $baseDir = dirname($composerJsonPath);
-        $configuration = $this->loadConfiguration($baseDir);
+        $configuration = $this->loadConfiguration($input->getOption('configuration') ?: $baseDir . DIRECTORY_SEPARATOR . 'composer-unused.php');
 
         $consumedSymbols = $this->collectConsumedSymbolsCommandHandler->collect(
             new CollectConsumedSymbolsCommand(
@@ -251,9 +251,8 @@ final class UnusedCommand extends Command
         );
     }
 
-    private function loadConfiguration(string $baseDir): Configuration
+    private function loadConfiguration(string $configPath): Configuration
     {
-        $configPath = $baseDir . DIRECTORY_SEPARATOR . 'composer-unused.php';
         $configuration = new Configuration();
 
         if (!file_exists($configPath)) {
