@@ -67,6 +67,11 @@ jobs:
         php: [ "7.4", "8.0", "8.1" ]
         os: [ "ubuntu-latest" ]
         experimental: [ false ]
+        include:
+          - php: "7.4"
+            composer-options: "--prefer-lowest"
+            os: "ubuntu-latest"
+            experimental: false
 
     steps:
       - name: Checkout
@@ -80,7 +85,7 @@ jobs:
           extensions: ds
 
       - name: Install dependencies
-        run: composer install --no-progress --prefer-dist --optimize-autoloader ${{ matrix.composer-options }}
+        run: composer update --no-progress --prefer-dist --optimize-autoloader ${{ matrix.composer-options }}
 
       - name: Execute tests
         run: vendor/bin/phpunit --colors=always --coverage-text
