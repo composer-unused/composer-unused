@@ -30,7 +30,7 @@ Thank you for considering contributing to this package!
 
 ### Setting up Docker
 
-1. Run `docker-composer up -d`
+1. Run `docker-compose up -d`
 2. Use the corresponding created containers
     - composer-unused-7.4
     - composer-unused-8.0
