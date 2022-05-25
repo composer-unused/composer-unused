@@ -24,6 +24,8 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
+require_once 'polyfill_symfony_di.php';
+
 return static function (ContainerConfigurator $configurator) {
     $services = $configurator->services()
         ->defaults()
