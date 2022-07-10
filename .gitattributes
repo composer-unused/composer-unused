@@ -6,6 +6,7 @@ phpstan.neon export-ignore
 phpunit.xml export-ignore
 .github/ export-ignore
 .docker/ export-ignore
+.phive/ export-ignore
 art/ export-ignore
 tests/ export-ignore
 scoper.inc.php export-ignore
