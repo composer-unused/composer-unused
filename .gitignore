@@ -3,3 +3,6 @@ composer.phar
 composer.lock
 /build
 /data
+/.phive
+!/.phive/phars.xml
+
