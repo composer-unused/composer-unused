@@ -20,6 +20,7 @@ final class FilterCollection implements IteratorAggregate, Countable
      * Value => always "used"
      */
     private const GLOBAL_NAMED_EXCLUSION = [
+        'composer' => true,
         'composer-plugin-api' => true,
         'composer-runtime-api' => true,
         'composer-unused/composer-unused-plugin' => true
