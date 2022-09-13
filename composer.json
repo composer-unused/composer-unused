@@ -33,7 +33,7 @@
     "require-dev": {
         "ext-ds": "*",
         "ext-zend-opcache": "*",
-        "dg/bypass-finals": "^1.3",
+        "dg/bypass-finals": "^1.4",
         "jangregor/phpstan-prophecy": "^0.8.1",
         "phpspec/prophecy-phpunit": "^2.0.1",
         "phpstan/phpstan": "^0.12.99",
