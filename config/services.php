@@ -78,7 +78,7 @@ return static function (ContainerConfigurator $configurator) {
 
     if (PHP_VERSION_ID < 80000) {
         $lexerVersion = Emulative::PHP_7_4;
-    } elseif (PHP_VERSION_ID < 81000) {
+    } elseif (PHP_VERSION_ID < 80100) {
         $lexerVersion = Emulative::PHP_8_0;
     }
 
