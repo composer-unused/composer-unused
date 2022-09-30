@@ -3,6 +3,7 @@
     "output": "build/composer-unused.phar",
     "files": [
         "config/container.php",
+        "config/polyfill_symfony_di.php",
         "config/services.php"
     ],
     "compactors": [
