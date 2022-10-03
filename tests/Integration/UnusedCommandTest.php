@@ -222,6 +222,30 @@ class UnusedCommandTest extends TestCase
     /**
      * @test
      */
+    public function itShouldHaveZeroExitCodeWithIgnoreExitCodeOptionOnError(): void
+    {
+        $commandTester = new CommandTester(self::$container->get(UnusedCommand::class));
+
+        $exitCode = $commandTester->execute(['--ignore-exit-code' => null, 'composer-json' => __DIR__ . '/not-existing-composer.json']);
+
+        self::assertSame(0, $exitCode);
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldHaveExitCodeUnequalToZeroOnError(): void
+    {
+        $commandTester = new CommandTester(self::$container->get(UnusedCommand::class));
+
+        $exitCode = $commandTester->execute(['composer-json' => __DIR__ . '/not-existing-composer.json']);
+
+        self::assertNotEquals(0, $exitCode);
+    }
+
+    /**
+     * @test
+     */
     public function itShouldHaveZeroExitCodeOnArrayNamespace(): void
     {
         chdir(__DIR__ . '/../assets/TestProjects/ArrayNamespace');
