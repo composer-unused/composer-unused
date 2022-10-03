@@ -120,6 +120,7 @@ final class UnusedCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $outputFormatter = $this->formatterFactory->create($input->getOption('output-format'));
         $composerJsonPath = $input->getArgument('composer-json');
+        $ignoreExitCode = (bool)$input->getOption('ignore-exit-code');
 
         if (!file_exists($composerJsonPath) || !is_readable($composerJsonPath)) {
             $io->error(
@@ -129,7 +130,7 @@ final class UnusedCommand extends Command
                 )
             );
 
-            return 1;
+            return $ignoreExitCode ? 0 : 1;
         }
 
         $composerConfig = $this->configFactory->fromPath($composerJsonPath);
@@ -240,7 +241,7 @@ final class UnusedCommand extends Command
             ) => $dependency->inState($dependency::STATE_IGNORED) || $dependency->inState($dependency::STATE_INVALID)
         );
 
-        return $outputFormatter->formatOutput(
+        $exitCode = $outputFormatter->formatOutput(
             $rootPackage,
             $composerJsonPath,
             $usedDependencyCollection,
@@ -249,6 +250,8 @@ final class UnusedCommand extends Command
             $filterCollection,
             $io
         );
+
+        return !$ignoreExitCode ? $exitCode : 0;
     }
 
     private function loadConfiguration(string $configPath): Configuration
