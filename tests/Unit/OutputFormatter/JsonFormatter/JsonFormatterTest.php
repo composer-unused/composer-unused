@@ -9,6 +9,7 @@ use ComposerUnused\ComposerUnused\Dependency\DependencyCollection;
 use ComposerUnused\ComposerUnused\Dependency\RequiredDependency;
 use ComposerUnused\ComposerUnused\Filter\FilterCollection;
 use ComposerUnused\ComposerUnused\OutputFormatter\JsonFormatter;
+use ComposerUnused\ComposerUnused\Test\Stubs\TestDependency;
 use ComposerUnused\Contracts\PackageInterface;
 use PHPStan\Testing\TestCase;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -30,9 +31,11 @@ final class JsonFormatterTest extends TestCase
      */
     public function itPrints(): void
     {
-        $usedDependencyCollection = new DependencyCollection([
-            new RequiredDependency(new Package('symfony/string'))
-        ]);
+        $symfonyStringRequiredDependency = new RequiredDependency(
+            new Package('symfony/string'),
+        );
+        $symfonyStringRequiredDependency->requiredBy(new TestDependency('symfony/event-dispatcher'));
+        $usedDependencyCollection = new DependencyCollection([$symfonyStringRequiredDependency]);
 
         $unusedDependencyCollection = new DependencyCollection([
             new RequiredDependency(new Package('symfony/console'))
