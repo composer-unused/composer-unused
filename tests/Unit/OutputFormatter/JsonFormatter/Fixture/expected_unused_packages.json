@@ -1,0 +1,10 @@
+{
+    "used-packages": [
+        {
+            "name": "symfony\/string"
+        }
+    ],
+    "unused-packages": [
+        "symfony\/console"
+    ]
+}

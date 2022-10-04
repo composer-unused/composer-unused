@@ -33,6 +33,8 @@ final class FormatterFactory
         switch ($type) {
             case 'github':
                 return new GithubFormatter();
+            case 'json':
+                return new JsonFormatter();
             default:
                 return new DefaultFormatter();
         }

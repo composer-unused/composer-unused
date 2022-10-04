@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ComposerUnused\ComposerUnused\Test\Unit\OutputFormatter;
 
 use ComposerUnused\ComposerUnused\OutputFormatter\DefaultFormatter;
 use ComposerUnused\ComposerUnused\OutputFormatter\FormatterFactory;
 use ComposerUnused\ComposerUnused\OutputFormatter\GithubFormatter;
+use ComposerUnused\ComposerUnused\OutputFormatter\JsonFormatter;
 use ComposerUnused\ComposerUnused\Test\Stubs\TestDetector;
 use OndraM\CiDetector\Ci\GitHubActions;
 use OndraM\CiDetector\CiDetectorInterface;
@@ -55,5 +58,14 @@ final class FormatterFactoryTest extends TestCase
     {
         $factory = new FormatterFactory($this->createMock(CiDetectorInterface::class));
         self::assertInstanceOf(DefaultFormatter::class, $factory->create('default'));
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldCreateJsonFormatterOnJsonType(): void
+    {
+        $factory = new FormatterFactory($this->createMock(CiDetectorInterface::class));
+        self::assertInstanceOf(JsonFormatter::class, $factory->create('json'));
     }
 }

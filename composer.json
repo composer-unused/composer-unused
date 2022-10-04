@@ -17,6 +17,7 @@
     ],
     "require": {
         "php": "^7.4 || ^8.0",
+        "ext-json": "*",
         "composer-unused/contracts": "^0.2",
         "composer-unused/symbol-parser": "^0.1.9",
         "nikic/php-parser": "^4.15",
