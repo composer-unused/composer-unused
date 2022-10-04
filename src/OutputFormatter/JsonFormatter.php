@@ -24,27 +24,7 @@ final class JsonFormatter implements OutputFormatterInterface
         $jsonResult = [];
 
         foreach ($usedDependencyCollection as $usedDependency) {
-            $packageJson = [];
-
-            if (!empty($usedDependency->getRequiredBy())) {
-                $requiredByNames = array_map(static function (DependencyInterface $dependency) {
-                    return $dependency->getName();
-                }, $usedDependency->getRequiredBy());
-
-                $packageJson['required-by'] = $requiredByNames;
-            }
-
-            if (!empty($usedDependency->getSuggestedBy())) {
-                $suggestedByNames = array_map(static function (DependencyInterface $dependency) {
-                    return $dependency->getName();
-                }, $usedDependency->getSuggestedBy());
-
-                $packageJson['suggested-by'] = $suggestedByNames;
-            }
-
-            $packageJson['name'] = $usedDependency->getName();
-
-            $jsonResult['used-packages'][] = $packageJson;
+            $jsonResult['used-packages'][] = $this->createUsedPackageJson($usedDependency);
         }
 
         foreach ($unusedDependencyCollection as $dependency) {
@@ -67,5 +47,33 @@ final class JsonFormatter implements OutputFormatterInterface
         }
 
         return 0;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function createUsedPackageJson(DependencyInterface $dependency): array
+    {
+        $packageJson = [
+            'name' => $dependency->getName(),
+        ];
+
+        if (!empty($dependency->getRequiredBy())) {
+            $requiredByNames = array_map(static function (DependencyInterface $dependency) {
+                return $dependency->getName();
+            }, $dependency->getRequiredBy());
+
+            $packageJson['required-by'] = $requiredByNames;
+        }
+
+        if (!empty($dependency->getSuggestedBy())) {
+            $suggestedByNames = array_map(static function (DependencyInterface $dependency) {
+                return $dependency->getName();
+            }, $dependency->getSuggestedBy());
+
+            $packageJson['suggested-by'] = $suggestedByNames;
+        }
+
+        return $packageJson;
     }
 }

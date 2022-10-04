@@ -1,7 +1,10 @@
 {
     "used-packages": [
         {
-            "name": "symfony\/string"
+            "name": "symfony\/string",
+            "required-by": {
+                "symfony\/event-dispatcher": "symfony\/event-dispatcher"
+            }
         }
     ],
     "unused-packages": [
