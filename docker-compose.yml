@@ -23,3 +23,10 @@ services:
     volumes:
       - .:/docker/composer-unused:rw
     tty: true
+
+  php8.2:
+    build: .docker/php8.2
+    container_name: composer-unused-8.2
+    volumes:
+      - .:/docker/composer-unused:rw
+    tty: true
