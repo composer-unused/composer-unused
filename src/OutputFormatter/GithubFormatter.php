@@ -53,8 +53,8 @@ final class GithubFormatter implements OutputFormatterInterface
 
             // newlines need to be encoded
             // see https://github.com/actions/starter-workflows/issues/68#issuecomment-581479448
-            $message = str_replace("\n", '%0A', sprintf('%s is invalid', $dependency->getName()));
-            $line = sprintf('::warning %s::%s', implode(',', $metas), $message);
+            $message = str_replace("\n", '%0A', sprintf('%s was ignored', $dependency->getName()));
+            $line = sprintf($message);
 
             $output->write($line);
             $output->writeln('');
