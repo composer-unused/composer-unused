@@ -4,4 +4,4 @@ declare(strict_types=1);
 
 namespace FileDependency;
 
-class DependencyClass {}
+readonly class DependencyClass {}
