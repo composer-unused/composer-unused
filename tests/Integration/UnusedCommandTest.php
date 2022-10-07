@@ -270,4 +270,15 @@ class UnusedCommandTest extends TestCase
 
         self::assertSame(0, $exitCode);
     }
+
+    /**
+     * @test
+     */
+    public function itShouldNotReportAnnotationDependencyAsUnused(): void
+    {
+        $commandTester = new CommandTester(self::$container->get(UnusedCommand::class));
+        $exitCode = $commandTester->execute(['composer-json' => __DIR__ . '/../assets/TestProjects/AnnotationDependency/composer.json']);
+
+        self::assertSame(0, $exitCode);
+    }
 }

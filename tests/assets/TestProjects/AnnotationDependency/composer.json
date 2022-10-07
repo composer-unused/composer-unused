@@ -1,0 +1,11 @@
+{
+    "name": "ns/lib",
+    "require": {
+        "first/dependency": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "AnnotationDependency\\": "src/"
+        }
+    }
+}
