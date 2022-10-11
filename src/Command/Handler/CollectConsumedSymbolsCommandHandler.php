@@ -33,9 +33,11 @@ final class CollectConsumedSymbolsCommandHandler
             ->setAdditionalFiles($command->getConfiguration()->getAdditionalFilesFor($package->getName()))
             ->build();
 
-        $rootNamespaces = array_merge(
-            array_keys($package->getAutoload()['psr-0'] ?? []),
-            array_keys($package->getAutoload()['psr-4'] ?? [])
+        $rootNamespaces = array_filter( // Remove empty PSR-4 namespaces (see issue 342)*/
+            array_merge(
+                array_keys($package->getAutoload()['psr-0'] ?? []),
+                array_keys($package->getAutoload()['psr-4'] ?? [])
+            )
         );
 
         yield from $this->filterRootPackageSymbols(
