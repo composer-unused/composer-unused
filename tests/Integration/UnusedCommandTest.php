@@ -239,6 +239,7 @@ class UnusedCommandTest extends TestCase
      */
     public function itShouldRunWithEmptyPsr4Namespace(): void
     {
+        putenv('COLUMNS=100'); // Avoid line breaks when checking warning message below
         $commandTester = new CommandTester(self::$container->get(UnusedCommand::class));
         $exitCode = $commandTester->execute(['composer-json' => __DIR__ . '/../assets/TestProjects/EmptyPSR4Namespace/composer.json']);
 
