@@ -162,6 +162,12 @@ final class UnusedCommand extends Command
                 'Consider migrating to composer-unused.php configuration.'
             );
         }
+        if (isset($rootPackage->getAutoload()['psr-4'][''])) {
+            $io->warning([
+                'composer.json[autoload][psr-4] contains an empty namespace.',
+                'It\'s usually a bad idea for performance, see output of "composer validate" command.'
+            ]);
+        }
 
         $filterCollection = new FilterCollection(
             array_merge(
