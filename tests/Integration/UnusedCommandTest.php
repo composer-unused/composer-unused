@@ -246,6 +246,14 @@ class UnusedCommandTest extends TestCase
             'Found 1 used, 0 unused, 0 ignored and 0 zombie packages',
             $commandTester->getDisplay()
         );
+        self::assertStringContainsString(
+            '[WARNING] composer.json[autoload][psr-4] contains an empty namespace.',
+            $commandTester->getDisplay()
+        );
+        self::assertStringContainsString(
+            'It\'s usually a bad idea for performance, see output of "composer validate" command.',
+            $commandTester->getDisplay()
+        );
         self::assertSame(0, $exitCode);
     }
 
