@@ -87,7 +87,7 @@ $config->addNamedFilter(NamedFilter::fromString('dependency/name'));
 To ignore dependencies by pattern, add the following line to your configuration
 
 ```
-$config->addPatternFilter(PatternFilter::fromString('dependency/name'));
+$config->addPatternFilter(PatternFilter::fromString('/dependency\/name/'));
 ```
 
 > You can ignore multiple dependencies by a single organization using `PatternFilter` e.g. `/symfony\/.*/`
