@@ -90,7 +90,7 @@ To ignore dependencies by pattern, add the following line to your configuration
 $config->addPatternFilter(PatternFilter::fromString('dependency/name'));
 ```
 
-> You can ignore multiple dependencies by a single organization using `PatternFilter` e.g. `/symfony/.*/`
+> You can ignore multiple dependencies by a single organization using `PatternFilter` e.g. `/symfony\/.*/`
 
 #### Additional files to be parsed
 Per default, `composer-unused` is using the `composer.json` autoload directive to determine where to look for files to parse.
