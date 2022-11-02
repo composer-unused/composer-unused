@@ -38,7 +38,7 @@
         "dg/bypass-finals": "^1.4",
         "jangregor/phpstan-prophecy": "^0.8.1",
         "phpspec/prophecy-phpunit": "^2.0.1",
-        "phpstan/phpstan": "^0.12.99",
+        "phpstan/phpstan": "^0.12.100",
         "phpunit/phpunit": "^9.5.26",
         "roave/security-advisories": "dev-master",
         "squizlabs/php_codesniffer": "^3.7"
