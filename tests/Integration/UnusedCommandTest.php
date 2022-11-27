@@ -204,6 +204,23 @@ class UnusedCommandTest extends TestCase
         );
     }
 
+
+    /**
+     * @test
+     */
+    public function itShouldRunWithMultiDependenciesRequireByWithClassmap(): void
+    {
+        $commandTester = new CommandTester(self::$container->get(UnusedCommand::class));
+        $exitCode = $commandTester->execute(['composer-json' => __DIR__ . '/../assets/TestProjects/MultiDependencyRequiredByUnusedWithClassmap/composer.json']);
+
+        self::assertSame(1, $exitCode);
+        self::assertStringNotContainsString('dummy/test-package', $commandTester->getDisplay());
+        self::assertStringContainsString(
+            'Found 0 used, 2 unused, 0 ignored and 0 zombie packages',
+            $commandTester->getDisplay()
+        );
+    }
+
     /**
      * @test
      */

@@ -1,0 +1,12 @@
+{
+    "name": "ns/lib",
+    "require": {
+        "first/dependency": "*",
+        "second/dependency": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "MultiDependencyWithClassmap\\": "src"
+        }
+    }
+}

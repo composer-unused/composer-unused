@@ -1,0 +1,9 @@
+{
+    "name": "second/dependency",
+    "autoload": {
+        "classmap": ["src/"]
+    },
+    "require": {
+        "first/dependency": "*"
+    }
+}

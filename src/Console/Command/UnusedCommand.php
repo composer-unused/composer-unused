@@ -211,7 +211,7 @@ final class UnusedCommand extends Command
                     continue;
                 }
 
-                if ($secondRequiredDependency->requires($requiredDependency)) {
+                if ($secondRequiredDependency->requires($requiredDependency) && $secondRequiredDependency->inState($requiredDependency::STATE_USED)) {
                     $requiredDependency->requiredBy($secondRequiredDependency);
                     $requiredDependency->markUsed();
                     continue 2;
