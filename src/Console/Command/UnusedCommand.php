@@ -148,15 +148,13 @@ final class UnusedCommand extends Command
             )
         );
 
-        $progressBar = new DefaultProgressBarDecorator($io, count($rootPackage->getRequires()), $input->getOption('no-progress'));
-
         $requiredDependencyCollection = $this->collectRequiredDependenciesCommandHandler->collect(
             new LoadRequiredDependenciesCommand(
                 $baseDir . DIRECTORY_SEPARATOR . $composerConfig->get('vendor-dir'),
                 $rootPackage->getRequires(),
                 $localRepository,
                 $configuration,
-                $progressBar
+                new DefaultProgressBarDecorator($io, count($rootPackage->getRequires()), $input->getOption('no-progress'))
             )
         );
 
