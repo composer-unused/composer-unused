@@ -16,7 +16,7 @@ class DefaultProgressBarDecorator implements ProgressBarInterface
 
     private bool $noProgress;
 
-    public function __construct(OutputInterface $io, int $max = 0, $noProgress = false)
+    public function __construct(OutputInterface $io, int $max = 0, bool $noProgress = false)
     {
         $this->progressBar = $noProgress ? new NullProgressBar() : new ProgressBar($io, $max);
         $this->noProgress = $noProgress;
