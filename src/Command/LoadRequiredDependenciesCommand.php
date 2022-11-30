@@ -59,7 +59,7 @@ final class LoadRequiredDependenciesCommand
         return $this->configuration;
     }
 
-    public function getProgressBar(): ProgressBarInterface|ProgressBar
+    public function getProgressBar(): ProgressBarInterface
     {
         return $this->progressBar;
     }
