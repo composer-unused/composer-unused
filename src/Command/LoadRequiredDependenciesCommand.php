@@ -8,6 +8,7 @@ use ComposerUnused\ComposerUnused\Configuration\Configuration;
 use ComposerUnused\ComposerUnused\Console\Progress\ProgressBarInterface;
 use ComposerUnused\Contracts\LinkInterface;
 use ComposerUnused\Contracts\RepositoryInterface;
+use Symfony\Component\Console\Helper\ProgressBar;
 
 final class LoadRequiredDependenciesCommand
 {
@@ -58,7 +59,7 @@ final class LoadRequiredDependenciesCommand
         return $this->configuration;
     }
 
-    public function getProgressBar(): ProgressBarInterface
+    public function getProgressBar(): ProgressBarInterface|ProgressBar
     {
         return $this->progressBar;
     }
