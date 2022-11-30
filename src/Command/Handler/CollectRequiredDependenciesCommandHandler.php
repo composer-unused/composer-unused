@@ -30,6 +30,10 @@ final class CollectRequiredDependenciesCommandHandler
     {
         $dependencyCollection = new DependencyCollection();
 
+        $progressBar = $command->getProgressBar();
+
+        $progressBar->start();
+
         foreach ($command->getPackageLinks() as $require) {
             $composerPackage = $this->packageResolver->resolve(
                 $require,
@@ -59,7 +63,10 @@ final class CollectRequiredDependenciesCommandHandler
                     )
                 )
             );
+            $progressBar->advance();
         }
+
+        $progressBar->finish();
 
         return $dependencyCollection;
     }
