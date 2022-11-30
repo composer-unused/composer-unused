@@ -13,6 +13,7 @@ use ComposerUnused\ComposerUnused\Composer\LocalRepositoryFactory;
 use ComposerUnused\ComposerUnused\Composer\PackageFactory;
 use ComposerUnused\ComposerUnused\Configuration\Configuration;
 use ComposerUnused\ComposerUnused\Configuration\NamedFilter;
+use ComposerUnused\ComposerUnused\Console\Progress\DefaultProgressBarDecorator;
 use ComposerUnused\ComposerUnused\Dependency\DependencyInterface;
 use ComposerUnused\ComposerUnused\Dependency\RequiredDependency;
 use ComposerUnused\ComposerUnused\Filter\FilterCollection;
@@ -147,12 +148,15 @@ final class UnusedCommand extends Command
             )
         );
 
+        $progressBar = new DefaultProgressBarDecorator($io, count($rootPackage->getRequires()), $input->getOption('no-progress'));
+
         $requiredDependencyCollection = $this->collectRequiredDependenciesCommandHandler->collect(
             new LoadRequiredDependenciesCommand(
                 $baseDir . DIRECTORY_SEPARATOR . $composerConfig->get('vendor-dir'),
                 $rootPackage->getRequires(),
                 $localRepository,
-                $configuration
+                $configuration,
+                $progressBar
             )
         );
 

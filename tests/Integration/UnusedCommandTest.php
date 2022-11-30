@@ -322,4 +322,46 @@ class UnusedCommandTest extends TestCase
 
         self::assertSame(0, $exitCode);
     }
+
+    /**
+     * @test
+     */
+    public function isShouldDisplayProgressBar(): void
+    {
+        $commandTester = new CommandTester(self::$container->get(UnusedCommand::class));
+        $exitCode = $commandTester->execute(
+            [
+                'composer-json' => __DIR__ . '/../assets/TestProjects/AnnotationDependency/composer.json',
+                '--no-progress' => false
+            ],
+        );
+
+        self::assertStringContainsString(
+            '1/1 [============================] 100%',
+            $commandTester->getDisplay()
+        );
+
+        self::assertSame(0, $exitCode);
+    }
+
+    /**
+     * @test
+     */
+    public function isShouldNotDisplayProgressBar(): void
+    {
+        $commandTester = new CommandTester(self::$container->get(UnusedCommand::class));
+        $exitCode = $commandTester->execute(
+            [
+                'composer-json' => __DIR__ . '/../assets/TestProjects/AnnotationDependency/composer.json',
+                '--no-progress' => true
+            ],
+        );
+
+        self::assertStringNotContainsString(
+            '1/1 [============================] 100%',
+            $commandTester->getDisplay()
+        );
+
+        self::assertSame(0, $exitCode);
+    }
 }

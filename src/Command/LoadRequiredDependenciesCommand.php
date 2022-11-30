@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ComposerUnused\ComposerUnused\Command;
 
 use ComposerUnused\ComposerUnused\Configuration\Configuration;
+use ComposerUnused\ComposerUnused\Console\Progress\ProgressBarInterface;
 use ComposerUnused\Contracts\LinkInterface;
 use ComposerUnused\Contracts\RepositoryInterface;
 
@@ -15,6 +16,7 @@ final class LoadRequiredDependenciesCommand
     private array $packageLinks;
     private RepositoryInterface $packageRepository;
     private Configuration $configuration;
+    private ?ProgressBarInterface $progressBar;
 
     /**
      * @param array<LinkInterface> $packageLinks
@@ -23,12 +25,14 @@ final class LoadRequiredDependenciesCommand
         string $baseDir,
         array $packageLinks,
         RepositoryInterface $packageRepository,
-        Configuration $configuration
+        Configuration $configuration,
+        ?ProgressBarInterface $progressBar = null
     ) {
         $this->baseDir = $baseDir;
         $this->packageLinks = $packageLinks;
         $this->packageRepository = $packageRepository;
         $this->configuration = $configuration;
+        $this->progressBar = $progressBar;
     }
 
     public function getBaseDir(): string
@@ -52,5 +56,10 @@ final class LoadRequiredDependenciesCommand
     public function getConfiguration(): Configuration
     {
         return $this->configuration;
+    }
+
+    public function getProgressBar(): ProgressBarInterface
+    {
+        return $this->progressBar;
     }
 }
