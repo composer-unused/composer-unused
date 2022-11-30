@@ -9,7 +9,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class DefaultProgressBarDecorator implements ProgressBarInterface
 {
-    private ProgressBar|ProgressBarInterface $progressBar;
+    /**
+     * @var NullProgressBar|ProgressBar
+     */
+    private $progressBar;
 
     private bool $noProgress;
 
