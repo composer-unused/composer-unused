@@ -18,7 +18,7 @@ final class PackageFactory
             array_map(static function (string $name) use ($requireLines) {
                 return new Link($name, $requireLines[$name]);
             }, array_keys($config->getRequire())),
-            array_keys($config->getSuggests())
+            array_keys($config->getSuggest())
         );
     }
 

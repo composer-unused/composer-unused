@@ -14,7 +14,7 @@ final class Config
     /** @var array<string, mixed> */
     private array $autoload = [];
     /** @var array<string, string>  */
-    private array $suggests = [];
+    private array $suggest = [];
     /** @var array<string, mixed> */
     private array $extra = [];
     private string $rawContent;
@@ -44,9 +44,9 @@ final class Config
     /**
      * @return array<string, string>
      */
-    public function getSuggests(): array
+    public function getSuggest(): array
     {
-        return $this->suggests;
+        return $this->suggest;
     }
 
     /**
