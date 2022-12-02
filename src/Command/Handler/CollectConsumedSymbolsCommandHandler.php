@@ -31,6 +31,7 @@ final class CollectConsumedSymbolsCommandHandler
         $symbolLoader = $this
             ->consumedSymbolLoaderBuilder
             ->setAdditionalFiles($command->getConfiguration()->getAdditionalFilesFor($package->getName()))
+            ->setExcludedDirs($command->getExcludedDirs())
             ->build();
 
         $rootNamespaces = array_filter( // Remove empty PSR-4 namespaces (see issue 342)*/
