@@ -25,6 +25,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+use function is_array;
 use function sprintf;
 
 use const DIRECTORY_SEPARATOR;
@@ -122,6 +123,11 @@ final class UnusedCommand extends Command
         $outputFormatter = $this->formatterFactory->create($input->getOption('output-format'));
         $composerJsonPath = $input->getArgument('composer-json');
         $ignoreExitCode = (bool)$input->getOption('ignore-exit-code');
+        /** @var string|list<string> $excludedDirs */
+        $excludedDirs = $input->getOption('excludeDir');
+        if (!is_array($excludedDirs)) {
+            $excludedDirs = [$excludedDirs];
+        }
 
         if (!file_exists($composerJsonPath) || !is_readable($composerJsonPath)) {
             $io->error(
@@ -144,6 +150,7 @@ final class UnusedCommand extends Command
             new CollectConsumedSymbolsCommand(
                 $baseDir,
                 $rootPackage,
+                $excludedDirs,
                 $configuration
             )
         );

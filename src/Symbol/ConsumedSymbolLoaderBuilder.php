@@ -22,6 +22,8 @@ final class ConsumedSymbolLoaderBuilder
     private Emulative $lexer;
     /** @var array<SplFileInfo> */
     private array $additionalFiles = [];
+    /** @var list<string> */
+    private array $excludedDirs;
 
     public function __construct(SymbolCollectorInterface $consumedSymbolCollector, Emulative $lexer)
     {
@@ -47,7 +49,8 @@ final class ConsumedSymbolLoaderBuilder
 
         return new FileSymbolLoader(
             $fileSymbolProvider,
-            AutoloadType::all()
+            AutoloadType::all(),
+            $this->excludedDirs
         );
     }
 
@@ -57,6 +60,16 @@ final class ConsumedSymbolLoaderBuilder
     public function setAdditionalFiles(array $filesPaths): self
     {
         $this->additionalFiles = array_map(static fn(string $filePath) => new SplFileInfo($filePath), $filesPaths);
+
+        return $this;
+    }
+
+    /**
+     * @param list<string> $excludedDirs
+     */
+    public function setExcludedDirs(array $excludedDirs): self
+    {
+        $this->excludedDirs = $excludedDirs;
 
         return $this;
     }

@@ -11,12 +11,18 @@ final class CollectConsumedSymbolsCommand
 {
     private PackageInterface $package;
     private string $packageRoot;
+    /** @var list<string> */
+    private array $excludedDirs;
     private Configuration $configuration;
 
-    public function __construct(?string $packageRoot, PackageInterface $package, Configuration $configuration)
+    /**
+     * @param list<string> $excludedDirs
+     */
+    public function __construct(?string $packageRoot, PackageInterface $package, array $excludedDirs, Configuration $configuration)
     {
         $this->packageRoot = $packageRoot ?? '';
         $this->package = $package;
+        $this->excludedDirs = $excludedDirs;
         $this->configuration = $configuration;
     }
 
@@ -32,6 +38,14 @@ final class CollectConsumedSymbolsCommand
     {
         return $this->packageRoot;
     }
+    /**
+     * @return list<string>
+     */
+    public function getExcludedDirs(): array
+    {
+        return $this->excludedDirs;
+    }
+
 
     public function getConfiguration(): Configuration
     {
