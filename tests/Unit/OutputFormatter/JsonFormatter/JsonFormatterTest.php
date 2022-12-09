@@ -11,7 +11,7 @@ use ComposerUnused\ComposerUnused\Filter\FilterCollection;
 use ComposerUnused\ComposerUnused\OutputFormatter\JsonFormatter;
 use ComposerUnused\ComposerUnused\Test\Stubs\TestDependency;
 use ComposerUnused\Contracts\PackageInterface;
-use PHPStan\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -49,8 +49,8 @@ final class JsonFormatterTest extends TestCase
             'composer.json',
             $usedDependencyCollection,
             $unusedDependencyCollection,
-            $this->createMock(DependencyCollection::class),
-            $this->createMock(FilterCollection::class),
+            new DependencyCollection(),
+            new FilterCollection([], []),
             $outputStyle
         );
 

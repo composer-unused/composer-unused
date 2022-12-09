@@ -55,7 +55,7 @@ jobs:
         run: composer install --no-progress --prefer-dist --optimize-autoloader
 
       - name: Analyze code with static-analysis
-        run: vendor/bin/phpstan analyse --no-progress
+        run: vendor/bin/phpstan --no-progress
 
   unit-tests:
     name: "Unit Tests"
