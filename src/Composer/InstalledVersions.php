@@ -8,11 +8,11 @@ use OutOfBoundsException;
 
 final class InstalledVersions
 {
-    /** @var array{root: array, versions: array<string, array>} */
+    /** @var array{root: array<mixed>, versions: array<string, array<mixed>>} */
     private array $installed;
 
     /**
-     * @param array{root: array, versions: array<string, array>} $installed
+     * @param array{root: array<mixed>, versions: array<string, array<mixed>>} $installed
      */
     public function __construct(array $installed)
     {

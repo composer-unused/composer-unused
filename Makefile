@@ -27,7 +27,7 @@ phpunit: ## Run phpunit tests
 	docker compose run php$(PHP_VERSION) vendor/bin/phpunit
 
 analyse: ## Run phpstan analyse
-	docker compose run php$(PHP_VERSION) vendor/bin/phpstan analyse
+	docker compose run php$(PHP_VERSION) vendor/bin/phpstan
 
 cs: ## Run php cs
 	docker compose run php$(PHP_VERSION) vendor/bin/phpcs

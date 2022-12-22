@@ -7,6 +7,7 @@ namespace ComposerUnused\ComposerUnused\Test\Unit\Composer;
 use ComposerUnused\ComposerUnused\Composer\Config;
 use ComposerUnused\ComposerUnused\Composer\PackageFactory;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
 final class PackageFactoryTest extends TestCase
 {
@@ -17,14 +18,18 @@ final class PackageFactoryTest extends TestCase
     {
         $packageFactory = new PackageFactory();
 
-        $config = $this->createMock(Config::class);
-        $config->method('getRequire')->willReturn(
-            [
-                'test/package' => '0.0'
-            ]
-        );
-        $config->method('getRaw')->willReturn(
-            <<<JSON
+        $config = new Config();
+        $reflection = new ReflectionClass($config);
+
+        $nameProperty = $reflection->getProperty('name');
+        $nameProperty->setAccessible(true);
+        $nameProperty->setValue($config, 'somename');
+
+        $requirePropery = $reflection->getProperty('require');
+        $requirePropery->setAccessible(true);
+        $requirePropery->setValue($config, ['test/package' => '0.0']);
+
+        $config->setRaw(<<<JSON
             {
                 "require": {
                     "test/package": "^0.0"
