@@ -8,6 +8,7 @@ use ComposerUnused\ComposerUnused\OutputFormatter\DefaultFormatter;
 use ComposerUnused\ComposerUnused\OutputFormatter\FormatterFactory;
 use ComposerUnused\ComposerUnused\OutputFormatter\GithubFormatter;
 use ComposerUnused\ComposerUnused\OutputFormatter\JsonFormatter;
+use ComposerUnused\ComposerUnused\OutputFormatter\JUnitFormatter;
 use ComposerUnused\ComposerUnused\Test\Stubs\TestDetector;
 use OndraM\CiDetector\Ci\GitHubActions;
 use OndraM\CiDetector\CiDetectorInterface;
@@ -67,5 +68,14 @@ final class FormatterFactoryTest extends TestCase
     {
         $factory = new FormatterFactory($this->createMock(CiDetectorInterface::class));
         self::assertInstanceOf(JsonFormatter::class, $factory->create('json'));
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldCreateJUnitFormatterOnJUnitType(): void
+    {
+        $factory = new FormatterFactory($this->createMock(CiDetectorInterface::class));
+        self::assertInstanceOf(JUnitFormatter::class, $factory->create('junit'));
     }
 }
