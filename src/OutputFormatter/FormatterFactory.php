@@ -35,6 +35,8 @@ final class FormatterFactory
                 return new GithubFormatter();
             case 'json':
                 return new JsonFormatter();
+            case 'junit':
+                return new JUnitFormatter();
             default:
                 return new DefaultFormatter();
         }
