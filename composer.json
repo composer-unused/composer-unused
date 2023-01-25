@@ -28,7 +28,7 @@
         "symfony/config": "^4.4 || ^5.4 || ^6.0",
         "symfony/console": "^4.4 || ^5.4 || ^6.0",
         "symfony/dependency-injection": "^4.4.8 || ^5.4 || ^6.0",
-        "symfony/property-access": "^4.4 || ^5.4 || ^6.0",
+        "symfony/property-access": "^5.4.19",
         "symfony/serializer": "^4.4 || ^5.4 || ^6.0",
         "webmozart/assert": "^1.10",
         "webmozart/glob": "^4.4"
