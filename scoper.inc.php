@@ -8,13 +8,21 @@ $stubs = [];
 
 $stubFinder = Finder::create();
 
-foreach ($stubFinder->files()->name('*.php')->in([
-    __DIR__ . '/vendor/symfony/polyfill-php81',
-    __DIR__ . '/vendor/symfony/polyfill-php80',
+$polyfills = [
     __DIR__ . '/vendor/symfony/polyfill-mbstring',
     __DIR__ . '/vendor/symfony/polyfill-intl-normalizer',
     __DIR__ . '/vendor/symfony/polyfill-intl-grapheme',
-]) as $file) {
+];
+
+if (PHP_VERSION_ID < 80000) {
+    $polyfills[] = __DIR__ . '/vendor/symfony/polyfill-php80';
+}
+
+if (PHP_VERSION_ID < 80100) {
+    $polyfills[] = __DIR__ . '/vendor/symfony/polyfill-php81';
+}
+
+foreach ($stubFinder->files()->name('*.php')->in($polyfills) as $file) {
     $stubs[] = $file->getPathName();
 }
 
