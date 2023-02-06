@@ -31,24 +31,29 @@ class JUnitFormatter implements OutputFormatterInterface
             $totalTestsCount
         );
 
-        $xml .= '<testcase name="unused-dependencies">';
-        foreach ($unusedDependencyCollection as $dependency) {
-            $xml .= sprintf('<failure type="ERROR" message="%s" />', $this->escape($dependency->getName()));
+        if (count($unusedDependencyCollection) > 0) {
+            $xml .= '<testcase name="unused-dependencies">';
+            foreach ($unusedDependencyCollection as $dependency) {
+                $xml .= sprintf('<failure type="ERROR" message="%s" />', $this->escape($dependency->getName()));
+            }
+            $xml .= '</testcase>';
         }
-        $xml .= '</testcase>';
 
-        $xml .= '<testcase name="ignored-dependencies">';
-        foreach ($ignoredDependencyCollection as $dependency) {
-            $xml .= sprintf('<failure type="WARNING" message="%s" />', $this->escape($dependency->getName()));
+        if (count($ignoredDependencyCollection) > 0) {
+            $xml .= '<testcase name="ignored-dependencies">';
+            foreach ($ignoredDependencyCollection as $dependency) {
+                $xml .= sprintf('<failure type="WARNING" message="%s" />', $this->escape($dependency->getName()));
+            }
+            $xml .= '</testcase>';
         }
-        $xml .= '</testcase>';
 
-        $xml .= '<testcase name="zombie-exclusions">';
-        foreach ($filterCollection->getUnused() as $filter) {
-            $xml .= sprintf('<failure type="ERROR" message="%s" />', $this->escape($filter->toString()));
+        if (count($filterCollection->getUnused()) > 0) {
+            $xml .= '<testcase name="zombie-exclusions">';
+            foreach ($filterCollection->getUnused() as $filter) {
+                $xml .= sprintf('<failure type="ERROR" message="%s" />', $this->escape($filter->toString()));
+            }
+            $xml .= '</testcase>';
         }
-        $xml .= '</testcase>';
-        ;
 
         $output->write($xml);
 
