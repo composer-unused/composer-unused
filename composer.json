@@ -3,6 +3,7 @@
     "type": "library",
     "description": "Show unused packages by scanning your code",
     "keywords": [
+        "static analysis",
         "composer",
         "unused",
         "php-parser"
