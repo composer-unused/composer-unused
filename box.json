@@ -1,5 +1,6 @@
 {
     "base-path": null,
+    "exclude-dev-files": false,
     "output": "build/composer-unused.phar",
     "files": [
         "config/container.php",
