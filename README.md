@@ -7,8 +7,8 @@ A Composer tool to show unused Composer dependencies by scanning your code.
 
 Created by [Andreas Frömer](https://twitter.com/icanhazstring) and [contributors](https://github.com/composer-unused/composer-unused/graphs/contributors), logo by [Caneco](https://twitter.com/caneco).
 
-[![](https://img.shields.io/github/workflow/status/composer-unused/composer-unused/validate-code?label=build&style=flat-square)](https://github.com/composer-unused/composer-unused)
-[![](https://img.shields.io/github/workflow/status/composer-unused/composer-unused/validate-phar?label=build-phar&style=flat-square)](https://github.com/composer-unused/composer-unused)
+[![](https://img.shields.io/github/actions/workflow/status/composer-unused/composer-unused/validate-code.yml?branch=main&label=build&style=flat-square)](https://github.com/composer-unused/composer-unused)
+[![](https://img.shields.io/github/actions/workflow/status/composer-unused/composer-unused/validate-phar.yml?branch=main&label=build-phar&style=flat-square)](https://github.com/composer-unused/composer-unused)
 [![](https://img.shields.io/github/tag-date/composer-unused/composer-unused.svg?label=version&style=flat-square)](https://github.com/composer-unused/composer-unused/releases/latest)
 
 > ⚠️ If you want to use this tool as composer-plugin head over to [composer-unused-plugin](https://github.com/composer-unused/composer-unused-plugin).
