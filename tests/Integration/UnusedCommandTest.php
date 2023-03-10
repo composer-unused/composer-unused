@@ -351,6 +351,17 @@ TEXT,
     /**
      * @test
      */
+    public function itShouldNotCrashOnMissingAutoloadDirectory(): void
+    {
+        $commandTester = new CommandTester(self::$container->get(UnusedCommand::class));
+        $exitCode = $commandTester->execute(['composer-json' => __DIR__ . '/../assets/TestProjects/MissingPSR4Directory/composer.json']);
+
+        self::assertSame(0, $exitCode);
+    }
+
+    /**
+     * @test
+     */
     public function isShouldDisplayProgressBar(): void
     {
         $commandTester = new CommandTester(self::$container->get(UnusedCommand::class));
