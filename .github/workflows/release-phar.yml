@@ -13,7 +13,6 @@ env:
 
 jobs:
   release:
-    needs: phar
     name: "Release"
 
     runs-on: "ubuntu-latest"
