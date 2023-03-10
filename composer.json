@@ -1,19 +1,33 @@
 {
     "name": "icanhazstring/composer-unused",
-    "type": "library",
     "description": "Show unused packages by scanning your code",
+    "license": "MIT",
+    "type": "library",
     "keywords": [
         "static analysis",
         "composer",
         "unused",
         "php-parser"
     ],
-    "homepage": "https://github.com/composer-unused/composer-unused",
-    "license": "MIT",
     "authors": [
         {
             "name": "Andreas Frömer",
             "email": "composer-unused@icanhazstring.com"
+        }
+    ],
+    "homepage": "https://github.com/composer-unused/composer-unused",
+    "support": {
+        "issues": "https://github.com/composer-unused/composer-unused/issues",
+        "source": "https://github.com/composer-unused/composer-unused"
+    },
+    "funding": [
+        {
+            "type": "other",
+            "url": "https://paypal.me/icanhazstring"
+        },
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/icanhazstring"
         }
     ],
     "require": {
@@ -37,7 +51,9 @@
     "require-dev": {
         "ext-ds": "*",
         "ext-zend-opcache": "*",
+        "bamarni/composer-bin-plugin": "^1.8",
         "dg/bypass-finals": "^1.4",
+        "ergebnis/composer-normalize": "^2.28",
         "jangregor/phpstan-prophecy": "^1.0",
         "phpspec/prophecy-phpunit": "^2.0.1",
         "phpstan/extension-installer": "^1.2",
@@ -46,13 +62,6 @@
         "phpunit/phpunit": "^9.6.3",
         "roave/security-advisories": "dev-master",
         "squizlabs/php_codesniffer": "^3.7"
-    },
-    "config": {
-        "preferred-install": "dist",
-        "sort-packages": true,
-        "allow-plugins": {
-            "phpstan/extension-installer": true
-        }
     },
     "autoload": {
         "psr-4": {
@@ -69,6 +78,20 @@
     "bin": [
         "bin/composer-unused"
     ],
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true,
+            "bamarni/composer-bin-plugin": true,
+            "ergebnis/composer-normalize": true
+        },
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "extra": {
+        "bamarni-bin": {
+            "forward-command": true
+        }
+    },
     "scripts": {
         "analyse": "phpstan analyse --no-progress",
         "check": [
@@ -86,19 +109,5 @@
         "cs-check": "Use \"phpcs\" to check the coding convention. See phpcs.xml",
         "cs-fix": "Use \"phpcbf\" to fix the coding convention. See phpcs.xml",
         "test": "Use \"phpunit\" to run the tests. See phpunit.xml"
-    },
-    "support": {
-        "issues": "https://github.com/composer-unused/composer-unused/issues",
-        "source": "https://github.com/composer-unused/composer-unused"
-    },
-    "funding": [
-        {
-            "type": "other",
-            "url": "https://paypal.me/icanhazstring"
-        },
-        {
-            "type": "github",
-            "url": "https://github.com/sponsors/icanhazstring"
-        }
-    ]
+    }
 }

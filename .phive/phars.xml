@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<phive xmlns="https://phar.io/phive">
-  <phar name="box" url="https://github.com/box-project/box/releases/download/3.16.0/box.phar" version="3.16.0" installed="3.16.0" location="./.phive/box" copy="true"/>
-</phive>
