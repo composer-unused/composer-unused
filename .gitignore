@@ -1,5 +1,4 @@
-composer.phar
 /vendor
-composer.lock
 /build
 /data
+/vendor-bin/*/vendor

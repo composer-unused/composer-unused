@@ -10,7 +10,7 @@ clean: ## Clean vendor/ and composer.lock
 	rm -rf vendor/ composer.lock
 
 install: ## Run `composer install`
-	docker compose run php$(PHP_VERSION) composer install
+	docker compose run php$(PHP_VERSION) composer install $(filter-out $@, $(MAKECMDGOALS))
 
 update: ## Run `composer update`
 	docker compose run php$(PHP_VERSION) composer update $(filter-out $@, $(MAKECMDGOALS))
@@ -36,7 +36,7 @@ csfix: ## Run phpcs fixer
 	docker compose run php$(PHP_VERSION) vendor/bin/phpcbf
 
 box: ## Compile /build/composer-unused.phar
-	docker compose run php$(PHP_VERSION) php .phive/box compile --no-parallel
+	docker compose run php$(PHP_VERSION) vendor/bin/box compile --no-parallel
 
 ssh: ## SSH into container
 	docker compose run php$(PHP_VERSION) /bin/sh

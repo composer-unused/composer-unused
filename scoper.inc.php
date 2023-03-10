@@ -69,12 +69,12 @@ return [
     'whitelist' => [
         \Webmozart\Glob\Glob::class,
         'Symfony\Polyfill\Php80\*',
+        'Symfony\Polyfill\Php81\*',
         'Symfony\Polyfill\Mbstring\*',
         'Symfony\Polyfill\Intl\Normalizer\*',
         'Symfony\Polyfill\Intl\Grapheme\*',
     ],
     'exclude-namespaces' => [
-        #'ComposerUnused\ComposerUnused\Configuration'
     ],
     'expose-namespaces' => [
         'Symfony\Polyfill',

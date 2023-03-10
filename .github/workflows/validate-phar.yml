@@ -24,7 +24,6 @@ jobs:
 
     env:
       COMPOSER_UNUSED_PHAR: "build/composer-unused.phar"
-      COMPOSER_UNUSED_PHAR_SIGNATURE: "build/composer-unused.phar.asc"
 
     steps:
       - name: "Checkout"
@@ -40,16 +39,16 @@ jobs:
           php-version: "${{ matrix.php-version }}"
 
       - name: "Remove dev dependencies"
-        run: "composer install --no-progress --no-dev --prefer-dist --optimize-autoloader"
+        run: "composer install --no-progress"
 
       - name: "Validate configuration for humbug/box"
-        run: ".phive/box validate box.json"
+        run: "vendor/bin/box validate box.json"
 
       - name: "Compile composer-unused.phar with humbug/box"
-        run: ".phive/box compile --config=box.json --no-parallel"
+        run: "vendor/bin/box compile --config=box.json --no-parallel"
 
       - name: "Show info about composer-unused.phar with humbug/box"
-        run: ".phive/box info ${{ env.COMPOSER_UNUSED_PHAR }}"
+        run: "vendor/bin/box info ${{ env.COMPOSER_UNUSED_PHAR }}"
 
       - name: "Validate composer-unused.phar against code"
         run: "php ${{ env.COMPOSER_UNUSED_PHAR }} --excludeDir=data"
