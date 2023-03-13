@@ -22,8 +22,8 @@ class JUnitFormatter implements OutputFormatterInterface
     ): int {
         $xml = '<?xml version="1.0" encoding="UTF-8"?>';
 
-        $totalFailuresCount = count($unusedDependencyCollection) + count($filterCollection);
-        $totalTestsCount = count($usedDependencyCollection) + count($unusedDependencyCollection) + count($ignoredDependencyCollection) + count($filterCollection) ;
+        $totalFailuresCount = count($unusedDependencyCollection) + count($filterCollection->getUnused());
+        $totalTestsCount = $totalFailuresCount + count($ignoredDependencyCollection);
 
         $xml .= sprintf(
             '<testsuite failures="%d" name="composer-unused" tests="%d" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/junit-team/junit5/r5.5.1/platform-tests/src/test/resources/jenkins-junit.xsd">',
