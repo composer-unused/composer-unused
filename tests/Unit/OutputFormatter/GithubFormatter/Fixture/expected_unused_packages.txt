@@ -1,0 +1,4 @@
+::error file=composer.json,line=0,col=0::symfony/console is unused
+file=composer.json,line=0,col=0::symfony/ignored was ignored
+::warning file=composer.json,line=0,col=0::"NamedFilter(userProvided: true, string: symfony/zombie)" exclusion is a zombie
+
