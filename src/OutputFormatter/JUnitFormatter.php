@@ -55,6 +55,8 @@ class JUnitFormatter implements OutputFormatterInterface
             $xml .= '</testcase>';
         }
 
+        $xml .= '</testsuite>';
+
         $output->write($xml);
 
         if ($unusedDependencyCollection->count() > 0 || count($filterCollection->getUnused()) > 0) {
