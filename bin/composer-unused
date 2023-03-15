@@ -1,5 +1,4 @@
 #!/usr/bin/env php
-
 <?php
 
 use ComposerUnused\ComposerUnused\Console\Command\UnusedCommand;
