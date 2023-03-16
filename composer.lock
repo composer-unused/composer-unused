@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cde6eebc7a24c70f923fe53acc5459fe",
+    "content-hash": "53baa58249e94b294f16a7001c9c1f3a",
     "packages": [
         {
             "name": "composer-unused/contracts",
@@ -54,16 +54,16 @@
         },
         {
             "name": "composer-unused/symbol-parser",
-            "version": "0.1.12",
+            "version": "0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer-unused/symbol-parser.git",
-                "reference": "07310a94b24e6fd1a627f47bb84c36ae7a3f71f2"
+                "reference": "3f771d4591ffb8d3f054bcad445db971ff20e4c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer-unused/symbol-parser/zipball/07310a94b24e6fd1a627f47bb84c36ae7a3f71f2",
-                "reference": "07310a94b24e6fd1a627f47bb84c36ae7a3f71f2",
+                "url": "https://api.github.com/repos/composer-unused/symbol-parser/zipball/3f771d4591ffb8d3f054bcad445db971ff20e4c0",
+                "reference": "3f771d4591ffb8d3f054bcad445db971ff20e4c0",
                 "shasum": ""
             },
             "require": {
@@ -76,6 +76,7 @@
                 "symfony/finder": "^4.4 || ^5.3 || ^6.0"
             },
             "require-dev": {
+                "ergebnis/composer-normalize": "^2.28",
                 "ext-ds": "*",
                 "phpstan/phpstan": "^1.10",
                 "phpunit/phpunit": "^9.6.5",
@@ -120,7 +121,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2023-03-10T13:45:08+00:00"
+            "time": "2023-03-16T19:10:21+00:00"
         },
         {
             "name": "nikic/php-parser",
