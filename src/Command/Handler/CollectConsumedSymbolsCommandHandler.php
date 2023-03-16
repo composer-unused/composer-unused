@@ -27,44 +27,12 @@ final class CollectConsumedSymbolsCommandHandler
      */
     public function collect(CollectConsumedSymbolsCommand $command): Generator
     {
-        $package = $command->getPackage();
         $symbolLoader = $this
             ->consumedSymbolLoaderBuilder
-            ->setAdditionalFiles($command->getConfiguration()->getAdditionalFilesFor($package->getName()))
+            ->setAdditionalFiles($command->getConfiguration()->getAdditionalFilesFor($command->getPackage()->getName()))
             ->setExcludedDirs($command->getExcludedDirs())
             ->build();
 
-        $rootNamespaces = array_filter( // Remove empty PSR-4 namespaces (see issue 342)*/
-            array_merge(
-                array_keys($package->getAutoload()['psr-0'] ?? []),
-                array_keys($package->getAutoload()['psr-4'] ?? [])
-            )
-        );
-
-        yield from $this->filterRootPackageSymbols(
-            $rootNamespaces,
-            $symbolLoader->withBaseDir($command->getPackageRoot())->load($package)
-        );
-    }
-
-    /**
-     * Ignore symbols that are provided and used by the root namespace.
-     *
-     * @param iterable<string> $rootNamespaces
-     * @param iterable<string, SymbolInterface> $symbols
-     *
-     * @return Generator<string, SymbolInterface>
-     */
-    private function filterRootPackageSymbols(iterable $rootNamespaces, iterable $symbols): Generator
-    {
-        foreach ($symbols as $identifier => $symbol) {
-            foreach ($rootNamespaces as $rootNamespace) {
-                if (strpos($symbol->getIdentifier(), $rootNamespace) === 0) {
-                    continue 2;
-                }
-            }
-
-            yield $identifier => $symbol;
-        }
+        yield from $symbolLoader->withBaseDir($command->getPackageRoot())->load($command->getPackage());
     }
 }
