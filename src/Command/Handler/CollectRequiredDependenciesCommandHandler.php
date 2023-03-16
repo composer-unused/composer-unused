@@ -8,7 +8,6 @@ use ComposerUnused\ComposerUnused\Composer\InvalidPackage;
 use ComposerUnused\SymbolParser\Symbol\SymbolList;
 use ComposerUnused\ComposerUnused\Command\LoadRequiredDependenciesCommand;
 use ComposerUnused\ComposerUnused\Dependency\DependencyCollection;
-use ComposerUnused\ComposerUnused\Dependency\InvalidDependency;
 use ComposerUnused\ComposerUnused\Dependency\RequiredDependency;
 use ComposerUnused\ComposerUnused\PackageResolver;
 use ComposerUnused\ComposerUnused\Symbol\ProvidedSymbolLoaderBuilder;

@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use ComposerUnused\ComposerUnused\Configuration\ConfigurationProvider;
+use ComposerUnused\ComposerUnused\Console\Command\DebugConsumedSymbolsCommand;
+use ComposerUnused\ComposerUnused\Console\Command\DebugProvidedSymbolsCommand;
 use ComposerUnused\ComposerUnused\Console\Command\UnusedCommand;
 use ComposerUnused\SymbolParser\Parser\PHP\ConsumedSymbolCollector;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\AnnotationStrategy;
@@ -50,8 +53,12 @@ return static function (ContainerConfigurator $configurator) {
         ->load($nameSpacePrefix . 'ComposerUnused\\SymbolParser\\', $vendorDir . '/composer-unused/symbol-parser/src/*');
 
     $services->set(UnusedCommand::class)->public();
+    $services->set(DebugConsumedSymbolsCommand::class)->public();
+    $services->set(DebugProvidedSymbolsCommand::class)->public();
 
     $services->set('logger', NullLogger::class);
+
+    $services->set(ConfigurationProvider::class);
 
     $services->set(UsedExtensionSymbolStrategy::class)->args([
         get_loaded_extensions(),
