@@ -12,9 +12,11 @@ use ComposerUnused\ComposerUnused\Configuration\Configuration;
 use ComposerUnused\ComposerUnused\Configuration\ConfigurationProvider;
 use ComposerUnused\SymbolParser\Symbol\SymbolInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class DebugConsumedSymbolsCommand extends Command
 {
@@ -40,6 +42,13 @@ final class DebugConsumedSymbolsCommand extends Command
     {
         $this->setDescription('List all consumed symbols from the root package.');
 
+        $this->addArgument(
+            'composer-json',
+            InputArgument::OPTIONAL,
+            'Provide a composer.json to be scanned',
+            getcwd() . DIRECTORY_SEPARATOR . 'composer.json'
+        );
+
         $this->addOption(
             'configuration',
             'c',
@@ -51,9 +60,23 @@ final class DebugConsumedSymbolsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $config = $this->configFactory->fromPath(getcwd() . DIRECTORY_SEPARATOR . 'composer.json');
+        $io = new SymfonyStyle($input, $output);
+        $composerJsonPath = $input->getArgument('composer-json');
+
+        if (!file_exists($composerJsonPath) || !is_readable($composerJsonPath)) {
+            $io->error(
+                sprintf(
+                    'composer.json on given path %s does not exist or is not readable.',
+                    $composerJsonPath
+                )
+            );
+
+            return Command::FAILURE;
+        }
+
+        $config = $this->configFactory->fromPath($composerJsonPath);
         $rootPackage = $this->packageFactory->fromConfig($config);
-        $baseDir = dirname(getcwd() . DIRECTORY_SEPARATOR . 'composer.json');
+        $baseDir = dirname($composerJsonPath);
         $configuration = $this->configurationProvider->fromPath(
             $input->getOption('configuration') ?: $baseDir . DIRECTORY_SEPARATOR . 'composer-unused.php'
         );
