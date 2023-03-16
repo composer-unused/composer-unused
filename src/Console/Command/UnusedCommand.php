@@ -12,6 +12,7 @@ use ComposerUnused\ComposerUnused\Composer\ConfigFactory;
 use ComposerUnused\ComposerUnused\Composer\LocalRepositoryFactory;
 use ComposerUnused\ComposerUnused\Composer\PackageFactory;
 use ComposerUnused\ComposerUnused\Configuration\Configuration;
+use ComposerUnused\ComposerUnused\Configuration\ConfigurationProvider;
 use ComposerUnused\ComposerUnused\Configuration\NamedFilter;
 use ComposerUnused\ComposerUnused\Console\Progress\DefaultProgressBarDecorator;
 use ComposerUnused\ComposerUnused\Dependency\DependencyInterface;
@@ -40,6 +41,7 @@ final class UnusedCommand extends Command
     private FormatterFactory $formatterFactory;
     private LocalRepositoryFactory $localRepositoryFactory;
     private PackageFactory $packageFactory;
+    private ConfigurationProvider $configurationProvider;
 
     public function __construct(
         ConfigFactory $configFactory,
@@ -47,7 +49,8 @@ final class UnusedCommand extends Command
         CollectRequiredDependenciesCommandHandler $collectRequiredDependenciesCommandHandler,
         FormatterFactory $formatterFactory,
         LocalRepositoryFactory $localRepositoryFactory,
-        PackageFactory $packageFactory
+        PackageFactory $packageFactory,
+        ConfigurationProvider $configurationProvider
     ) {
         parent::__construct('unused');
         $this->configFactory = $configFactory;
@@ -56,6 +59,7 @@ final class UnusedCommand extends Command
         $this->formatterFactory = $formatterFactory;
         $this->localRepositoryFactory = $localRepositoryFactory;
         $this->packageFactory = $packageFactory;
+        $this->configurationProvider = $configurationProvider;
     }
 
     protected function configure(): void
@@ -144,7 +148,9 @@ final class UnusedCommand extends Command
         $rootPackage = $this->packageFactory->fromConfig($composerConfig);
         $localRepository = $this->localRepositoryFactory->create($composerConfig);
         $baseDir = dirname($composerJsonPath);
-        $configuration = $this->loadConfiguration($input->getOption('configuration') ?: $baseDir . DIRECTORY_SEPARATOR . 'composer-unused.php');
+        $configuration = $this->configurationProvider->fromPath(
+            $input->getOption('configuration') ?: $baseDir . DIRECTORY_SEPARATOR . 'composer-unused.php'
+        );
 
         $consumedSymbols = $this->collectConsumedSymbolsCommandHandler->collect(
             new CollectConsumedSymbolsCommand(
@@ -267,18 +273,5 @@ final class UnusedCommand extends Command
         );
 
         return !$ignoreExitCode ? $exitCode : 0;
-    }
-
-    private function loadConfiguration(string $configPath): Configuration
-    {
-        $configuration = new Configuration();
-
-        if (!file_exists($configPath)) {
-            return $configuration;
-        }
-
-        /** @var callable $configurationFactory */
-        $configurationFactory = require $configPath;
-        return $configurationFactory($configuration);
     }
 }

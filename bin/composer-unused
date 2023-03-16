@@ -1,6 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+use ComposerUnused\ComposerUnused\Console\Command\DebugConsumedSymbolsCommand;
+use ComposerUnused\ComposerUnused\Console\Command\DebugProvidedSymbolsCommand;
 use ComposerUnused\ComposerUnused\Console\Command\UnusedCommand;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Application;
@@ -39,7 +41,9 @@ use Symfony\Component\Console\Input\ArgvInput;
 
     $application = new Application('composer-unused', UnusedCommand::VERSION);
     $application->add($container->get(UnusedCommand::class));
-    $application->setDefaultCommand('unused', true);
+    $application->add($container->get(DebugConsumedSymbolsCommand::class));
+    $application->add($container->get(DebugProvidedSymbolsCommand::class));
+    $application->setDefaultCommand('unused');
 
     $application->run(new ArgvInput($argv));
 })($argv);
