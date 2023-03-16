@@ -13,6 +13,7 @@ use ComposerUnused\SymbolParser\Symbol\Loader\FileSymbolLoader;
 use ComposerUnused\SymbolParser\Symbol\Loader\SymbolLoaderInterface;
 use ComposerUnused\SymbolParser\Symbol\Provider\FileSymbolProvider;
 use PhpParser\Lexer\Emulative;
+use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\ParserFactory;
 use SplFileInfo;
 
@@ -35,6 +36,7 @@ final class ConsumedSymbolLoaderBuilder
     {
         $symbolNameParser = new SymbolNameParser(
             (new ParserFactory())->create(ParserFactory::ONLY_PHP7, $this->lexer),
+            new NameResolver(),
             $this->consumedSymbolCollector
         );
 
