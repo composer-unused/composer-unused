@@ -47,6 +47,13 @@ final class DebugProvidedSymbolsCommand extends Command
         $this->setDescription('List all provided symbols from the given package.');
         $this->addArgument('package', InputArgument::REQUIRED, 'Compose package to list defined symbols');
 
+        $this->addArgument(
+            'composer-json',
+            InputArgument::OPTIONAL,
+            'Provide a composer.json to be scanned',
+            getcwd() . DIRECTORY_SEPARATOR . 'composer.json'
+        );
+
         $this->addOption(
             'configuration',
             'c',
@@ -59,8 +66,21 @@ final class DebugProvidedSymbolsCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $config = $this->configFactory->fromPath(getcwd() . DIRECTORY_SEPARATOR . 'composer.json');
-        $baseDir = dirname(getcwd() . DIRECTORY_SEPARATOR . 'composer.json');
+        $composerJsonPath = $input->getArgument('composer-json');
+
+        if (!file_exists($composerJsonPath) || !is_readable($composerJsonPath)) {
+            $io->error(
+                sprintf(
+                    'composer.json on given path %s does not exist or is not readable.',
+                    $composerJsonPath
+                )
+            );
+
+            return Command::FAILURE;
+        }
+
+        $config = $this->configFactory->fromPath($composerJsonPath);
+        $baseDir = dirname($composerJsonPath);
         $localRepository = $this->localRepositoryFactory->create($config);
         $package = $input->getArgument('package');
         $configuration = $this->configurationProvider->fromPath(
