@@ -42,9 +42,10 @@ final class DebugConsumedSymbolsCommand extends Command
     {
         $this->setDescription('List all consumed symbols from the root package.');
 
-        $this->addArgument(
+        $this->addOption(
             'composer-json',
-            InputArgument::OPTIONAL,
+            null,
+            InputOption::VALUE_REQUIRED,
             'Provide a composer.json to be scanned',
             getcwd() . DIRECTORY_SEPARATOR . 'composer.json'
         );
@@ -61,12 +62,12 @@ final class DebugConsumedSymbolsCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $composerJsonPath = $input->getArgument('composer-json');
+        $composerJsonPath = $input->getOption('composer-json');
 
         if (!file_exists($composerJsonPath) || !is_readable($composerJsonPath)) {
             $io->error(
                 sprintf(
-                    'composer.json on given path %s does not exist or is not readable.',
+                    'composer.json on given path "%s" does not exist or is not readable.',
                     $composerJsonPath
                 )
             );

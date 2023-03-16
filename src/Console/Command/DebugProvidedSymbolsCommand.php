@@ -47,9 +47,10 @@ final class DebugProvidedSymbolsCommand extends Command
         $this->setDescription('List all provided symbols from the given package.');
         $this->addArgument('package', InputArgument::REQUIRED, 'Compose package to list defined symbols');
 
-        $this->addArgument(
+        $this->addOption(
             'composer-json',
-            InputArgument::OPTIONAL,
+            null,
+            InputOption::VALUE_REQUIRED,
             'Provide a composer.json to be scanned',
             getcwd() . DIRECTORY_SEPARATOR . 'composer.json'
         );
@@ -66,7 +67,7 @@ final class DebugProvidedSymbolsCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $composerJsonPath = $input->getArgument('composer-json');
+        $composerJsonPath = $input->getOption('composer-json');
 
         if (!file_exists($composerJsonPath) || !is_readable($composerJsonPath)) {
             $io->error(
