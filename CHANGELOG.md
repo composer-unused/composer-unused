@@ -2,18 +2,89 @@
 
 ## [Unreleased] - TBA
 ### Added
-- Added compression for composer-unused.phar. This is done to prepare composer-unused-plugin to work directly with the phar instead of composer requireent
-- Added scan strategies for `TypedAttributes` and `FullQualifiedParameters`
 ### Fixed
+### Changed
+* Pass NameResolver to SymbolNameParser by @eliashaeussler in https://github.com/composer-unused/composer-unused/pull/460
+### Removed
+### Security
+### Deprecation
+
+## [0.8.7] - TBA
+### Added
+### Fixed
+* Use correct version in CLI by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/453
+* Avoid exception on missing directory by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/454
+* fix junit formatter by @reinfi in https://github.com/composer-unused/composer-unused/pull/456
+* JUnit Formatter - fix issue #457 by @reinfi in https://github.com/composer-unused/composer-unused/pull/458
+* Avoid github pr info on ignored packages by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/459
 ### Changed
 ### Removed
 ### Security
 ### Deprecation
 
-## [Unreleased] - TBA
+## [0.8.6] - TBA
+### Added
+* Junit formatter by @reinfi in https://github.com/composer-unused/composer-unused/pull/440
+* Add "static analysis" tag by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/447
+### Fixed
+* fix: reimplement excludeDir by @simPod in https://github.com/composer-unused/composer-unused/pull/431
+* do not add empty test cases to junit xml by @reinfi in https://github.com/composer-unused/composer-unused/pull/446
+### Changed
+### Removed
+### Security
+### Deprecation
+
+## [0.8.5] - TBA
+### Added
+* Readd progress bar by @MarcinGladkowski in https://github.com/composer-unused/composer-unused/pull/427
+### Fixed
+* Marking required package as used by "required-by" even if other package is unused by @MarcinGladkowski in https://github.com/composer-unused/composer-unused/pull/424
+* Update PatternFilter example in README by @mvhirsch in https://github.com/composer-unused/composer-unused/pull/416
+* Explicitly require symfony/property-access by @eliashaeussler in https://github.com/composer-unused/composer-unused/pull/428
+* Resolve issue with suggest-by feature by @eliashaeussler in https://github.com/composer-unused/composer-unused/pull/428
+### Changed
+### Removed
+### Security
+### Deprecation
+
+## [0.8.4] - TBA
+### Added
+* Add JsonFormatter with test by @TomasVotruba in https://github.com/composer-unused/composer-unused/pull/398
+* Add testcase for readonly class (#369) by @pascalheidmann in https://github.com/composer-unused/composer-unused/pull/402
+* Don't report packages unused in annotations by @LeoVie in https://github.com/composer-unused/composer-unused/pull/404
+### Fixed
+* override exit code with "0" if option `--ignore-exit-code` is used by @pascalheidmann in https://github.com/composer-unused/composer-unused/pull/396
+* Empty PSR4 namespace by @yoanmLf in https://github.com/composer-unused/composer-unused/pull/405
+### Changed
+* Prepare php 8.2 support by @pascalheidmann in https://github.com/composer-unused/composer-unused/pull/403
+### Removed
+### Security
+### Deprecation
+
+## [0.8.3] - TBA
 ### Added
 ### Fixed
+* Keep the PatternFilter in used state by @nicklog in https://github.com/composer-unused/composer-unused/pull/353
+* Wire up custom configuration file location support by @WyriHaximus in https://github.com/composer-unused/composer-unused/pull/354
+* Fix typo in CONTRIBUTING.md by @Jean85 in https://github.com/composer-unused/composer-unused/pull/359
+* Fix Symfony 4 support by @Jean85 in https://github.com/composer-unused/composer-unused/pull/360
+* Mark new "composer" platform requirement as globally excluded. (Fixes: #381) by @AndreasA in https://github.com/composer-unused/composer-unused/pull/389
+* Lexer version detector patch by @georgeconstantinou in https://github.com/composer-unused/composer-unused/pull/392
 ### Changed
+* Add missing use statement by @OskarStark in https://github.com/composer-unused/composer-unused/pull/374
+### Removed
+### Security
+### Deprecation
+
+## [0.8.2] - 2022-03-22
+### Added
+### Fixed
+* Avoid strpos comparison for php package by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/318
+* Resolve #328: Fix issue where output format could not be forced by cli by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/334
+* Expose Symfony\Polyfill to be able to run phar with php7.4 by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/339
+### Changed
+* Make Required Dependencies faster by @scyzoryck in https://github.com/composer-unused/composer-unused/pull/322
+* Split independent loops during looking for used packages by @scyzoryck in https://github.com/composer-unused/composer-unused/pull/324
 ### Removed
 ### Security
 ### Deprecation
