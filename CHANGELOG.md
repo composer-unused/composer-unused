@@ -8,6 +8,7 @@
 ### Fixed
 * Make composer-json an option, not argument by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/466
 * Remove root namespace filter to avoid subpackage filtering by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/465
+* Avoid marking packages used by unused suggestions by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/471
 ### Changed
 * Pass NameResolver to SymbolNameParser by @eliashaeussler in https://github.com/composer-unused/composer-unused/pull/460
 ### Removed
