@@ -2,7 +2,13 @@
 
 ## [Unreleased] - TBA
 ### Added
+* Pass NameResolver to SymbolNameParser by @eliashaeussler in https://github.com/composer-unused/composer-unused/pull/460
+* Add debug commands to see consumed and defined symbols by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/463
+* Add composer-json option to debug by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/464
+* Add hyperlink to default formatter by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/468
 ### Fixed
+* Make composer-json an option, not argument by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/466
+* Remove root namespace filter to avoid subpackage filtering by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/465
 ### Changed
 * Pass NameResolver to SymbolNameParser by @eliashaeussler in https://github.com/composer-unused/composer-unused/pull/460
 ### Removed
