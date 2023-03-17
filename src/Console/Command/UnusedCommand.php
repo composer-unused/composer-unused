@@ -205,38 +205,36 @@ final class UnusedCommand extends Command
         foreach ($consumedSymbols as $symbol) {
             /** @var RequiredDependency $requiredDependency */
             foreach ($requiredDependencyCollection as $requiredDependency) {
-                if (
-                    $requiredDependency->inState($requiredDependency::STATE_USED)
-                ) {
+                if ($requiredDependency->inState($requiredDependency::STATE_USED)) {
                     continue;
                 }
 
                 if ($requiredDependency->getName() === 'php' || $requiredDependency->provides($symbol)) {
                     $requiredDependency->markUsed();
-                    continue;
                 }
             }
         }
 
         foreach ($requiredDependencyCollection as $requiredDependency) {
-            if (
-                $requiredDependency->inState($requiredDependency::STATE_USED)
-            ) {
+            if ($requiredDependency->inState($requiredDependency::STATE_USED)) {
                 continue;
             }
+
             /** @var RequiredDependency $secondRequiredDependency */
             foreach ($requiredDependencyCollection as $secondRequiredDependency) {
                 if ($requiredDependency === $secondRequiredDependency) {
                     continue;
                 }
 
-                if ($secondRequiredDependency->requires($requiredDependency) && $secondRequiredDependency->inState($requiredDependency::STATE_USED)) {
+                $secondaryIsUsed = $secondRequiredDependency->inState($requiredDependency::STATE_USED);
+
+                if ($secondaryIsUsed && $secondRequiredDependency->requires($requiredDependency)) {
                     $requiredDependency->requiredBy($secondRequiredDependency);
                     $requiredDependency->markUsed();
                     continue 2;
                 }
 
-                if ($secondRequiredDependency->suggests($requiredDependency)) {
+                if ($secondaryIsUsed && $secondRequiredDependency->suggests($requiredDependency)) {
                     $requiredDependency->suggestedBy($secondRequiredDependency);
                     $requiredDependency->markUsed();
                     continue 2;
