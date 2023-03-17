@@ -14,6 +14,7 @@ final class PackageFactory
 
         return new Package(
             $config->getName(),
+            $config->getUrl(),
             $config->getAutoload(),
             array_map(static function (string $name) use ($requireLines) {
                 return new Link($name, $requireLines[$name]);

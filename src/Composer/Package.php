@@ -11,6 +11,7 @@ use ComposerUnused\Contracts\PackageInterface;
 final class Package implements PackageInterface
 {
     private string $name;
+    private ?string $url;
     /** @var array<string, LinkInterface> */
     private array $requires = [];
     /** @var array<string> */
@@ -23,9 +24,15 @@ final class Package implements PackageInterface
      * @param array<LinkInterface> $requires
      * @param array<string> $suggests
      */
-    public function __construct(string $name, array $autoload = [], array $requires = [], array $suggests = [])
-    {
+    public function __construct(
+        string $name,
+        ?string $url = null,
+        array $autoload = [],
+        array $requires = [],
+        array $suggests = []
+    ) {
         $this->name = $name;
+        $this->url = $url;
         $this->autoload = $autoload;
         $this->suggests = $suggests;
         $this->requires = \array_combine(
@@ -42,6 +49,11 @@ final class Package implements PackageInterface
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
     }
 
     public function getRequires(): array

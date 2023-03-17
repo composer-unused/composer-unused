@@ -15,6 +15,8 @@ interface DependencyInterface
 
     public function getName(): string;
 
+    public function getUrl(): ?string;
+
     public function inState(string $state): bool;
 
     public function provides(SymbolInterface $symbol): bool;

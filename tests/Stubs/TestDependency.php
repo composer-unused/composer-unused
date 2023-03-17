@@ -21,6 +21,11 @@ final class TestDependency implements DependencyInterface
         return $this->name;
     }
 
+    public function getUrl(): ?string
+    {
+        return null;
+    }
+
     public function inState(string $state): bool
     {
         return false;

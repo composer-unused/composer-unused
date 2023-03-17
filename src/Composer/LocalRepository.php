@@ -28,6 +28,7 @@ final class LocalRepository implements RepositoryInterface
     {
         try {
             $packageDir = $this->installedVersions->getInstallPath($name);
+            $url = $this->installedVersions->getUrl($name);
         } catch (OutOfBoundsException $e) {
             return null;
         }
@@ -40,6 +41,7 @@ final class LocalRepository implements RepositoryInterface
 
         try {
             $config = $this->configFactory->fromPath($packageComposerJson);
+            $config->setUrl($url);
         } catch (\RuntimeException $e) {
             return null;
         }

@@ -52,7 +52,8 @@ class RequiredDependencyTest extends TestCase
         );
 
         $requiredPackage = new Package(
-            'required/pacakge',
+            'required/package',
+            null,
             [],
             [new Link('root/requirement', 0)]
         );

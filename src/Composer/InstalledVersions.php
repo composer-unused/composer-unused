@@ -29,4 +29,9 @@ final class InstalledVersions
 
         return $installPath;
     }
+
+    public function getUrl(string $name): ?string
+    {
+        return $this->installed['versions'][$name]['url'] ?? null;
+    }
 }

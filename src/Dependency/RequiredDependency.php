@@ -32,6 +32,11 @@ final class RequiredDependency implements DependencyInterface
         return $this->package->getName();
     }
 
+    public function getUrl(): ?string
+    {
+        return $this->package->getUrl();
+    }
+
     public function markUsed(): void
     {
         $this->stateReason = '';
