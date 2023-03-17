@@ -19,6 +19,7 @@ final class Config
     private array $extra = [];
     private string $rawContent;
     private string $baseDir;
+    private ?string $url = null;
 
     public function getName(): string
     {
@@ -57,6 +58,11 @@ final class Config
         return $this->extra;
     }
 
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
     public function get(string $property): string
     {
         $value = $this->config[$property] ?? null;
@@ -86,5 +92,10 @@ final class Config
     public function getBaseDir(): string
     {
         return $this->baseDir;
+    }
+
+    public function setUrl(?string $url): void
+    {
+        $this->url = $url;
     }
 }

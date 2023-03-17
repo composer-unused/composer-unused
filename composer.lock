@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "53baa58249e94b294f16a7001c9c1f3a",
+    "content-hash": "1b4bf71dbda3e1ced07f10359b4a95b7",
     "packages": [
         {
             "name": "composer-unused/contracts",
-            "version": "0.2.0",
+            "version": "0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer-unused/contracts.git",
-                "reference": "d2caa711faac838ee2404a985ab59db9bf5a02a1"
+                "reference": "5ec448d3ee80735dccad6a21a3266c377d0845ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer-unused/contracts/zipball/d2caa711faac838ee2404a985ab59db9bf5a02a1",
-                "reference": "d2caa711faac838ee2404a985ab59db9bf5a02a1",
+                "url": "https://api.github.com/repos/composer-unused/contracts/zipball/5ec448d3ee80735dccad6a21a3266c377d0845ae",
+                "reference": "5ec448d3ee80735dccad6a21a3266c377d0845ae",
                 "shasum": ""
             },
             "require": {
@@ -42,7 +42,7 @@
             "description": "Contract repository for composer-unused",
             "support": {
                 "issues": "https://github.com/composer-unused/contracts/issues",
-                "source": "https://github.com/composer-unused/contracts/tree/0.2.0"
+                "source": "https://github.com/composer-unused/contracts/tree/0.3.0"
             },
             "funding": [
                 {
@@ -50,24 +50,24 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-02-03T10:51:59+00:00"
+            "time": "2023-03-17T00:41:49+00:00"
         },
         {
             "name": "composer-unused/symbol-parser",
-            "version": "0.2.0",
+            "version": "0.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer-unused/symbol-parser.git",
-                "reference": "3f771d4591ffb8d3f054bcad445db971ff20e4c0"
+                "reference": "a395a555aa38b63cadf9b2f396880ac86abb44a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer-unused/symbol-parser/zipball/3f771d4591ffb8d3f054bcad445db971ff20e4c0",
-                "reference": "3f771d4591ffb8d3f054bcad445db971ff20e4c0",
+                "url": "https://api.github.com/repos/composer-unused/symbol-parser/zipball/a395a555aa38b63cadf9b2f396880ac86abb44a9",
+                "reference": "a395a555aa38b63cadf9b2f396880ac86abb44a9",
                 "shasum": ""
             },
             "require": {
-                "composer-unused/contracts": "^0.1 || ^0.2",
+                "composer-unused/contracts": "^0.3",
                 "nikic/php-parser": "^4.15",
                 "php": "^7.4 || ^8.0",
                 "phpstan/phpdoc-parser": "^1.16",
@@ -121,7 +121,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2023-03-16T19:10:21+00:00"
+            "time": "2023-03-17T00:45:47+00:00"
         },
         {
             "name": "nikic/php-parser",

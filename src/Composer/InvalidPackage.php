@@ -27,6 +27,11 @@ final class InvalidPackage implements PackageInterface
         return $this->name;
     }
 
+    public function getUrl(): ?string
+    {
+        return null;
+    }
+
     public function getRequires(): array
     {
         return [];

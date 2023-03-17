@@ -167,7 +167,11 @@ final class UnusedCommand extends Command
                 $rootPackage->getRequires(),
                 $localRepository,
                 $configuration,
-                new DefaultProgressBarDecorator($io, count($rootPackage->getRequires()), $input->getOption('no-progress'))
+                new DefaultProgressBarDecorator(
+                    $io,
+                    count($rootPackage->getRequires()),
+                    $input->getOption('no-progress')
+                )
             )
         );
 

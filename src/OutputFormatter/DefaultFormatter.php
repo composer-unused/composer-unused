@@ -61,11 +61,18 @@ final class DefaultFormatter implements OutputFormatterInterface
                 );
             }
 
+            $name = $usedDependency->getName();
+            $url = $usedDependency->getUrl();
+
+            if ($url !== null) {
+                $name = sprintf('%s (%s)', $name, $url);
+            }
+
             $output->writeln(
                 sprintf(
                     ' <fg=green>%s</> %s%s%s',
                     "\u{2713}",
-                    $usedDependency->getName(),
+                    $name,
                     $requiredBy,
                     $suggestedBy
                 )
@@ -75,11 +82,18 @@ final class DefaultFormatter implements OutputFormatterInterface
         $output->newLine();
         $output->text('<fg=red>Unused packages</>');
         foreach ($unusedDependencyCollection as $dependency) {
+            $name = $dependency->getName();
+            $url = $dependency->getUrl();
+
+            if ($url !== null) {
+                $name = sprintf('%s (%s)', $name, $url);
+            }
+
             $output->writeln(
                 sprintf(
                     ' <fg=red>%s</> %s',
                     "\u{2717}",
-                    $dependency->getName(),
+                    $name
                 )
             );
         }
@@ -88,11 +102,18 @@ final class DefaultFormatter implements OutputFormatterInterface
         $output->text('<fg=yellow>Ignored packages</>');
 
         foreach ($ignoredDependencyCollection as $dependency) {
+            $name = $dependency->getName();
+            $url = $dependency->getUrl();
+
+            if ($url !== null) {
+                $name = sprintf('%s (%s)', $name, $url);
+            }
+
             $output->writeln(
                 sprintf(
                     ' <fg=yellow>%s</> %s (<fg=cyan>%s</>)',
                     "\u{25CB}",
-                    $dependency->getName(),
+                    $name,
                     $dependency->getStateReason()
                 )
             );
