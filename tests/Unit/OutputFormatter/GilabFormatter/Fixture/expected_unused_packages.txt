@@ -1,0 +1,35 @@
+[
+  {
+    "description": "'symfony/console' is unused.",
+    "fingerprint": "unused:symfony/console",
+    "severity": "major",
+    "location": {
+      "path": "composer.json",
+      "lines": {
+        "begin": 0
+      }
+    }
+  },
+  {
+    "description": "'symfony/ignored' was ignored.",
+    "fingerprint": "ignored:symfony/console",
+    "severity": "info",
+    "location": {
+      "path": "composer.json",
+      "lines": {
+        "begin": 0
+      }
+    }
+  },
+  {
+    "description": "'symfony/zombie' exclusion is a zombie.",
+    "fingerprint": "zombie:symfony/zombie",
+    "severity": "info",
+    "location": {
+      "path": "composer.json",
+      "lines": {
+        "begin": 0
+      }
+    }
+  }
+]

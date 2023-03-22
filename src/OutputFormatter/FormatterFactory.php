@@ -24,6 +24,8 @@ final class FormatterFactory
                 $ci = $this->ciDetector->detect();
                 if ($ci->getCiName() === CiDetector::CI_GITHUB_ACTIONS) {
                     $type = 'github';
+                } elseif ($ci->getCiName() === CiDetector::CI_GITLAB) {
+                    $type = 'gitlab';
                 }
             } catch (CiNotDetectedException $exception) {
                 $type = 'default';
@@ -37,6 +39,8 @@ final class FormatterFactory
                 return new JsonFormatter();
             case 'junit':
                 return new JUnitFormatter();
+            case 'gitlab':
+                return new GitlabFormatter();
             default:
                 return new DefaultFormatter();
         }
