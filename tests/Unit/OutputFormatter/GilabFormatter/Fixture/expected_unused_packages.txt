@@ -1,0 +1,35 @@
+[
+    {
+        "description": "symfony\/console is unused",
+        "fingerprint": "4b53efff62fc3984508b4ed39c1e7bb2c04cc6569633a3d9bc6028407066281a",
+        "severity": "major",
+        "location": {
+            "path": "composer.json",
+            "lines": {
+                "begin": 0
+            }
+        }
+    },
+    {
+        "description": "symfony\/ignored was ignored",
+        "fingerprint": "d490c666cf74cf4c2a4c39f25f59f2dca4ce688deff8b6708168692e2aaf48ae",
+        "severity": "info",
+        "location": {
+            "path": "composer.json",
+            "lines": {
+                "begin": 0
+            }
+        }
+    },
+    {
+        "description": "NamedFilter(userProvided: true, string: symfony\/zombie) exclusion is a zombie",
+        "fingerprint": "3319f0248bbc28a19fba73f1694fc0007835d2e6598bc68ec8eb8810fdbe9ace",
+        "severity": "minor",
+        "location": {
+            "path": "composer.json",
+            "lines": {
+                "begin": 0
+            }
+        }
+    }
+]
