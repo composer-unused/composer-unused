@@ -64,7 +64,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ "7.4", "8.0", "8.1" ]
+        php: [ "7.4", "8.0", "8.1", 8.2 ]
         os: [ "ubuntu-latest" ]
         experimental: [ false ]
         include:
@@ -72,9 +72,6 @@ jobs:
             composer-options: "--prefer-lowest"
             os: "ubuntu-latest"
             experimental: false
-          - php: "8.2"
-            os: "ubuntu-latest"
-            experimental: true
 
     steps:
       - name: Checkout
@@ -100,13 +97,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ "7.4", "8.0", "8.1" ]
+        php: [ "7.4", "8.0", "8.1", "8.2" ]
         os: [ "ubuntu-latest" ]
         experimental: [ false ]
-        include:
-          - php: "8.2"
-            os: "ubuntu-latest"
-            experimental: true
     steps:
       - name: Checkout
         uses: actions/checkout@v3
