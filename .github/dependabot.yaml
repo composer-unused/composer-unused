@@ -11,8 +11,12 @@ updates:
       - "dependency"
     open-pull-requests-limit: 10
     package-ecosystem: "composer"
+    allow:
+      - dependency-type: "all"
+    ignore:
+      - update-types: "major"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     versioning-strategy: "increase"
 
   - commit-message:
@@ -24,4 +28,4 @@ updates:
     open-pull-requests-limit: 10
     package-ecosystem: "github-actions"
     schedule:
-      interval: "daily"
+      interval: "weekly"
