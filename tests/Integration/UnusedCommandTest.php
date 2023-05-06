@@ -42,6 +42,7 @@ class UnusedCommandTest extends TestCase
 
     /**
      * @test
+     * @requires extension ds
      */
     public function itShouldNotReportExtDsAsUnused(): void
     {
@@ -57,6 +58,7 @@ class UnusedCommandTest extends TestCase
 
     /**
      * @test
+     * @requires extension ds
      */
     public function itShouldNoReportUnusedWithAutoloadFilesWithRequire(): void
     {
