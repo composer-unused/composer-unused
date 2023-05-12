@@ -12,7 +12,7 @@ updates:
     open-pull-requests-limit: 10
     package-ecosystem: "composer"
     allow:
-      - dependency-type: "all"
+      - dependency-type: "development"
     ignore:
       - update-types: "major"
     schedule:
