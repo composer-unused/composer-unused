@@ -41,6 +41,10 @@ final class FormatterFactory
                 return new JUnitFormatter();
             case 'gitlab':
                 return new GitlabFormatter();
+            case 'none':
+                return new NoneFormatter();
+            case 'compact':
+                return new CompactFormatter();
             default:
                 return new DefaultFormatter();
         }
