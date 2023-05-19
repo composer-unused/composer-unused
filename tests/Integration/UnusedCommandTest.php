@@ -402,4 +402,17 @@ TEXT,
 
         self::assertSame(0, $exitCode);
     }
+
+    /**
+     * @test
+     */
+    public function itShouldHaveParseUrlForLocalRepositoryDependencyPath(): void
+    {
+        chdir(__DIR__ . '/../assets/TestProjects/LocalRepositoryDependency');
+        $commandTester = new CommandTester(self::$container->get(UnusedCommand::class));
+
+        $exitCode = $commandTester->execute([]);
+
+        self::assertSame(0, $exitCode);
+    }
 }
