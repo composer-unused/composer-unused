@@ -74,6 +74,12 @@ final class LocalRepositoryFactory
         $sourceUrls = ['versions' => []];
 
         foreach ($installedJson['packages'] as $package) {
+
+            if (!array_key_exists('source', $package)) {
+                $sourceUrls['versions'][$package['name']] = ['url' => $package['dist']['url']];
+                continue;
+            }
+
             $packageUrl = $package['source']['url'];
             /** @var int $lastDotPosition */
             $lastDotPosition = strrpos($packageUrl, '.');
@@ -85,4 +91,6 @@ final class LocalRepositoryFactory
 
         return $sourceUrls;
     }
+
+
 }
