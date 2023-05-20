@@ -56,24 +56,11 @@ final class LocalRepositoryFactory
         /** @var array<string, mixed> $installedJson */
         $installedJson = $this->serializer->decode($json, 'json');
 
-        $sourceUrls = ['versions' => []];
+        $urls = array_reduce($installedJson['packages'], static function ($agg, $package) {
+            $agg[$package['name']] = ['url' => (new PackageUrlExtractor())->getUrl($package)];
+            return $agg;
+        }, []);
 
-        foreach ($installedJson['packages'] as $package) {
-
-            if (!array_key_exists('source', $package)) {
-                $sourceUrls['versions'][$package['name']] = ['url' => $package['dist']['url']];
-                continue;
-            }
-
-            $packageUrl = $package['source']['url'];
-            /** @var int $lastDotPosition */
-            $lastDotPosition = strrpos($packageUrl, '.');
-            /** @var string $replacedUrl */
-            $replacedUrl = substr($packageUrl, 0, $lastDotPosition);
-
-            $sourceUrls['versions'][$package['name']] = ['url' => $replacedUrl];
-        }
-
-        return $sourceUrls;
+        return ['versions' => $urls];
     }
 }
