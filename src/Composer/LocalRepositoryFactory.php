@@ -28,14 +28,13 @@ final class LocalRepositoryFactory
 
     public function create(Config $composerConfig): LocalRepository
     {
-        $sourceUrls = $this->parseSourceUrlsFromInstalledJson(
-            $this->getInstalledJsonPath($composerConfig)
-        );
-
-        $installedPhp = require $this->getInstalledPhpArrayPath($composerConfig);
+        $installedMetadata = new LocalPackageInstalledPath($composerConfig);
 
         /** @var array{root: array<mixed>, versions: array<string, array<mixed>>} $installedVersions */
-        $installedVersions = array_merge_recursive($sourceUrls, $installedPhp);
+        $installedVersions = array_merge_recursive(
+            $this->parseSourceUrlsFromInstalledJson($installedMetadata->getInstalledJsonPath()),
+            require $installedMetadata->getInstalledPhpArrayPath()
+        );
 
         return new LocalRepository(
             new InstalledVersions($installedVersions),
@@ -78,25 +77,5 @@ final class LocalRepositoryFactory
         }
 
         return $sourceUrls;
-    }
-
-    private function getPath(Config $composerConfig): string
-    {
-        return $composerConfig->getBaseDir()
-               . DIRECTORY_SEPARATOR
-               . $composerConfig->get('vendor-dir')
-               . DIRECTORY_SEPARATOR
-               . 'composer'
-               . DIRECTORY_SEPARATOR;
-    }
-
-    private function getInstalledJsonPath(Config $composerConfig): string
-    {
-        return $this->getPath($composerConfig) . 'installed.json';
-    }
-
-    private function getInstalledPhpArrayPath(Config $composerConfig): string
-    {
-        return $this->getPath($composerConfig) . 'installed.php';
     }
 }
