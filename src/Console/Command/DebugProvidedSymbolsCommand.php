@@ -6,6 +6,7 @@ namespace ComposerUnused\ComposerUnused\Console\Command;
 
 use ComposerUnused\ComposerUnused\Composer\ConfigFactory;
 use ComposerUnused\ComposerUnused\Composer\Link;
+use ComposerUnused\ComposerUnused\Composer\LocalPackageInstalledPath;
 use ComposerUnused\ComposerUnused\Composer\LocalRepositoryFactory;
 use ComposerUnused\ComposerUnused\Configuration\Configuration;
 use ComposerUnused\ComposerUnused\Configuration\ConfigurationProvider;
@@ -82,7 +83,9 @@ final class DebugProvidedSymbolsCommand extends Command
 
         $config = $this->configFactory->fromPath($composerJsonPath);
         $baseDir = dirname($composerJsonPath);
-        $localRepository = $this->localRepositoryFactory->create($config);
+        $localRepository = $this->localRepositoryFactory->create(
+            new LocalPackageInstalledPath($config)
+        );
         $package = $input->getArgument('package');
         $configuration = $this->configurationProvider->fromPath(
             $input->getOption('configuration') ?: $baseDir . DIRECTORY_SEPARATOR . 'composer-unused.php'

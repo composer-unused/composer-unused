@@ -26,10 +26,8 @@ final class LocalRepositoryFactory
         $this->serializer = new Serializer($normalizers, $encoders);
     }
 
-    public function create(Config $composerConfig): LocalRepository
+    public function create(LocalPackageInstalledPath $installedMetadata): LocalRepository
     {
-        $installedMetadata = new LocalPackageInstalledPath($composerConfig);
-
         /** @var array{root: array<mixed>, versions: array<string, array<mixed>>} $installedVersions */
         $installedVersions = array_merge_recursive(
             $this->parseSourceUrlsFromInstalledJson($installedMetadata->getInstalledJsonPath()),
