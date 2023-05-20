@@ -6,6 +6,10 @@ namespace ComposerUnused\ComposerUnused\Composer;
 
 class PackageUrlExtractor
 {
+    /**
+     * @param array<mixed> $package
+     * @return string
+     */
     public function getUrl(array $package): string
     {
         if (!array_key_exists('source', $package)) {
@@ -15,11 +19,11 @@ class PackageUrlExtractor
         return $this->parseUrlFromGitSourceUrl($package['source']['url']);
     }
 
-    private function parseUrlFromGitSourceUrl($packageUrl): string
+    private function parseUrlFromGitSourceUrl(string $packageUrl): string
     {
         /** @var int $lastDotPosition */
         $lastDotPosition = strrpos($packageUrl, '.');
-        /** @var string $replacedUrl */
-        return  substr($packageUrl, 0, $lastDotPosition);
+
+        return substr($packageUrl, 0, $lastDotPosition);
     }
 }
