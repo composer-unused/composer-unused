@@ -56,8 +56,10 @@ final class LocalRepositoryFactory
         /** @var array<string, mixed> $installedJson */
         $installedJson = $this->serializer->decode($json, 'json');
 
-        $urls = array_reduce($installedJson['packages'], static function ($agg, $package) {
-            $agg[$package['name']] = ['url' => (new PackageUrlExtractor())->getUrl($package)];
+        $packageUrlExtractor = new PackageUrlExtractor();
+
+        $urls = array_reduce($installedJson['packages'], static function ($agg, $package) use ($packageUrlExtractor) {
+            $agg[$package['name']] = ['url' => $packageUrlExtractor->getUrl($package)];
             return $agg;
         }, []);
 
