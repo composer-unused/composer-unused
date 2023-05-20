@@ -29,22 +29,10 @@ final class LocalRepositoryFactory
     public function create(Config $composerConfig): LocalRepository
     {
         $sourceUrls = $this->parseSourceUrlsFromInstalledJson(
-            $composerConfig->getBaseDir()
-            . DIRECTORY_SEPARATOR
-            . $composerConfig->get('vendor-dir')
-            . DIRECTORY_SEPARATOR
-            . 'composer'
-            . DIRECTORY_SEPARATOR
-            . 'installed.json'
+            $this->getInstalledJsonPath($composerConfig)
         );
 
-        $installedPhp = require $composerConfig->getBaseDir()
-                                . DIRECTORY_SEPARATOR
-                                . $composerConfig->get('vendor-dir')
-                                . DIRECTORY_SEPARATOR
-                                . 'composer'
-                                . DIRECTORY_SEPARATOR
-                                . 'installed.php';
+        $installedPhp = require $this->getInstalledPhpArrayPath($composerConfig);
 
         /** @var array{root: array<mixed>, versions: array<string, array<mixed>>} $installedVersions */
         $installedVersions = array_merge_recursive($sourceUrls, $installedPhp);
@@ -92,5 +80,23 @@ final class LocalRepositoryFactory
         return $sourceUrls;
     }
 
+    private function getPath(Config $composerConfig): string
+    {
+        return $composerConfig->getBaseDir()
+               . DIRECTORY_SEPARATOR
+               . $composerConfig->get('vendor-dir')
+               . DIRECTORY_SEPARATOR
+               . 'composer'
+               . DIRECTORY_SEPARATOR;
+    }
 
+    private function getInstalledJsonPath(Config $composerConfig): string
+    {
+        return $this->getPath($composerConfig) . 'installed.json';
+    }
+
+    private function getInstalledPhpArrayPath(Config $composerConfig): string
+    {
+        return $this->getPath($composerConfig) . 'installed.php';
+    }
 }
