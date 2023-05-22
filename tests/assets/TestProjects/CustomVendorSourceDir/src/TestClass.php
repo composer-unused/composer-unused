@@ -2,11 +2,14 @@
 
 declare(strict_types=1);
 
-namespace EmptyRequire;
+namespace DependencyWithReadonlyClass;
+
+use FileDependency\DependencyClass;
 
 class TestClass
 {
     public function testMethod(): void
     {
+        $a = new DependencyClass();
     }
 }
