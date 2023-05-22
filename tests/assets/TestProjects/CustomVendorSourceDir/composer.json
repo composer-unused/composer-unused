@@ -5,7 +5,7 @@
   },
   "autoload": {
     "psr-4": {
-      "DependencyWithReadonlyClass\\": "./src/"
+      "App\\": "./src/"
     }
   }
 }

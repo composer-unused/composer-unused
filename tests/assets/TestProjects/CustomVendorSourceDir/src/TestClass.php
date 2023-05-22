@@ -2,14 +2,8 @@
 
 declare(strict_types=1);
 
-namespace DependencyWithReadonlyClass;
-
-use FileDependency\DependencyClass;
+namespace App;
 
 class TestClass
 {
-    public function testMethod(): void
-    {
-        $a = new DependencyClass();
-    }
 }
