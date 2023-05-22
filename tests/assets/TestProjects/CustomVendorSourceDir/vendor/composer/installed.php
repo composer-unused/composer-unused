@@ -6,12 +6,12 @@
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'reference' => NULL,
-        'name' => 'ns/lib',
+        'name' => 'foo/bar',
         'dev' => true,
     ),
     'versions' => array(
-        'ns/lib' => array(
-            'install_path' => __DIR__ . '/../../',
+        'test/file-dependency' => array(
+            'install_path' => __DIR__ . '/../test/file-dependency',
         ),
     ),
 );
