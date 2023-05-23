@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace IgnoreExcludedDir\Excluded;
 
-use dependency\src\DependencyClass;
+use FileDependency\DependencyClass;
 
 class TestClass
 {
