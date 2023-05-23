@@ -10,8 +10,8 @@
         'dev' => true,
     ),
     'versions' => array(
-        'test/file-dependency' => array(
-            'install_path' => __DIR__ . '/../test/file-dependency',
+        'lib/dependency' => array(
+            'install_path' => __DIR__ . '/../../custom/lib/dependency',
         ),
     ),
 );

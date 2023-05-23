@@ -1,0 +1,10 @@
+{
+    "name": "lib/dependency",
+    "type": "library",
+    "description": "test dependency",
+    "autoload": {
+        "psr-4": {
+            "Example\\": "src"
+        }
+    }
+}

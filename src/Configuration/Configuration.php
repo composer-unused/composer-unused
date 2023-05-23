@@ -13,6 +13,8 @@ final class Configuration
     /** @var array<string, array<string>> */
     private array $additionalFiles = [];
 
+    private ?string $dependenciesDir = null;
+
     public function addNamedFilter(NamedFilter $filter): self
     {
         $this->namedFilters[spl_object_hash($filter)] = $filter;
@@ -58,5 +60,19 @@ final class Configuration
     {
         $this->additionalFiles[$dependencyName] = $files;
         return $this;
+    }
+
+    public function setDependenciesDir(string $dependenciesDir): self
+    {
+        $this->dependenciesDir = $dependenciesDir;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDependenciesDir(): ?string
+    {
+        return $this->dependenciesDir;
     }
 }

@@ -1,7 +1,7 @@
 {
   "name": "foo/bar",
   "require": {
-      "test/file-dependency": "*"
+      "lib/dependency": "*"
   },
   "autoload": {
     "psr-4": {

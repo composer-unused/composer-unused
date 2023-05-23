@@ -166,7 +166,7 @@ final class UnusedCommand extends Command
 
         $requiredDependencyCollection = $this->collectRequiredDependenciesCommandHandler->collect(
             new LoadRequiredDependenciesCommand(
-                $baseDir . DIRECTORY_SEPARATOR . $composerConfig->get('vendor-dir'),
+                $configuration->getDependenciesDir() ?? $baseDir . DIRECTORY_SEPARATOR . $composerConfig->get('vendor-dir'),
                 $rootPackage->getRequires(),
                 $localRepository,
                 $configuration,
