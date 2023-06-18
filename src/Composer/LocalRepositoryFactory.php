@@ -8,6 +8,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use function file_get_contents;
 
 final class LocalRepositoryFactory
 {
@@ -50,11 +51,12 @@ final class LocalRepositoryFactory
             return [];
         }
 
-        /** @var string $json */
-        $json = \file_get_contents($jsonPath);
+        $json = file_get_contents($jsonPath);
 
         /** @var array<string, mixed> $installedJson */
         $installedJson = $this->serializer->decode($json, 'json');
+
+        SupportedInstalledPackagesVersionChecker::check($installedJson);
 
         $packageUrlExtractor = new PackageUrlExtractor();
 

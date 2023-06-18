@@ -9,6 +9,7 @@ use ComposerUnused\ComposerUnused\Command\Handler\CollectConsumedSymbolsCommandH
 use ComposerUnused\ComposerUnused\Command\Handler\CollectRequiredDependenciesCommandHandler;
 use ComposerUnused\ComposerUnused\Command\LoadRequiredDependenciesCommand;
 use ComposerUnused\ComposerUnused\Composer\ConfigFactory;
+use ComposerUnused\ComposerUnused\Composer\Exception\InvalidComposerVersionInstalledPackages;
 use ComposerUnused\ComposerUnused\Composer\LocalPackageInstalledPath;
 use ComposerUnused\ComposerUnused\Composer\LocalRepositoryFactory;
 use ComposerUnused\ComposerUnused\Composer\PackageFactory;
@@ -147,9 +148,16 @@ final class UnusedCommand extends Command
 
         $composerConfig = $this->configFactory->fromPath($composerJsonPath);
         $rootPackage = $this->packageFactory->fromConfig($composerConfig);
-        $localRepository = $this->localRepositoryFactory->create(
-            new LocalPackageInstalledPath($composerConfig)
-        );
+
+        try {
+            $localRepository = $this->localRepositoryFactory->create(
+                new LocalPackageInstalledPath($composerConfig)
+            );
+        } catch (InvalidComposerVersionInstalledPackages $exception) {
+            $io->warning($exception->getMessage());
+            return $ignoreExitCode ? 0 : 1;
+        }
+
         $baseDir = dirname($composerJsonPath);
         $configuration = $this->configurationProvider->fromPath(
             $input->getOption('configuration') ?: $baseDir . DIRECTORY_SEPARATOR . 'composer-unused.php'

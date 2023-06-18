@@ -435,4 +435,23 @@ TEXT,
 
         self::assertSame(1, $exitCode);
     }
+
+    /**
+     * @test
+     */
+    public function itShouldDisplayWarningOnNotSupportedComposerVersion(): void
+    {
+        $commandTester = new CommandTester(self::$container->get(UnusedCommand::class));
+
+        $exitCode = $commandTester->execute([
+            'composer-json' => __DIR__ . '/../assets/TestProjects/UnsupportedComposerVersion/composer.json'
+        ]);
+
+        self::assertStringContainsString(
+            'Composer Version not supported',
+            $commandTester->getDisplay()
+        );
+
+        self::assertSame(1, $exitCode);
+    }
 }
