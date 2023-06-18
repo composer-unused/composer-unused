@@ -8,6 +8,9 @@ use ComposerUnused\ComposerUnused\Composer\Exception\InvalidComposerVersionInsta
 
 class SupportedInstalledPackagesVersionChecker
 {
+    /**
+     * @param array<string, array<string, string>> $decodedInstalledJson
+     */
     public static function check(array $decodedInstalledJson): void
     {
         if (!array_key_exists('packages', $decodedInstalledJson)) {
