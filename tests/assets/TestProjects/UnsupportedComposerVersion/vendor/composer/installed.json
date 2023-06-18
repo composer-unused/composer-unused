@@ -1,0 +1,29 @@
+[
+        {
+            "name": "user/local-package",
+            "version": "dev-main",
+            "version_normalized": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "/home/user/projects/composer-unused-local-case/local-package",
+                "reference": "890bdb75d32389c0622e4d9e61b707827ab68f36"
+            },
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Example\\LocalPackage\\": "src/"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Example Author",
+                    "email": "example@email.com"
+                }
+            ],
+            "transport-options": {
+                "relative": false
+            },
+            "install-path": "../user/local-package"
+        }
+]

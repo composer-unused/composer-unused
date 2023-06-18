@@ -331,10 +331,8 @@ TEXT,
      */
     public function itShouldHaveZeroExitCodeOnArrayNamespace(): void
     {
-        chdir(__DIR__ . '/../assets/TestProjects/ArrayNamespace');
         $commandTester = new CommandTester(self::$container->get(UnusedCommand::class));
-
-        $exitCode = $commandTester->execute([]);
+        $exitCode = $commandTester->execute(['composer-json' => __DIR__ . '/../assets/TestProjects/ArrayNamespace/composer.json']);
 
         self::assertSame(0, $exitCode);
     }
@@ -408,14 +406,13 @@ TEXT,
      */
     public function itShouldHaveParseUrlForLocalRepositoryDependencyPath(): void
     {
-        chdir(__DIR__ . '/../assets/TestProjects/LocalRepositoryDependency');
         $commandTester = new CommandTester(self::$container->get(UnusedCommand::class));
-
-        $exitCode = $commandTester->execute([]);
+        $exitCode = $commandTester->execute([
+            'composer-json' => __DIR__ . '/../assets/TestProjects/LocalRepositoryDependency/composer.json'
+        ]);
 
         self::assertSame(0, $exitCode);
     }
-
 
     /**
      * @test
