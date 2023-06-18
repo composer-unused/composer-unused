@@ -154,7 +154,7 @@ final class UnusedCommand extends Command
                 new LocalPackageInstalledPath($composerConfig)
             );
         } catch (InvalidComposerVersionInstalledPackages $exception) {
-            $io->warning($exception->getMessage());
+            $io->warning("Composer Version 1 is not supported");
             return $ignoreExitCode ? 0 : 1;
         }
 

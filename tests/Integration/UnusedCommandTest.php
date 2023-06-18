@@ -448,7 +448,7 @@ TEXT,
         ]);
 
         self::assertStringContainsString(
-            'Composer Version not supported',
+            'Composer Version 1 is not supported',
             $commandTester->getDisplay()
         );
 
