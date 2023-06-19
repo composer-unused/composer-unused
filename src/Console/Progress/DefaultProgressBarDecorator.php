@@ -9,16 +9,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class DefaultProgressBarDecorator implements ProgressBarInterface
 {
-    /**
-     * @var NullProgressBar|ProgressBar
-     */
-    private $progressBar;
+    private ProgressBar $progressBar;
 
     private bool $noProgress;
 
     public function __construct(OutputInterface $io, int $max = 0, bool $noProgress = false)
     {
-        $this->progressBar = $noProgress ? new NullProgressBar() : new ProgressBar($io, $max);
+        $this->progressBar = new ProgressBar($io, $max);
         $this->noProgress = $noProgress;
     }
 
@@ -40,6 +37,7 @@ class DefaultProgressBarDecorator implements ProgressBarInterface
     {
         if ($this->isSetProgress()) {
             $this->progressBar->finish();
+            $this->progressBar->clear();
         }
     }
 
