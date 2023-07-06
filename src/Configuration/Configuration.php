@@ -58,6 +58,12 @@ final class Configuration
      */
     public function setAdditionalFilesFor(string $dependencyName, array $files): self
     {
+        if (array_key_exists($dependencyName, $this->additionalFiles)) {
+            throw new AdditionalFilesAlreadySetException(
+                'You already added files for ' . $dependencyName . '. Did you want to add multiple files? Try adding these via multiple globs.'
+            );
+        }
+
         $this->additionalFiles[$dependencyName] = $files;
         return $this;
     }
