@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "23ecbe4eb986ffa57f4f692c1a8ff006",
+    "content-hash": "6ae6b9950fe1711cdc16b8ab75d389ae",
     "packages": [
         {
             "name": "composer-unused/contracts",
@@ -1608,16 +1608,16 @@
         },
         {
             "name": "symfony/serializer",
-            "version": "v5.4.21",
+            "version": "v5.4.25",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/serializer.git",
-                "reference": "e35b42d69a8b447cc3e6c9b3f98938c596b6c60a"
+                "reference": "e528ace5951925459cb6620cc4d67c20ed616fdd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/serializer/zipball/e35b42d69a8b447cc3e6c9b3f98938c596b6c60a",
-                "reference": "e35b42d69a8b447cc3e6c9b3f98938c596b6c60a",
+                "url": "https://api.github.com/repos/symfony/serializer/zipball/e528ace5951925459cb6620cc4d67c20ed616fdd",
+                "reference": "e528ace5951925459cb6620cc4d67c20ed616fdd",
                 "shasum": ""
             },
             "require": {
@@ -1629,7 +1629,7 @@
             "conflict": {
                 "doctrine/annotations": "<1.12",
                 "phpdocumentor/reflection-docblock": "<3.2.2",
-                "phpdocumentor/type-resolver": "<1.4.0|>=1.7.0",
+                "phpdocumentor/type-resolver": "<1.4.0",
                 "symfony/dependency-injection": "<4.4",
                 "symfony/property-access": "<5.4",
                 "symfony/property-info": "<5.3.13",
@@ -1691,7 +1691,7 @@
             "description": "Handles serializing and deserializing data structures, including object graphs, into array structures or other formats like XML and JSON.",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/serializer/tree/v5.4.21"
+                "source": "https://github.com/symfony/serializer/tree/v5.4.25"
             },
             "funding": [
                 {
@@ -1707,7 +1707,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-02-21T19:46:44+00:00"
+            "time": "2023-05-31T11:43:23+00:00"
         },
         {
             "name": "symfony/service-contracts",
