@@ -12,9 +12,11 @@ updates:
     open-pull-requests-limit: 10
     package-ecosystem: "composer"
     allow:
-      - dependency-type: "development"
+      - dependency-name: "*"
+        dependency-type: "development"
     ignore:
-      - update-types: "major"
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     schedule:
       interval: "weekly"
     versioning-strategy: "increase"
