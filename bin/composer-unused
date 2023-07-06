@@ -39,7 +39,25 @@ use Symfony\Component\Console\Input\ArgvInput;
     /** @var ContainerInterface $container */
     $container = require __DIR__ . '/../config/container.php';
 
-    $application = new Application('composer-unused', UnusedCommand::VERSION);
+    $getVersion = static function (): string {
+        if (file_exists(__DIR__ . '/../.version')) {
+            return trim(file_get_contents(__DIR__ . '/../.version'));
+        }
+
+        try {
+            $version = Composer\InstalledVersions::getPrettyVersion('icanhazstring/composer-unused');
+            $ref = Composer\InstalledVersions::getReference('icanhazstring/composer-unused');
+            if ($ref) {
+                $version .= '@' . substr($ref, 0, 7);
+            }
+
+            return $version;
+        } catch (\OutOfBoundsException $a) {
+            return 'unknown';
+        }
+    };
+
+    $application = new Application('composer-unused', $getVersion());
     $application->add($container->get(UnusedCommand::class));
     $application->add($container->get(DebugConsumedSymbolsCommand::class));
     $application->add($container->get(DebugProvidedSymbolsCommand::class));

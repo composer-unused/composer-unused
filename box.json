@@ -5,7 +5,8 @@
     "files": [
         "config/container.php",
         "config/polyfill_symfony_di.php",
-        "config/services.php"
+        "config/services.php",
+        ".version"
     ],
     "compactors": [
         "KevinGH\\Box\\Compactor\\PhpScoper"
