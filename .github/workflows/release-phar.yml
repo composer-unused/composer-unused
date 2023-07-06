@@ -42,6 +42,9 @@ jobs:
       - name: "Remove dev dependencies"
         run: "composer install --no-progress"
 
+      - name: "Fetch latest version tag"
+        run: "echo `git describe --abbrev=0 --tags` > .version"
+
       - name: "Validate configuration for humbug/box"
         run: "vendor/bin/box validate box.json"
 

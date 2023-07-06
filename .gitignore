@@ -1,4 +1,5 @@
-/vendor
-/build
-/data
+/vendor/
+/build/
+/data/
 /vendor-bin/*/vendor
+.version
