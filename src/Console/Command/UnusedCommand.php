@@ -147,6 +147,7 @@ final class UnusedCommand extends Command
         }
 
         $composerConfig = $this->configFactory->fromPath($composerJsonPath);
+
         $rootPackage = $this->packageFactory->fromConfig($composerConfig);
 
         try {
