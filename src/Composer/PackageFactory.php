@@ -29,6 +29,8 @@ final class PackageFactory
      */
     private function matchJsonLineWithLink(array $requires, string $jsonContent): array
     {
+        $jsonContent = stripslashes($jsonContent);
+
         $lines = explode(PHP_EOL, $jsonContent);
         $matches = [];
 
