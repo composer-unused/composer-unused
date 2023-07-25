@@ -45,6 +45,7 @@
         "symfony/dependency-injection": "^4.4.8 || ^5.4 || ^6.0",
         "symfony/property-access": "^4.4 || ^5.4 || ^6.0",
         "symfony/serializer": "^4.4 || ^5.4 || ^6.0",
+        "symfony/validator": "^6.3",
         "webmozart/assert": "^1.10",
         "webmozart/glob": "^4.4"
     },
