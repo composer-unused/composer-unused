@@ -18,7 +18,6 @@ class ConfigFactoryTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage("Validation errors: Missing 'name' property in composer.json");
 
-        (new ConfigFactory())
-            ->fromPath(__DIR__ . '/../../assets/TestProjects/MissingPackageName/composer.json');
+        (new ConfigFactory())->fromPath(__DIR__ . '/../../assets/TestProjects/MissingPackageName/composer.json');
     }
 }
