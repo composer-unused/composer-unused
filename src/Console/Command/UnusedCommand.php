@@ -21,6 +21,7 @@ use ComposerUnused\ComposerUnused\Dependency\DependencyInterface;
 use ComposerUnused\ComposerUnused\Dependency\RequiredDependency;
 use ComposerUnused\ComposerUnused\Filter\FilterCollection;
 use ComposerUnused\ComposerUnused\OutputFormatter\FormatterFactory;
+use InvalidArgumentException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -146,7 +147,12 @@ final class UnusedCommand extends Command
             return $ignoreExitCode ? 0 : 1;
         }
 
-        $composerConfig = $this->configFactory->fromPath($composerJsonPath);
+        try {
+            $composerConfig = $this->configFactory->fromPath($composerJsonPath);
+        } catch (InvalidArgumentException $e) {
+            $io->error($e->getMessage());
+            return $ignoreExitCode ? 0 : 1;
+        }
 
         $rootPackage = $this->packageFactory->fromConfig($composerConfig);
 
