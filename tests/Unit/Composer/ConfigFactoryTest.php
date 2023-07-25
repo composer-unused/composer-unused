@@ -19,6 +19,6 @@ class ConfigFactoryTest extends TestCase
         $this->expectExceptionMessage("Validation errors: Missing 'name' property in composer.json");
 
         (new ConfigFactory())
-            ->fromPath(__DIR__ . '/../../assets/Config/no_name_package_composer.json');
+            ->fromPath(__DIR__ . '/../../assets/TestProjects/MissingPackageName/composer.json');
     }
 }

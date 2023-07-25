@@ -451,4 +451,20 @@ TEXT,
 
         self::assertSame(1, $exitCode);
     }
+
+    public function itDisplayErrorMessageWhenConfigValidationNotPassed(): void
+    {
+        $commandTester = new CommandTester(self::$container->get(UnusedCommand::class));
+
+        $exitCode = $commandTester->execute([
+            'composer-json' => __DIR__ . '/../assets/TestProjects/MissingPackageName/composer.json'
+        ]);
+
+        self::assertStringContainsString(
+            "Validation errors: Missing 'name' property in composer.json",
+            $commandTester->getDisplay()
+        );
+
+        self::assertSame(1, $exitCode);
+    }
 }
