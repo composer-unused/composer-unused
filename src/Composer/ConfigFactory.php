@@ -18,7 +18,7 @@ final class ConfigFactory
 {
     private SerializerInterface $serializer;
 
-    public ValidatorInterface $validator;
+    private ValidatorInterface $validator;
 
     public function __construct()
     {
