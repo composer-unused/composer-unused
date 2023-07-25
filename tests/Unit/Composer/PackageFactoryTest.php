@@ -11,6 +11,8 @@ use ReflectionClass;
 
 final class PackageFactoryTest extends TestCase
 {
+    private PackageFactory $packageFactory;
+
     protected function setUp(): void
     {
         $this->packageFactory = new PackageFactory();
