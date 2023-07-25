@@ -10,9 +10,6 @@ use PHPUnit\Framework\TestCase;
 
 class ConfigFactoryTest extends TestCase
 {
-    /**
-     * @test
-     */
     public function itValidateNameFromRootConfigPackage(): void
     {
         $this->expectException(InvalidArgumentException::class);
