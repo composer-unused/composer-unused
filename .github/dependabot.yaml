@@ -20,6 +20,10 @@ updates:
     schedule:
       interval: "weekly"
     versioning-strategy: "increase"
+    groups:
+      dependencies:
+        patterns:
+          - "*"
 
   - commit-message:
       include: "scope"
@@ -31,3 +35,7 @@ updates:
     package-ecosystem: "github-actions"
     schedule:
       interval: "weekly"
+    groups:
+      dependencies:
+        patterns:
+          - "*"
