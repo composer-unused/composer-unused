@@ -41,7 +41,7 @@ jobs:
           php-version: "${{ matrix.php-version }}"
 
       - name: "Remove dev dependencies"
-        run: "composer install --no-progress"
+        run: "composer update --no-progress"
 
       - name: "Fetch latest version tag"
         run: "echo `git describe --abbrev=0 --tags` > .version"
