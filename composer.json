@@ -31,7 +31,7 @@
         }
     ],
     "require": {
-        "php": "^7.4 || ^8.0",
+        "php": "^8.1",
         "ext-json": "*",
         "composer-unused/contracts": "^0.3",
         "composer-unused/symbol-parser": "^0.2.2",

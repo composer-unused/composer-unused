@@ -22,7 +22,7 @@ jobs:
     strategy:
       matrix:
         php-version:
-          - "7.4"
+          - "8.1"
 
     env:
       COMPOSER_UNUSED_PHAR: "build/composer-unused.phar"
