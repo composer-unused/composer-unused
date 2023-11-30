@@ -27,7 +27,7 @@ jobs:
           extensions: ds
 
       - name: Install dependencies
-        run: composer install --no-progress --prefer-dist --optimize-autoloader
+        run: composer update --no-progress --prefer-dist --optimize-autoloader
 
       - name: Check codestyle
         run: vendor/bin/phpcs -s
@@ -52,7 +52,7 @@ jobs:
           extensions: ds
 
       - name: Install dependencies
-        run: composer install --no-progress --prefer-dist --optimize-autoloader
+        run: composer update --no-progress --prefer-dist --optimize-autoloader
 
       - name: Analyze code with static-analysis
         run: vendor/bin/phpstan --no-progress
@@ -64,7 +64,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ "7.4", "8.0", "8.1", 8.2 ]
+        php: [ "7.4", "8.0", "8.1", "8.2" ]
         os: [ "ubuntu-latest" ]
         experimental: [ false ]
         include:
@@ -112,7 +112,7 @@ jobs:
           extensions: ds
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest
+        run: composer update --prefer-dist --no-progress --no-suggest
 
       - name: Check unused dependencies
         run: bin/composer-unused --excludeDir=data
