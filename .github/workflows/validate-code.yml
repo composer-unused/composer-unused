@@ -64,12 +64,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ "7.4", "8.0", "8.1", "8.2" ]
+        php: [ "7.4", "8.0", "8.1", "8.2", "8.3" ]
         os: [ "ubuntu-latest" ]
         experimental: [ false ]
         include:
           - php: "7.4"
             composer-options: "--prefer-lowest"
+            os: "ubuntu-latest"
+            experimental: false
+          - php: "8.3"
+            composer-options: "--ignore-platform-req=php+"
             os: "ubuntu-latest"
             experimental: false
 
@@ -97,9 +101,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ "7.4", "8.0", "8.1", "8.2" ]
+        php: [ "7.4", "8.0", "8.1", "8.2", "8.3" ]
         os: [ "ubuntu-latest" ]
         experimental: [ false ]
+        include:
+          - php: "8.3"
+            composer-options: "--ignore-platform-req=php+"
+            os: "ubuntu-latest"
+            experimental: false
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -112,7 +122,7 @@ jobs:
           extensions: ds
 
       - name: Install dependencies
-        run: composer update --prefer-dist --no-progress --no-suggest
+        run: composer update --prefer-dist --no-progress --no-suggest ${{ matrix.composer-options }}
 
       - name: Check unused dependencies
         run: bin/composer-unused --excludeDir=data
