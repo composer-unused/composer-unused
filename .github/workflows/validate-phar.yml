@@ -26,6 +26,7 @@ jobs:
 
     env:
       COMPOSER_UNUSED_PHAR: "build/composer-unused.phar"
+      COMPOSER_UNUSED_PHAR_SIGNATURE: "build/composer-unused.phar.asc"
 
     steps:
       - name: "Checkout"
@@ -54,6 +55,22 @@ jobs:
 
       - name: "Show info about composer-unused.phar with humbug/box"
         run: "vendor/bin/box info ${{ env.COMPOSER_UNUSED_PHAR }}"
+
+      - name: "Import GPG key"
+        id: "import_gpg"
+        uses: "crazy-max/ghaction-import-gpg@v6"
+        with:
+          gpg_private_key: "${{ secrets.GPG_PRIVATE_KEY }}"
+          passphrase: "${{ secrets.GPG_PASSPHRASE }}"
+
+      - name: "Sign composer-unused.phar"
+        run: "gpg --default-key ${{ steps.import_gpg.outputs.keyid }} --sign ${{ env.COMPOSER_UNUSED_PHAR }}"
+
+      - name: "Detach signature"
+        run: "gpg --default-key ${{ steps.import_gpg.outputs.keyid }} --output ${{ env.COMPOSER_UNUSED_PHAR_SIGNATURE }} --detach-sig ${{ env.COMPOSER_UNUSED_PHAR }}"
+
+      - name: "Verify signature"
+        run: "gpg --verify ${{ env.COMPOSER_UNUSED_PHAR_SIGNATURE }} ${{ env.COMPOSER_UNUSED_PHAR }}"
 
       - name: "Validate composer-unused.phar against code"
         run: "php ${{ env.COMPOSER_UNUSED_PHAR }} --excludeDir=data"
