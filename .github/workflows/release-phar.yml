@@ -20,7 +20,7 @@ jobs:
     strategy:
       matrix:
         php-version:
-          - "8.1"
+          - "8.2"
 
     env:
       COMPOSER_UNUSED_PHAR: "build/composer-unused.phar"
@@ -49,7 +49,7 @@ jobs:
         run: "vendor/bin/box validate box.json"
 
       - name: "Compile composer-unused.phar with humbug/box"
-        run: "vendor/bin/box compile --config=box.json --no-parallel"
+        run: "vendor/bin/box compile --config=box.json"
 
       - name: "Show info about composer-unused.phar with humbug/box"
         run: "vendor/bin/box info ${{ env.COMPOSER_UNUSED_PHAR }}"

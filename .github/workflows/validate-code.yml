@@ -14,7 +14,7 @@ jobs:
       fail-fast: true
       matrix:
         os: [ "ubuntu-latest" ]
-        php: [ "8.1" ]
+        php: [ "8.2" ]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -38,7 +38,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [ "8.1" ]
+        php: [ "8.2" ]
         os: [ "ubuntu-latest" ]
     steps:
       - name: Checkout
@@ -64,11 +64,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ "8.1", "8.2", "8.3" ]
+        php: [ "8.2", "8.3" ]
         os: [ "ubuntu-latest" ]
         experimental: [ false ]
         include:
-          - php: "8.1"
+          - php: "8.2"
             composer-options: "--prefer-lowest"
             os: "ubuntu-latest"
             experimental: false
@@ -101,7 +101,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ "8.1", "8.2", "8.3" ]
+        php: [ "8.2", "8.3" ]
         os: [ "ubuntu-latest" ]
         experimental: [ false ]
         include:
@@ -127,3 +127,23 @@ jobs:
       - name: Check unused dependencies
         run: bin/composer-unused --excludeDir=data
 
+  # This is a "trick", a meta task which does not change, and we can use in
+  # the protected branch rules as opposed to the tests one above which
+  # may change regularly.
+  validate-code:
+    name: Code Requirement Check
+    runs-on: ubuntu-latest
+    needs:
+      - coding-standard
+      - static-analysis
+      - unit-tests
+      - composer-unused
+    if: always()
+    steps:
+      - name: Successful run
+        if: ${{ !(contains(needs.*.result, 'failure')) }}
+        run: exit 0
+
+      - name: Failing run
+        if: ${{ contains(needs.*.result, 'failure') }}
+        run: exit 1

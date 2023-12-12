@@ -1,5 +1,5 @@
 {
     "require-dev": {
-        "humbug/box": "^4.5.1"
+        "humbug/box": "^4.6"
     }
 }

@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use Isolated\Symfony\Component\Finder\Finder;
-
 return [
     'prefix' => '__ComposerUnused__',
 
