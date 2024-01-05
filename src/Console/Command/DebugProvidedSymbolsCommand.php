@@ -22,6 +22,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class DebugProvidedSymbolsCommand extends Command
 {
+    protected static $defaultName = 'debug:provided-symbols';
+
     private ConfigFactory $configFactory;
     private PackageResolver $packageResolver;
     private ProvidedSymbolLoaderBuilder $providedSymbolLoaderBuilder;
@@ -35,7 +37,7 @@ final class DebugProvidedSymbolsCommand extends Command
         LocalRepositoryFactory $localRepositoryFactory,
         ConfigurationProvider $configurationProvider
     ) {
-        parent::__construct('debug:provided-symbols');
+        parent::__construct(self::$defaultName);
         $this->configFactory = $configFactory;
         $this->packageResolver = $packageResolver;
         $this->providedSymbolLoaderBuilder = $providedSymbolLoaderBuilder;
