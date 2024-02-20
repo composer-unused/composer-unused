@@ -198,7 +198,7 @@ final class UnusedCommand extends Command
             return $ignoreExitCode ? 0 : 1;
         }
 
-        $baseDir = dirname($composerJsonPath);
+        $baseDir = $composerConfig->getBaseDir();
         $configuration = $this->configurationProvider->fromPath(
             $input->getOption('configuration') ?: $baseDir . DIRECTORY_SEPARATOR . 'composer-unused.php'
         );
@@ -317,7 +317,7 @@ final class UnusedCommand extends Command
 
         $exitCode = $outputFormatter->formatOutput(
             $rootPackage,
-            $composerJsonPath,
+            $composerConfig->getFileName(),
             $usedDependencyCollection,
             $unusedDependencyCollection,
             $ignoredDependencyCollection,
