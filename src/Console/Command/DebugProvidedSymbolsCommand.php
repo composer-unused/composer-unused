@@ -117,6 +117,9 @@ final class DebugProvidedSymbolsCommand extends Command
             return $symbol->getIdentifier();
         }, iterator_to_array($symbols));
 
+        $symbolNames = array_unique($symbolNames);
+        sort($symbolNames);
+
         foreach ($symbolNames as $symbolName) {
             $output->writeln($symbolName);
         }
