@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ComposerUnused\ComposerUnused\Test\Integration;
 
 use ComposerUnused\ComposerUnused\Console\Command\UnusedCommand;
+use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -463,6 +464,119 @@ TEXT,
         self::assertStringContainsString(
             "Validation errors: Missing 'name' property in composer.json",
             $commandTester->getDisplay()
+        );
+
+        self::assertSame(1, $exitCode);
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldWriteTextFormattedOutputToFile(): void
+    {
+        $commandTester = new CommandTester(self::$container->get(UnusedCommand::class));
+
+        vfsStream::setup();
+
+        $exitCode = $commandTester->execute([
+            'composer-json' => __DIR__ . '/../assets/TestProjects/IgnorePatternPackages/composer.json',
+            '--output-file' => vfsStream::url('root/test.log'),
+        ]);
+
+        self::assertTrue(file_exists(vfsStream::url('root/test.log')));
+
+        self::assertStringContainsString(
+            "Found 0 used, 1 unused, 2 ignored and 0 zombie packages",
+            (string) file_get_contents(vfsStream::url('root/test.log'))
+        );
+
+        self::assertSame(1, $exitCode);
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldDisplayAnErrorMessageOnNotWritableDirectory(): void
+    {
+        $commandTester = new CommandTester(self::$container->get(UnusedCommand::class));
+
+        vfsStream::setup();
+
+        $exitCode = $commandTester->execute([
+            'composer-json' => __DIR__ . '/../assets/TestProjects/IgnorePatternPackages/composer.json',
+            '--output-file' => vfsStream::url('root/invalid/test.log'),
+        ]);
+
+        self::assertFalse(file_exists(vfsStream::url('root/invalid/test.log')));
+
+        self::assertStringContainsString(
+            "The directory of the output file vfs://root/invalid/test.log is not writable.",
+            $commandTester->getDisplay()
+        );
+
+        self::assertSame(1, $exitCode);
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldWriteGitlabFormattedOutputToFile(): void
+    {
+        $expected = <<<'JSON'
+        [
+            {
+                "description": "dummy/test-package is unused",
+                "fingerprint": "0a07fbcd12300baf6461b9c0012a502d22faf7e6d0c51afc0700b2ba8b450eaf",
+                "location": {
+                    "lines": {
+                        "begin": 4
+                    },
+                    "path": "<path>/../assets/TestProjects/IgnorePatternPackages/composer.json"
+                },
+                "severity": "major"
+            },
+            {
+                "description": "psr/log-implementation was ignored",
+                "fingerprint": "c849d69b9a9b6cedba6c13d0635ebd1371cd66b82a5fcc55e04cfb4445254e12",
+                "location": {
+                    "lines": {
+                        "begin": 5
+                    },
+                    "path": "<path>/../assets/TestProjects/IgnorePatternPackages/composer.json"
+                },
+                "severity": "info"
+            },
+            {
+                "description": "dummy/ff-implementation was ignored",
+                "fingerprint": "df9c1b4be4940479665de3bbcc82ba7015b560cb168d753bc0b42751f48d317e",
+                "location": {
+                    "lines": {
+                        "begin": 6
+                    },
+                    "path": "<path>/../assets/TestProjects/IgnorePatternPackages/composer.json"
+                },
+                "severity": "info"
+            }
+        ]
+        JSON;
+
+        $commandTester = new CommandTester(self::$container->get(UnusedCommand::class));
+
+        vfsStream::setup();
+
+        $exitCode = $commandTester->execute([
+            'composer-json' => __DIR__ . '/../assets/TestProjects/IgnorePatternPackages/composer.json',
+            '--output-file' => vfsStream::url('root/test.json'),
+            '--output-format' => 'gitlab',
+        ]);
+
+        self::assertTrue(file_exists(vfsStream::url('root/test.json')));
+
+        $expected = str_replace('<path>', __DIR__, $expected);
+
+        self::assertJsonStringEqualsJsonString(
+            $expected,
+            (string) file_get_contents(vfsStream::url('root/test.json')),
         );
 
         self::assertSame(1, $exitCode);
