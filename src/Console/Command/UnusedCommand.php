@@ -20,16 +20,22 @@ use ComposerUnused\ComposerUnused\Console\Progress\DefaultProgressBarDecorator;
 use ComposerUnused\ComposerUnused\Dependency\DependencyInterface;
 use ComposerUnused\ComposerUnused\Dependency\RequiredDependency;
 use ComposerUnused\ComposerUnused\Filter\FilterCollection;
+use ComposerUnused\ComposerUnused\Output\FileOutput;
+use ComposerUnused\ComposerUnused\Output\OutputStyleOutput;
 use ComposerUnused\ComposerUnused\OutputFormatter\FormatterFactory;
 use InvalidArgumentException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+use function dirname;
+use function file_put_contents;
 use function is_array;
+use function is_writable;
 use function sprintf;
 
 use const DIRECTORY_SEPARATOR;
@@ -86,6 +92,13 @@ final class UnusedCommand extends Command
         );
 
         $this->addOption(
+            'output-file',
+            null,
+            InputOption::VALUE_REQUIRED,
+            'Write output to given file'
+        );
+
+        $this->addOption(
             'excludeDir',
             null,
             InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED,
@@ -132,6 +145,8 @@ final class UnusedCommand extends Command
         $ignoreExitCode = (bool)$input->getOption('ignore-exit-code');
         /** @var string|list<string> $excludedDirs */
         $excludedDirs = $input->getOption('excludeDir');
+        $outputFile = $input->getOption('output-file');
+
         if (!is_array($excludedDirs)) {
             $excludedDirs = [$excludedDirs];
         }
@@ -145,6 +160,24 @@ final class UnusedCommand extends Command
             );
 
             return $ignoreExitCode ? 0 : 1;
+        }
+
+        if ($outputFile) {
+            if (!is_writable(dirname($outputFile))) {
+                $io->error(
+                    sprintf(
+                        'The directory of the output file %s is not writable.',
+                        $outputFile
+                    )
+                );
+
+                return $ignoreExitCode ? 0 : 1;
+            }
+
+            $bufferedOutput = new BufferedOutput();
+            $formatOutput = new SymfonyStyle($input, $bufferedOutput);
+        } else {
+            $formatOutput = $io;
         }
 
         try {
@@ -289,8 +322,12 @@ final class UnusedCommand extends Command
             $unusedDependencyCollection,
             $ignoredDependencyCollection,
             $filterCollection,
-            $io
+            $formatOutput
         );
+
+        if ($outputFile) {
+            file_put_contents($outputFile, $bufferedOutput->fetch());
+        }
 
         return !$ignoreExitCode ? $exitCode : 0;
     }
