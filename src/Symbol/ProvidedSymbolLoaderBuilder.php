@@ -34,7 +34,7 @@ final class ProvidedSymbolLoaderBuilder
     public function build(): SymbolLoaderInterface
     {
         $symbolNameParser = new SymbolNameParser(
-            (new ParserFactory())->create(ParserFactory::ONLY_PHP7, $this->lexer),
+            (new ParserFactory())->createForNewestSupportedVersion(),
             new NameResolver(),
             new DefinedSymbolCollector()
         );
