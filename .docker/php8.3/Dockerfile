@@ -1,4 +1,4 @@
-FROM php:8.0-alpine
+FROM php:8.3-alpine
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/bin/
 RUN chmod +x /usr/bin/install-php-extensions
