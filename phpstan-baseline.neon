@@ -1,0 +1,11 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Property ComposerUnused\\\\ComposerUnused\\\\Symbol\\\\ConsumedSymbolLoaderBuilder\\:\\:\\$lexer is never read, only written\\.$#"
+			count: 1
+			path: src/Symbol/ConsumedSymbolLoaderBuilder.php
+
+		-
+			message: "#^Property ComposerUnused\\\\ComposerUnused\\\\Symbol\\\\ProvidedSymbolLoaderBuilder\\:\\:\\$lexer is never read, only written\\.$#"
+			count: 1
+			path: src/Symbol/ProvidedSymbolLoaderBuilder.php
