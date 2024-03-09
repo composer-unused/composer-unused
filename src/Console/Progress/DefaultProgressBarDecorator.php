@@ -16,7 +16,7 @@ class DefaultProgressBarDecorator implements ProgressBarInterface
     public function __construct(OutputInterface $io, int $max = 0, bool $noProgress = false)
     {
         $this->progressBar = new ProgressBar($io, $max);
-        $this->progressBar->setFormatDefinition(ProgressBar::FORMAT_VERBOSE, ' %current%/%max% [%bar%] %percent:3s%% %message%');
+        $this->progressBar->setFormatDefinition('verbose', ' %current%/%max% [%bar%] %percent:3s%% %message%');
         $this->noProgress = $noProgress;
     }
 
