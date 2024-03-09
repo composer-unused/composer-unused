@@ -12,6 +12,8 @@ use ComposerUnused\ComposerUnused\Dependency\RequiredDependency;
 use ComposerUnused\ComposerUnused\PackageResolver;
 use ComposerUnused\ComposerUnused\Symbol\ProvidedSymbolLoaderBuilder;
 
+use function sprintf;
+
 final class CollectRequiredDependenciesCommandHandler
 {
     private PackageResolver $packageResolver;
@@ -62,6 +64,7 @@ final class CollectRequiredDependenciesCommandHandler
                     )
                 )
             );
+            $progressBar->setMessage(sprintf('Processing %s package', $composerPackage->getName()));
             $progressBar->advance();
         }
 
