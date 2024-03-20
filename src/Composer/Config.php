@@ -23,6 +23,7 @@ final class Config
     private array $extra = [];
     private string $rawContent;
     private string $baseDir;
+    private string $fileName;
     private ?string $url = null;
 
     public function getName(): string
@@ -96,6 +97,16 @@ final class Config
     public function getBaseDir(): string
     {
         return $this->baseDir;
+    }
+
+    public function getFileName(): string
+    {
+        return $this->fileName;
+    }
+
+    public function setFileName(string $fileName): void
+    {
+        $this->fileName = $fileName;
     }
 
     public function setUrl(?string $url): void
