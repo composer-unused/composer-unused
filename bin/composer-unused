@@ -16,7 +16,7 @@ use Symfony\Component\Console\Input\ArgvInput;
             __DIR__ . '/../../vendor/autoload.php',
             __DIR__ . '/../../../autoload.php',
         ] as $file) {
-        if (file_exists($file)) {
+        if (!defined('UNUSED_COMPOSER_INSTALL') && file_exists($file)) {
             define('UNUSED_COMPOSER_INSTALL', $file);
 
             break;
@@ -63,5 +63,11 @@ use Symfony\Component\Console\Input\ArgvInput;
     $application->add($container->get(DebugProvidedSymbolsCommand::class));
     $application->setDefaultCommand('unused');
 
-    $application->run(new ArgvInput($argv));
+    $argvInput = new ArgvInput($argv);
+
+    if (!in_array($argvInput->getFirstArgument(), [DebugProvidedSymbolsCommand::getDefaultName(), DebugConsumedSymbolsCommand::getDefaultName()], true)) {
+        $application->setDefaultCommand('unused', true);
+    }
+
+    $application->run($argvInput);
 })($argv);
