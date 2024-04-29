@@ -33,7 +33,7 @@ jobs:
         uses: "actions/checkout@v4"
 
       - name: "Install PHP with extensions"
-        uses: "shivammathur/setup-php@2.30.0"
+        uses: "shivammathur/setup-php@2.30.4"
         with:
           coverage: "none"
           tools: "composer:v2"
