@@ -54,7 +54,7 @@
         "ext-ds": "*",
         "ext-zend-opcache": "*",
         "bamarni/composer-bin-plugin": "^1.8",
-        "codeception/verify": "^3.1",
+        "codeception/verify": "^3.2",
         "dg/bypass-finals": "^1.6",
         "ergebnis/composer-normalize": "^2.42",
         "jangregor/phpstan-prophecy": "^1.0",
