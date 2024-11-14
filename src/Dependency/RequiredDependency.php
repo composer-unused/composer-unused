@@ -21,7 +21,7 @@ final class RequiredDependency implements DependencyInterface
     private array $suggestBy = [];
     private string $stateReason = '';
 
-    public function __construct(PackageInterface $package, SymbolListInterface $symbols = null)
+    public function __construct(PackageInterface $package, ?SymbolListInterface $symbols = null)
     {
         $this->package = $package;
         $this->symbols = $symbols ?? new SymbolList();
