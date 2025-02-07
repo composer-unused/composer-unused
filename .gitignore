@@ -3,3 +3,4 @@
 /data/
 /vendor-bin/*/vendor
 .version
+.idea

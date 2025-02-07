@@ -40,7 +40,7 @@ jobs:
           php-version: "${{ matrix.php-version }}"
 
       - name: "Remove dev dependencies"
-        run: "composer update --no-progress"
+        run: "composer install --no-progress"
 
       - name: "Fetch latest version tag"
         run: "echo `git describe --abbrev=0 --tags` > .version"
@@ -102,6 +102,6 @@ jobs:
         uses: "peter-evans/repository-dispatch@v3"
         with:
           token: "${{ secrets.COMPOSER_UNUSED_PLUGIN }}"
-          repository: "composer-unused/composer-unused-plugin"
+          repository: "drenso/composer-unused-plugin"
           event-type: "update-plugin"
           client-payload: '{"tag": "${{ steps.get-release.outputs.tag_name }}"}'
