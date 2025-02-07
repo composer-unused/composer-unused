@@ -42,6 +42,7 @@ final class ConfigFactory
         $config = $this->serializer->deserialize($composerJson, Config::class, 'json');
         $config->setRaw($composerJson);
         $config->setBaseDir(dirname($jsonPath));
+        $config->setFileName(basename($jsonPath));
 
         $this->validate($config);
 
