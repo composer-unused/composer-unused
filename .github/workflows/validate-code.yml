@@ -1,5 +1,6 @@
 name: CI Pipeline
 on:
+  workflow_dispatch:
   push:
     branches:
       - "[0-9]+.[0-9]+.x"
