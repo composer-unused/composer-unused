@@ -1,22 +1,6 @@
 version: "3.7"
 
 services:
-  php7.4:
-    build: .docker/php7.4
-    container_name: composer-unused-7.4
-    volumes:
-      - .:/docker/composer-unused:rw
-      - ../contracts:/docker/contracts:rw
-      - ../symbol-parser:/docker/symbol-parser:rw
-    tty: true
-
-  php8.0:
-    build: .docker/php8.0
-    container_name: composer-unused-8.0
-    volumes:
-      - .:/docker/composer-unused:rw
-    tty: true
-
   php8.1:
     build: .docker/php8.1
     container_name: composer-unused-8.1
@@ -27,6 +11,20 @@ services:
   php8.2:
     build: .docker/php8.2
     container_name: composer-unused-8.2
+    volumes:
+      - .:/docker/composer-unused:rw
+    tty: true
+
+  php8.3:
+    build: .docker/php8.3
+    container_name: composer-unused-8.3
+    volumes:
+      - .:/docker/composer-unused:rw
+    tty: true
+
+  php8.4:
+    build: .docker/php8.4
+    container_name: composer-unused-8.4
     volumes:
       - .:/docker/composer-unused:rw
     tty: true

@@ -89,19 +89,12 @@ return static function (ContainerConfigurator $configurator) {
         ->set(ConstExprParser::class, ConstExprParser::class)
         ->set(Lexer::class, Lexer::class);
 
-    [$phpParserMajorVersion, ] = explode('.', Composer\InstalledVersions::getVersion('nikic/php-parser'));
 
-    if ($phpParserMajorVersion == '5') {
-        $services->set(Emulative::class);
-    } else {
+    $lexerVersion = Emulative::PHP_8_2;
+
+    if (PHP_VERSION_ID < 80200) {
         $lexerVersion = Emulative::PHP_8_1;
-
-        if (PHP_VERSION_ID < 80000) {
-            $lexerVersion = Emulative::PHP_7_4;
-        } elseif (PHP_VERSION_ID < 80100) {
-            $lexerVersion = Emulative::PHP_8_0;
-        }
-
-        $services->set(Emulative::class)->arg('$options', ['phpVersion' => $lexerVersion]);
     }
+
+    $services->set(Emulative::class)->arg('$options', ['phpVersion' => $lexerVersion]);
 };

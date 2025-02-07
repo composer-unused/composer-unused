@@ -14,7 +14,7 @@ jobs:
       fail-fast: true
       matrix:
         os: [ "ubuntu-latest" ]
-        php: [ "7.4" ]
+        php: [ "8.1" ]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -38,7 +38,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [ "7.4" ]
+        php: [ "8.1" ]
         os: [ "ubuntu-latest" ]
     steps:
       - name: Checkout
@@ -64,15 +64,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ "7.4", "8.0", "8.1", "8.2", "8.3" ]
+        php: [ "8.1", "8.2", "8.3", "8.4" ]
         os: [ "ubuntu-latest" ]
         experimental: [ false ]
         include:
-          - php: "7.4"
+          - php: "8.1"
             composer-options: "--prefer-lowest"
             os: "ubuntu-latest"
             experimental: false
-          - php: "8.3"
+          - php: "8.4"
             composer-options: "--ignore-platform-req=php+"
             os: "ubuntu-latest"
             experimental: false
@@ -101,11 +101,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ "7.4", "8.0", "8.1", "8.2", "8.3" ]
+        php: [ "8.1", "8.2", "8.3", "8.4" ]
         os: [ "ubuntu-latest" ]
         experimental: [ false ]
         include:
-          - php: "8.3"
+          - php: "8.4"
             composer-options: "--ignore-platform-req=php+"
             os: "ubuntu-latest"
             experimental: false
