@@ -531,7 +531,7 @@ TEXT,
                     "lines": {
                         "begin": 4
                     },
-                    "path": "<path>/../assets/TestProjects/IgnorePatternPackages/composer.json"
+                    "path": "composer.json"
                 },
                 "severity": "major"
             },
@@ -542,7 +542,7 @@ TEXT,
                     "lines": {
                         "begin": 5
                     },
-                    "path": "<path>/../assets/TestProjects/IgnorePatternPackages/composer.json"
+                    "path": "composer.json"
                 },
                 "severity": "info"
             },
@@ -553,7 +553,7 @@ TEXT,
                     "lines": {
                         "begin": 6
                     },
-                    "path": "<path>/../assets/TestProjects/IgnorePatternPackages/composer.json"
+                    "path": "composer.json"
                 },
                 "severity": "info"
             }
