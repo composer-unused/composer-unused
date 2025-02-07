@@ -7,8 +7,5 @@
         "config/polyfill_symfony_di.php",
         "config/services.php",
         ".version"
-    ],
-    "compactors": [
-        "KevinGH\\Box\\Compactor\\PhpScoper"
     ]
 }
