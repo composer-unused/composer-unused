@@ -86,15 +86,7 @@ return static function (ContainerConfigurator $configurator) {
     $services->set(CiDetectorInterface::class, CiDetector::class);
 
     $services
-        ->set(ConstExprParser::class, ConstExprParser::class)
-        ->set(Lexer::class, Lexer::class);
-
-
-    $lexerVersion = Emulative::PHP_8_2;
-
-    if (PHP_VERSION_ID < 80200) {
-        $lexerVersion = Emulative::PHP_8_1;
-    }
-
-    $services->set(Emulative::class)->arg('$options', ['phpVersion' => $lexerVersion]);
+        ->set(ConstExprParser::class)
+        ->set(Lexer::class)
+        ->set(Emulative::class);
 };
