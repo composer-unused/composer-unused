@@ -58,7 +58,7 @@
         "dg/bypass-finals": "^1.6",
         "ergebnis/composer-normalize": "^2.42",
         "jangregor/phpstan-prophecy": "^1.0",
-        "mikey179/vfsstream": "^1.6",
+        "mikey179/vfsstream": "^1.6.10",
         "php-ds/php-ds": "^1.5",
         "phpspec/prophecy-phpunit": "^2.2.0",
         "phpstan/extension-installer": "^1.3",
