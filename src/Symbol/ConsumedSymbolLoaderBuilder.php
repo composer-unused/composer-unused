@@ -20,16 +20,14 @@ use SplFileInfo;
 final class ConsumedSymbolLoaderBuilder
 {
     private SymbolCollectorInterface $consumedSymbolCollector;
-    private Emulative $lexer;
     /** @var array<SplFileInfo> */
     private array $additionalFiles = [];
     /** @var list<string> */
     private array $excludedDirs;
 
-    public function __construct(SymbolCollectorInterface $consumedSymbolCollector, Emulative $lexer)
+    public function __construct(SymbolCollectorInterface $consumedSymbolCollector)
     {
         $this->consumedSymbolCollector = $consumedSymbolCollector;
-        $this->lexer = $lexer;
     }
 
     public function build(): SymbolLoaderInterface

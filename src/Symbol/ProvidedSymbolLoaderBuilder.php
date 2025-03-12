@@ -15,21 +15,14 @@ use ComposerUnused\SymbolParser\Symbol\Loader\FileSymbolLoader;
 use ComposerUnused\SymbolParser\Symbol\Loader\PsrSymbolLoader;
 use ComposerUnused\SymbolParser\Symbol\Loader\SymbolLoaderInterface;
 use ComposerUnused\SymbolParser\Symbol\Provider\FileSymbolProvider;
-use PhpParser\Lexer\Emulative;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\ParserFactory;
 use SplFileInfo;
 
 final class ProvidedSymbolLoaderBuilder
 {
-    private Emulative $lexer;
     /** @var array<SplFileInfo> */
     private array $additionalFiles = [];
-
-    public function __construct(Emulative $lexer)
-    {
-        $this->lexer = $lexer;
-    }
 
     public function build(): SymbolLoaderInterface
     {
