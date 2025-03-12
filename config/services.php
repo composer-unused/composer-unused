@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Composer\InstalledVersions;
 use ComposerUnused\ComposerUnused\Configuration\ConfigurationProvider;
 use ComposerUnused\ComposerUnused\Console\Command\DebugConsumedSymbolsCommand;
 use ComposerUnused\ComposerUnused\Console\Command\DebugProvidedSymbolsCommand;
@@ -24,6 +25,7 @@ use OndraM\CiDetector\CiDetector;
 use OndraM\CiDetector\CiDetectorInterface;
 use PhpParser\Lexer\Emulative;
 use PHPStan\PhpDocParser\Lexer\Lexer;
+use PHPStan\PhpDocParser\ParserConfig;
 use PHPStan\PhpDocParser\Parser\ConstExprParser;
 use Psr\Log\NullLogger;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -87,6 +89,9 @@ return static function (ContainerConfigurator $configurator) {
 
     $services
         ->set(ConstExprParser::class)
-        ->set(Lexer::class)
-        ->set(Emulative::class);
+        ->set(Lexer::class);
+
+    if (substr(InstalledVersions::getVersion('phpstan/phpdoc-parser'), 0, 1) === '2') {
+        $services->set(ParserConfig::class)->arg('$usedAttributes', []);
+    }
 };
