@@ -84,4 +84,9 @@ return static function (ContainerConfigurator $configurator) {
         ]);
 
     $services->set(CiDetectorInterface::class, CiDetector::class);
+
+    $services
+        ->set(ConstExprParser::class)
+        ->set(Lexer::class)
+        ->set(Emulative::class);
 };
