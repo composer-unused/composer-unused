@@ -44,6 +44,8 @@ final class UnusedCommand extends Command
 {
     public const VERSION = '0.8.7';
 
+    protected static $defaultName = 'unused';
+
     private CollectConsumedSymbolsCommandHandler $collectConsumedSymbolsCommandHandler;
     private CollectRequiredDependenciesCommandHandler $collectRequiredDependenciesCommandHandler;
     private ConfigFactory $configFactory;
@@ -61,7 +63,7 @@ final class UnusedCommand extends Command
         PackageFactory $packageFactory,
         ConfigurationProvider $configurationProvider
     ) {
-        parent::__construct('unused');
+        parent::__construct(self::$defaultName);
         $this->configFactory = $configFactory;
         $this->collectConsumedSymbolsCommandHandler = $collectConsumedSymbolsCommandHandler;
         $this->collectRequiredDependenciesCommandHandler = $collectRequiredDependenciesCommandHandler;
