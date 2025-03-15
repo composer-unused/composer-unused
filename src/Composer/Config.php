@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace ComposerUnused\ComposerUnused\Composer;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
-
 final class Config
 {
     /** @var array<string, mixed> */
     protected array $config = [];
 
-    protected string $name;
+    protected string $name = '__root__';
     /** @var array<string, mixed> */
     private array $require = [];
     /** @var array<string, mixed> */
@@ -112,13 +109,5 @@ final class Config
     public function setUrl(?string $url): void
     {
         $this->url = $url;
-    }
-
-    public static function loadValidatorMetadata(ClassMetadata $metadata): void
-    {
-        $metadata->addPropertyConstraint('name', new Assert\NotBlank(
-            [],
-            "Missing 'name' property in composer.json"
-        ));
     }
 }
