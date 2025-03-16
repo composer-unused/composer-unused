@@ -1,0 +1,12 @@
+{
+  "name": "foo/bar",
+  "require": {
+    "php": ">=8.0",
+    "ext-memcached": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "OnlyLanguageRequirement\\": "src/"
+    }
+  }
+}
