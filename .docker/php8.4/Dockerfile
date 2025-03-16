@@ -2,7 +2,7 @@ FROM php:8.4-alpine
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/bin/
 RUN chmod +x /usr/bin/install-php-extensions
-RUN install-php-extensions ds xdebug opcache
+RUN install-php-extensions ds xdebug opcache http ds
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 ENV COMPOSER_ALLOW_SUPERUSER 1
