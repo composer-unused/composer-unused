@@ -1,5 +1,3 @@
-version: "3.7"
-
 services:
   php8.1:
     build: .docker/php8.1
