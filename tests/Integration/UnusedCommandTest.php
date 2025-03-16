@@ -584,7 +584,7 @@ TEXT,
 
     /**
      * @test
-     * @requires extension ds
+     * @requires extension zip
      */
     public function itShouldNotReportExtZipAsUnused(): void
     {
@@ -600,12 +600,28 @@ TEXT,
 
     /**
      * @test
-     * @requires extension ds
+     * @requires extension http
      */
     public function itShouldNotReportExtHttpAsUnused(): void
     {
         $commandTester = new CommandTester(self::$container->get(UnusedCommand::class));
         $exitCode = $commandTester->execute(['composer-json' => __DIR__ . '/../assets/TestProjects/ExtHttpRequirement/composer.json']);
+
+        self::assertSame(0, $exitCode);
+        self::assertStringContainsString(
+            'Found 2 used, 0 unused, 0 ignored and 0 zombie packages',
+            $commandTester->getDisplay()
+        );
+    }
+
+    /**
+     * @test
+     * @requires extension memcached
+     */
+    public function itShouldNotReportExtMemcachedAsUnused(): void
+    {
+        $commandTester = new CommandTester(self::$container->get(UnusedCommand::class));
+        $exitCode = $commandTester->execute(['composer-json' => __DIR__ . '/../assets/TestProjects/ExtMemcachedRequirement/composer.json']);
 
         self::assertSame(0, $exitCode);
         self::assertStringContainsString(

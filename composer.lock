@@ -54,16 +54,16 @@
         },
         {
             "name": "composer-unused/symbol-parser",
-            "version": "0.2.6",
+            "version": "0.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer-unused/symbol-parser.git",
-                "reference": "de4296816dc023d1b932d5ea62536aecc1c51d85"
+                "reference": "66dda4bef0a49d928d34744674f204a2530e4500"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer-unused/symbol-parser/zipball/de4296816dc023d1b932d5ea62536aecc1c51d85",
-                "reference": "de4296816dc023d1b932d5ea62536aecc1c51d85",
+                "url": "https://api.github.com/repos/composer-unused/symbol-parser/zipball/66dda4bef0a49d928d34744674f204a2530e4500",
+                "reference": "66dda4bef0a49d928d34744674f204a2530e4500",
                 "shasum": ""
             },
             "require": {
@@ -121,7 +121,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2025-03-15T10:27:03+00:00"
+            "time": "2025-03-16T12:14:35+00:00"
         },
         {
             "name": "nikic/php-parser",
