@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0de3864111ead72ff1a54595961da898",
+    "content-hash": "1be3be3f05d0711fbd1cfa42459eef41",
     "packages": [
         {
             "name": "composer-unused/contracts",
@@ -54,21 +54,21 @@
         },
         {
             "name": "composer-unused/symbol-parser",
-            "version": "0.2.7",
+            "version": "0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer-unused/symbol-parser.git",
-                "reference": "66dda4bef0a49d928d34744674f204a2530e4500"
+                "reference": "7c4d9d44abd0315146c3476d6e4d57ef7e0bfcd5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer-unused/symbol-parser/zipball/66dda4bef0a49d928d34744674f204a2530e4500",
-                "reference": "66dda4bef0a49d928d34744674f204a2530e4500",
+                "url": "https://api.github.com/repos/composer-unused/symbol-parser/zipball/7c4d9d44abd0315146c3476d6e4d57ef7e0bfcd5",
+                "reference": "7c4d9d44abd0315146c3476d6e4d57ef7e0bfcd5",
                 "shasum": ""
             },
             "require": {
                 "composer-unused/contracts": "^0.3",
-                "nikic/php-parser": "^4.18 || ^5.0",
+                "nikic/php-parser": "^5.0",
                 "php": "^7.4 || ^8.0",
                 "phpstan/phpdoc-parser": "^1.25 || ^2",
                 "psr/container": "^1.0 || ^2.0",
@@ -121,7 +121,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2025-03-16T12:14:35+00:00"
+            "time": "2025-03-17T14:39:15+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -4016,12 +4016,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "9e474e1c4987ea63445e2eaefed17e4a87acf2df"
+                "reference": "1fd2478f5f196be425357f9797048c94ec704135"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/9e474e1c4987ea63445e2eaefed17e4a87acf2df",
-                "reference": "9e474e1c4987ea63445e2eaefed17e4a87acf2df",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/1fd2478f5f196be425357f9797048c94ec704135",
+                "reference": "1fd2478f5f196be425357f9797048c94ec704135",
                 "shasum": ""
             },
             "conflict": {
@@ -4250,7 +4250,7 @@
                 "funadmin/funadmin": "<=5.0.2",
                 "gaoming13/wechat-php-sdk": "<=1.10.2",
                 "genix/cms": "<=1.1.11",
-                "getformwork/formwork": "<=2.0.0.0-beta3",
+                "getformwork/formwork": "<1.13.1|>=2.0.0.0-beta1,<2.0.0.0-beta4",
                 "getgrav/grav": "<1.7.46",
                 "getkirby/cms": "<=3.6.6.5|>=3.7,<=3.7.5.4|>=3.8,<=3.8.4.3|>=3.9,<=3.9.8.1|>=3.10,<=3.10.1|>=4,<=4.3",
                 "getkirby/kirby": "<=2.5.12",
@@ -4885,7 +4885,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-03-14T19:04:21+00:00"
+            "time": "2025-03-16T18:05:49+00:00"
         },
         {
             "name": "sebastian/cli-parser",
