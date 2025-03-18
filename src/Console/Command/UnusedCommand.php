@@ -13,15 +13,12 @@ use ComposerUnused\ComposerUnused\Composer\Exception\InvalidComposerVersionInsta
 use ComposerUnused\ComposerUnused\Composer\LocalPackageInstalledPath;
 use ComposerUnused\ComposerUnused\Composer\LocalRepositoryFactory;
 use ComposerUnused\ComposerUnused\Composer\PackageFactory;
-use ComposerUnused\ComposerUnused\Configuration\Configuration;
 use ComposerUnused\ComposerUnused\Configuration\ConfigurationProvider;
 use ComposerUnused\ComposerUnused\Configuration\NamedFilter;
 use ComposerUnused\ComposerUnused\Console\Progress\DefaultProgressBarDecorator;
 use ComposerUnused\ComposerUnused\Dependency\DependencyInterface;
 use ComposerUnused\ComposerUnused\Dependency\RequiredDependency;
 use ComposerUnused\ComposerUnused\Filter\FilterCollection;
-use ComposerUnused\ComposerUnused\Output\FileOutput;
-use ComposerUnused\ComposerUnused\Output\OutputStyleOutput;
 use ComposerUnused\ComposerUnused\OutputFormatter\FormatterFactory;
 use InvalidArgumentException;
 use Symfony\Component\Console\Command\Command;
@@ -42,8 +39,6 @@ use const DIRECTORY_SEPARATOR;
 
 final class UnusedCommand extends Command
 {
-    public const VERSION = '0.8.7';
-
     private CollectConsumedSymbolsCommandHandler $collectConsumedSymbolsCommandHandler;
     private CollectRequiredDependenciesCommandHandler $collectRequiredDependenciesCommandHandler;
     private ConfigFactory $configFactory;
