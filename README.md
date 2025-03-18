@@ -32,7 +32,7 @@ How do we check whether the provided *symbols* of a package are used in our code
 ### PHAR (PHP Archive) (recommended)
 Install via `phive` or grab the latest `composer-unused.phar` from the latest release:
 
-    phive install composer-unused
+    phive install composer-unused --trust-gpg-keys DB82D6DEA49B570163338FA33135AA4CB4F1AB0B
     curl -OL https://github.com/composer-unused/composer-unused/releases/latest/download/composer-unused.phar
 
 ### Local
