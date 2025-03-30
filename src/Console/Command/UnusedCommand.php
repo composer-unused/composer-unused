@@ -39,7 +39,7 @@ use const DIRECTORY_SEPARATOR;
 
 final class UnusedCommand extends Command
 {
-    protected static $defaultName = 'unused';
+    protected static string $defaultName = 'unused';
 
     private CollectConsumedSymbolsCommandHandler $collectConsumedSymbolsCommandHandler;
     private CollectRequiredDependenciesCommandHandler $collectRequiredDependenciesCommandHandler;

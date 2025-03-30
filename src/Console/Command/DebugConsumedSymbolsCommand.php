@@ -10,6 +10,7 @@ use ComposerUnused\ComposerUnused\Composer\ConfigFactory;
 use ComposerUnused\ComposerUnused\Composer\PackageFactory;
 use ComposerUnused\ComposerUnused\Configuration\ConfigurationProvider;
 use ComposerUnused\SymbolParser\Symbol\SymbolInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -18,7 +19,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class DebugConsumedSymbolsCommand extends Command
 {
-    protected static $defaultName = 'debug:consumed-symbols';
+    protected static string $defaultName = 'debug:consumed-symbols';
 
     private CollectConsumedSymbolsCommandHandler $collectConsumedSymbolsCommandHandler;
     private PackageFactory $packageFactory;

@@ -22,7 +22,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class DebugProvidedSymbolsCommand extends Command
 {
-    protected static $defaultName = 'debug:provided-symbols';
+    protected static string $defaultName = 'debug:provided-symbols';
 
     private ConfigFactory $configFactory;
     private PackageResolver $packageResolver;
