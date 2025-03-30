@@ -61,7 +61,6 @@ use Symfony\Component\Console\Input\ArgvInput;
     $application->add($container->get(UnusedCommand::class));
     $application->add($container->get(DebugConsumedSymbolsCommand::class));
     $application->add($container->get(DebugProvidedSymbolsCommand::class));
-    $application->setDefaultCommand('unused');
 
     $argvInput = new ArgvInput($argv);
 
