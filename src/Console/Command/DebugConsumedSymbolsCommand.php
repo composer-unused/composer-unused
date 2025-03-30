@@ -17,10 +17,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(name: 'debug:consumed-symbols')]
 final class DebugConsumedSymbolsCommand extends Command
 {
-    protected static string $defaultName = 'debug:consumed-symbols';
-
     private CollectConsumedSymbolsCommandHandler $collectConsumedSymbolsCommandHandler;
     private PackageFactory $packageFactory;
     private ConfigFactory $configFactory;
@@ -32,7 +31,7 @@ final class DebugConsumedSymbolsCommand extends Command
         PackageFactory $packageFactory,
         ConfigurationProvider $configurationProvider
     ) {
-        parent::__construct(self::$defaultName);
+        parent::__construct(self::getDefaultName());
         $this->collectConsumedSymbolsCommandHandler = $collectConsumedSymbolsCommandHandler;
         $this->packageFactory = $packageFactory;
         $this->configFactory = $configFactory;

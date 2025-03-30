@@ -13,6 +13,7 @@ use ComposerUnused\ComposerUnused\Configuration\ConfigurationProvider;
 use ComposerUnused\ComposerUnused\PackageResolver;
 use ComposerUnused\ComposerUnused\Symbol\ProvidedSymbolLoaderBuilder;
 use ComposerUnused\SymbolParser\Symbol\SymbolInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,10 +21,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(name: 'debug:provided-symbols')]
 final class DebugProvidedSymbolsCommand extends Command
 {
-    protected static string $defaultName = 'debug:provided-symbols';
-
     private ConfigFactory $configFactory;
     private PackageResolver $packageResolver;
     private ProvidedSymbolLoaderBuilder $providedSymbolLoaderBuilder;
@@ -37,7 +37,7 @@ final class DebugProvidedSymbolsCommand extends Command
         LocalRepositoryFactory $localRepositoryFactory,
         ConfigurationProvider $configurationProvider
     ) {
-        parent::__construct(self::$defaultName);
+        parent::__construct(self::getDefaultName());
         $this->configFactory = $configFactory;
         $this->packageResolver = $packageResolver;
         $this->providedSymbolLoaderBuilder = $providedSymbolLoaderBuilder;

@@ -21,6 +21,7 @@ use ComposerUnused\ComposerUnused\Dependency\RequiredDependency;
 use ComposerUnused\ComposerUnused\Filter\FilterCollection;
 use ComposerUnused\ComposerUnused\OutputFormatter\FormatterFactory;
 use InvalidArgumentException;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -37,10 +38,9 @@ use function sprintf;
 
 use const DIRECTORY_SEPARATOR;
 
+#[AsCommand(name: 'unused')]
 final class UnusedCommand extends Command
 {
-    protected static string $defaultName = 'unused';
-
     private CollectConsumedSymbolsCommandHandler $collectConsumedSymbolsCommandHandler;
     private CollectRequiredDependenciesCommandHandler $collectRequiredDependenciesCommandHandler;
     private ConfigFactory $configFactory;
@@ -58,7 +58,7 @@ final class UnusedCommand extends Command
         PackageFactory $packageFactory,
         ConfigurationProvider $configurationProvider
     ) {
-        parent::__construct(self::$defaultName);
+        parent::__construct(self::getDefaultName());
         $this->configFactory = $configFactory;
         $this->collectConsumedSymbolsCommandHandler = $collectConsumedSymbolsCommandHandler;
         $this->collectRequiredDependenciesCommandHandler = $collectRequiredDependenciesCommandHandler;
