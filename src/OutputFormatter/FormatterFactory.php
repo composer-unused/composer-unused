@@ -33,6 +33,8 @@ final class FormatterFactory
         }
 
         switch ($type) {
+            case 'compact':
+                return new CompactFormatter();
             case 'github':
                 return new GithubFormatter();
             case 'json':
