@@ -8,16 +8,16 @@ use ComposerUnused\ComposerUnused\Command\CollectConsumedSymbolsCommand;
 use ComposerUnused\ComposerUnused\Command\Handler\CollectConsumedSymbolsCommandHandler;
 use ComposerUnused\ComposerUnused\Composer\ConfigFactory;
 use ComposerUnused\ComposerUnused\Composer\PackageFactory;
-use ComposerUnused\ComposerUnused\Configuration\Configuration;
 use ComposerUnused\ComposerUnused\Configuration\ConfigurationProvider;
 use ComposerUnused\SymbolParser\Symbol\SymbolInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(name: 'debug:consumed-symbols')]
 final class DebugConsumedSymbolsCommand extends Command
 {
     private CollectConsumedSymbolsCommandHandler $collectConsumedSymbolsCommandHandler;
@@ -31,7 +31,7 @@ final class DebugConsumedSymbolsCommand extends Command
         PackageFactory $packageFactory,
         ConfigurationProvider $configurationProvider
     ) {
-        parent::__construct('debug:consumed-symbols');
+        parent::__construct(self::getDefaultName());
         $this->collectConsumedSymbolsCommandHandler = $collectConsumedSymbolsCommandHandler;
         $this->packageFactory = $packageFactory;
         $this->configFactory = $configFactory;
