@@ -57,6 +57,7 @@ jobs:
         run: "vendor/bin/box info ${{ env.COMPOSER_UNUSED_PHAR }}"
 
       - name: "Import GPG key"
+        if: github.event.pull_request.head.repo.full_name == github.repository
         id: "import_gpg"
         uses: "crazy-max/ghaction-import-gpg@v6"
         with:
@@ -64,12 +65,15 @@ jobs:
           passphrase: "${{ secrets.GPG_PASSPHRASE }}"
 
       - name: "Sign composer-unused.phar"
+        if: github.event.pull_request.head.repo.full_name == github.repository
         run: "gpg --default-key ${{ steps.import_gpg.outputs.keyid }} --sign ${{ env.COMPOSER_UNUSED_PHAR }}"
 
       - name: "Detach signature"
+        if: github.event.pull_request.head.repo.full_name == github.repository
         run: "gpg --default-key ${{ steps.import_gpg.outputs.keyid }} --output ${{ env.COMPOSER_UNUSED_PHAR_SIGNATURE }} --detach-sig ${{ env.COMPOSER_UNUSED_PHAR }}"
 
       - name: "Verify signature"
+        if: github.event.pull_request.head.repo.full_name == github.repository
         run: "gpg --verify ${{ env.COMPOSER_UNUSED_PHAR_SIGNATURE }} ${{ env.COMPOSER_UNUSED_PHAR }}"
 
       - name: "Validate composer-unused.phar against code"
