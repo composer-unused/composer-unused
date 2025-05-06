@@ -17,7 +17,7 @@ jobs:
   phar:
     name: "Validate Phar"
 
-    runs-on: "ubuntu-latest"
+    runs-on: "blacksmith-4vcpu-ubuntu-2204"
 
     strategy:
       matrix:
@@ -81,7 +81,7 @@ jobs:
 
   aggregate-validate-phar:
     name: Phar Requirement Check
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2204
     needs: [ phar ]
     if: always()
     steps:
