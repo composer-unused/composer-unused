@@ -55,6 +55,12 @@ Having `composer-unused` as a local dependency you can run it using the shipped 
 
     vendor/bin/composer-unused
 
+### XDebug Performance
+For optimal performance, `composer-unused` automatically disables XDebug when it's running to avoid memory overhead and potential compatibility issues. 
+
+If you need to debug `composer-unused` itself or run it with XDebug enabled, you can set the `COMPOSER_UNUSED_ALLOW_XDEBUG=1` environment variable:
+
+    COMPOSER_UNUSED_ALLOW_XDEBUG=1 php composer-unused.phar
 
 ### Exclude folders and packages
 Sometimes you don't want to scan a certain directory or ignore a Composer package while scanning.

@@ -36,6 +36,7 @@
         "composer-runtime-api": "^2.0",
         "composer-unused/contracts": "^0.3",
         "composer-unused/symbol-parser": "^0.3.1",
+        "composer/xdebug-handler": "^3.0",
         "nikic/php-parser": "^5.0",
         "ondram/ci-detector": "^4.1",
         "phpstan/phpdoc-parser": "^1.25 || ^2",

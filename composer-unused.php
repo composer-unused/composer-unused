@@ -13,6 +13,7 @@ return static function (Configuration $config): Configuration {
         // ->addPatternFilter(PatternFilter::fromString('/symfony\/.*/'))
         ->setAdditionalFilesFor('icanhazstring/composer-unused', [
             __FILE__,
+            'bin/composer-unused',
             ...Glob::glob(__DIR__ . '/config/*.php'),
         ]);
 

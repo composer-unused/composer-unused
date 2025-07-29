@@ -71,10 +71,30 @@ composer check            # Run all quality checks
 - Parallel processing with caching enabled
 - Use `composer cs-fix` to automatically fix most issues
 
+### Git Commit Standards
+- **ALWAYS use conventional commits** following the format: `type(scope): description`
+- **DO NOT include AI attribution** in commit messages (no "Generated with Claude Code" or "Co-Authored-By: Claude")
+- Keep commit messages concise and descriptive
+- Use these conventional commit types:
+  - `feat:` - New features
+  - `fix:` - Bug fixes
+  - `docs:` - Documentation changes
+  - `style:` - Code formatting changes
+  - `refactor:` - Code refactoring
+  - `test:` - Test additions or changes
+  - `chore:` - Maintenance tasks
+
+Conventional commits provide consistent history, enable automated changelog generation, and make it easier to understand the impact of changes. They also integrate well with semantic versioning and CI/CD workflows.
+
 ## Key Implementation Notes
 
 ### Symbol Parser Integration
 Uses `composer-unused/symbol-parser` for PHP code analysis and symbol extraction.
+
+### XDebug Compatibility
+- Automatically disables XDebug on startup using `composer/xdebug-handler` for optimal performance
+- Users can override with `COMPOSER_UNUSED_ALLOW_XDEBUG=1` environment variable
+- Prevents segmentation faults and performance issues with XDebug 3.4.3+
 
 ### Composer Version Support
 - Requires `composer-runtime-api: ^2.0`
