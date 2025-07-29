@@ -81,4 +81,9 @@ final class Configuration
     {
         return $this->dependenciesDir;
     }
+
+    public function applyConfigurationSet(ConfigurationSetInterface $configurationSet): self
+    {
+        return $configurationSet->apply($this);
+    }
 }

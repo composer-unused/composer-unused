@@ -6,6 +6,7 @@ namespace ComposerUnused\ComposerUnused\Test\Unit\Configuration;
 
 use ComposerUnused\ComposerUnused\Configuration\AdditionalFilesAlreadySetException;
 use ComposerUnused\ComposerUnused\Configuration\Configuration;
+use ComposerUnused\ComposerUnused\Configuration\ConfigurationSetInterface;
 use PHPUnit\Framework\TestCase;
 
 class ConfigurationTest extends TestCase
@@ -34,5 +35,23 @@ class ConfigurationTest extends TestCase
         self::expectException(AdditionalFilesAlreadySetException::class);
         self::expectExceptionMessage('You already added files for test/dependency. Did you want to add multiple files? Try adding these via multiple globs.');
         $config->setAdditionalFilesFor('test/dependency', ['file2.php']);
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldApplyConfigurationSet(): void
+    {
+        $config = new Configuration();
+
+        $configurationSet = $this->createMock(ConfigurationSetInterface::class);
+        $configurationSet->expects($this->once())
+            ->method('apply')
+            ->with($config)
+            ->willReturn($config);
+
+        $result = $config->applyConfigurationSet($configurationSet);
+
+        $this->assertSame($config, $result);
     }
 }
