@@ -90,6 +90,50 @@ $config->addPatternFilter(PatternFilter::fromString('/dependency\/name/'));
 
 > You can ignore multiple dependencies by a single organization using `PatternFilter` e.g. `/symfony\/.*/`
 
+#### Configuration Sets
+For common framework setups, you can use predefined configuration sets that automatically configure additional scan paths:
+
+```php
+use ComposerUnused\ComposerUnused\Configuration\ConfigurationSet\SymfonyConfigurationSet;
+
+$composerJson = json_decode(file_get_contents(__DIR__ . '/composer.json'), true);
+$rootPackageName = $composerJson['name'] ?? 'root';
+
+$config->applyConfigurationSet(new SymfonyConfigurationSet($rootPackageName));
+```
+
+**Available Configuration Sets:**
+- **SymfonyConfigurationSet**: Automatically scans `bin/`, `config/`, `public/`, `assets/`, and `migrations/` directories for Symfony projects
+
+See [examples/symfony-composer-unused.php](examples/symfony-composer-unused.php) for a complete example.
+
+#### Creating Custom Configuration Sets
+You can create your own configuration sets by implementing the `ConfigurationSetInterface`:
+
+```php
+use ComposerUnused\ComposerUnused\Configuration\Configuration;
+use ComposerUnused\ComposerUnused\Configuration\ConfigurationSetInterface;
+
+final class MyFrameworkConfigurationSet implements ConfigurationSetInterface
+{
+    public function apply(Configuration $configuration): Configuration
+    {
+        // Add your custom configuration logic here
+        return $configuration;
+    }
+
+    public function getName(): string
+    {
+        return 'my-framework';
+    }
+
+    public function getDescription(): string
+    {
+        return 'Custom configuration for My Framework';
+    }
+}
+```
+
 #### Additional files to be parsed
 Per default, `composer-unused` is using the `composer.json` autoload directive to determine where to look for files to parse.
 Sometimes dependencies don't have their composer.json correctly set up, or files get loaded in another way.
