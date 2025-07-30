@@ -2,9 +2,115 @@
 
 ## [Unreleased] - TBA
 ### Added
-* Add debug commands to see consumed and defined symbols by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/463
-* Add composer-json option to debug by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/464
-* Add hyperlink to default formatter by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/468
+### Fixed
+### Changed
+### Removed
+### Security
+### Deprecation
+
+## [0.9.4] - 2025-07-30
+### Added
+* ConfigurationSet system for framework-specific scanning by @dmitryuk in https://github.com/composer-unused/composer-unused/pull/691
+### Fixed
+* Automatically disable XDebug to prevent segmentation faults by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/692
+### Changed
+### Removed
+* Extra dev files from vendor by @dmitryuk in https://github.com/composer-unused/composer-unused/pull/690
+### Security
+### Deprecation
+
+## [0.9.3] - 2025-05-06
+### Added
+* Compact formatter by @gisostallenberg in https://github.com/composer-unused/composer-unused/pull/683
+* Set unused command as default when no other commands are specified by @MarcinGladkowski in https://github.com/composer-unused/composer-unused/pull/608
+### Fixed
+### Changed
+* Updated symbol-parser to resolve PHP 8.4 compatibility by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/678
+* Updated PHPStan dependencies by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/679
+* Limited PHAR signature check to main repository PRs by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/684
+### Removed
+### Security
+### Deprecation
+
+## [0.9.2] - 2025-03-16
+### Added
+* Allow `__root__` as default package name by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/671
+### Fixed
+* Added tests to cover extensions marked unused by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/673
+* Resolved issue with memcached marked unused by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/674
+### Changed
+* Combined action status by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/672
+### Removed
+* Dropped support for Symfony 5 by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/675
+### Security
+### Deprecation
+
+## [0.9.1] - 2025-03-15
+### Added
+* Support for phpstan/phpdoc-parser v2 by @WyriHaximus in https://github.com/composer-unused/composer-unused/pull/670
+### Fixed
+### Changed
+### Removed
+### Security
+### Deprecation
+
+## [0.9.0] - 2025-03-11
+### Added
+* "--output-file" option to write formatted result output directly by @temp in https://github.com/composer-unused/composer-unused/pull/629
+* Support for PHP-Parser v5 by @llaville in https://github.com/composer-unused/composer-unused/pull/628
+* Update to PHP 8.4 compatibility by @bobvandevijver in https://github.com/composer-unused/composer-unused/pull/668
+### Fixed
+### Changed
+* Dropped Symfony 4 support by @llaville in https://github.com/composer-unused/composer-unused/pull/634
+* Sort results of `debug:provided-symbols` command by @llaville in https://github.com/composer-unused/composer-unused/pull/626
+* Display package processing on right side of progress bar in verbose mode by @llaville in https://github.com/composer-unused/composer-unused/pull/632
+* Require composer-unused/symbol-parser v0.2.2 by @simPod in https://github.com/composer-unused/composer-unused/pull/605
+### Removed
+### Security
+### Deprecation
+
+## [0.8.11] - 2022-11-30
+### Added
+* Ability to automatically determine version by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/554
+* Symfony 7 support by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/590
+* Matrix check for PHP 8.3 by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/598
+* GPG key test for PHAR validation by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/599
+### Fixed
+* Dependabot configuration issues by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/553
+* "Undefined array key 'composer/composer'" by @VincentLanglet in https://github.com/composer-unused/composer-unused/pull/561
+* "`$name must not be accessed before initialization`" by @VincentLanglet in https://github.com/composer-unused/composer-unused/pull/562
+### Changed
+* Enhanced user experience for adding additional files by @MarcinGladkowski in https://github.com/composer-unused/composer-unused/pull/552
+### Removed
+### Security
+### Deprecation
+
+## [0.8.10] - 2022-07-06
+### Added
+### Fixed
+* Clear ProgressBar output to avoid log cluttering by @llaville in https://github.com/composer-unused/composer-unused/pull/542
+* Improved user experience when running with Composer v1 by @MarcinGladkowski in https://github.com/composer-unused/composer-unused/pull/539
+### Changed
+### Removed
+### Security
+### Deprecation
+
+## [0.8.9] - 2022-05-29
+### Added
+* Ability to define source/vendor directory outside composer.json by @MarcinGladkowski in https://github.com/composer-unused/composer-unused/pull/522
+### Fixed
+* PHP Fatal error when running projects with local composer packages by @MarcinGladkowski in https://github.com/composer-unused/composer-unused/pull/520
+### Changed
+### Removed
+### Security
+### Deprecation
+
+## [0.8.8] - 2022-05-12
+### Added
+* Debug commands to view consumed and defined symbols by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/463
+* Composer-json option for debugging by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/464
+* Hyperlink to default formatter by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/468
+* GitLab output formatter by @llaville in https://github.com/composer-unused/composer-unused/pull/475
 ### Fixed
 * Make composer-json an option, not argument by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/466
 * Remove root namespace filter to avoid subpackage filtering by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/465
@@ -15,7 +121,7 @@
 ### Security
 ### Deprecation
 
-## [0.8.7] - TBA
+## [0.8.7] - 2022-03-15
 ### Added
 ### Fixed
 * Use correct version in CLI by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/453
@@ -28,7 +134,7 @@
 ### Security
 ### Deprecation
 
-## [0.8.6] - TBA
+## [0.8.6] - 2022-03-10
 ### Added
 * Junit formatter by @reinfi in https://github.com/composer-unused/composer-unused/pull/440
 * Add "static analysis" tag by @icanhazstring in https://github.com/composer-unused/composer-unused/pull/447
@@ -40,7 +146,7 @@
 ### Security
 ### Deprecation
 
-## [0.8.5] - TBA
+## [0.8.5] - 2021-12-02
 ### Added
 * Readd progress bar by @MarcinGladkowski in https://github.com/composer-unused/composer-unused/pull/427
 ### Fixed
@@ -53,7 +159,7 @@
 ### Security
 ### Deprecation
 
-## [0.8.4] - TBA
+## [0.8.4] - 2021-10-13
 ### Added
 * Add JsonFormatter with test by @TomasVotruba in https://github.com/composer-unused/composer-unused/pull/398
 * Add testcase for readonly class (#369) by @pascalheidmann in https://github.com/composer-unused/composer-unused/pull/402
@@ -67,7 +173,7 @@
 ### Security
 ### Deprecation
 
-## [0.8.3] - TBA
+## [0.8.3] - 2021-09-30
 ### Added
 ### Fixed
 * Keep the PatternFilter in used state by @nicklog in https://github.com/composer-unused/composer-unused/pull/353
@@ -137,7 +243,7 @@
 ### Added
 - Added support for `psr/log` v2 and 3 [#200](https://github.com/composer-unused/composer-unused/pull/200) (thanks to [@simPod](https://github.com/simPod))
 
-## [0.7.6| - 2021-07-15
+## [0.7.6] - 2021-07-15
 ### Removed
 - Dropped support for composer v1
 
@@ -150,7 +256,7 @@
 - Fixed an issue where `ext-ds` classes where not recognized as used [#88](https://github.com/composer-unused/composer-unused/pull/88)
 - Fixed an issue where `extends` and `implements` of FQN was not markes as used [#90](https://github.com/composer-unused/composer-unused/pull/90)
 
-## [0.7.3] - 2020-05-19
+## [0.7.3] - 2020-05-21
 ### Added
 - Added workflow to verify integrity of build `phar` file
 - Added self unused dependency check using `bin/composer-unused`
