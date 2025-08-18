@@ -28,10 +28,10 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: "actions/checkout@v4"
+        uses: "actions/checkout@v5"
 
       - name: "Install PHP with extensions"
-        uses: "shivammathur/setup-php@2.34.1"
+        uses: "shivammathur/setup-php@2.35.3"
         with:
           coverage: "none"
           tools: "composer:v2"
