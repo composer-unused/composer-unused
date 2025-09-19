@@ -14,15 +14,10 @@ env:
   PHP_INI_VALUES: "memory_limit=-1, phar.readonly=0"
 
 jobs:
-  phar:
-    name: "Validate Phar"
+  build-phar:
+    name: "Build Phar"
 
     runs-on: "blacksmith-4vcpu-ubuntu-2204"
-
-    strategy:
-      matrix:
-        php-version:
-          - "8.4"
 
     env:
       COMPOSER_UNUSED_PHAR: "build/composer-unused.phar"
@@ -39,9 +34,9 @@ jobs:
           tools: "composer:v2"
           extensions: "${{ env.PHP_EXTENSIONS }}"
           ini-values: "${{ env.PHP_INI_VALUES }}"
-          php-version: "${{ matrix.php-version }}"
+          php-version: "8.1"
 
-      - name: "Remove dev dependencies"
+      - name: "Install dependencies"
         run: "composer install --no-progress"
 
       - name: "Fetch latest version tag"
@@ -51,9 +46,11 @@ jobs:
         run: "vendor/bin/box validate box.json"
 
       - name: "Compile composer-unused.phar with humbug/box"
-        run: "vendor/bin/box compile --config=box.json --no-parallel"
+        run: "php -d error_reporting='E_ALL & ~E_DEPRECATED' vendor/bin/box compile --config=box.json --no-parallel"
 
       - name: "Show info about composer-unused.phar with humbug/box"
+        if: success()
+        continue-on-error: true
         run: "vendor/bin/box info ${{ env.COMPOSER_UNUSED_PHAR }}"
 
       - name: "Import GPG key"
@@ -76,13 +73,52 @@ jobs:
         if: github.event.pull_request.head.repo.full_name == github.repository
         run: "gpg --verify ${{ env.COMPOSER_UNUSED_PHAR_SIGNATURE }} ${{ env.COMPOSER_UNUSED_PHAR }}"
 
+      - name: "Upload PHAR artifact"
+        if: success()
+        uses: "actions/upload-artifact@v4"
+        with:
+          name: "composer-unused-phar"
+          path: "${{ env.COMPOSER_UNUSED_PHAR }}"
+          retention-days: 1
+
+  validate-phar:
+    name: "Validate Phar (PHP ${{ matrix.php-version }})"
+    needs: build-phar
+    runs-on: "blacksmith-4vcpu-ubuntu-2204"
+
+    strategy:
+      matrix:
+        php-version: [ "8.1", "8.2", "8.3", "8.4" ]
+
+    env:
+      COMPOSER_UNUSED_PHAR: "composer-unused.phar"
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v4"
+
+      - name: "Install PHP with extensions"
+        uses: "shivammathur/setup-php@2.34.1"
+        with:
+          coverage: "none"
+          extensions: "${{ env.PHP_EXTENSIONS }}"
+          php-version: "${{ matrix.php-version }}"
+
+      - name: "Install dependencies"
+        run: "composer install --no-progress"
+
+      - name: "Download PHAR artifact"
+        uses: "actions/download-artifact@v4"
+        with:
+          name: "composer-unused-phar"
+
       - name: "Validate composer-unused.phar against code"
         run: "php ${{ env.COMPOSER_UNUSED_PHAR }} --excludeDir=data"
 
   aggregate-validate-phar:
     name: Phar Requirement Check
     runs-on: blacksmith-4vcpu-ubuntu-2204
-    needs: [ phar ]
+    needs: [ build-phar, validate-phar ]
     if: always()
     steps:
       - name: Check Overall Status

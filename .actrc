@@ -1,0 +1,16 @@
+# Act configuration file
+# Platform mappings for different runner types
+-P blacksmith-4vcpu-ubuntu-2204=catthehacker/ubuntu:act-latest
+-P ubuntu-latest=catthehacker/ubuntu:act-latest
+
+# Use large runner image for better compatibility
+--container-architecture linux/amd64
+
+# Reuse containers to speed up repeated runs
+--reuse
+
+# Enable artifact server for job dependencies
+--artifact-server-path /tmp/act-artifacts
+
+# Verbose output for debugging
+--verbose
