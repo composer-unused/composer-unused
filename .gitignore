@@ -4,3 +4,4 @@
 /vendor-bin/*/vendor
 .version
 .idea
+.secrets
