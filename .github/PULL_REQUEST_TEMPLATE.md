@@ -1,6 +1,5 @@
 ### All Submissions:
 
-* [ ] Share a reproducible environment here: https://composer-unused.dev/try
 * [ ] Have you followed the guidelines in our [Contributing document](https://github.com/composer-unused/composer-unused/blob/main/CONTRIBUTING.md)?
 * [ ] Have you checked to ensure there aren't other open [Pull Requests](https://github.com/icanhazstring/composer-unused/pulls) for the same update/change?
 
