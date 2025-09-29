@@ -8,7 +8,7 @@ use ComposerUnused\ComposerUnused\Configuration\Configuration;
 use ComposerUnused\ComposerUnused\Configuration\ConfigurationSetInterface;
 use Webmozart\Glob\Glob;
 
-final class SymfonyConfigurationSet implements ConfigurationSetInterface
+class SymfonyConfigurationSet implements ConfigurationSetInterface
 {
     private string $projectRoot;
     private string $rootPackageName;
@@ -63,19 +63,24 @@ final class SymfonyConfigurationSet implements ConfigurationSetInterface
         ];
 
         foreach ($symfonyDirs as $dir) {
-            $dirPath = $this->projectRoot . '/' . $dir;
-            if (is_dir($dirPath)) {
+            $dirPath = $this->resolvePath($this->projectRoot . '/' . $dir);
+            if ($dirPath !== false && is_dir($dirPath)) {
                 $phpFiles = Glob::glob($dirPath . '/**/*.php');
                 $allFiles = array_merge($allFiles, $phpFiles);
             }
         }
 
         // Add bin/console directly (doesn't have .php extension)
-        $consolePath = $this->projectRoot . '/bin/console';
-        if (file_exists($consolePath)) {
+        $consolePath = $this->resolvePath($this->projectRoot . '/bin/console');
+        if ($consolePath !== false && file_exists($consolePath)) {
             $allFiles[] = $consolePath;
         }
 
         return $allFiles;
+    }
+
+    protected function resolvePath(string $path): string|false
+    {
+        return realpath($path);
     }
 }
