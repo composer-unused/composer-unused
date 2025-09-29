@@ -8,6 +8,7 @@ use ComposerUnused\ComposerUnused\Configuration\Configuration;
 use ComposerUnused\ComposerUnused\Configuration\ConfigurationSet\SymfonyConfigurationSet;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class SymfonyConfigurationSetTest extends TestCase
@@ -41,7 +42,15 @@ final class SymfonyConfigurationSetTest extends TestCase
         ], $this->vfsRoot);
 
         $configuration = new Configuration();
-        $configurationSet = new SymfonyConfigurationSet('my/project', $this->vfsRoot->url());
+        /** @var SymfonyConfigurationSet&MockObject $configurationSet */
+        $configurationSet = $this->getMockBuilder(SymfonyConfigurationSet::class)
+            ->setConstructorArgs(['my/project', $this->vfsRoot->url()])
+            ->onlyMethods(['resolvePath'])
+            ->getMock();
+        $configurationSet->method('resolvePath')
+            ->willReturnCallback(static function (string $path) {
+                return $path;
+            });
 
         $result = $configurationSet->apply($configuration);
 
