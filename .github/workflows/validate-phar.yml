@@ -34,7 +34,7 @@ jobs:
           tools: "composer:v2"
           extensions: "${{ env.PHP_EXTENSIONS }}"
           ini-values: "${{ env.PHP_INI_VALUES }}"
-          php-version: "8.1"
+          php-version: "8.4"
 
       - name: "Install dependencies"
         run: "composer install --no-progress"
