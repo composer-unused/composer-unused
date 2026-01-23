@@ -9,17 +9,17 @@ Thank you for considering contributing to this package!
 1. Fork the repository
 2. `git clone yourname/composer-unused`
 3. Download the [ext-ds extension](https://pecl.php.net/package/ds/) and make sure it is enabled in php.ini using the [installation instructions](https://github.com/php-ds/ext-ds)
-    
+
    - Windows users - Place the DLL file in the php/ext folder in your *ampp directory
 
 4. Download the [ext-zend-opcache extension](https://pecl.php.net/package/ZendOpcache) tgz file and compile it and make sure it is enabled in php.ini using the [installation instructions](https://github.com/zendtech/ZendOptimizerPlus)
-    
+
     - Windows users
 
-        1. Download a [pre-compiled DLL file](https://windows.php.net/downloads/pecl/releases/opcache/) 
+        1. Download a [pre-compiled DLL file](https://windows.php.net/downloads/pecl/releases/opcache/)
 
         2. Place the DLL file in the php/ext folder in your *ampp directory
-        
+
         3. Run the following lines:
         ```
         zend_extension=php_opcache.dll
@@ -36,6 +36,7 @@ Thank you for considering contributing to this package!
     - composer-unused-8.2
     - composer-unused-8.3
     - composer-unused-8.4
+    - composer-unused-8.5
 
 ### Submitting Changes
 
@@ -49,7 +50,7 @@ To validate your changes against a project of yours, you can require your curren
 as a global dependency using a local path. So your changes would have immediate effects.
 
 To do so, go to your global composer installation, typically somewhere around `~/.composer/composer.json`, and add
-`composer-unused` as repository using the `path` (see [docs](https://getcomposer.org/doc/05-repositories.md#path)) 
+`composer-unused` as repository using the `path` (see [docs](https://getcomposer.org/doc/05-repositories.md#path))
 configuration of composer.
 
     {
@@ -60,12 +61,12 @@ configuration of composer.
             }
         ]
     }
-    
+
 After you have done this you can require your local clone as a global dependency (e.g. branch `feature/awesome`)
 
     $ composer require --dev icanhazstring/composer-unused:dev-feature/awesome
-    
-This should setup a symlink and you are ready to go. 
+
+This should setup a symlink and you are ready to go.
 
 ## More information
 
