@@ -26,3 +26,10 @@ services:
     volumes:
       - .:/docker/composer-unused:rw
     tty: true
+
+  php8.5:
+    build: .docker/php8.5
+    container_name: composer-unused-8.5
+    volumes:
+      - .:/docker/composer-unused:rw
+    tty: true
