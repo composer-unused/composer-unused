@@ -17,10 +17,7 @@ return static function (Configuration $config): Configuration {
             ...Glob::glob(__DIR__ . '/config/*.php'),
         ]);
 
-    // symfony/serializer with php8.1 installs a version that is no longer suggesting property-access
-    if (PHP_VERSION_ID >= 80100) {
-        $config->addNamedFilter(NamedFilter::fromString('symfony/property-access'));
-    }
+    $config->addNamedFilter(NamedFilter::fromString('symfony/property-access'));
 
     return $config;
 };

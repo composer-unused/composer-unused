@@ -1,25 +1,4 @@
 services:
-  php8.1:
-    build: .docker/php8.1
-    container_name: composer-unused-8.1
-    volumes:
-      - .:/docker/composer-unused:rw
-    tty: true
-
-  php8.2:
-    build: .docker/php8.2
-    container_name: composer-unused-8.2
-    volumes:
-      - .:/docker/composer-unused:rw
-    tty: true
-
-  php8.3:
-    build: .docker/php8.3
-    container_name: composer-unused-8.3
-    volumes:
-      - .:/docker/composer-unused:rw
-    tty: true
-
   php8.4:
     build: .docker/php8.4
     container_name: composer-unused-8.4

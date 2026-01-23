@@ -32,9 +32,6 @@ Thank you for considering contributing to this package!
 
 1. Run `docker-compose up -d`
 2. Use the corresponding created containers
-    - composer-unused-8.1
-    - composer-unused-8.2
-    - composer-unused-8.3
     - composer-unused-8.4
     - composer-unused-8.5
 

@@ -1,7 +1,7 @@
 {
     "name": "ns/lib",
     "require": {
-        "php": "^8.1",
+        "php": "^8.4",
         "ext-ds": "*"
     },
     "autoload": {

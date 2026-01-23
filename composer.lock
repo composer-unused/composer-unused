@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4e2d338cb1ec5a6477215342a1b81b24",
+    "content-hash": "e299c410d047f30d362e6df075c9fa19",
     "packages": [
         {
             "name": "composer-unused/contracts",
@@ -6491,7 +6491,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.1",
+        "php": "^8.4",
         "ext-json": "*",
         "composer-runtime-api": "^2.0"
     },

@@ -1,4 +1,4 @@
-PHP_VERSION=8.1
+PHP_VERSION=8.4
 
 up: ## Run all containers in all versions
 	docker compose up -d
