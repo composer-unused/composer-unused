@@ -5,3 +5,4 @@
 .version
 .idea
 .secrets
+composer.lock
