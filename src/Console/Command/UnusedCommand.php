@@ -58,7 +58,7 @@ final class UnusedCommand extends Command
         PackageFactory $packageFactory,
         ConfigurationProvider $configurationProvider
     ) {
-        parent::__construct(self::getDefaultName());
+        parent::__construct();
         $this->configFactory = $configFactory;
         $this->collectConsumedSymbolsCommandHandler = $collectConsumedSymbolsCommandHandler;
         $this->collectRequiredDependenciesCommandHandler = $collectRequiredDependenciesCommandHandler;
