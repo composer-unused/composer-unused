@@ -31,7 +31,7 @@ final class DebugConsumedSymbolsCommand extends Command
         PackageFactory $packageFactory,
         ConfigurationProvider $configurationProvider
     ) {
-        parent::__construct(self::getDefaultName());
+        parent::__construct();
         $this->collectConsumedSymbolsCommandHandler = $collectConsumedSymbolsCommandHandler;
         $this->packageFactory = $packageFactory;
         $this->configFactory = $configFactory;

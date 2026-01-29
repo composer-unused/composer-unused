@@ -64,13 +64,21 @@ use Symfony\Component\Console\Input\ArgvInput;
     };
 
     $application = new Application('composer-unused', $getVersion());
-    $application->add($container->get(UnusedCommand::class));
-    $application->add($container->get(DebugConsumedSymbolsCommand::class));
-    $application->add($container->get(DebugProvidedSymbolsCommand::class));
+    /** @var DebugProvidedSymbolsCommand $debugProvidedSymbolsCommand */
+    $debugProvidedSymbolsCommand = $container->get(DebugProvidedSymbolsCommand::class);
+    /** @var DebugConsumedSymbolsCommand $debugConsumedSymbolsCommand */
+    $debugConsumedSymbolsCommand = $container->get(DebugConsumedSymbolsCommand::class);
+
+    $application->addCommands([
+        $container->get(UnusedCommand::class),
+            $debugProvidedSymbolsCommand,
+            $debugConsumedSymbolsCommand,
+    ]);
 
     $argvInput = new ArgvInput($argv);
 
-    if (!in_array($argvInput->getFirstArgument(), [DebugProvidedSymbolsCommand::getDefaultName(), DebugConsumedSymbolsCommand::getDefaultName()], true)) {
+
+    if (!in_array($argvInput->getFirstArgument(), [$debugProvidedSymbolsCommand->getName(), $debugConsumedSymbolsCommand->getName()], true)) {
         $application->setDefaultCommand('unused', true);
     }
 

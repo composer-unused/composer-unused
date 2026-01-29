@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "68aee1a6581e03c9e949b2860dbb4525",
+    "content-hash": "7505aa4cdfaa4f84c4cbe35b0e380f29",
     "packages": [
         {
             "name": "composer-unused/contracts",
@@ -6294,5 +6294,5 @@
         "ext-ds": "*",
         "ext-zend-opcache": "*"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
