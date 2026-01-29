@@ -31,7 +31,7 @@ jobs:
         uses: "actions/checkout@v6"
 
       - name: "Install PHP with extensions"
-        uses: "shivammathur/setup-php@2.36.0"
+        uses: "shivammathur/setup-php@v2"
         with:
           coverage: "none"
           tools: "composer:v2"
@@ -73,13 +73,13 @@ jobs:
 
       - name: "Get release"
         id: "get-release"
-        uses: "bruceadams/get-release@v1.3.2"
+        uses: "bruceadams/get-release@v1"
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: "Upload composer-unused.phar"
         if: "always()"
-        uses: "actions/upload-release-asset@v1.0.2"
+        uses: "actions/upload-release-asset@v1"
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         with:
@@ -90,7 +90,7 @@ jobs:
 
       - name: "Upload composer-unused.phar.asc"
         if: "always()"
-        uses: "actions/upload-release-asset@v1.0.2"
+        uses: "actions/upload-release-asset@v1"
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         with:
