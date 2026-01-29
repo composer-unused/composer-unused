@@ -25,7 +25,7 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: "actions/checkout@v5"
+        uses: "actions/checkout@v6"
 
       - name: "Install PHP with extensions"
         uses: "shivammathur/setup-php@v2"
@@ -75,7 +75,7 @@ jobs:
 
       - name: "Upload PHAR artifact"
         if: success()
-        uses: "actions/upload-artifact@v4"
+        uses: "actions/upload-artifact@v6"
         with:
           name: "composer-unused-phar"
           path: "${{ env.COMPOSER_UNUSED_PHAR }}"
@@ -95,7 +95,7 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: "actions/checkout@v5"
+        uses: "actions/checkout@v6"
 
       - name: "Install PHP with extensions"
         uses: "shivammathur/setup-php@v2"
@@ -108,7 +108,7 @@ jobs:
         run: "composer install --no-progress"
 
       - name: "Download PHAR artifact"
-        uses: "actions/download-artifact@v5"
+        uses: "actions/download-artifact@v7"
         with:
           name: "composer-unused-phar"
 
