@@ -37,7 +37,7 @@ final class DebugProvidedSymbolsCommand extends Command
         LocalRepositoryFactory $localRepositoryFactory,
         ConfigurationProvider $configurationProvider
     ) {
-        parent::__construct(self::getDefaultName());
+        parent::__construct();
         $this->configFactory = $configFactory;
         $this->packageResolver = $packageResolver;
         $this->providedSymbolLoaderBuilder = $providedSymbolLoaderBuilder;
