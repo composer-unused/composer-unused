@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace ComposerUnused\ComposerUnused\Configuration;
 
-use Webmozart\Assert\Assert;
-
 final class PatternFilter implements FilterInterface
 {
     private string $string;
 
     private function __construct(string $string)
     {
-        Assert::notEmpty($string, 'PatternFilter value must not be empty');
+        if (empty($string)) {
+            throw new \InvalidArgumentException('PatternFilter value must not be empty');
+        }
         $this->string = $string;
     }
 

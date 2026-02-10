@@ -46,8 +46,7 @@
         "symfony/console": "^6.0 || ^7.0 || ^8.0",
         "symfony/dependency-injection": "^6.0 || ^7.0 || ^8.0",
         "symfony/property-access": "^6.0 || ^7.0 || ^8.0",
-        "symfony/serializer": "^6.0 || ^7.0 || ^8.0",
-        "webmozart/assert": "^1.10 || ^2.0"
+        "symfony/serializer": "^6.0 || ^7.0 || ^8.0"
     },
     "require-dev": {
         "ext-ds": "*",

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ComposerUnused\ComposerUnused\Configuration;
 
-use Webmozart\Assert\Assert;
+use InvalidArgumentException;
 
 final class NamedFilter implements FilterInterface
 {
@@ -12,7 +12,9 @@ final class NamedFilter implements FilterInterface
 
     private function __construct(string $string)
     {
-        Assert::notEmpty($string, 'NamedFilter value must not be empty');
+        if (empty($string)) {
+            throw new InvalidArgumentException('NamedFilter value must not be empty');
+        }
         $this->string = $string;
     }
 

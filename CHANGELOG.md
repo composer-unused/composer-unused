@@ -4,7 +4,7 @@
 ### Added
 ### Fixed
 ### Changed
-* Dropped webmozart/glob dependency
+* Dropped webmozart/glob and webmozart/assert dependencies
 ### Removed
 ### Security
 ### Deprecation
