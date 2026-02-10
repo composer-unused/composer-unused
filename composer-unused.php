@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 use ComposerUnused\ComposerUnused\Configuration\Configuration;
 use ComposerUnused\ComposerUnused\Configuration\NamedFilter;
-use ComposerUnused\ComposerUnused\Configuration\PatternFilter;
-use Webmozart\Glob\Glob;
 
 return static function (Configuration $config): Configuration {
     $config
@@ -14,7 +12,10 @@ return static function (Configuration $config): Configuration {
         ->setAdditionalFilesFor('icanhazstring/composer-unused', [
             __FILE__,
             'bin/composer-unused',
-            ...Glob::glob(__DIR__ . '/config/*.php'),
+            'config/container.php',
+            'config/polyfill_symfony_di.php',
+            'config/services.php',
+            'config/services_test.php',
         ]);
 
     // symfony/serializer with php8.1 installs a version that is no longer suggesting property-access
