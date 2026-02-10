@@ -4,6 +4,7 @@
 ### Added
 ### Fixed
 ### Changed
+* Dropped webmozart/glob dependency
 ### Removed
 ### Security
 ### Deprecation
