@@ -6,7 +6,10 @@ namespace ComposerUnused\ComposerUnused\Configuration\ConfigurationSet;
 
 use ComposerUnused\ComposerUnused\Configuration\Configuration;
 use ComposerUnused\ComposerUnused\Configuration\ConfigurationSetInterface;
-use Webmozart\Glob\Glob;
+use FilesystemIterator;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use SplFileInfo;
 
 class SymfonyConfigurationSet implements ConfigurationSetInterface
 {
@@ -65,7 +68,7 @@ class SymfonyConfigurationSet implements ConfigurationSetInterface
         foreach ($symfonyDirs as $dir) {
             $dirPath = $this->resolvePath($this->projectRoot . '/' . $dir);
             if ($dirPath !== false && is_dir($dirPath)) {
-                $phpFiles = Glob::glob($dirPath . '/**/*.php');
+                $phpFiles = $this->findPhpFiles($dirPath);
                 $allFiles = array_merge($allFiles, $phpFiles);
             }
         }
@@ -77,6 +80,33 @@ class SymfonyConfigurationSet implements ConfigurationSetInterface
         }
 
         return $allFiles;
+    }
+
+    /**
+     * Find all PHP files recursively in a directory
+     *
+     * @param string $directory
+     * @return array<string>
+     */
+    private function findPhpFiles(string $directory): array
+    {
+        $phpFiles = [];
+
+        try {
+            $iterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($directory, FilesystemIterator::SKIP_DOTS),
+            );
+
+            foreach ($iterator as $file) {
+                if ($file instanceof SplFileInfo && $file->isFile() && $file->getExtension() === 'php') {
+                    $phpFiles[] = $file->getPathname();
+                }
+            }
+        } catch (\Exception) {
+            // Directory not readable or other error - return empty array
+        }
+
+        return $phpFiles;
     }
 
     protected function resolvePath(string $path): string|false
