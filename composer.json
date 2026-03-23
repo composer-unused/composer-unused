@@ -62,7 +62,7 @@
         "php-ds/php-ds": "^1.7",
         "phpspec/prophecy-phpunit": "^2.5.0",
         "phpstan/extension-installer": "^1.4",
-        "phpstan/phpstan": "^2.1.40",
+        "phpstan/phpstan": "^2.1.42",
         "phpstan/phpstan-phpunit": "^2.0.16",
         "phpunit/phpunit": "^9.6.34",
         "roave/security-advisories": "dev-master",
