@@ -76,6 +76,12 @@ These options accept multiple values as shown next:
 
 > Make sure the package is named exactly as in your `composer.json`
 
+### Output format
+
+To use the output programatically you can provide options to choose the format, and/or disable progress bars in CI:
+    
+    php composer-unused.phar --output-format=json --no-progress
+
 ### Configuration
 You can configure composer-unused by placing a `composer-unused.php` beside the projects `composer.json`
 This configuration can look something like this: [composer-unused.php](composer-unused.php)
