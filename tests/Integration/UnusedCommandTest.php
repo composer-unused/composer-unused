@@ -137,6 +137,26 @@ TEXT,
     /**
      * @test
      */
+    public function itShouldHideIgnoredPackages(): void
+    {
+        $commandTester = new CommandTester(self::$container->get(UnusedCommand::class));
+        $exitCode = $commandTester->execute([
+            'composer-json' => __DIR__ . '/../assets/TestProjects/IgnoreExcludedPackages/composer.json',
+            '--excludePackage' => ['dummy/test-package'],
+            '--hide-ignored' => null,
+        ]);
+
+        self::assertSame(0, $exitCode);
+        self::assertStringNotContainsString('dummy/test-package', $commandTester->getDisplay());
+        self::assertStringContainsString(
+            'Found 0 used, 0 unused, 0 ignored and 0 zombie packages',
+            $commandTester->getDisplay()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function itShouldNotReportPatternExcludedPackages(): void
     {
         $commandTester = new CommandTester(self::$container->get(UnusedCommand::class));
