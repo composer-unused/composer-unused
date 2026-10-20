@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use Ds\Vector;
+use Ds\Map;
 
-function newVector(): Vector
+function newMap(): Map
 {
-    return new Vector();
+    return new Map();
 }
