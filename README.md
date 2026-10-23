@@ -76,6 +76,10 @@ These options accept multiple values as shown next:
 
 > Make sure the package is named exactly as in your `composer.json`
 
+To hide ignored packages from the report, use the `--hide-ignored` option:
+
+    php composer-unused.phar --hide-ignored
+
 ### Output format
 
 To use the output programatically you can provide options to choose the format, and/or disable progress bars in CI:

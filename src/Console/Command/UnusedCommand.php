@@ -16,6 +16,7 @@ use ComposerUnused\ComposerUnused\Composer\PackageFactory;
 use ComposerUnused\ComposerUnused\Configuration\ConfigurationProvider;
 use ComposerUnused\ComposerUnused\Configuration\NamedFilter;
 use ComposerUnused\ComposerUnused\Console\Progress\DefaultProgressBarDecorator;
+use ComposerUnused\ComposerUnused\Dependency\DependencyCollection;
 use ComposerUnused\ComposerUnused\Dependency\DependencyInterface;
 use ComposerUnused\ComposerUnused\Dependency\RequiredDependency;
 use ComposerUnused\ComposerUnused\Filter\FilterCollection;
@@ -119,6 +120,13 @@ final class UnusedCommand extends Command
         );
 
         $this->addOption(
+            'hide-ignored',
+            null,
+            InputOption::VALUE_NONE,
+            'Hide ignored packages from the report'
+        );
+
+        $this->addOption(
             'no-progress',
             null,
             InputOption::VALUE_NONE,
@@ -140,6 +148,7 @@ final class UnusedCommand extends Command
         $outputFormatter = $this->formatterFactory->create($input->getOption('output-format'));
         $composerJsonPath = $input->getArgument('composer-json');
         $ignoreExitCode = (bool)$input->getOption('ignore-exit-code');
+        $hideIgnored = (bool)$input->getOption('hide-ignored');
         /** @var string|list<string> $excludedDirs */
         $excludedDirs = $input->getOption('excludeDir');
         $outputFile = $input->getOption('output-file');
@@ -311,6 +320,10 @@ final class UnusedCommand extends Command
                 DependencyInterface $dependency
             ) => $dependency->inState($dependency::STATE_IGNORED) || $dependency->inState($dependency::STATE_INVALID)
         );
+
+        if ($hideIgnored) {
+            $ignoredDependencyCollection = new DependencyCollection();
+        }
 
         $exitCode = $outputFormatter->formatOutput(
             $rootPackage,
