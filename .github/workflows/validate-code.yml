@@ -26,6 +26,11 @@ jobs:
           php-version: ${{ matrix.php }}
           tools: composer:v2
 
+      - name: Drop roave/security-advisories on PHP 8.1
+        # roave/security-advisories conflicts with every PHP 8.1 release (EOL)
+        if: matrix.php == '8.1'
+        run: composer remove --dev roave/security-advisories --no-update
+
       - name: Install dependencies
         run: composer update --no-progress --prefer-dist --optimize-autoloader
 
@@ -49,6 +54,11 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           tools: composer:v2
+
+      - name: Drop roave/security-advisories on PHP 8.1
+        # roave/security-advisories conflicts with every PHP 8.1 release (EOL)
+        if: matrix.php == '8.1'
+        run: composer remove --dev roave/security-advisories --no-update
 
       - name: Install dependencies
         run: composer update --no-progress --prefer-dist --optimize-autoloader
@@ -89,6 +99,11 @@ jobs:
         env:
           fail-fast: true
 
+      - name: Drop roave/security-advisories on PHP 8.1
+        # roave/security-advisories conflicts with every PHP 8.1 release (EOL)
+        if: matrix.php == '8.1'
+        run: composer remove --dev roave/security-advisories --no-update
+
       - name: Install dependencies
         run: composer update --no-progress --prefer-dist --optimize-autoloader ${{ matrix.composer-options }}
 
@@ -124,6 +139,11 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           tools: composer:v2
+
+      - name: Drop roave/security-advisories on PHP 8.1
+        # roave/security-advisories conflicts with every PHP 8.1 release (EOL)
+        if: matrix.php == '8.1'
+        run: composer remove --dev roave/security-advisories --no-update
 
       - name: Install dependencies
         run: composer update --prefer-dist --no-progress --no-suggest ${{ matrix.composer-options }}
