@@ -8,12 +8,12 @@ class PackageUrlExtractor
 {
     /**
      * @param array<mixed> $package
-     * @return string
+     * @return string|null
      */
-    public function getUrl(array $package): string
+    public function getUrl(array $package): ?string
     {
         if (!array_key_exists('source', $package)) {
-            return $package['dist']['url'];
+            return $package['dist']['url'] ?? null;
         }
 
         return $this->parseUrlFromGitSourceUrl($package['source']['url']);
