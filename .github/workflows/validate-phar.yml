@@ -25,7 +25,7 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: "actions/checkout@v6"
+        uses: "actions/checkout@v7"
 
       - name: "Install PHP with extensions"
         uses: "shivammathur/setup-php@v2"
@@ -63,7 +63,7 @@ jobs:
       - name: "Import GPG key"
         if: github.event.pull_request.head.repo.full_name == github.repository
         id: "import_gpg"
-        uses: "crazy-max/ghaction-import-gpg@v6"
+        uses: "crazy-max/ghaction-import-gpg@v7"
         with:
           gpg_private_key: "${{ secrets.GPG_PRIVATE_KEY }}"
           passphrase: "${{ secrets.GPG_PASSPHRASE }}"
@@ -102,7 +102,7 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: "actions/checkout@v6"
+        uses: "actions/checkout@v7"
 
       - name: "Install PHP with extensions"
         uses: "shivammathur/setup-php@v2"
