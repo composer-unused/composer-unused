@@ -44,21 +44,24 @@ jobs:
         if: matrix.php-version == '8.1'
         run: "composer remove --dev roave/security-advisories --no-update"
 
-      - name: "Remove dev dependencies"
-        run: "composer install --no-progress"
+      - name: "Install dependencies without dev packages"
+        run: "composer install --no-progress --no-dev"
+
+      - name: "Install humbug/box"
+        run: "composer install --no-progress --working-dir=vendor-bin/box"
 
       - name: "Fetch latest version tag"
         run: "echo `git describe --abbrev=0 --tags` > .version"
 
       - name: "Validate configuration for humbug/box"
-        run: "vendor/bin/box validate box.json"
+        run: "vendor-bin/box/vendor/bin/box validate box.json"
 
       - name: "Compile composer-unused.phar with humbug/box"
-        run: "php -d error_reporting='E_ALL & ~E_DEPRECATED' vendor/bin/box compile --config=box.json --no-parallel"
+        run: "php -d error_reporting='E_ALL & ~E_DEPRECATED' vendor-bin/box/vendor/bin/box compile --config=box.json --no-parallel"
 
       - name: "Show info about composer-unused.phar with humbug/box"
         continue-on-error: true
-        run: "vendor/bin/box info ${{ env.COMPOSER_UNUSED_PHAR }}"
+        run: "vendor-bin/box/vendor/bin/box info ${{ env.COMPOSER_UNUSED_PHAR }}"
 
       - name: "Import GPG key"
         id: "import_gpg"
