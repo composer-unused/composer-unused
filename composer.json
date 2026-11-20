@@ -65,7 +65,6 @@
         "phpstan/phpstan": "^2.1.40",
         "phpstan/phpstan-phpunit": "^2.0.16",
         "phpunit/phpunit": "^9.6.34",
-        "roave/security-advisories": "dev-master",
         "squizlabs/php_codesniffer": "^4.0"
     },
     "autoload": {
