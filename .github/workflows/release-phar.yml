@@ -20,7 +20,7 @@ jobs:
     strategy:
       matrix:
         php-version:
-          - "8.1"
+          - "8.3"
 
     env:
       COMPOSER_UNUSED_PHAR: "build/composer-unused.phar"
@@ -38,11 +38,6 @@ jobs:
           extensions: "${{ env.PHP_EXTENSIONS }}"
           ini-values: "${{ env.PHP_INI_VALUES }}"
           php-version: "${{ matrix.php-version }}"
-
-      - name: "Drop roave/security-advisories on PHP 8.1"
-        # roave/security-advisories conflicts with every PHP 8.1 release (EOL)
-        if: matrix.php-version == '8.1'
-        run: "composer remove --dev roave/security-advisories --no-update"
 
       - name: "Install dependencies without dev packages"
         run: "composer install --no-progress --no-dev"
