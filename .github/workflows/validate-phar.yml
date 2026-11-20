@@ -94,8 +94,13 @@ jobs:
     runs-on: "blacksmith-4vcpu-ubuntu-2204"
 
     strategy:
+      fail-fast: false
       matrix:
         php-version: [ "8.1", "8.2", "8.3", "8.4", "8.5", "8.6" ]
+        include:
+          - php-version: "8.6"
+            # phpspec/prophecy doesn't support PHP 8.6 yet upstream
+            composer-options: "--ignore-platform-req=php+"
 
     env:
       COMPOSER_UNUSED_PHAR: "composer-unused.phar"
@@ -117,7 +122,7 @@ jobs:
         run: "composer remove --dev roave/security-advisories --no-update"
 
       - name: "Install dependencies"
-        run: "composer install --no-progress"
+        run: "composer install --no-progress ${{ matrix.composer-options }}"
 
       - name: "Download PHAR artifact"
         uses: "actions/download-artifact@v8"

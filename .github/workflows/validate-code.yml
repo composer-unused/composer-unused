@@ -45,6 +45,11 @@ jobs:
       matrix:
         php: [ "8.1", "8.2", "8.3", "8.4", "8.5", "8.6"  ]
         os: [ "blacksmith-4vcpu-ubuntu-2204" ]
+        include:
+          - php: "8.6"
+            # phpspec/prophecy doesn't support PHP 8.6 yet upstream
+            composer-options: "--ignore-platform-req=php+"
+            os: "blacksmith-4vcpu-ubuntu-2204"
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -61,7 +66,7 @@ jobs:
         run: composer remove --dev roave/security-advisories --no-update
 
       - name: Install dependencies
-        run: composer update --no-progress --prefer-dist --optimize-autoloader
+        run: composer update --no-progress --prefer-dist --optimize-autoloader ${{ matrix.composer-options }}
 
       - name: Analyze code with static-analysis
         run: vendor/bin/phpstan --no-progress
