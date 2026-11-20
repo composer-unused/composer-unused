@@ -649,4 +649,21 @@ TEXT,
             $commandTester->getDisplay()
         );
     }
+
+    /**
+     * @test
+     * @requires extension uri
+     * @link https://github.com/composer-unused/composer-unused/issues/740
+     */
+    public function itShouldNotReportExtUriAsUnused(): void
+    {
+        $commandTester = new CommandTester(self::$container->get(UnusedCommand::class));
+        $exitCode = $commandTester->execute(['composer-json' => __DIR__ . '/../assets/TestProjects/ExtUriRequirement/composer.json']);
+
+        self::assertSame(0, $exitCode);
+        self::assertStringContainsString(
+            'Found 2 used, 0 unused, 0 ignored and 0 zombie packages',
+            $commandTester->getDisplay()
+        );
+    }
 }

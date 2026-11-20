@@ -7,6 +7,7 @@ namespace ComposerUnused\SymbolParser\Test\Integration\Parser\PHP;
 use ComposerUnused\SymbolParser\Parser\PHP\ConsumedSymbolCollector;
 use ComposerUnused\SymbolParser\Parser\PHP\DefinedSymbolCollector;
 use ComposerUnused\SymbolParser\Parser\PHP\Strategy\ConstStrategy;
+use ComposerUnused\SymbolParser\Parser\PHP\Strategy\UseStrategy;
 use ComposerUnused\SymbolParser\Parser\PHP\SymbolNameParser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\ParserFactory;
@@ -173,5 +174,37 @@ class SymbolNameParserTest extends TestCase
 
         self::assertCount(1, $symbolNames);
         self::assertContains('TESTCONSTANT', $symbolNames);
+    }
+
+    /**
+     * @test
+     * @link https://github.com/composer-unused/composer-unused/issues/740
+     */
+    public function itShouldKeepFullyQualifiedUseSymbolsWhenNamespacesOverlap(): void
+    {
+        $symbolNameParser = new SymbolNameParser(
+            (new ParserFactory())->createForNewestSupportedVersion(),
+            new NameResolver(),
+            new ConsumedSymbolCollector([new UseStrategy()])
+        );
+
+        $code = <<<CODE
+        <?php
+        declare(strict_types=1);
+
+        namespace Testing;
+
+        use Uri\InvalidUriException;
+        use Uri\Rfc3986\Uri;
+        use Uri\WhatWg\InvalidUrlException;
+        use Uri\WhatWg\Url;
+        CODE;
+
+        $symbolNames = iterator_to_array($symbolNameParser->parseSymbolNames($code));
+
+        self::assertContains('Uri\InvalidUriException', $symbolNames);
+        self::assertContains('Uri\Rfc3986\Uri', $symbolNames);
+        self::assertContains('Uri\WhatWg\InvalidUrlException', $symbolNames);
+        self::assertContains('Uri\WhatWg\Url', $symbolNames);
     }
 }
