@@ -1,0 +1,12 @@
+{
+  "name": "foo/bar",
+  "require": {
+    "php": ">=8.5",
+    "ext-uri": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "ExtUriRequirement\\": "src/"
+    }
+  }
+}
