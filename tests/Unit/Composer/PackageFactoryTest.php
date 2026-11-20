@@ -27,11 +27,9 @@ final class PackageFactoryTest extends TestCase
         $reflection = new ReflectionClass($config);
 
         $nameProperty = $reflection->getProperty('name');
-        $nameProperty->setAccessible(true);
         $nameProperty->setValue($config, 'somename');
 
         $requirePropery = $reflection->getProperty('require');
-        $requirePropery->setAccessible(true);
         $requirePropery->setValue($config, ['test/package' => '0.0']);
 
         $config->setRaw(<<<JSON
@@ -57,11 +55,9 @@ final class PackageFactoryTest extends TestCase
         $reflection = new ReflectionClass($config);
 
         $nameProperty = $reflection->getProperty('name');
-        $nameProperty->setAccessible(true);
         $nameProperty->setValue($config, 'somename');
 
         $requirePropery = $reflection->getProperty('require');
-        $requirePropery->setAccessible(true);
         $requirePropery->setValue($config, ['test/package' => '0.0']);
 
         $config->setRaw(<<<JSON

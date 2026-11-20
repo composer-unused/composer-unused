@@ -6,9 +6,9 @@ namespace ComposerUnused\ComposerUnused\Configuration;
 
 final class Configuration
 {
-    /** @var array<string, NamedFilter> */
+    /** @var array<int, NamedFilter> */
     private array $namedFilters = [];
-    /** @var array<string, PatternFilter> */
+    /** @var array<int, PatternFilter> */
     private array $patternFilters = [];
     /** @var array<string, array<string>> */
     private array $additionalFiles = [];
@@ -17,12 +17,12 @@ final class Configuration
 
     public function addNamedFilter(NamedFilter $filter): self
     {
-        $this->namedFilters[spl_object_hash($filter)] = $filter;
+        $this->namedFilters[spl_object_id($filter)] = $filter;
         return $this;
     }
 
     /**
-     * @return array<string, NamedFilter>
+     * @return array<int, NamedFilter>
      */
     public function getNamedFilters(): array
     {
@@ -31,12 +31,12 @@ final class Configuration
 
     public function addPatternFilter(PatternFilter $filter): self
     {
-        $this->patternFilters[spl_object_hash($filter)] = $filter;
+        $this->patternFilters[spl_object_id($filter)] = $filter;
         return $this;
     }
 
     /**
-     * @return array<string, PatternFilter>
+     * @return array<int, PatternFilter>
      */
     public function getPatternFilters(): array
     {
