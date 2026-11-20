@@ -68,6 +68,9 @@ class ConsumedSymbolCollector extends AbstractCollector
         $symbolNames = [];
 
         foreach ($uniqueNames as $symbolName) {
+            // keep the original name, merging is only a guess and may produce non-existent symbols
+            $symbolNames[$symbolName->getName()] = $symbolName;
+
             foreach ($uniqueNames as $otherSymbolName) {
                 if ($symbolName === $otherSymbolName) {
                     continue;
@@ -85,8 +88,6 @@ class ConsumedSymbolCollector extends AbstractCollector
                     continue 2;
                 }
             }
-
-            $symbolNames[$symbolName->getName()] = $symbolName;
         }
 
         return array_keys($symbolNames);
