@@ -19,11 +19,11 @@ act --list
 # Dry run (shows what would happen without executing)
 act -j build-phar --dryrun
 
-# Run the build-phar job (builds PHAR with PHP 8.1)
+# Run the build-phar job (builds PHAR with PHP 8.3)
 act -j build-phar
 
 # Run the validate-phar job (requires artifacts from build-phar)
-# This will validate against all PHP versions: 8.1, 8.2, 8.3, 8.4
+# This will validate against all PHP versions: 8.3, 8.4, 8.5, 8.6
 act -j validate-phar
 ```
 
