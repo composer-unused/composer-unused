@@ -89,7 +89,8 @@ Conventional commits provide consistent history, enable automated changelog gene
 ## Key Implementation Notes
 
 ### Symbol Parser Integration
-Uses `composer-unused/symbol-parser` for PHP code analysis and symbol extraction.
+PHP code analysis and symbol extraction lives in-repo under the `ComposerUnused\SymbolParser\` namespace
+(`src/SymbolParser/`, tests in `tests/SymbolParser/`), formerly the separate `composer-unused/symbol-parser` package.
 
 ### XDebug Compatibility
 - Automatically disables XDebug on startup using `composer/xdebug-handler` for optimal performance
