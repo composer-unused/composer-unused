@@ -34,11 +34,7 @@ jobs:
           tools: "composer:v2"
           extensions: "${{ env.PHP_EXTENSIONS }}"
           ini-values: "${{ env.PHP_INI_VALUES }}"
-          php-version: "8.1"
-
-      - name: "Drop roave/security-advisories on PHP 8.1"
-        # roave/security-advisories conflicts with every PHP 8.1 release (EOL)
-        run: "composer remove --dev roave/security-advisories --no-update"
+          php-version: "8.3"
 
       - name: "Install dependencies without dev packages"
         run: "composer install --no-progress --no-dev"
@@ -96,7 +92,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: [ "8.1", "8.2", "8.3", "8.4", "8.5", "8.6" ]
+        php-version: [ "8.3", "8.4", "8.5", "8.6" ]
         include:
           - php-version: "8.6"
             # phpspec/prophecy doesn't support PHP 8.6 yet upstream
@@ -115,11 +111,6 @@ jobs:
           coverage: "none"
           extensions: "${{ env.PHP_EXTENSIONS }}"
           php-version: "${{ matrix.php-version }}"
-
-      - name: "Drop roave/security-advisories on PHP 8.1"
-        # roave/security-advisories conflicts with every PHP 8.1 release (EOL)
-        if: matrix.php-version == '8.1'
-        run: "composer remove --dev roave/security-advisories --no-update"
 
       - name: "Install dependencies"
         run: "composer install --no-progress ${{ matrix.composer-options }}"
