@@ -1,0 +1,7 @@
+{
+    "name": "self/referencing",
+
+    "autoload": {
+        "files": ["index.php"]
+    }
+}

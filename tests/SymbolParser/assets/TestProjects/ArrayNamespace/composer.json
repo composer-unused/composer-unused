@@ -1,0 +1,11 @@
+{
+  "name": "multi/paths",
+  "require": {
+  },
+  "autoload": {
+    "psr-4": {
+      "EmptyRequire\\": ["src/", "web/"],
+      "Configuration\\": "config/"
+    }
+  }
+}

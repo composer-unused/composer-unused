@@ -1,0 +1,14 @@
+{
+    "name": "classmap/autoload",
+    "require": {
+        "lulco/redis-proxy": "^0.4.2",
+        "nette/database": "^3.0"
+    },
+    "autoload": {
+        "classmap": [
+            "app",
+            "src/Addon/*/Lib/",
+            "ParsedClass.php"
+        ]
+    }
+}

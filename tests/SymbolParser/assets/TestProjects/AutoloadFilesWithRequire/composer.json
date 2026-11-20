@@ -1,0 +1,14 @@
+{
+    "name": "ns/lib",
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "ext-ds": "*",
+        "ext-json": "*"
+    },
+    "autoload": {
+        "files": [
+            "src/functions_include.php",
+            "src/non_existent_file.php"
+        ]
+    }
+}

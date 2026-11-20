@@ -1,0 +1,12 @@
+{
+    "name": "lulco/redis-proxy",
+    "suggest": {
+        "ext-redis": "Native PHP extension for Redis connectivity.",
+        "predis/predis": "Flexible and feature-complete PHP client library for Redis https://github.com/nrk/predis/wiki"
+    },
+    "autoload": {
+        "classmap": [
+            "src/"
+        ]
+    }
+}
