@@ -41,8 +41,6 @@ return static function (ContainerConfigurator $configurator) {
         ->autoconfigure()
         ->bind('$consumedSymbolCollector', service('collector.consumed'));
 
-    $vendorDir = dirname(UNUSED_COMPOSER_INSTALL);
-
     $nameSpacePrefix = '';
     if (__NAMESPACE__ !== '') {
         $nameSpacePrefix = __NAMESPACE__ . '\\';
@@ -52,7 +50,8 @@ return static function (ContainerConfigurator $configurator) {
     // this creates a service per class whose id is the fully-qualified class name
     $services
         ->load($nameSpacePrefix . 'ComposerUnused\\ComposerUnused\\', __DIR__ . '/../src/*')
-        ->load($nameSpacePrefix . 'ComposerUnused\\SymbolParser\\', $vendorDir . '/composer-unused/symbol-parser/src/*');
+            ->exclude(__DIR__ . '/../src/SymbolParser/*')
+        ->load($nameSpacePrefix . 'ComposerUnused\\SymbolParser\\', __DIR__ . '/../src/SymbolParser/*');
 
     $services->set(UnusedCommand::class)->public();
     $services->set(DebugConsumedSymbolsCommand::class)->public();

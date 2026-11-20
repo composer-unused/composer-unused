@@ -12,9 +12,11 @@
     <testsuites>
         <testsuite name="integration">
             <directory>./tests/Integration</directory>
+            <directory>./tests/SymbolParser/Integration</directory>
         </testsuite>
         <testsuite name="unit">
             <directory>./tests/Unit</directory>
+            <directory>./tests/SymbolParser/Unit</directory>
         </testsuite>
     </testsuites>
     <groups>

@@ -6,8 +6,10 @@ parameters:
         - phpunit.bootstrap.php
     excludePaths:
         - %currentWorkingDirectory%/tests/assets
+        - %currentWorkingDirectory%/tests/SymbolParser/assets
     level: 8
     inferPrivatePropertyTypeFromConstructor: true
+    treatPhpDocTypesAsCertain: false
     paths:
         - bin/
         - src/
