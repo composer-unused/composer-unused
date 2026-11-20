@@ -33,3 +33,10 @@ services:
     volumes:
       - .:/docker/composer-unused:rw
     tty: true
+
+  php8.6:
+    build: .docker/php8.6
+    container_name: composer-unused-8.6
+    volumes:
+      - .:/docker/composer-unused:rw
+    tty: true
